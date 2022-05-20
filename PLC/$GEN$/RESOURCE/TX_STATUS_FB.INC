@@ -1654,6 +1654,7 @@ TYPE NDC8_T :
 	    VehicleNavigator : VehicleNavigator_T;
 	    ReflectorNavigator : ReflectorNavigator_T;
 	    COM6 : LanSerialPort_T;
+	    COM7 : LanSerialPort_T;
 	    DCD_5 : DCD_5_T;
 	    DCD_6 : DCD_6_T;
 	    DCD_7 : DCD_7_T;
@@ -1680,7 +1681,7 @@ FUNCTION TRACE_DINT : BOOL
 
 (* PROJEKT PROTOTYPEN *)
 
-$INCLUDE "D:\SJ_2SD_G45_CVC700_FULLMOD_20220309\PLC\$GEN$\EVENTQUEUE_FB.PTT"
+$INCLUDE "C:\PROGRAMDATA\INFOTEAM SOFTWARE\OPENPCS2008\OPENPCS.520\LIB\NDC8LIB.1.2.8\$GEN$\EVENTQUEUE_FB.PTT"
 
 
 (* EXTERNE POEs *)

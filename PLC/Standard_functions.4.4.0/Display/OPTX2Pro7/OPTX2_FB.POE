@@ -980,14 +980,14 @@ END_VAR
 	LD NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R
 	ST ModBus_ValueBOOL[144]
 
-(** ModBus_ValueBOOL [145] := NDC8.CAN_IO_3.DigitalInput5; **)
+(** ModBus_ValueBOOL [145] := NDC8.CAN_IO_3.DigitalInput5_LIMF_O; **)
 	(* assign - Stmt *)
-	LD NDC8.CAN_IO_3.DigitalInput5
+	LD NDC8.CAN_IO_3.DigitalInput5_LIMF_O
 	ST ModBus_ValueBOOL[145]
 
-(** ModBus_ValueBOOL [146] := NDC8.CAN_IO_3.DigitalInput6; **)
+(** ModBus_ValueBOOL [146] := NDC8.CAN_IO_3.DigitalInput6_LIMR_O; **)
 	(* assign - Stmt *)
-	LD NDC8.CAN_IO_3.DigitalInput6
+	LD NDC8.CAN_IO_3.DigitalInput6_LIMR_O
 	ST ModBus_ValueBOOL[146]
 
 (** ModBus_ValueBOOL [147] := NDC8.CAN_IO_3.DigitalInput7; **)
@@ -2453,6 +2453,7 @@ END_VAR
 (**  **)
 (**  **)
 (** {****************************************************************************} **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

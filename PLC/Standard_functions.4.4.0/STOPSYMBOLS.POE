@@ -483,11 +483,43 @@ VAR_GLOBAL
 		EnaBMSEv14	At	%MX81.5 : BOOL;
 		EnaBMSEv15	At	%MX81.6 : BOOL;
 		EnaBMSEv16	At	%MX81.7 : BOOL;
-		
+		(* Memory area for data type conversion. Used in PLC <--> CVC700 for modbus communication. *)
+	
+		pConvDINT AT 	%MX90.0:DINT;
+		pConvUDINT AT 	%MX90.0:UDINT;
+		pConvDWORD AT 	%MX90.0:DWORD;
+	
+		pConvINT AT 	%MX90.0:INT;
+		pConvUINT AT 	%MX90.0:UINT;
+
+		pConvWord AT 	%MX90.0:WORD;
+		pConvWord2 AT 	%MX92.0:WORD;
+
+		pConvByteL AT 	%MX90.0:Byte;			(*Low byte*)
+		pConvByteH AT 	%MX91.0:Byte;			(*High byte*)
+
+		pConvBit0 		AT %MX90.0:BOOL;			(*		 1 	dec *)
+		pConvBit1  		AT %MX90.1:BOOL;			(*		 2 		*)
+		pConvBit2 		AT %MX90.2:BOOL;			(*		 4 		*)
+		pConvBit3 	 	AT %MX90.3:BOOL;			(*		 8 		*) 
+		pConvBit4  		AT %MX90.4:BOOL;			(*	    10 hex	*) 
+		pConvBit5  		AT %MX90.5:BOOL;			(*	    20 	..	*)
+		pConvBit6  		AT %MX90.6:BOOL;			(*	    40 		*)
+		pConvBit7     	AT %MX90.7:BOOL;        	(*	    80 		*)
+		pConvBit8 		AT %MX91.0:BOOL;			(*		100     *)
+		pConvBit9  		AT %MX91.1:BOOL;			(*		200 	*)
+		pConvBit10 		AT %MX91.2:BOOL;			(*		400  	*)
+		pConvBit11 	 	AT %MX91.3:BOOL;			(*		800 	*)
+		pConvBit12 		AT %MX91.4:BOOL;			(*	   1000 	*)
+		pConvBit13 		AT %MX91.5:BOOL;			(*	   2000 	*)
+		pConvBit14  	AT %MX91.6:BOOL;			(*	   4000 	*)
+		pConvBit15     	AT %MX91.7:BOOL;        	(*	   8000 	*)			
 		
 	
 	
 END_VAR
+
+
 
 
 

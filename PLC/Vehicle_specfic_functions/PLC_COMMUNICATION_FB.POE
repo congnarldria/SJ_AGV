@@ -1,6 +1,10 @@
 FUNCTION_BLOCK PLC_COMMUNICATION_FB
 VAR_EXTERNAL
-	
+
+pConvWord:WORD;			(*Sum of the two first bytes*)
+
+pConvByteL:Byte;			(*Low byte*)
+pConvByteH:Byte;			(*High byte*)
 END_VAR
 
 VAR_INPUT
@@ -133,7 +137,42 @@ VAR
 	DecodeDataArray : ARRAY[1..25] of WORD;
 	
 	(*---------------------------------------*)
+	tx_header_length : BYTE := 6;
+	dummy : BOOL;
+	tr_cmd : DINT;
+
+
+	start_adress : INT;
+
+	ReadCounter,
+	DebugCounter		: DINT;
+	StartDelayTOF	: TOF;
+	StartDelay 		: BOOL;
 	
+	X: INT;
+	Y: INT;
+	Z: INT;
+	End:INT;
+	Index:DINT;
+	debug1 :INT;
+	debug2 :INT;
+	tr_len : DINT;
+	num_words : DINT;
+	num_Byte : DINT;
+	num_Bit : DINT;
+	Extra:DINT;
+	length : DINT;
+	tx_length : BYTE;
+	ENDBIT:DINT;
+	debugByte :Byte;
+	dataindex : INT;
+	msg_index: INT;
+	ix : INT;
+	PLC_message : ARRAY[1..300] of BYTE;
+	lenght_send : DINT;
+	Send_message : ARRAY[1..32] of BYTE;
+	Counter : DINT;
+	DINTdataindex : DINT;
 END_VAR
 
 (*Automatically declared*)
@@ -142,7 +181,6 @@ VAR_EXTERNAL
 	PLC_TX03_BIT_STR_BRAKE : BOOL;
 	PLC_TX03_BIT_STR_CHARGE : BOOL;
 	PLC_TX01_BIT_ONLN_MODEP : BOOL;
-	A : bool;
 	OM_PLC_W1_BIT_OM_CONT : BOOL;
 	PLC_RX04_BIT_STW_LOWOT : BOOL;
 	PLC_TX_WORD15_STR_BCD2 : WORD;
@@ -160,6 +198,7 @@ VAR_EXTERNAL
 	PLC_TX01_BIT_LOCALMODE : BOOL;
 	PLC_RX_WORD18_BMS_BATC : WORD;
 	PLC_RX_WORD11_INS_PNO : WORD;
+	MODBUS_VALUEWORD : ARRAY [1..500] OF Word;
 	CONVBYTEH : Byte;
 	OM_PLC_WORD2 : WORD;
 	OM_PLC_WORD1 : WORD;
@@ -239,6 +278,7 @@ VAR_EXTERNAL
 	STOPOBSTACLE : BOOL;
 	PLC_RX_WORD13_INS_ANO : WORD;
 	PLC_TX_WORD11_STR_TEMP : WORD;
+	PLC_COMMUNICATION_MODBUS_VALUEWORD : ARRAY [1..255] OF Word;
 END_VAR
 (** if init = false then **)
 	(* if - Cond *)
@@ -248,87 +288,23 @@ END_VAR
 
 		(* then - Stmts *)
 
-(** 	serial_read.port := 'COM1'; **)
+(** 	serial_read.port := 'COM7'; **)
 		(* assign - Stmt *)
-		LD 'COM1'
+		LD 'COM7'
 		ST serial_read.port
 
-(** 	serial_write.port := 'COM1'; **)
+(** 	serial_write.port := 'COM7'; **)
 		(* assign - Stmt *)
-		LD 'COM1'
+		LD 'COM7'
 		ST serial_write.port
 
-(** 	 **)
-(** 	StartOffset := 1; **)
-		(* assign - Stmt *)
-		LD 1
-		ST StartOffset
-
-(** 	 **)
-(** 	SendData_Req[1] := 16#02; **)
-		(* assign - Stmt *)
-		LD 16#02
-		ST SendData_Req[1]
-
-(** 	SendData_Req[2] := 16#30; **)
-		(* assign - Stmt *)
-		LD 16#30
-		ST SendData_Req[2]
-
-(** 	SendData_Req[3] := 16#30; **)
-		(* assign - Stmt *)
-		LD 16#30
-		ST SendData_Req[3]
-
-(** 	SendData_Req[4] := 16#46; **)
-		(* assign - Stmt *)
-		LD 16#46
-		ST SendData_Req[4]
-
-(** 	SendData_Req[5] := 16#30; **)
-		(* assign - Stmt *)
-		LD 16#30
-		ST SendData_Req[5]
-
-(** 	SendData_Req[6] := 16#58; **)
-		(* assign - Stmt *)
-		LD 16#58
-		ST SendData_Req[6]
-
-(** 	SendData_Req[7] := 16#30; **)
-		(* assign - Stmt *)
-		LD 16#30
-		ST SendData_Req[7]
-
-(** 	SendData_Req[8] := 16#30; **)
-		(* assign - Stmt *)
-		LD 16#30
-		ST SendData_Req[8]
-
-(** 	SendData_Req[9] := 16#03; **)
-		(* assign - Stmt *)
-		LD 16#03
-		ST SendData_Req[9]
-
-(** 	SendData_Req[10] := 16#0D; **)
-		(* assign - Stmt *)
-		LD 16#0D
-		ST SendData_Req[10]
-
-(** 	SendData_Req[11] := 16#0A; **)
-		(* assign - Stmt *)
-		LD 16#0A
-		ST SendData_Req[11]
-
-(** 	 **)
-(** 	init := true; **)
+(** 	init := true;	 **)
 		(* assign - Stmt *)
 		LD true
 		ST init
 
 		JMP ODK_END_IF_000000000000001
 
-(** 	 **)
 (** end_if; **)
 	(* if - End *) 
 	ODK_SKIP_000000000000001_000000000000001:
@@ -2639,9 +2615,9 @@ END_VAR
 	ODK_END_IF_00000000000001P:
 
 (**  **)
-(**  **)
 (** {*Communication*} **)
 (**  **)
+(** {****************************************************************************} **)
 (** if ComStart = true then **)
 	(* if - Cond *)
 	LD ComStart
@@ -2659,57 +2635,72 @@ END_VAR
 
 			(* then - Stmts *)
 
-(**  **)
-(** 		serial_read(); **)
-			(* call - Stmt *)
-			CAL serial_read
+(** 		case ComStep of **)
+(** 		0: **)
+			(* case - Elm *) 
+			ODK_SKIP_00000000000001S_000000000000000:
 
-(** 		 **)
-(** 		if serial_read.length > 0 then **)
-			(* if - Cond *)
-			LD serial_read.length
-			GT 0
-			JMPCN ODK_SKIP_00000000000001S_000000000000001
+			(* case - Cond *)
+			LD ComStep
+			EQ 0
+			JMPC ODK_CASE_00000000000001S_000000000000001
 
-				(* then - Stmts *)
+			JMP ODK_SKIP_00000000000001S_000000000000001
 
-(** 			 **)
-(** 			RevDataLength := serial_read.length; **)
+			(* case - Stmts *) 
+			ODK_CASE_00000000000001S_000000000000001:
+
+(** 		{*StartDelay:=False;  **)
+(** 		IF Not StartDelayTOF.Q THEN*}  **)
+(** 			ComStep:=1; **)
 				(* assign - Stmt *)
+				LD 1
+				ST ComStep
+
+				JMP ODK_END_CASE_00000000000001S
+
+(** 		{*END_IF;*} **)
+(** 		{* no delay when PLC <--> CVC700*} **)
+(** 		{****************************************************************************}	 **)
+(** 		1: **)
+			(* case - Elm *) 
+			ODK_SKIP_00000000000001S_000000000000001:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 1
+			JMPC ODK_CASE_00000000000001S_000000000000002
+
+			JMP ODK_SKIP_00000000000001S_000000000000002
+
+			(* case - Stmts *) 
+			ODK_CASE_00000000000001S_000000000000002:
+
+(**  **)
+(** 			serial_read(); **)
+				(* call - Stmt *)
+				CAL serial_read
+
+(** 			msg_index := 0; **)
+				(* assign - Stmt *)
+				LD 0
+				ST msg_index
+
+(** 			while serial_read.length > 0 do **)
+				(* while - Cond *) 
+				ODK_WHILE_00000000000001T:
 				LD serial_read.length
-				ST RevDataLength
+				GT 0
+				JMPCN ODK_END_WHILE_00000000000001T
 
-(** 	 **)
-(** 			if StartOffset > 200 then **)
-				(* if - Cond *)
-				LD StartOffset
-				GT 200
-				JMPCN ODK_SKIP_00000000000001T_000000000000001
+					(* while - Stmts *)
 
-					(* then - Stmts *)
-
-(** 				StartOffset := 1; **)
-					(* assign - Stmt *)
-					LD 1
-					ST StartOffset
-
-(** 				DecodeString := ''; **)
-					(* assign - Stmt *)
-					LD ''
-					ST DecodeString
-
-					JMP ODK_END_IF_00000000000001T
-
-(** 			else **)
-				(* else *) 
-				ODK_SKIP_00000000000001T_000000000000001:
-
-					(* else - Stmts *)
-
-(** 				for Start := 1 to serial_read.length BY 1 DO **)
+(**  **)
+(** 				{* Copy message to local buffer *} **)
+(** 				for dataindex := 1 to serial_read.length by 1 do **)
 					(* for - Init *)
 					LD 1
-					ST Start
+					ST dataindex
 					EQ serial_read.length
 					JMPC ODK_FOR_STMTS_00000000000001U
 
@@ -2725,14 +2716,14 @@ END_VAR
 					JMPC ODK_END_FOR_00000000000001U
 
 					LD serial_read.length
-					LT Start
+					LT dataindex
 					JMPC ODK_END_FOR_00000000000001U
 					JMP ODK_FOR_STMTS_00000000000001U
 
 					ODK_FOR_DOWN_00000000000001U:
 
 					LD serial_read.length
-					GT Start
+					GT dataindex
 					JMPC ODK_END_FOR_00000000000001U
 
 					LD 0
@@ -2742,106 +2733,21 @@ END_VAR
 						(* for - Stmts *)
 						ODK_FOR_STMTS_00000000000001U:
 
-(** 				 **)
-(** 					if serial_read.data[Start] = 16#02 then **)
-						(* if - Cond *)
-						LD serial_read.data[Start]
-						EQ 16#02
-						JMPCN ODK_SKIP_00000000000001V_000000000000001
-
-							(* then - Stmts *)
-
-(** 						StartOffset := 1; **)
-							(* assign - Stmt *)
-							LD 1
-							ST StartOffset
-
-(** 						DecodeString := ''; **)
-							(* assign - Stmt *)
-							LD ''
-							ST DecodeString
-
-							JMP ODK_END_IF_00000000000001V
-
-(** 					end_if; **)
-						(* if - End *) 
-						ODK_SKIP_00000000000001V_000000000000001:
-						ODK_END_IF_00000000000001V:
-
-(** 					 **)
-(** 					ReceiveData_Status[StartOffset] := serial_read.data[Start]; **)
+(** 					ix := dataindex + msg_index; **)
 						(* assign - Stmt *)
-						LD serial_read.data[Start]
-						ST ReceiveData_Status[StartOffset]
+						LD dataindex
+						ADD msg_index
+						ST ix
 
-(** 				 **)
-(** 				 **)
-(** 					if ReceiveData_Status[StartOffset] <> 16#02 and  **)
-(** 						ReceiveData_Status[StartOffset] <> 16#03 and **)
-(** 						ReceiveData_Status[StartOffset] <> 16#0D and **)
-(** 						ReceiveData_Status[StartOffset] <> 16#0A then **)
-						(* if - Cond *)
-						LD ReceiveData_Status[StartOffset]
-						NE 16#02
-						AND ( ReceiveData_Status[StartOffset]
-							NE 16#03
-						)
-						AND ( ReceiveData_Status[StartOffset]
-							NE 16#0D
-						)
-						AND ( ReceiveData_Status[StartOffset]
-							NE 16#0A
-						)
-						JMPCN ODK_SKIP_00000000000001W_000000000000001
-
-							(* then - Stmts *)
-
-(** 				 **)
-(** 						TempData[1] := ReceiveData_Status[StartOffset]; **)
-							(* assign - Stmt *)
-							LD ReceiveData_Status[StartOffset]
-							ST TempData[1]
-
-(** 					 **)
-(** 						to_string(bytes := TempData, length := 1); **)
-							(* call - Stmt *)
-							CAL to_string (
-								bytes := TempData,
-								length := 1
-							)
-
-(** 					 **)
-(** 					 **)
-(** 						TempString := to_string.str; **)
-							(* assign - Stmt *)
-							LD to_string.str
-							ST TempString
-
-(** 			 **)
-(** 						DecodeString := CONCAT(DecodeString, TempString); **)
-							(* assign - Stmt *)
-							LD DecodeString
-							CONCAT TempString
-							ST DecodeString
-
-							JMP ODK_END_IF_00000000000001W
-
-(** 					end_if; **)
-						(* if - End *) 
-						ODK_SKIP_00000000000001W_000000000000001:
-						ODK_END_IF_00000000000001W:
-
-(** 				 **)
-(** 					StartOffset := StartOffset + 1; **)
+(** 					PLC_message[ix] := serial_read.data[dataindex]; **)
 						(* assign - Stmt *)
-						LD StartOffset
-						ADD 1
-						ST StartOffset
+						LD serial_read.data[dataindex]
+						ST PLC_message[ix]
 
 					(* for - By *)
 					LD 1
-					ADD Start
-					ST Start
+					ADD dataindex
+					ST dataindex
 (** 				end_for; **)
 
 					JMP ODK_FOR_00000000000001U
@@ -2849,299 +2755,725 @@ END_VAR
 					(* for - End *) 
 					ODK_END_FOR_00000000000001U:
 
-(** 		 **)
-(** 				DataIndex1 := 1; **)
+(** 				{* Point for next possible message *} **)
+(** 				msg_index := msg_index + serial_read.length; **)
 					(* assign - Stmt *)
-					LD 1
-					ST DataIndex1
+					LD msg_index
+					ADD serial_read.length
+					ST msg_index
 
-(** 				DataIndex2 := StartOffset - 2; **)
+(** 				serial_read(); **)
+					(* call - Stmt *)
+					CAL serial_read
+
+(** 			end_while; **)
+					JMP ODK_WHILE_00000000000001T
+
+				(* while - End *) 
+				ODK_END_WHILE_00000000000001T:
+
+(** 	 **)
+(** 			IF msg_index <> 0 then **)
+				(* if - Cond *)
+				LD msg_index
+				NE 0
+				JMPCN ODK_SKIP_00000000000001V_000000000000001
+
+					(* then - Stmts *)
+
+(** 				ComStep:=2; **)
 					(* assign - Stmt *)
-					LD StartOffset
-					SUB 2
-					ST DataIndex2
+					LD 2
+					ST ComStep
 
-(** 				DataIndex3 := StartOffset - 1; **)
+					JMP ODK_END_IF_00000000000001V
+
+(** 			Else  **)
+				(* else *) 
+				ODK_SKIP_00000000000001V_000000000000001:
+
+					(* else - Stmts *)
+
+(** 				ComStep:=0; **)
 					(* assign - Stmt *)
-					LD StartOffset
-					SUB 1
-					ST DataIndex3
+					LD 0
+					ST ComStep
 
-(** 			 **)
-(** 				if DataIndex1 > 0 and DataIndex2 > 0 and DataIndex3 > 0 then **)
-					(* if - Cond *)
-					LD DataIndex1
-					GT 0
-					AND ( DataIndex2
-						GT 0
-					)
-					AND ( DataIndex3
-						GT 0
-					)
-					JMPCN ODK_SKIP_00000000000001X_000000000000001
-
-						(* then - Stmts *)
-
-(** 					if ReceiveData_Status[DataIndex1] = 16#02 and ReceiveData_Status[DataIndex2] = 16#0D and ReceiveData_Status[DataIndex3] = 16#0A then **)
-						(* if - Cond *)
-						LD ReceiveData_Status[DataIndex1]
-						EQ 16#02
-						AND ( ReceiveData_Status[DataIndex2]
-							EQ 16#0D
-						)
-						AND ( ReceiveData_Status[DataIndex3]
-							EQ 16#0A
-						)
-						JMPCN ODK_SKIP_00000000000001Y_000000000000001
-
-							(* then - Stmts *)
-
-(** 					 **)
-(** 						HeaderString := left(DecodeString, 7); **)
-							(* assign - Stmt *)
-							LD DecodeString
-							left 7
-							ST HeaderString
-
-(** 					 **)
-(** 						if HeaderString = '00F0XRS' then **)
-							(* if - Cond *)
-							LD HeaderString
-							EQ '00F0XRS'
-							JMPCN ODK_SKIP_00000000000001Z_000000000000001
-
-								(* then - Stmts *)
-
-(** 							DecodeString_RS := DecodeString; **)
-								(* assign - Stmt *)
-								LD DecodeString
-								ST DecodeString_RS
-
-(** 							DecodeString := ''; **)
-								(* assign - Stmt *)
-								LD ''
-								ST DecodeString
-
-(** 							RevDataLength := 0; **)
-								(* assign - Stmt *)
-								LD 0
-								ST RevDataLength
-
-(** 							StartOffset := 1; **)
-								(* assign - Stmt *)
-								LD 1
-								ST StartOffset
-
-(** 							ComStep := 10; **)
-								(* assign - Stmt *)
-								LD 10
-								ST ComStep
-
-								JMP ODK_END_IF_00000000000001Z
-
-(** 						elsif HeaderString = '00F0XWS' then **)
-							(* elseif - Cond *) 
-							ODK_SKIP_00000000000001Z_000000000000001:
-							LD HeaderString
-							EQ '00F0XWS'
-							JMPCN ODK_SKIP_00000000000001Z_000000000000002
-
-								(* elsif - Stmts *)
-
-(** 							DecodeString_WS := DecodeString; **)
-								(* assign - Stmt *)
-								LD DecodeString
-								ST DecodeString_WS
-
-(** 							DecodeString := ''; **)
-								(* assign - Stmt *)
-								LD ''
-								ST DecodeString
-
-(** 							RevDataLength := 0; **)
-								(* assign - Stmt *)
-								LD 0
-								ST RevDataLength
-
-(** 							StartOffset := 1; **)
-								(* assign - Stmt *)
-								LD 1
-								ST StartOffset
-
-(** 							ComStep := 20; **)
-								(* assign - Stmt *)
-								LD 20
-								ST ComStep
-
-								JMP ODK_END_IF_00000000000001Z
-
-(** 						else **)
-							(* else *) 
-							ODK_SKIP_00000000000001Z_000000000000002:
-
-								(* else - Stmts *)
-
-(** 							DecodeString := ''; **)
-								(* assign - Stmt *)
-								LD ''
-								ST DecodeString
-
-(** 							RevDataLength := 0; **)
-								(* assign - Stmt *)
-								LD 0
-								ST RevDataLength
-
-(** 							StartOffset := 1; **)
-								(* assign - Stmt *)
-								LD 1
-								ST StartOffset
-
-(** 							ComStep := 0; **)
-								(* assign - Stmt *)
-								LD 0
-								ST ComStep
-
-(** 						end_if; **)
-							(* if - End *) 
-							ODK_END_IF_00000000000001Z:
-
-							JMP ODK_END_IF_00000000000001Y
-
-(** 					 **)
-(** 					 **)
-(** 					end_if; **)
-						(* if - End *) 
-						ODK_SKIP_00000000000001Y_000000000000001:
-						ODK_END_IF_00000000000001Y:
-
-						JMP ODK_END_IF_00000000000001X
-
-(** 					 **)
-(** 				end_if; **)
-					(* if - End *) 
-					ODK_SKIP_00000000000001X_000000000000001:
-					ODK_END_IF_00000000000001X:
-
-(** 			 **)
-(** 		 **)
-(** 			end_if; **)
+(** 			END_IF; **)
 				(* if - End *) 
-				ODK_END_IF_00000000000001T:
+				ODK_END_IF_00000000000001V:
 
-				JMP ODK_END_IF_00000000000001S
+				JMP ODK_END_CASE_00000000000001S
+
+(**  **)
+(**  **)
+(** 		{****************************************************************************}			 **)
+(** 		2: **)
+			(* case - Elm *) 
+			ODK_SKIP_00000000000001S_000000000000002:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 2
+			JMPC ODK_CASE_00000000000001S_000000000000003
+
+			JMP ODK_SKIP_00000000000001S_000000000000003
+
+			(* case - Stmts *) 
+			ODK_CASE_00000000000001S_000000000000003:
+
+(** 				    {* Parse *} **)
+(** 					tr_cmd := BYTE_TO_DINT(PLC_message[8]);  **)
+				(* assign - Stmt *)
+				LD PLC_message[8]
+				BYTE_TO_DINT 
+				ST tr_cmd
+
+(** 					tr_len := BYTE_TO_DINT(PLC_message[6]); **)
+				(* assign - Stmt *)
+				LD PLC_message[6]
+				BYTE_TO_DINT 
+				ST tr_len
+
+(** 		 **)
+(** 					dummy := TRACE_DINT('Cmd', tr_cmd); **)
+				(* assign - Stmt *)
+				LD 'Cmd'
+				TRACE_DINT tr_cmd
+				ST dummy
+
+(** 					dummy := TRACE_DINT('Len', tr_len); **)
+				(* assign - Stmt *)
+				LD 'Len'
+				TRACE_DINT tr_len
+				ST dummy
+
+(** 		 **)
+(** 					{* Copy header *} **)
+(** 					serial_write.data[1] := PLC_message[1];  **)
+				(* assign - Stmt *)
+				LD PLC_message[1]
+				ST serial_write.data[1]
+
+(** 					serial_write.data[2] := PLC_message[2]; **)
+				(* assign - Stmt *)
+				LD PLC_message[2]
+				ST serial_write.data[2]
+
+(** 					serial_write.data[3] := PLC_message[3];  **)
+				(* assign - Stmt *)
+				LD PLC_message[3]
+				ST serial_write.data[3]
+
+(** 					serial_write.data[4] := PLC_message[4];  **)
+				(* assign - Stmt *)
+				LD PLC_message[4]
+				ST serial_write.data[4]
+
+(** 					serial_write.data[5] := PLC_message[5];		{* Length, will be overwritten *} **)
+				(* assign - Stmt *)
+				LD PLC_message[5]
+				ST serial_write.data[5]
+
+(**  **)
+(** 					serial_write.data[6] := PLC_message[6]; 	{* Length, will be overwritten *} **)
+				(* assign - Stmt *)
+				LD PLC_message[6]
+				ST serial_write.data[6]
+
+(** 					serial_write.data[7] := PLC_message[7]; 	{* Slave adress *} **)
+				(* assign - Stmt *)
+				LD PLC_message[7]
+				ST serial_write.data[7]
+
+(** 					serial_write.data[8] := PLC_message[8]; 	{* Cmd *} **)
+				(* assign - Stmt *)
+				LD PLC_message[8]
+				ST serial_write.data[8]
+
+(** 		 **)
+(** 					{* Start adress to read *} **)
+(** 					ConvByteH:= PLC_message[9];  **)
+				(* assign - Stmt *)
+				LD PLC_message[9]
+				ST ConvByteH
+
+(** 					ConvByteL:= PLC_message[10];  **)
+				(* assign - Stmt *)
+				LD PLC_message[10]
+				ST ConvByteL
+
+(** 					start_adress  := Word_TO_INT(pConvWord) + 1; **)
+				(* assign - Stmt *)
+				LD pConvWord
+				WORD_TO_INT 
+				ADD 1
+				ST start_adress
 
 (** 			 **)
-(** 				 **)
-(** 		end_if; **)
-			(* if - End *) 
-			ODK_SKIP_00000000000001S_000000000000001:
-			ODK_END_IF_00000000000001S:
-
-(** 		 **)
-(** 		 **)
-(** 		{*PLC Act*} **)
-(** 		 **)
-(** 		case ComStep of **)
-(** 		0: **)
-			(* case - Elm *) 
-			ODK_SKIP_000000000000020_000000000000000:
-
-			(* case - Cond *)
-			LD ComStep
-			EQ 0
-			JMPC ODK_CASE_000000000000020_000000000000001
-
-			JMP ODK_SKIP_000000000000020_000000000000001
-
-			(* case - Stmts *) 
-			ODK_CASE_000000000000020_000000000000001:
-
-				JMP ODK_END_CASE_000000000000020
-
-(** 			; **)
-(** 		 **)
-(** 		10: **)
-			(* case - Elm *) 
-			ODK_SKIP_000000000000020_000000000000001:
-
-			(* case - Cond *)
-			LD ComStep
-			EQ 10
-			JMPC ODK_CASE_000000000000020_000000000000002
-
-			JMP ODK_SKIP_000000000000020_000000000000002
-
-			(* case - Stmts *) 
-			ODK_CASE_000000000000020_000000000000002:
-
-(** 			{*Send 16 Word Data-1*} **)
-(** 			{*Header + 1 Word*} **)
-(** 		 **)
-(** 			Message := '00F0X00,'; **)
+(** 					ComStep:=3; **)
 				(* assign - Stmt *)
-				LD '00F0X00,'
-				ST Message
+				LD 3
+				ST ComStep
 
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word1); **)
+				JMP ODK_END_CASE_00000000000001S
+
+(**  **)
+(** 		{****************************************************************************}			 **)
+(** 		3: **)
+			(* case - Elm *) 
+			ODK_SKIP_00000000000001S_000000000000003:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 3
+			JMPC ODK_CASE_00000000000001S_000000000000004
+
+			JMP ODK_SKIP_00000000000001S_000000000000004
+
+			(* case - Stmts *) 
+			ODK_CASE_00000000000001S_000000000000004:
+
+(** 			 **)
+(** 					{*Check Function type *}							 **)
+(** 				 **)
+(** 					case tr_cmd of   **)
+(** 						6:	ComStep:=60;	{* Check if Write single register *} **)
+				(* case - Elm *) 
+				ODK_SKIP_00000000000001W_000000000000000:
+
+				(* case - Cond *)
+				LD tr_cmd
+				EQ 6
+				JMPC ODK_CASE_00000000000001W_000000000000001
+
+				JMP ODK_SKIP_00000000000001W_000000000000001
+
+				(* case - Stmts *) 
+				ODK_CASE_00000000000001W_000000000000001:
+
+					(* assign - Stmt *)
+					LD 60
+					ST ComStep
+
+					JMP ODK_END_CASE_00000000000001W
+
+(** 						16:	ComStep:=160; {* Check if write Multiple register *} **)
+				(* case - Elm *) 
+				ODK_SKIP_00000000000001W_000000000000001:
+
+				(* case - Cond *)
+				LD tr_cmd
+				EQ 16
+				JMPC ODK_CASE_00000000000001W_000000000000002
+
+				JMP ODK_SKIP_00000000000001W_000000000000002
+
+				(* case - Stmts *) 
+				ODK_CASE_00000000000001W_000000000000002:
+
+					(* assign - Stmt *)
+					LD 160
+					ST ComStep
+
+					JMP ODK_END_CASE_00000000000001W
+
+(** 						3:	ComStep:=30;	{*Check if Read register *} **)
+				(* case - Elm *) 
+				ODK_SKIP_00000000000001W_000000000000002:
+
+				(* case - Cond *)
+				LD tr_cmd
+				EQ 3
+				JMPC ODK_CASE_00000000000001W_000000000000003
+
+				JMP ODK_SKIP_00000000000001W_000000000000003
+
+				(* case - Stmts *) 
+				ODK_CASE_00000000000001W_000000000000003:
+
+					(* assign - Stmt *)
+					LD 30
+					ST ComStep
+
+					JMP ODK_END_CASE_00000000000001W
+
+(** 					Else 	 **)
+				(* else *) 
+				ODK_SKIP_00000000000001W_000000000000003:
+
+					(* else - Statements *) 
+
+(** 						ComStep:=999; 	{*Send Echo *} **)
+					(* assign - Stmt *)
+					LD 999
+					ST ComStep
+
+(** 					end_case; **)
+				(* case - End *) 
+				ODK_END_CASE_00000000000001W:
+
+				JMP ODK_END_CASE_00000000000001S
+
+(**  **)
+(** 		 **)
+(** 		{****************************************************************************}			 **)
+(** 		30: **)
+			(* case - Elm *) 
+			ODK_SKIP_00000000000001S_000000000000004:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 30
+			JMPC ODK_CASE_00000000000001S_000000000000005
+
+			JMP ODK_SKIP_00000000000001S_000000000000005
+
+			(* case - Stmts *) 
+			ODK_CASE_00000000000001S_000000000000005:
+
+(** 						{*Read register *} **)
+(** 						{* Number of words *} **)
+(** 						{* serial_read.data[11]; *} **)
+(** 						{*CVC700 -> PLC HandShake Data*} **)
+(** 						PLC_Communication_ModBus_ValueWord [1] := PLC_TX_Word1; **)
 				(* assign - Stmt *)
 				LD PLC_TX_Word1
-				WORD_TO_STRING 
-				ST SendTempString
+				ST PLC_Communication_ModBus_ValueWord[1]
 
-(** 		 **)
-(** 			Message := CONCAT(Message, SendTempString); **)
+(** 						PLC_Communication_ModBus_ValueWord [2] := PLC_TX_Word2; **)
 				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
+				LD PLC_TX_Word2
+				ST PLC_Communication_ModBus_ValueWord[2]
 
-(** 			Message := CONCAT(Message, ','); **)
+(** 						PLC_Communication_ModBus_ValueWord [3] := PLC_TX_Word3; **)
 				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
+				LD PLC_TX_Word3
+				ST PLC_Communication_ModBus_ValueWord[3]
 
-(** 		 **)
-(** 			to_bytes(str := Message); **)
+(** 						PLC_Communication_ModBus_ValueWord [4] := PLC_TX_Word4; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word4
+				ST PLC_Communication_ModBus_ValueWord[4]
+
+(** 						PLC_Communication_ModBus_ValueWord [5] := PLC_TX_Word5; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word5
+				ST PLC_Communication_ModBus_ValueWord[5]
+
+(** 						PLC_Communication_ModBus_ValueWord [6] := PLC_TX_Word6; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word6
+				ST PLC_Communication_ModBus_ValueWord[6]
+
+(** 						PLC_Communication_ModBus_ValueWord [7] := PLC_TX_Word7_STr_Vecl; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word7_STr_Vecl
+				ST PLC_Communication_ModBus_ValueWord[7]
+
+(** 						PLC_Communication_ModBus_ValueWord [8] := PLC_TX_Word8_STr_Seg; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word8_STr_Seg
+				ST PLC_Communication_ModBus_ValueWord[8]
+
+(** 						PLC_Communication_ModBus_ValueWord [9] := PLC_TX_Word9_STr_Pnt; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word9_STr_Pnt
+				ST PLC_Communication_ModBus_ValueWord[9]
+
+(** 						PLC_Communication_ModBus_ValueWord [10] := PLC_TX_Word10_STr_BatV; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word10_STr_BatV
+				ST PLC_Communication_ModBus_ValueWord[10]
+
+(** 						PLC_Communication_ModBus_ValueWord [11] := PLC_TX_Word11_STr_Temp; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word11_STr_Temp
+				ST PLC_Communication_ModBus_ValueWord[11]
+
+(** 						PLC_Communication_ModBus_ValueWord [12] := PLC_TX_Word12_STr_BatD; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word12_STr_BatD
+				ST PLC_Communication_ModBus_ValueWord[12]
+
+(** 						PLC_Communication_ModBus_ValueWord [13] := PLC_TX_Word13_STr_Err; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word13_STr_Err
+				ST PLC_Communication_ModBus_ValueWord[13]
+
+(** 						PLC_Communication_ModBus_ValueWord [14] := PLC_TX_Word14_STr_BCD3; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word14_STr_BCD3
+				ST PLC_Communication_ModBus_ValueWord[14]
+
+(** 						PLC_Communication_ModBus_ValueWord [15] := PLC_TX_Word15_STr_BCD2; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word15_STr_BCD2
+				ST PLC_Communication_ModBus_ValueWord[15]
+
+(** 						PLC_Communication_ModBus_ValueWord [16] := PLC_TX_Word16_STr_BCD1; **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word16_STr_BCD1
+				ST PLC_Communication_ModBus_ValueWord[16]
+
+(** 						num_words := BYTE_TO_DINT(PLC_message[12]);  **)
+				(* assign - Stmt *)
+				LD PLC_message[12]
+				BYTE_TO_DINT 
+				ST num_words
+
+(** 				 **)
+(** 						IF num_words >21 THEN **)
+				(* if - Cond *)
+				LD num_words
+				GT 21
+				JMPCN ODK_SKIP_00000000000001X_000000000000001
+
+					(* then - Stmts *)
+
+(** 						   		num_words:=21; **)
+					(* assign - Stmt *)
+					LD 21
+					ST num_words
+
+					JMP ODK_END_IF_00000000000001X
+
+(** 							END_IF;     **)
+				(* if - End *) 
+				ODK_SKIP_00000000000001X_000000000000001:
+				ODK_END_IF_00000000000001X:
+
+(** 			 **)
+(** 							{*Y:=start_adress;*} **)
+(** 							Y := 1; **)
+				(* assign - Stmt *)
+				LD 1
+				ST Y
+
+(** 							{*Z:=10;*} **)
+(** 							Z:= 1; {* Send first 9*}		 **)
+				(* assign - Stmt *)
+				LD 1
+				ST Z
+
+(** 							Serial_write.data[1] := DINT_TO_BYTE(255);		 **)
+				(* assign - Stmt *)
+				LD 255
+				DINT_TO_BYTE 
+				ST serial_write.data[1]
+
+(** 							Serial_write.data[9] := DINT_TO_BYTE(32); **)
+				(* assign - Stmt *)
+				LD 32
+				DINT_TO_BYTE 
+				ST serial_write.data[9]
+
+(** 							serial_write.data[6] := DINT_TO_BYTE(35); {* lp *} **)
+				(* assign - Stmt *)
+				LD 35
+				DINT_TO_BYTE 
+				ST serial_write.data[6]
+
+(** 				        	serial_write.length := 9; **)
+				(* assign - Stmt *)
+				LD 9
+				ST serial_write.length
+
+(** 							serial_write(); **)
 				(* call - Stmt *)
-				CAL to_bytes (
-					str := Message
-				)
+				CAL serial_write
 
-(** 			MessageLen := Len(Message); **)
+(** 							serial_write.length := 0;  **)
 				(* assign - Stmt *)
-				LD Message
-				Len 
-				ST MessageLen
+				LD 0
+				ST serial_write.length
 
-(** 		 **)
-(** 			for EncoderStart:=1 to MessageLen BY 1 DO **)
+(** 							serial_write(); {*send*} **)
+				(* call - Stmt *)
+				CAL serial_write
+
+(** 							Counter := 16;	{*send the rest words*}													 **)
+				(* assign - Stmt *)
+				LD 16
+				ST Counter
+
+(** 							WHILE Counter > 0 do **)
+				(* while - Cond *) 
+				ODK_WHILE_00000000000001Y:
+				LD Counter
+				GT 0
+				JMPCN ODK_END_WHILE_00000000000001Y
+
+					(* while - Stmts *)
+
+(** 								lenght_send := MIN(16,Counter); {*Can max send 32bytes in 1 serial_write so need to make sure for-loop gets correct number of itterations*} **)
+					(* assign - Stmt *)
+					LD 16
+					MIN Counter
+					ST lenght_send
+
+(** 								For Index:=1 to 16 BY 1 DO **)
+					(* for - Init *)
+					LD 1
+					ST Index
+					EQ 16
+					JMPC ODK_FOR_STMTS_00000000000001Z
+
+					(* for - Cond *)
+					ODK_FOR_00000000000001Z:
+
+					LD 1
+					GT 16
+					JMPC ODK_FOR_DOWN_00000000000001Z
+
+					LD 0
+					GT 1
+					JMPC ODK_END_FOR_00000000000001Z
+
+					LD 16
+					LT Index
+					JMPC ODK_END_FOR_00000000000001Z
+					JMP ODK_FOR_STMTS_00000000000001Z
+
+					ODK_FOR_DOWN_00000000000001Z:
+
+					LD 16
+					GT Index
+					JMPC ODK_END_FOR_00000000000001Z
+
+					LD 0
+					LT 1
+					JMPC ODK_END_FOR_00000000000001Z
+
+						(* for - Stmts *)
+						ODK_FOR_STMTS_00000000000001Z:
+
+(** 									pConvWord:=PLC_Communication_ModBus_ValueWord [Y]; **)
+						(* assign - Stmt *)
+						LD PLC_Communication_ModBus_ValueWord[Y]
+						ST pConvWord
+
+(** 									serial_write.data[Z]:=pConvByteH; **)
+						(* assign - Stmt *)
+						LD pConvByteH
+						ST serial_write.data[Z]
+
+(** 									Z:=Z+1; **)
+						(* assign - Stmt *)
+						LD Z
+						ADD 1
+						ST Z
+
+(** 									serial_write.data[Z]:=pConvByteL; **)
+						(* assign - Stmt *)
+						LD pConvByteL
+						ST serial_write.data[Z]
+
+(** 									Z:=Z+1; **)
+						(* assign - Stmt *)
+						LD Z
+						ADD 1
+						ST Z
+
+(** 									Y:=Y+1;								 **)
+						(* assign - Stmt *)
+						LD Y
+						ADD 1
+						ST Y
+
+					(* for - By *)
+					LD 1
+					ADD Index
+					ST Index
+(** 								END_FOR; **)
+
+					JMP ODK_FOR_00000000000001Z
+
+					(* for - End *) 
+					ODK_END_FOR_00000000000001Z:
+
+(** 								serial_write.length := DINT_TO_INT(32); {*Will be max 32 bytes*} **)
+					(* assign - Stmt *)
+					LD 32
+					DINT_TO_INT 
+					ST serial_write.length
+
+(** 								serial_write(); **)
+					(* call - Stmt *)
+					CAL serial_write
+
+(** 								Counter := Counter - lenght_send; {*Count down for while loop*} **)
+					(* assign - Stmt *)
+					LD Counter
+					SUB lenght_send
+					ST Counter
+
+(** 							END_WHILE; **)
+					JMP ODK_WHILE_00000000000001Y
+
+				(* while - End *) 
+				ODK_END_WHILE_00000000000001Y:
+
+(** 							serial_write.length := 0; {*Using SendBuffer =1 length needs to be set to 0 for it to be sent*} **)
+				(* assign - Stmt *)
+				LD 0
+				ST serial_write.length
+
+(** 							serial_write(); {*send*} **)
+				(* call - Stmt *)
+				CAL serial_write
+
+(** 						 **)
+(** 							 **)
+(** 							ComStep:=10001;	 **)
+				(* assign - Stmt *)
+				LD 10001
+				ST ComStep
+
+				JMP ODK_END_CASE_00000000000001S
+
+(**  **)
+(** 			{****************************************************************************}							 **)
+(** 		60: **)
+			(* case - Elm *) 
+			ODK_SKIP_00000000000001S_000000000000005:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 60
+			JMPC ODK_CASE_00000000000001S_000000000000006
+
+			JMP ODK_SKIP_00000000000001S_000000000000006
+
+			(* case - Stmts *) 
+			ODK_CASE_00000000000001S_000000000000006:
+
+(** 						{* Write single register *}				 **)
+(** 						{* single write *} **)
+(** 						{* Number of words *} **)
+(** 						{* serial_read.data[11]; *} **)
+(** 						num_words := BYTE_TO_DINT(PLC_message[12]);  **)
+				(* assign - Stmt *)
+				LD PLC_message[12]
+				BYTE_TO_DINT 
+				ST num_words
+
+(** 						Y:=start_adress; **)
+				(* assign - Stmt *)
+				LD start_adress
+				ST Y
+
+(** 						pConvByteH:=PLC_message[11];  **)
+				(* assign - Stmt *)
+				LD PLC_message[11]
+				ST pConvByteH
+
+(** 					    pConvByteL:=PLC_message[12];  **)
+				(* assign - Stmt *)
+				LD PLC_message[12]
+				ST pConvByteL
+
+(** 						PLC_Communication_ModBus_ValueWord [Y]:=pConvWord; **)
+				(* assign - Stmt *)
+				LD pConvWord
+				ST PLC_Communication_ModBus_ValueWord[Y]
+
+(** 				 **)
+(** 				 **)
+(** 						ComStep:=999;	 **)
+				(* assign - Stmt *)
+				LD 999
+				ST ComStep
+
+				JMP ODK_END_CASE_00000000000001S
+
+(** 		{****************************************************************************}				 **)
+(** 		160: **)
+			(* case - Elm *) 
+			ODK_SKIP_00000000000001S_000000000000006:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 160
+			JMPC ODK_CASE_00000000000001S_000000000000007
+
+			JMP ODK_SKIP_00000000000001S_000000000000007
+
+			(* case - Stmts *) 
+			ODK_CASE_00000000000001S_000000000000007:
+
+(** 						{* Multiple write *} **)
+(** 						num_words:=Byte_TO_DInt(PLC_message[12]);  **)
+				(* assign - Stmt *)
+				LD PLC_message[12]
+				BYTE_TO_DINT 
+				ST num_words
+
+(** 						{* Check if message lenght outside the Buffer, if so do what ??? *} **)
+(** 						IF num_words > 25 THEN **)
+				(* if - Cond *)
+				LD num_words
+				GT 25
+				JMPCN ODK_SKIP_000000000000020_000000000000001
+
+					(* then - Stmts *)
+
+(** 						   num_words:=25; **)
+					(* assign - Stmt *)
+					LD 25
+					ST num_words
+
+					JMP ODK_END_IF_000000000000020
+
+(** 						END_IF;     **)
+				(* if - End *) 
+				ODK_SKIP_000000000000020_000000000000001:
+				ODK_END_IF_000000000000020:
+
+(** 						Y:=17; **)
+				(* assign - Stmt *)
+				LD 17
+				ST Y
+
+(** 						X:=14;  {*13 = 後面要寫入的資料位元組數，0x08=十進位制8，寫8個位元組 , 忽略*} **)
+				(* assign - Stmt *)
+				LD 14
+				ST X
+
+(** 						End:= Byte_TO_Int(PLC_message[12]);  **)
+				(* assign - Stmt *)
+				LD PLC_message[12]
+				BYTE_TO_INT 
+				ST End
+
+(** 			 **)
+(** 						For Index:=1 to num_words BY 1 DO **)
 				(* for - Init *)
 				LD 1
-				ST EncoderStart
-				EQ MessageLen
+				ST Index
+				EQ num_words
 				JMPC ODK_FOR_STMTS_000000000000021
 
 				(* for - Cond *)
 				ODK_FOR_000000000000021:
 
 				LD 1
-				GT MessageLen
+				GT num_words
 				JMPC ODK_FOR_DOWN_000000000000021
 
 				LD 0
 				GT 1
 				JMPC ODK_END_FOR_000000000000021
 
-				LD MessageLen
-				LT EncoderStart
+				LD num_words
+				LT Index
 				JMPC ODK_END_FOR_000000000000021
 				JMP ODK_FOR_STMTS_000000000000021
 
 				ODK_FOR_DOWN_000000000000021:
 
-				LD MessageLen
-				GT EncoderStart
+				LD num_words
+				GT Index
 				JMPC ODK_END_FOR_000000000000021
 
 				LD 0
@@ -3151,1043 +3483,419 @@ END_VAR
 					(* for - Stmts *)
 					ODK_FOR_STMTS_000000000000021:
 
-(** 				EncoderStartOffset := EncoderStart + 1; **)
+(** 							pConvByteH:=PLC_message[X];  **)
 					(* assign - Stmt *)
-					LD EncoderStart
-					ADD 1
-					ST EncoderStartOffset
+					LD PLC_message[X]
+					ST pConvByteH
 
-(** 				SendData_Status1[EncoderStartOffset] := to_bytes.bytes[EncoderStart]; **)
+(** 							X:=X+1; **)
 					(* assign - Stmt *)
-					LD to_bytes.bytes[EncoderStart]
-					ST SendData_Status1[EncoderStartOffset]
+					LD X
+					ADD 1
+					ST X
+
+(** 							pConvByteL:=PLC_message[X];  **)
+					(* assign - Stmt *)
+					LD PLC_message[X]
+					ST pConvByteL
+
+(** 							ModBus_ValueWord [Y]:=pConvWord; **)
+					(* assign - Stmt *)
+					LD pConvWord
+					ST ModBus_ValueWord[Y]
+
+(** 							X:=X+1; **)
+					(* assign - Stmt *)
+					LD X
+					ADD 1
+					ST X
+
+(** 							Y:=Y+1; **)
+					(* assign - Stmt *)
+					LD Y
+					ADD 1
+					ST Y
 
 				(* for - By *)
 				LD 1
-				ADD EncoderStart
-				ST EncoderStart
-(** 			end_for; **)
+				ADD Index
+				ST Index
+(** 						END_FOR; **)
 
 				JMP ODK_FOR_000000000000021
 
 				(* for - End *) 
 				ODK_END_FOR_000000000000021:
 
-(** 		 **)
-(** 			SendData_Status1[1] := 16#02; **)
+(** 						{*Set Into Memory *} **)
+(** 						PLC_RX_Word1 := PLC_Communication_ModBus_ValueWord [17]; **)
 				(* assign - Stmt *)
-				LD 16#02
-				ST SendData_Status1[1]
+				LD PLC_Communication_ModBus_ValueWord[17]
+				ST PLC_RX_Word1
 
-(** 		 **)
-(** 			serial_write.length := MessageLen + 1;  **)
+(** 						PLC_RX_Word2 := PLC_Communication_ModBus_ValueWord [18]; **)
 				(* assign - Stmt *)
-				LD MessageLen
-				ADD 1
-				ST serial_write.length
+				LD PLC_Communication_ModBus_ValueWord[18]
+				ST PLC_RX_Word2
 
-(** 			serial_write(data := SendData_Status1); **)
-				(* call - Stmt *)
-				CAL serial_write (
-					data := SendData_Status1
-				)
-
-(** 		 **)
-(** 			Message := ''; **)
+(** 						PLC_RX_Word3 := PLC_Communication_ModBus_ValueWord [19]; **)
 				(* assign - Stmt *)
-				LD ''
-				ST Message
+				LD PLC_Communication_ModBus_ValueWord[19]
+				ST PLC_RX_Word3
 
-(** 		 **)
-(** 			ComStep := 11; **)
+(** 						PLC_RX_Word4 := PLC_Communication_ModBus_ValueWord [20]; **)
 				(* assign - Stmt *)
-				LD 11
+				LD PLC_Communication_ModBus_ValueWord[20]
+				ST PLC_RX_Word4
+
+(** 						PLC_RX_Word5 := PLC_Communication_ModBus_ValueWord [21]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[21]
+				ST PLC_RX_Word5
+
+(** 						PLC_RX_Word6 := PLC_Communication_ModBus_ValueWord [22]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[22]
+				ST PLC_RX_Word6
+
+(** 						PLC_RX_Word7_STw_BCD3 := PLC_Communication_ModBus_ValueWord [23]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[23]
+				ST PLC_RX_Word7_STw_BCD3
+
+(** 						PLC_RX_Word8_STw_BCD2 := PLC_Communication_ModBus_ValueWord [24]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[24]
+				ST PLC_RX_Word8_STw_BCD2
+
+(** 						PLC_RX_Word9_STw_BCD1 := PLC_Communication_ModBus_ValueWord [25]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[25]
+				ST PLC_RX_Word9_STw_BCD1
+
+(** 						PLC_RX_Word10_STw_ILEr := PLC_Communication_ModBus_ValueWord [26]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[26]
+				ST PLC_RX_Word10_STw_ILEr
+
+(** 						PLC_RX_Word11_Ins_Pno := PLC_Communication_ModBus_ValueWord [27]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[27]
+				ST PLC_RX_Word11_Ins_Pno
+
+(** 						PLC_RX_Word12_STw_Pint := PLC_Communication_ModBus_ValueWord [28]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[28]
+				ST PLC_RX_Word12_STw_Pint
+
+(** 						PLC_RX_Word13_Ins_Ano := PLC_Communication_ModBus_ValueWord [29]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[29]
+				ST PLC_RX_Word13_Ins_Ano
+
+(** 						PLC_RX_Word14_BMS_2 := PLC_Communication_ModBus_ValueWord [30]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[30]
+				ST PLC_RX_Word14_BMS_2
+
+(** 						PLC_RX_Word15_BMS_3 := PLC_Communication_ModBus_ValueWord [31]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[31]
+				ST PLC_RX_Word15_BMS_3
+
+(** 						PLC_RX_Word16_BMS_BatV := PLC_Communication_ModBus_ValueWord [32]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[32]
+				ST PLC_RX_Word16_BMS_BatV
+
+(** 						PLC_RX_Word17_BMS_BatT := PLC_Communication_ModBus_ValueWord [33]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[33]
+				ST PLC_RX_Word17_BMS_BatT
+
+(** 						PLC_RX_Word18_BMS_BatC := PLC_Communication_ModBus_ValueWord [34]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[34]
+				ST PLC_RX_Word18_BMS_BatC
+
+(** 						PLC_RX_Word19_BMS_BatA := PLC_Communication_ModBus_ValueWord [35]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[35]
+				ST PLC_RX_Word19_BMS_BatA
+
+(** 						PLC_RX_Word20_PLC_ErrD := PLC_Communication_ModBus_ValueWord [36]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[36]
+				ST PLC_RX_Word20_PLC_ErrD
+
+(** 						PLC_RX_Word21_BMS_Main := PLC_Communication_ModBus_ValueWord [37]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[37]
+				ST PLC_RX_Word21_BMS_Main
+
+(** 						PLC_RX_Word22_BMS_Chan := PLC_Communication_ModBus_ValueWord [38]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[38]
+				ST PLC_RX_Word22_BMS_Chan
+
+(** 						PLC_RX_Word23_BMS_ID4L := PLC_Communication_ModBus_ValueWord [39]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[39]
+				ST PLC_RX_Word23_BMS_ID4L
+
+(** 						PLC_RX_Word24_BMS_ID4H := PLC_Communication_ModBus_ValueWord [40]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[40]
+				ST PLC_RX_Word24_BMS_ID4H
+
+(** 						PLC_RX_Word25 := PLC_Communication_ModBus_ValueWord [41]; **)
+				(* assign - Stmt *)
+				LD PLC_Communication_ModBus_ValueWord[41]
+				ST PLC_RX_Word25
+
+(** 						 **)
+(** 						ComStep:=999;				 **)
+				(* assign - Stmt *)
+				LD 999
 				ST ComStep
 
-				JMP ODK_END_CASE_000000000000020
+				JMP ODK_END_CASE_00000000000001S
 
-(** 		 **)
-(** 		11: **)
+(** 		{****************************************************************************} **)
+(** 		999: **)
 			(* case - Elm *) 
-			ODK_SKIP_000000000000020_000000000000002:
+			ODK_SKIP_00000000000001S_000000000000007:
 
 			(* case - Cond *)
 			LD ComStep
-			EQ 11
-			JMPC ODK_CASE_000000000000020_000000000000003
+			EQ 999
+			JMPC ODK_CASE_00000000000001S_000000000000008
 
-			JMP ODK_SKIP_000000000000020_000000000000003
+			JMP ODK_SKIP_00000000000001S_000000000000008
 
 			(* case - Stmts *) 
-			ODK_CASE_000000000000020_000000000000003:
+			ODK_CASE_00000000000001S_000000000000008:
 
-(** 			{*Send 16 Word Data-2*} **)
-(** 			{*5 Word*} **)
-(** 			{*Heart Beat*} **)
-(** 			if PLC_TX04_Bit_ChkCom_Tx = true then **)
+(**  **)
+(** 						{*Send Echo *} **)
+(** 							Serial_write.data[9] := PLC_message[9]; **)
+				(* assign - Stmt *)
+				LD PLC_message[9]
+				ST serial_write.data[9]
+
+(** 							serial_write.data[10] := PLC_message[10];  **)
+				(* assign - Stmt *)
+				LD PLC_message[10]
+				ST serial_write.data[10]
+
+(** 							serial_write.data[11] := PLC_message[11]; **)
+				(* assign - Stmt *)
+				LD PLC_message[11]
+				ST serial_write.data[11]
+
+(** 							serial_write.data[12] := PLC_message[12]; **)
+				(* assign - Stmt *)
+				LD PLC_message[12]
+				ST serial_write.data[12]
+
+(** 					 **)
+(** 							length :=6; **)
+				(* assign - Stmt *)
+				LD 6
+				ST length
+
+(** 							tx_length := DINT_TO_BYTE(length); **)
+				(* assign - Stmt *)
+				LD length
+				DINT_TO_BYTE 
+				ST tx_length
+
+(** 					        serial_write.data[6] := tx_length; {* lp *} **)
+				(* assign - Stmt *)
+				LD tx_length
+				ST serial_write.data[6]
+
+(** 							ComStep:=10000; **)
+				(* assign - Stmt *)
+				LD 10000
+				ST ComStep
+
+				JMP ODK_END_CASE_00000000000001S
+
+(** 			 **)
+(** 		{****************************************************************************}					 **)
+(** 		10000: **)
+			(* case - Elm *) 
+			ODK_SKIP_00000000000001S_000000000000008:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 10000
+			JMPC ODK_CASE_00000000000001S_000000000000009
+
+			JMP ODK_SKIP_00000000000001S_000000000000009
+
+			(* case - Stmts *) 
+			ODK_CASE_00000000000001S_000000000000009:
+
+(** 	 **)
+(** 					{*Send Data *} **)
+(** 				 **)
+(** 					serial_write.length := BYTE_TO_INT(tx_header_length) + BYTE_TO_INT(tx_length); **)
+				(* assign - Stmt *)
+				LD tx_header_length
+				BYTE_TO_INT 
+				ADD ( tx_length
+					BYTE_TO_INT 
+				)
+				ST serial_write.length
+
+(** 					serial_write(); **)
+				(* call - Stmt *)
+				CAL serial_write
+
+(** 			 **)
+(** 					serial_write.length := 0; **)
+				(* assign - Stmt *)
+				LD 0
+				ST serial_write.length
+
+(** 					serial_write(); **)
+				(* call - Stmt *)
+				CAL serial_write
+
+(** 					 **)
+(** 			 **)
+(** 					IF serial_write.sent<>0 or serial_write.error<>0 Then **)
 				(* if - Cond *)
-				LD PLC_TX04_Bit_ChkCom_Tx
-				EQ true
+				LD serial_write.sent
+				NE 0
+				OR ( serial_write.error
+					NE 0
+				)
 				JMPCN ODK_SKIP_000000000000022_000000000000001
 
 					(* then - Stmts *)
 
-(** 				PLC_TX04_Bit_ChkCom_Tx := false; **)
+(** 						ComStep:=0; **)
 					(* assign - Stmt *)
-					LD false
-					ST PLC_TX04_Bit_ChkCom_Tx
+					LD 0
+					ST ComStep
+
+(** 						DebugCounter := DebugCounter + 1; **)
+					(* assign - Stmt *)
+					LD DebugCounter
+					ADD 1
+					ST DebugCounter
 
 					JMP ODK_END_IF_000000000000022
 
-(** 			else **)
-				(* else *) 
-				ODK_SKIP_000000000000022_000000000000001:
-
-					(* else - Stmts *)
-
-(** 				PLC_TX04_Bit_ChkCom_Tx := true; **)
-					(* assign - Stmt *)
-					LD true
-					ST PLC_TX04_Bit_ChkCom_Tx
-
-(** 			end_if; **)
+(** 					End_IF; **)
 				(* if - End *) 
+				ODK_SKIP_000000000000022_000000000000001:
 				ODK_END_IF_000000000000022:
 
-(** 			 **)
-(** 			 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word2); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word2
-				WORD_TO_STRING 
-				ST SendTempString
+				JMP ODK_END_CASE_00000000000001S
 
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word3); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word3
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word4); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word4
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word5); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word5
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word6); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word6
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			to_bytes(str := Message); **)
-				(* call - Stmt *)
-				CAL to_bytes (
-					str := Message
-				)
-
-(** 			MessageLen := Len(Message); **)
-				(* assign - Stmt *)
-				LD Message
-				Len 
-				ST MessageLen
-
-(** 		 **)
-(** 			for EncoderStart:=1 to MessageLen BY 1 DO **)
-				(* for - Init *)
-				LD 1
-				ST EncoderStart
-				EQ MessageLen
-				JMPC ODK_FOR_STMTS_000000000000023
-
-				(* for - Cond *)
-				ODK_FOR_000000000000023:
-
-				LD 1
-				GT MessageLen
-				JMPC ODK_FOR_DOWN_000000000000023
-
-				LD 0
-				GT 1
-				JMPC ODK_END_FOR_000000000000023
-
-				LD MessageLen
-				LT EncoderStart
-				JMPC ODK_END_FOR_000000000000023
-				JMP ODK_FOR_STMTS_000000000000023
-
-				ODK_FOR_DOWN_000000000000023:
-
-				LD MessageLen
-				GT EncoderStart
-				JMPC ODK_END_FOR_000000000000023
-
-				LD 0
-				LT 1
-				JMPC ODK_END_FOR_000000000000023
-
-					(* for - Stmts *)
-					ODK_FOR_STMTS_000000000000023:
-
-(** 				EncoderStartOffset := EncoderStart; **)
-					(* assign - Stmt *)
-					LD EncoderStart
-					ST EncoderStartOffset
-
-(** 				SendData_Status2[EncoderStartOffset] := to_bytes.bytes[EncoderStart]; **)
-					(* assign - Stmt *)
-					LD to_bytes.bytes[EncoderStart]
-					ST SendData_Status2[EncoderStartOffset]
-
-				(* for - By *)
-				LD 1
-				ADD EncoderStart
-				ST EncoderStart
-(** 			end_for; **)
-
-				JMP ODK_FOR_000000000000023
-
-				(* for - End *) 
-				ODK_END_FOR_000000000000023:
-
-(** 		 **)
-(** 			serial_write.length := MessageLen;  **)
-				(* assign - Stmt *)
-				LD MessageLen
-				ST serial_write.length
-
-(** 			serial_write(data := SendData_Status2); **)
-				(* call - Stmt *)
-				CAL serial_write (
-					data := SendData_Status2
-				)
-
-(** 		 **)
-(** 			Message := ''; **)
-				(* assign - Stmt *)
-				LD ''
-				ST Message
-
-(** 		 **)
-(** 			ComStep := 12; **)
-				(* assign - Stmt *)
-				LD 12
-				ST ComStep
-
-				JMP ODK_END_CASE_000000000000020
-
-(** 		 **)
-(** 		12: **)
+(** 		10001: **)
 			(* case - Elm *) 
-			ODK_SKIP_000000000000020_000000000000003:
+			ODK_SKIP_00000000000001S_000000000000009:
 
 			(* case - Cond *)
 			LD ComStep
-			EQ 12
-			JMPC ODK_CASE_000000000000020_000000000000004
+			EQ 10001
+			JMPC ODK_CASE_00000000000001S_00000000000000A
 
-			JMP ODK_SKIP_000000000000020_000000000000004
-
-			(* case - Stmts *) 
-			ODK_CASE_000000000000020_000000000000004:
-
-(** 			{*Send 16 Word Data-3*} **)
-(** 			{*5 Word*} **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word7_STr_Vecl); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word7_STr_Vecl
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word8_STr_Seg); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word8_STr_Seg
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word9_STr_Pnt); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word9_STr_Pnt
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word10_STr_BatV); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word10_STr_BatV
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word11_STr_Temp); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word11_STr_Temp
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			to_bytes(str := Message); **)
-				(* call - Stmt *)
-				CAL to_bytes (
-					str := Message
-				)
-
-(** 			MessageLen := Len(Message); **)
-				(* assign - Stmt *)
-				LD Message
-				Len 
-				ST MessageLen
-
-(** 		 **)
-(** 			for EncoderStart:=1 to MessageLen BY 1 DO **)
-				(* for - Init *)
-				LD 1
-				ST EncoderStart
-				EQ MessageLen
-				JMPC ODK_FOR_STMTS_000000000000024
-
-				(* for - Cond *)
-				ODK_FOR_000000000000024:
-
-				LD 1
-				GT MessageLen
-				JMPC ODK_FOR_DOWN_000000000000024
-
-				LD 0
-				GT 1
-				JMPC ODK_END_FOR_000000000000024
-
-				LD MessageLen
-				LT EncoderStart
-				JMPC ODK_END_FOR_000000000000024
-				JMP ODK_FOR_STMTS_000000000000024
-
-				ODK_FOR_DOWN_000000000000024:
-
-				LD MessageLen
-				GT EncoderStart
-				JMPC ODK_END_FOR_000000000000024
-
-				LD 0
-				LT 1
-				JMPC ODK_END_FOR_000000000000024
-
-					(* for - Stmts *)
-					ODK_FOR_STMTS_000000000000024:
-
-(** 				EncoderStartOffset := EncoderStart; **)
-					(* assign - Stmt *)
-					LD EncoderStart
-					ST EncoderStartOffset
-
-(** 				SendData_Status3[EncoderStartOffset] := to_bytes.bytes[EncoderStart]; **)
-					(* assign - Stmt *)
-					LD to_bytes.bytes[EncoderStart]
-					ST SendData_Status3[EncoderStartOffset]
-
-				(* for - By *)
-				LD 1
-				ADD EncoderStart
-				ST EncoderStart
-(** 			end_for; **)
-
-				JMP ODK_FOR_000000000000024
-
-				(* for - End *) 
-				ODK_END_FOR_000000000000024:
-
-(** 		 **)
-(** 			serial_write.length := MessageLen;  **)
-				(* assign - Stmt *)
-				LD MessageLen
-				ST serial_write.length
-
-(** 			serial_write(data := SendData_Status3); **)
-				(* call - Stmt *)
-				CAL serial_write (
-					data := SendData_Status3
-				)
-
-(** 		 **)
-(** 			Message := ''; **)
-				(* assign - Stmt *)
-				LD ''
-				ST Message
-
-(** 		 **)
-(** 			ComStep := 13; **)
-				(* assign - Stmt *)
-				LD 13
-				ST ComStep
-
-				JMP ODK_END_CASE_000000000000020
-
-(** 	 **)
-(** 		13: **)
-			(* case - Elm *) 
-			ODK_SKIP_000000000000020_000000000000004:
-
-			(* case - Cond *)
-			LD ComStep
-			EQ 13
-			JMPC ODK_CASE_000000000000020_000000000000005
-
-			JMP ODK_SKIP_000000000000020_000000000000005
+			JMP ODK_SKIP_00000000000001S_00000000000000A
 
 			(* case - Stmts *) 
-			ODK_CASE_000000000000020_000000000000005:
+			ODK_CASE_00000000000001S_00000000000000A:
 
-(** 			{*Send 16 Word Data-4*} **)
-(** 			{*5 Word*} **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word12_STr_BatD); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word12_STr_BatD
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word13_STr_Err); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word13_STr_Err
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word14_STr_BCD3); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word14_STr_BCD3
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 			 **)
-(** 		 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word15_STr_BCD2); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word15_STr_BCD2
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 			Message := CONCAT(Message, ','); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT ','
-				ST Message
-
-(** 		 **)
-(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word16_STr_BCD1); **)
-				(* assign - Stmt *)
-				LD PLC_TX_Word16_STr_BCD1
-				WORD_TO_STRING 
-				ST SendTempString
-
-(** 			Message := CONCAT(Message, SendTempString); **)
-				(* assign - Stmt *)
-				LD Message
-				CONCAT SendTempString
-				ST Message
-
-(** 		 **)
-(** 			to_bytes(str := Message); **)
-				(* call - Stmt *)
-				CAL to_bytes (
-					str := Message
+(** 					IF serial_write.sent<>0 or serial_write.error<>0 Then **)
+				(* if - Cond *)
+				LD serial_write.sent
+				NE 0
+				OR ( serial_write.error
+					NE 0
 				)
+				JMPCN ODK_SKIP_000000000000023_000000000000001
 
-(** 			MessageLen := Len(Message); **)
-				(* assign - Stmt *)
-				LD Message
-				Len 
-				ST MessageLen
+					(* then - Stmts *)
 
-(** 		 **)
-(** 			for EncoderStart:=1 to MessageLen BY 1 DO **)
-				(* for - Init *)
-				LD 1
-				ST EncoderStart
-				EQ MessageLen
-				JMPC ODK_FOR_STMTS_000000000000025
-
-				(* for - Cond *)
-				ODK_FOR_000000000000025:
-
-				LD 1
-				GT MessageLen
-				JMPC ODK_FOR_DOWN_000000000000025
-
-				LD 0
-				GT 1
-				JMPC ODK_END_FOR_000000000000025
-
-				LD MessageLen
-				LT EncoderStart
-				JMPC ODK_END_FOR_000000000000025
-				JMP ODK_FOR_STMTS_000000000000025
-
-				ODK_FOR_DOWN_000000000000025:
-
-				LD MessageLen
-				GT EncoderStart
-				JMPC ODK_END_FOR_000000000000025
-
-				LD 0
-				LT 1
-				JMPC ODK_END_FOR_000000000000025
-
-					(* for - Stmts *)
-					ODK_FOR_STMTS_000000000000025:
-
-(** 				EncoderStartOffset := EncoderStart; **)
+(** 						ComStep:=0; **)
 					(* assign - Stmt *)
-					LD EncoderStart
-					ST EncoderStartOffset
+					LD 0
+					ST ComStep
 
-(** 				SendData_Status4[EncoderStartOffset] := to_bytes.bytes[EncoderStart]; **)
+(** 						DebugCounter := DebugCounter + 1; **)
 					(* assign - Stmt *)
-					LD to_bytes.bytes[EncoderStart]
-					ST SendData_Status4[EncoderStartOffset]
+					LD DebugCounter
+					ADD 1
+					ST DebugCounter
 
-				(* for - By *)
-				LD 1
-				ADD EncoderStart
-				ST EncoderStart
-(** 			end_for; **)
+					JMP ODK_END_IF_000000000000023
 
-				JMP ODK_FOR_000000000000025
+(** 					End_IF; **)
+				(* if - End *) 
+				ODK_SKIP_000000000000023_000000000000001:
+				ODK_END_IF_000000000000023:
 
-				(* for - End *) 
-				ODK_END_FOR_000000000000025:
+				JMP ODK_END_CASE_00000000000001S
 
-(** 		 **)
-(** 			EncoderStartOffset := MessageLen + 1; **)
-				(* assign - Stmt *)
-				LD MessageLen
-				ADD 1
-				ST EncoderStartOffset
-
-(** 			SendData_Status4[EncoderStartOffset] := 16#03; **)
-				(* assign - Stmt *)
-				LD 16#03
-				ST SendData_Status4[EncoderStartOffset]
-
-(** 		 **)
-(** 			EncoderStartOffset := MessageLen + 2; **)
-				(* assign - Stmt *)
-				LD MessageLen
-				ADD 2
-				ST EncoderStartOffset
-
-(** 			SendData_Status4[EncoderStartOffset] := 16#0D; **)
-				(* assign - Stmt *)
-				LD 16#0D
-				ST SendData_Status4[EncoderStartOffset]
-
-(** 		 **)
-(** 			EncoderStartOffset := MessageLen + 3; **)
-				(* assign - Stmt *)
-				LD MessageLen
-				ADD 3
-				ST EncoderStartOffset
-
-(** 			SendData_Status4[EncoderStartOffset] := 16#0A; **)
-				(* assign - Stmt *)
-				LD 16#0A
-				ST SendData_Status4[EncoderStartOffset]
-
-(** 		 **)
-(** 			serial_write.length := MessageLen + 3;  **)
-				(* assign - Stmt *)
-				LD MessageLen
-				ADD 3
-				ST serial_write.length
-
-(** 			serial_write(data := SendData_Status4); **)
-				(* call - Stmt *)
-				CAL serial_write (
-					data := SendData_Status4
-				)
-
-(** 		 **)
-(** 			Message := ''; **)
-				(* assign - Stmt *)
-				LD ''
-				ST Message
-
-(** 			 **)
-(** 			ComStep := 0; **)
-				(* assign - Stmt *)
-				LD 0
-				ST ComStep
-
-				JMP ODK_END_CASE_000000000000020
-
-(** 		20: **)
-			(* case - Elm *) 
-			ODK_SKIP_000000000000020_000000000000005:
-
-			(* case - Cond *)
-			LD ComStep
-			EQ 20
-			JMPC ODK_CASE_000000000000020_000000000000006
-
-			JMP ODK_SKIP_000000000000020_000000000000006
-
-			(* case - Stmts *) 
-			ODK_CASE_000000000000020_000000000000006:
-
-(** 			{*Send 02 30 30 46 30 58 30 30 03 0D 0A (00F0X00) *} **)
-(** 		 **)
-(** 			serial_write.length := 11;  **)
-				(* assign - Stmt *)
-				LD 11
-				ST serial_write.length
-
-(** 			serial_write(data := SendData_Req); **)
-				(* call - Stmt *)
-				CAL serial_write (
-					data := SendData_Req
-				)
-
-(**  **)
-(** 			 **)
-(** 			{* Decoding Rev Data *} **)
-(** 	 **)
-(** 			{*Trim Receive String*} **)
-(** 			DecodeString_WS_Data := delete(DecodeString_WS, 11, 1); **)
-				(* assign - Stmt *)
-				LD DecodeString_WS
-				delete 11, 1
-				ST DecodeString_WS_Data
-
-(** 	 **)
-(** 			{*Decode Receive String*} **)
-(** 			for DecodeStart_WS := 1 To 25 Do **)
-				(* for - Init *)
-				LD 1
-				ST DecodeStart_WS
-				EQ 25
-				JMPC ODK_FOR_STMTS_000000000000026
-
-				(* for - Cond *)
-				ODK_FOR_000000000000026:
-
-				LD 1
-				GT 25
-				JMPC ODK_FOR_DOWN_000000000000026
-
-				LD 0
-				GT 1
-				JMPC ODK_END_FOR_000000000000026
-
-				LD 25
-				LT DecodeStart_WS
-				JMPC ODK_END_FOR_000000000000026
-				JMP ODK_FOR_STMTS_000000000000026
-
-				ODK_FOR_DOWN_000000000000026:
-
-				LD 25
-				GT DecodeStart_WS
-				JMPC ODK_END_FOR_000000000000026
-
-				LD 0
-				LT 1
-				JMPC ODK_END_FOR_000000000000026
-
-					(* for - Stmts *)
-					ODK_FOR_STMTS_000000000000026:
-
-(** 				 **)
-(** 				if DecodeStart_WS < 25 then **)
-					(* if - Cond *)
-					LD DecodeStart_WS
-					LT 25
-					JMPCN ODK_SKIP_000000000000027_000000000000001
-
-						(* then - Stmts *)
-
-(** 					SplitPos := find(DecodeString_WS_Data, ','); **)
-						(* assign - Stmt *)
-						LD DecodeString_WS_Data
-						find ','
-						ST SplitPos
-
-						JMP ODK_END_IF_000000000000027
-
-(** 				else **)
-					(* else *) 
-					ODK_SKIP_000000000000027_000000000000001:
-
-						(* else - Stmts *)
-
-(** 					SplitPos := len(DecodeString_WS_Data); **)
-						(* assign - Stmt *)
-						LD DecodeString_WS_Data
-						Len 
-						ST SplitPos
-
-(** 				end_if; **)
-					(* if - End *) 
-					ODK_END_IF_000000000000027:
-
-(** 				 **)
-(** 				SplitPosOffset1 := SplitPos - 1; **)
-					(* assign - Stmt *)
-					LD SplitPos
-					SUB 1
-					ST SplitPosOffset1
-
-(** 	 **)
-(** 				SplitString := left(DecodeString_WS_Data, SplitPosOffset1); **)
-					(* assign - Stmt *)
-					LD DecodeString_WS_Data
-					left SplitPosOffset1
-					ST SplitString
-
-(** 	 **)
-(** 				DecodeString_WS_Data := delete(DecodeString_WS_Data, SplitPos, 1); **)
-					(* assign - Stmt *)
-					LD DecodeString_WS_Data
-					delete SplitPos, 1
-					ST DecodeString_WS_Data
-
-(** 	 **)
-(** 				DecodeDataArray[DecodeStart_WS] := STRING_TO_WORD(SplitString); **)
-					(* assign - Stmt *)
-					LD SplitString
-					STRING_TO_WORD 
-					ST DecodeDataArray[DecodeStart_WS]
-
-				(* for - By *)
-				LD 1
-				ADD DecodeStart_WS
-				ST DecodeStart_WS
-(** 				 **)
-(** 				 **)
-(** 			end_for; **)
-
-				JMP ODK_FOR_000000000000026
-
-				(* for - End *) 
-				ODK_END_FOR_000000000000026:
-
-(** 		 **)
-(** 			PLC_RX_Word1 := DecodeDataArray[1]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[1]
-				ST PLC_RX_Word1
-
-(** 			PLC_RX_Word2 := DecodeDataArray[2]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[2]
-				ST PLC_RX_Word2
-
-(** 			PLC_RX_Word3 := DecodeDataArray[3]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[3]
-				ST PLC_RX_Word3
-
-(** 			PLC_RX_Word4 := DecodeDataArray[4]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[4]
-				ST PLC_RX_Word4
-
-(** 			PLC_RX_Word5 := DecodeDataArray[5]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[5]
-				ST PLC_RX_Word5
-
-(** 			PLC_RX_Word6 := DecodeDataArray[6]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[6]
-				ST PLC_RX_Word6
-
-(** 			PLC_RX_Word7_STw_BCD3 := DecodeDataArray[7]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[7]
-				ST PLC_RX_Word7_STw_BCD3
-
-(** 			PLC_RX_Word8_STw_BCD2 := DecodeDataArray[8]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[8]
-				ST PLC_RX_Word8_STw_BCD2
-
-(** 			PLC_RX_Word9_STw_BCD1 := DecodeDataArray[9]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[9]
-				ST PLC_RX_Word9_STw_BCD1
-
-(** 			PLC_RX_Word10_STw_ILEr := DecodeDataArray[10]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[10]
-				ST PLC_RX_Word10_STw_ILEr
-
-(** 			PLC_RX_Word11_Ins_Pno := DecodeDataArray[11]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[11]
-				ST PLC_RX_Word11_Ins_Pno
-
-(** 			PLC_RX_Word12_STw_Pint := DecodeDataArray[12]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[12]
-				ST PLC_RX_Word12_STw_Pint
-
-(** 			PLC_RX_Word13_Ins_Ano := DecodeDataArray[13]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[13]
-				ST PLC_RX_Word13_Ins_Ano
-
-(** 			PLC_RX_Word14_BMS_2 := DecodeDataArray[14]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[14]
-				ST PLC_RX_Word14_BMS_2
-
-(** 			PLC_RX_Word15_BMS_3 := DecodeDataArray[15]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[15]
-				ST PLC_RX_Word15_BMS_3
-
-(** 			PLC_RX_Word16_BMS_BatV := DecodeDataArray[16]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[16]
-				ST PLC_RX_Word16_BMS_BatV
-
-(** 			PLC_RX_Word17_BMS_BatT := DecodeDataArray[17]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[17]
-				ST PLC_RX_Word17_BMS_BatT
-
-(** 			PLC_RX_Word18_BMS_BatC := DecodeDataArray[18]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[18]
-				ST PLC_RX_Word18_BMS_BatC
-
-(** 			PLC_RX_Word19_BMS_BatA := DecodeDataArray[19]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[19]
-				ST PLC_RX_Word19_BMS_BatA
-
-(** 			PLC_RX_Word20_PLC_ErrD := DecodeDataArray[20]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[20]
-				ST PLC_RX_Word20_PLC_ErrD
-
-(** 			PLC_RX_Word21_BMS_Main := DecodeDataArray[21]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[21]
-				ST PLC_RX_Word21_BMS_Main
-
-(** 			PLC_RX_Word22_BMS_Chan := DecodeDataArray[22]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[22]
-				ST PLC_RX_Word22_BMS_Chan
-
-(** 			PLC_RX_Word23_BMS_ID4L := DecodeDataArray[23]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[23]
-				ST PLC_RX_Word23_BMS_ID4L
-
-(** 			PLC_RX_Word24_BMS_ID4H := DecodeDataArray[24]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[24]
-				ST PLC_RX_Word24_BMS_ID4H
-
-(** 			PLC_RX_Word25 := DecodeDataArray[25]; **)
-				(* assign - Stmt *)
-				LD DecodeDataArray[25]
-				ST PLC_RX_Word25
-
-(** 			 **)
-(** 			ComStep := 0; **)
-				(* assign - Stmt *)
-				LD 0
-				ST ComStep
-
-				JMP ODK_END_CASE_000000000000020
-
-(** 			 **)
 (** 		end_case; **)
 			(* case - End *) 
-			ODK_SKIP_000000000000020_000000000000006:
-			ODK_END_CASE_000000000000020:
+			ODK_SKIP_00000000000001S_00000000000000A:
+			ODK_END_CASE_00000000000001S:
 
 			JMP ODK_END_IF_00000000000001R
 
 (**  **)
+(** 	{*CVC700 -> PLC HandShake Data*} **)
+(** 	{*PLC_Communication_ModBus_ValueWord [1] := PLC_TX_Word1; **)
+(** 	PLC_Communication_ModBus_ValueWord [2] := PLC_TX_Word2; **)
+(** 	PLC_Communication_ModBus_ValueWord [3] := PLC_TX_Word3; **)
+(** 	PLC_Communication_ModBus_ValueWord [4] := PLC_TX_Word4; **)
+(** 	PLC_Communication_ModBus_ValueWord [5] := PLC_TX_Word5; **)
+(** 	PLC_Communication_ModBus_ValueWord [6] := PLC_TX_Word6; **)
+(** 	PLC_Communication_ModBus_ValueWord [7] := PLC_TX_Word7_STr_Vecl; **)
+(** 	PLC_Communication_ModBus_ValueWord [8] := PLC_TX_Word8_STr_Seg; **)
+(** 	PLC_Communication_ModBus_ValueWord [9] := PLC_TX_Word9_STr_Pnt; **)
+(** 	PLC_Communication_ModBus_ValueWord [10] := PLC_TX_Word10_STr_BatV; **)
+(** 	PLC_Communication_ModBus_ValueWord [11] := PLC_TX_Word11_STr_Temp; **)
+(** 	PLC_Communication_ModBus_ValueWord [12] := PLC_TX_Word12_STr_BatD; **)
+(** 	PLC_Communication_ModBus_ValueWord [13] := PLC_TX_Word13_STr_Err; **)
+(** 	PLC_Communication_ModBus_ValueWord [14] := PLC_TX_Word14_STr_BCD3; **)
+(** 	PLC_Communication_ModBus_ValueWord [15] := PLC_TX_Word15_STr_BCD2; **)
+(** 	PLC_Communication_ModBus_ValueWord [16] := PLC_TX_Word16_STr_BCD1; **)
+(** 	*} **)
+(**  **)
+(** 	{*PLC -> CVC700 HandShake Data*} **)
+(** 	{*PLC_RX_Word1 := PLC_Communication_ModBus_ValueWord [17]; **)
+(** 	PLC_RX_Word2 := PLC_Communication_ModBus_ValueWord [18]; **)
+(** 	PLC_RX_Word3 := PLC_Communication_ModBus_ValueWord [19]; **)
+(** 	PLC_RX_Word4 := PLC_Communication_ModBus_ValueWord [20]; **)
+(** 	PLC_RX_Word5 := PLC_Communication_ModBus_ValueWord [21]; **)
+(** 	PLC_RX_Word6 := PLC_Communication_ModBus_ValueWord [22]; **)
+(** 	PLC_RX_Word7_STw_BCD3 := PLC_Communication_ModBus_ValueWord [23]; **)
+(** 	PLC_RX_Word8_STw_BCD2 := PLC_Communication_ModBus_ValueWord [24]; **)
+(** 	PLC_RX_Word9_STw_BCD1 := PLC_Communication_ModBus_ValueWord [25]; **)
+(** 	PLC_RX_Word10_STw_ILEr := PLC_Communication_ModBus_ValueWord [26]; **)
+(** 	PLC_RX_Word11_Ins_Pno := PLC_Communication_ModBus_ValueWord [27]; **)
+(** 	PLC_RX_Word12_STw_Pint := PLC_Communication_ModBus_ValueWord [28]; **)
+(** 	PLC_RX_Word13_Ins_Ano := PLC_Communication_ModBus_ValueWord [29]; **)
+(** 	PLC_RX_Word14_BMS_2 := PLC_Communication_ModBus_ValueWord [30]; **)
+(** 	PLC_RX_Word15_BMS_3 := PLC_Communication_ModBus_ValueWord [31]; **)
+(** 	PLC_RX_Word16_BMS_BatV := PLC_Communication_ModBus_ValueWord [32]; **)
+(** 	PLC_RX_Word17_BMS_BatT := PLC_Communication_ModBus_ValueWord [33]; **)
+(** 	PLC_RX_Word18_BMS_BatC := PLC_Communication_ModBus_ValueWord [34]; **)
+(** 	PLC_RX_Word19_BMS_BatA := PLC_Communication_ModBus_ValueWord [35]; **)
+(** 	PLC_RX_Word20_PLC_ErrD := PLC_Communication_ModBus_ValueWord [36]; **)
+(** 	PLC_RX_Word21_BMS_Main := PLC_Communication_ModBus_ValueWord [37]; **)
+(** 	PLC_RX_Word22_BMS_Chan := PLC_Communication_ModBus_ValueWord [38]; **)
+(** 	PLC_RX_Word23_BMS_ID4L := PLC_Communication_ModBus_ValueWord [39]; **)
+(** 	PLC_RX_Word24_BMS_ID4H := PLC_Communication_ModBus_ValueWord [40]; **)
+(** 	PLC_RX_Word25 := PLC_Communication_ModBus_ValueWord [41]; **)
+(** 	*} **)
 (** 	end_if; **)
 		(* if - End *) 
 		ODK_SKIP_00000000000001R_000000000000001:
@@ -4195,13 +3903,15 @@ END_VAR
 
 		JMP ODK_END_IF_00000000000001Q
 
-(** 	 **)
+(**  **)
 (** 	 **)
 (** end_if; **)
 	(* if - End *) 
 	ODK_SKIP_00000000000001Q_000000000000001:
 	ODK_END_IF_00000000000001Q:
 
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)
