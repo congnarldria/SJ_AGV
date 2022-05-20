@@ -1,0 +1,17 @@
+FUNCTION_BLOCK SSIO_FB 
+
+
+ VAR_INPUT
+  LogicalLine , UnitNumber , InputOutputID , RequestType , SetStatus : dint ;
+  END_VAR 
+
+ VAR_OUTPUT
+  Finished : bool := false ;
+  Status , ErrorCode : DINT ;
+  State_SSIO : DINT := 1 ;
+  Count : dint ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

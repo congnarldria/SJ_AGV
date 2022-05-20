@@ -1,0 +1,15 @@
+FUNCTION_BLOCK ASCII_TO_DEC 
+
+
+ VAR_INPUT
+  ASCII : dint ;
+  END_VAR 
+
+
+ VAR_OUTPUT
+  dec : dint ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

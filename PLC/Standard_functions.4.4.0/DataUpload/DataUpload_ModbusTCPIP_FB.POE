@@ -1,0 +1,2025 @@
+FUNCTION_BLOCK DataUpload_ModbusTCPIP_FB
+VAR_EXTERNAL
+ndc8 : NDC8_T;
+
+UploadData_ModBus_ValueWord:ARRAY[1..500] OF Word;
+UploadData_ModBus_ValueBOOL:ARRAY[1..400] OF BOOL;
+
+ConvWord:WORD;			(*Sum of the two first bytes*)
+
+ConvByteL:Byte;			(*Low byte*)
+ConvByteH:Byte;			(*High byte*)
+
+ConvBit0:BOOL;			(*		 1 	    *)
+ConvBit1:BOOL;			(*		 2 		*)
+ConvBit2:BOOL;			(*		 4 		*)
+ConvBit3:BOOL;			(*		 8 		*)
+ConvBit4:BOOL;			(*	    10 		*)
+ConvBit5:BOOL;			(*	    20 		*)
+ConvBit6:BOOL;			(*	    40 		*)
+ConvBit7:BOOL;          (*	    80 		*)
+ConvBit8:BOOL;			(*		100     *)
+ConvBit9:BOOL;			(*		200 	*)
+ConvBit10:BOOL;			(*		400  	*)
+ConvBit11:BOOL;			(*		800 	*)
+ConvBit12:BOOL;			(*	   1000 	*)
+ConvBit13:BOOL;			(*	   2000 	*)
+ConvBit14:BOOL;			(*	   4000 	*)
+ConvBit15:BOOL;         (*	   8000 	*)
+
+(*BeijerSetParameters:BeijerSetParameters_T;*)
+
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+serial_read : NDC8_SERIAL_READ;
+serial_write : NDC8_SERIAL_WRITE;
+init : BOOL := TRUE;
+
+tx_header_length : BYTE := 6;
+dummy : BOOL;
+tr_cmd : DINT;
+
+
+start_adress : INT;
+
+
+ProcStep,
+ReadCounter,
+DebugCounter		: DINT;
+StartDelayTOF	: TOF;
+StartDelay 		: BOOL;
+
+X: INT;
+Y: INT;
+Z: INT;
+End:INT;
+Index:DINT;
+debug1 :INT;
+debug2 :INT;
+tr_len : DINT;
+num_words : DINT;
+num_Byte : DINT;
+num_Bit : DINT;
+Extra:DINT;
+length : DINT;
+tx_length : BYTE;
+ENDBIT:DINT;
+debugByte :Byte;
+
+dataindex : INT;
+msg_index: INT;
+ix : INT;
+UploadData_message : ARRAY[1..300] of BYTE;
+
+
+
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+END_VAR
+(** {****************************************************************************} **)
+(** StartDelayTOF(IN:=StartDelay, PT:=t#20ms); **)
+	(* call - Stmt *)
+	CAL StartDelayTOF (
+		IN := StartDelay,
+		PT := t#20ms
+	)
+
+(**  **)
+(** if init then **)
+	(* if - Cond *)
+	LD init
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	serial_read.port := 'COM6'; **)
+		(* assign - Stmt *)
+		LD 'COM6'
+		ST serial_read.port
+
+(** 	serial_write.port := 'COM6'; **)
+		(* assign - Stmt *)
+		LD 'COM6'
+		ST serial_write.port
+
+(** 	init := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST init
+
+		JMP ODK_END_IF_000000000000001
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(** {****************************************************************************} **)
+(**  **)
+(**  **)
+(** 		{* Only read every 20ms *} **)
+(** case ProcStep of **)
+(** 0: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000000:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 0
+	JMPC ODK_CASE_000000000000002_000000000000001
+
+	JMP ODK_SKIP_000000000000002_000000000000001
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000001:
+
+(** 	    StartDelay:=False;  **)
+		(* assign - Stmt *)
+		LD false
+		ST StartDelay
+
+(** 		IF Not StartDelayTOF.Q THEN **)
+		(* if - Cond *)
+		LD StartDelayTOF.Q
+		NOT
+		JMPCN ODK_SKIP_000000000000003_000000000000001
+
+			(* then - Stmts *)
+
+(** 		    ProcStep:=1; **)
+			(* assign - Stmt *)
+			LD 1
+			ST ProcStep
+
+			JMP ODK_END_IF_000000000000003
+
+(** 		END_IF; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000003_000000000000001:
+		ODK_END_IF_000000000000003:
+
+		JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(** {****************************************************************************}	 **)
+(** 1: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000001:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 1
+	JMPC ODK_CASE_000000000000002_000000000000002
+
+	JMP ODK_SKIP_000000000000002_000000000000002
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000002:
+
+(**  **)
+(** 	serial_read(); **)
+		(* call - Stmt *)
+		CAL serial_read
+
+(** 	msg_index := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST msg_index
+
+(** 	while serial_read.length > 0 do **)
+		(* while - Cond *) 
+		ODK_WHILE_000000000000004:
+		LD serial_read.length
+		GT 0
+		JMPCN ODK_END_WHILE_000000000000004
+
+			(* while - Stmts *)
+
+(**  **)
+(** 		{* Copy message to local buffer *} **)
+(** 		for dataindex := 1 to serial_read.length by 1 do **)
+			(* for - Init *)
+			LD 1
+			ST dataindex
+			EQ serial_read.length
+			JMPC ODK_FOR_STMTS_000000000000005
+
+			(* for - Cond *)
+			ODK_FOR_000000000000005:
+
+			LD 1
+			GT serial_read.length
+			JMPC ODK_FOR_DOWN_000000000000005
+
+			LD 0
+			GT 1
+			JMPC ODK_END_FOR_000000000000005
+
+			LD serial_read.length
+			LT dataindex
+			JMPC ODK_END_FOR_000000000000005
+			JMP ODK_FOR_STMTS_000000000000005
+
+			ODK_FOR_DOWN_000000000000005:
+
+			LD serial_read.length
+			GT dataindex
+			JMPC ODK_END_FOR_000000000000005
+
+			LD 0
+			LT 1
+			JMPC ODK_END_FOR_000000000000005
+
+				(* for - Stmts *)
+				ODK_FOR_STMTS_000000000000005:
+
+(** 			ix := dataindex + msg_index; **)
+				(* assign - Stmt *)
+				LD dataindex
+				ADD msg_index
+				ST ix
+
+(** 			UploadData_message[ix] := serial_read.data[dataindex]; **)
+				(* assign - Stmt *)
+				LD serial_read.data[dataindex]
+				ST UploadData_message[ix]
+
+			(* for - By *)
+			LD 1
+			ADD dataindex
+			ST dataindex
+(** 		end_for; **)
+
+			JMP ODK_FOR_000000000000005
+
+			(* for - End *) 
+			ODK_END_FOR_000000000000005:
+
+(** 		{* Point for next possible message *} **)
+(** 		msg_index := msg_index + serial_read.length; **)
+			(* assign - Stmt *)
+			LD msg_index
+			ADD serial_read.length
+			ST msg_index
+
+(** 		serial_read(); **)
+			(* call - Stmt *)
+			CAL serial_read
+
+(** 	end_while; **)
+			JMP ODK_WHILE_000000000000004
+
+		(* while - End *) 
+		ODK_END_WHILE_000000000000004:
+
+(** 	 **)
+(** 	IF msg_index <> 0 then **)
+		(* if - Cond *)
+		LD msg_index
+		NE 0
+		JMPCN ODK_SKIP_000000000000006_000000000000001
+
+			(* then - Stmts *)
+
+(** 		ProcStep:=2; **)
+			(* assign - Stmt *)
+			LD 2
+			ST ProcStep
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	Else  **)
+		(* else *) 
+		ODK_SKIP_000000000000006_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		ProcStep:=0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST ProcStep
+
+(** 	END_IF; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000006:
+
+		JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(**  **)
+(** {****************************************************************************}			 **)
+(** 2: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000002:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 2
+	JMPC ODK_CASE_000000000000002_000000000000003
+
+	JMP ODK_SKIP_000000000000002_000000000000003
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000003:
+
+(** 		    {* Parse *} **)
+(** 			tr_cmd := BYTE_TO_DINT(UploadData_message[8]);  **)
+		(* assign - Stmt *)
+		LD UploadData_message[8]
+		BYTE_TO_DINT 
+		ST tr_cmd
+
+(** 			tr_len := BYTE_TO_DINT(UploadData_message[6]); **)
+		(* assign - Stmt *)
+		LD UploadData_message[6]
+		BYTE_TO_DINT 
+		ST tr_len
+
+(** 		 **)
+(** 			dummy := TRACE_DINT('Cmd', tr_cmd); **)
+		(* assign - Stmt *)
+		LD 'Cmd'
+		TRACE_DINT tr_cmd
+		ST dummy
+
+(** 			dummy := TRACE_DINT('Len', tr_len); **)
+		(* assign - Stmt *)
+		LD 'Len'
+		TRACE_DINT tr_len
+		ST dummy
+
+(** 		 **)
+(** 			{* Copy header *} **)
+(** 			serial_write.data[1] := UploadData_message[1];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[1]
+		ST serial_write.data[1]
+
+(** 			serial_write.data[2] := UploadData_message[2]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[2]
+		ST serial_write.data[2]
+
+(** 			serial_write.data[3] := UploadData_message[3];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[3]
+		ST serial_write.data[3]
+
+(** 			serial_write.data[4] := UploadData_message[4];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[4]
+		ST serial_write.data[4]
+
+(** 			serial_write.data[5] := UploadData_message[5]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[5]
+		ST serial_write.data[5]
+
+(**  **)
+(** 			serial_write.data[6] := UploadData_message[6]; 	{* Length, will be overwritten *} **)
+		(* assign - Stmt *)
+		LD UploadData_message[6]
+		ST serial_write.data[6]
+
+(** 			serial_write.data[7] := UploadData_message[7]; 	{* Slave adress *} **)
+		(* assign - Stmt *)
+		LD UploadData_message[7]
+		ST serial_write.data[7]
+
+(** 			serial_write.data[8] := UploadData_message[8]; 	{* Cmd *} **)
+		(* assign - Stmt *)
+		LD UploadData_message[8]
+		ST serial_write.data[8]
+
+(** 		 **)
+(** 			{* Start adress to read *} **)
+(** 			ConvByteH:= UploadData_message[9];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[9]
+		ST ConvByteH
+
+(** 			ConvByteL:= UploadData_message[10];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[10]
+		ST ConvByteL
+
+(** 			start_adress  := Word_TO_INT(ConvWord); **)
+		(* assign - Stmt *)
+		LD ConvWord
+		Word_TO_INT 
+		ST start_adress
+
+(** 			 **)
+(** 			ProcStep:=3; **)
+		(* assign - Stmt *)
+		LD 3
+		ST ProcStep
+
+		JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(** {****************************************************************************}			 **)
+(** 3: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000003:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 3
+	JMPC ODK_CASE_000000000000002_000000000000004
+
+	JMP ODK_SKIP_000000000000002_000000000000004
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000004:
+
+(** 			 **)
+(** 			{*Check Function type *}							 **)
+(** 				 **)
+(** 			case tr_cmd of   **)
+(** 				1: 	ProcStep:=10;	{* Check if Read Coils *} **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000007_000000000000000:
+
+		(* case - Cond *)
+		LD tr_cmd
+		EQ 1
+		JMPC ODK_CASE_000000000000007_000000000000001
+
+		JMP ODK_SKIP_000000000000007_000000000000001
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000007_000000000000001:
+
+			(* assign - Stmt *)
+			LD 10
+			ST ProcStep
+
+			JMP ODK_END_CASE_000000000000007
+
+(** 				5:	ProcStep:=50;	{* Check if Write single Coil *} **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000007_000000000000001:
+
+		(* case - Cond *)
+		LD tr_cmd
+		EQ 5
+		JMPC ODK_CASE_000000000000007_000000000000002
+
+		JMP ODK_SKIP_000000000000007_000000000000002
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000007_000000000000002:
+
+			(* assign - Stmt *)
+			LD 50
+			ST ProcStep
+
+			JMP ODK_END_CASE_000000000000007
+
+(** 				15:	ProcStep:=150;	{* Check if Write Multiple Coils *} **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000007_000000000000002:
+
+		(* case - Cond *)
+		LD tr_cmd
+		EQ 15
+		JMPC ODK_CASE_000000000000007_000000000000003
+
+		JMP ODK_SKIP_000000000000007_000000000000003
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000007_000000000000003:
+
+			(* assign - Stmt *)
+			LD 150
+			ST ProcStep
+
+			JMP ODK_END_CASE_000000000000007
+
+(** 				6:	ProcStep:=60;	{* Check if Write single register *} **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000007_000000000000003:
+
+		(* case - Cond *)
+		LD tr_cmd
+		EQ 6
+		JMPC ODK_CASE_000000000000007_000000000000004
+
+		JMP ODK_SKIP_000000000000007_000000000000004
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000007_000000000000004:
+
+			(* assign - Stmt *)
+			LD 60
+			ST ProcStep
+
+			JMP ODK_END_CASE_000000000000007
+
+(** 				16:	ProcStep:=160; {* Check if write Multiple register *} **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000007_000000000000004:
+
+		(* case - Cond *)
+		LD tr_cmd
+		EQ 16
+		JMPC ODK_CASE_000000000000007_000000000000005
+
+		JMP ODK_SKIP_000000000000007_000000000000005
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000007_000000000000005:
+
+			(* assign - Stmt *)
+			LD 160
+			ST ProcStep
+
+			JMP ODK_END_CASE_000000000000007
+
+(** 				3:	ProcStep:=30;	{*Check if Read register *} **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000007_000000000000005:
+
+		(* case - Cond *)
+		LD tr_cmd
+		EQ 3
+		JMPC ODK_CASE_000000000000007_000000000000006
+
+		JMP ODK_SKIP_000000000000007_000000000000006
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000007_000000000000006:
+
+			(* assign - Stmt *)
+			LD 30
+			ST ProcStep
+
+			JMP ODK_END_CASE_000000000000007
+
+(** 			Else 	 **)
+		(* else *) 
+		ODK_SKIP_000000000000007_000000000000006:
+
+			(* else - Statements *) 
+
+(** 				ProcStep:=999; 	{*Send Echo *} **)
+			(* assign - Stmt *)
+			LD 999
+			ST ProcStep
+
+(** 			end_case; **)
+		(* case - End *) 
+		ODK_END_CASE_000000000000007:
+
+		JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(** {****************************************************************************}			 **)
+(** 10: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000004:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 10
+	JMPC ODK_CASE_000000000000002_000000000000005
+
+	JMP ODK_SKIP_000000000000002_000000000000005
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000005:
+
+(** 					{* Read Coils *} **)
+(** 					{* Number of Bits *} **)
+(** 				{* serial_read.data[11]; *} **)
+(** 				ConvByteH:= UploadData_message[11];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[11]
+		ST ConvByteH
+
+(** 				ConvByteL:= UploadData_message[12];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[12]
+		ST ConvByteL
+
+(** 				num_Bit  := Word_TO_DINT(ConvWord); **)
+		(* assign - Stmt *)
+		LD ConvWord
+		Word_TO_DINT 
+		ST num_Bit
+
+(** 				num_Byte :=(num_Bit/8)+1; **)
+		(* assign - Stmt *)
+		LD num_Bit
+		DIV 8
+		ADD 1
+		ST num_Byte
+
+(** 				ENDBIT:=(num_Bit/8); **)
+		(* assign - Stmt *)
+		LD num_Bit
+		DIV 8
+		ST ENDBIT
+
+(** 				Extra:=num_Bit-ENDBIT; **)
+		(* assign - Stmt *)
+		LD num_Bit
+		SUB ENDBIT
+		ST Extra
+
+(** 					Y:=start_adress;  **)
+		(* assign - Stmt *)
+		LD start_adress
+		ST Y
+
+(** 					Z:=10;				 **)
+		(* assign - Stmt *)
+		LD 10
+		ST Z
+
+(** 					Serial_write.data[9] := DINT_TO_BYTE(num_Byte); **)
+		(* assign - Stmt *)
+		LD num_Byte
+		DINT_TO_BYTE 
+		ST serial_write.data[9]
+
+(** 				  **)
+(** 				 IF  ENDBIT<>0 THEN       **)
+		(* if - Cond *)
+		LD ENDBIT
+		NE 0
+		JMPCN ODK_SKIP_000000000000008_000000000000001
+
+			(* then - Stmts *)
+
+(** 					For Index:=1 to ENDBIT BY 1 DO **)
+			(* for - Init *)
+			LD 1
+			ST Index
+			EQ ENDBIT
+			JMPC ODK_FOR_STMTS_000000000000009
+
+			(* for - Cond *)
+			ODK_FOR_000000000000009:
+
+			LD 1
+			GT ENDBIT
+			JMPC ODK_FOR_DOWN_000000000000009
+
+			LD 0
+			GT 1
+			JMPC ODK_END_FOR_000000000000009
+
+			LD ENDBIT
+			LT Index
+			JMPC ODK_END_FOR_000000000000009
+			JMP ODK_FOR_STMTS_000000000000009
+
+			ODK_FOR_DOWN_000000000000009:
+
+			LD ENDBIT
+			GT Index
+			JMPC ODK_END_FOR_000000000000009
+
+			LD 0
+			LT 1
+			JMPC ODK_END_FOR_000000000000009
+
+				(* for - Stmts *)
+				ODK_FOR_STMTS_000000000000009:
+
+(** 					 **)
+(** 						ConvBit0:=UploadData_ModBus_ValueBOOL [Y]; **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit0
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit1:=UploadData_ModBus_ValueBOOL [Y]; **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit1
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit2:=UploadData_ModBus_ValueBOOL [Y]; **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit2
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit3:=UploadData_ModBus_ValueBOOL [Y]; **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit3
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit4:=UploadData_ModBus_ValueBOOL [Y]; **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit4
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit5:=UploadData_ModBus_ValueBOOL [Y]; **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit5
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit6:=UploadData_ModBus_ValueBOOL [Y]; **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit6
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit7:=UploadData_ModBus_ValueBOOL [Y]; **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit7
+
+(** 						serial_write.data[Z]:=ConvByteL; **)
+				(* assign - Stmt *)
+				LD ConvByteL
+				ST serial_write.data[Z]
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						Z:=Z+1; **)
+				(* assign - Stmt *)
+				LD Z
+				ADD 1
+				ST Z
+
+			(* for - By *)
+			LD 1
+			ADD Index
+			ST Index
+(** 					END_FOR; **)
+
+			JMP ODK_FOR_000000000000009
+
+			(* for - End *) 
+			ODK_END_FOR_000000000000009:
+
+			JMP ODK_END_IF_000000000000008
+
+(** 				END_IF; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000008_000000000000001:
+		ODK_END_IF_000000000000008:
+
+(** 					 **)
+(** 				{*Fill in last Byte *} **)
+(** 				IF Extra <> 0 Then 	 **)
+		(* if - Cond *)
+		LD Extra
+		NE 0
+		JMPCN ODK_SKIP_00000000000000A_000000000000001
+
+			(* then - Stmts *)
+
+(** 					ConvByteL:=0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST ConvByteL
+
+(** 						 **)
+(** 					   	  ConvBit0:=UploadData_ModBus_ValueBOOL [Y]; **)
+			(* assign - Stmt *)
+			LD UploadData_ModBus_ValueBOOL[Y]
+			ST ConvBit0
+
+(** 					If Extra >1 Then 	 **)
+			(* if - Cond *)
+			LD Extra
+			GT 1
+			JMPCN ODK_SKIP_00000000000000B_000000000000001
+
+				(* then - Stmts *)
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit1:=UploadData_ModBus_ValueBOOL [Y]; **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit1
+
+				JMP ODK_END_IF_00000000000000B
+
+(** 					END_IF;   **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000B_000000000000001:
+			ODK_END_IF_00000000000000B:
+
+(** 					If Extra >2 Then 	 **)
+			(* if - Cond *)
+			LD Extra
+			GT 2
+			JMPCN ODK_SKIP_00000000000000C_000000000000001
+
+				(* then - Stmts *)
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit2:=UploadData_ModBus_ValueBOOL [Y];    **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit2
+
+				JMP ODK_END_IF_00000000000000C
+
+(** 					END_IF;    **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000C_000000000000001:
+			ODK_END_IF_00000000000000C:
+
+(** 					If Extra >3 Then 	 **)
+			(* if - Cond *)
+			LD Extra
+			GT 3
+			JMPCN ODK_SKIP_00000000000000D_000000000000001
+
+				(* then - Stmts *)
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit3:=UploadData_ModBus_ValueBOOL [Y];    **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit3
+
+				JMP ODK_END_IF_00000000000000D
+
+(** 					END_IF; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000D_000000000000001:
+			ODK_END_IF_00000000000000D:
+
+(** 					If Extra >4 Then 	 **)
+			(* if - Cond *)
+			LD Extra
+			GT 4
+			JMPCN ODK_SKIP_00000000000000E_000000000000001
+
+				(* then - Stmts *)
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit4:=UploadData_ModBus_ValueBOOL [Y];    **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit4
+
+				JMP ODK_END_IF_00000000000000E
+
+(** 					END_IF; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000E_000000000000001:
+			ODK_END_IF_00000000000000E:
+
+(** 					If Extra >5 Then 	 **)
+			(* if - Cond *)
+			LD Extra
+			GT 5
+			JMPCN ODK_SKIP_00000000000000F_000000000000001
+
+				(* then - Stmts *)
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit5:=UploadData_ModBus_ValueBOOL [Y];    **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit5
+
+				JMP ODK_END_IF_00000000000000F
+
+(** 					END_IF;         	    **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000F_000000000000001:
+			ODK_END_IF_00000000000000F:
+
+(** 					If Extra >6 Then 	 **)
+			(* if - Cond *)
+			LD Extra
+			GT 6
+			JMPCN ODK_SKIP_00000000000000G_000000000000001
+
+				(* then - Stmts *)
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						ConvBit6:=UploadData_ModBus_ValueBOOL [Y];    **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueBOOL[Y]
+				ST ConvBit6
+
+				JMP ODK_END_IF_00000000000000G
+
+(** 					END_IF; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000G_000000000000001:
+			ODK_END_IF_00000000000000G:
+
+(** 					serial_write.data[Z]:=ConvByteL; 	    **)
+			(* assign - Stmt *)
+			LD ConvByteL
+			ST serial_write.data[Z]
+
+			JMP ODK_END_IF_00000000000000A
+
+(** 						    **)
+(** 						    **)
+(** 				END_IF; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000A_000000000000001:
+		ODK_END_IF_00000000000000A:
+
+(** 					 **)
+(** 									 **)
+(** 					length := num_Byte+3; **)
+		(* assign - Stmt *)
+		LD num_Byte
+		ADD 3
+		ST length
+
+(** 					tx_length := DINT_TO_BYTE(length); **)
+		(* assign - Stmt *)
+		LD length
+		DINT_TO_BYTE 
+		ST tx_length
+
+(** 					serial_write.data[6] := tx_length; {* lp *} **)
+		(* assign - Stmt *)
+		LD tx_length
+		ST serial_write.data[6]
+
+(** 					ProcStep:=10000;	 **)
+		(* assign - Stmt *)
+		LD 10000
+		ST ProcStep
+
+		JMP ODK_END_CASE_000000000000002
+
+(** 					 **)
+(**  **)
+(** {****************************************************************************}			 **)
+(** 30: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000005:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 30
+	JMPC ODK_CASE_000000000000002_000000000000006
+
+	JMP ODK_SKIP_000000000000002_000000000000006
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000006:
+
+(** 				{*Read register *} **)
+(** 				{* Number of words *} **)
+(** 				{* serial_read.data[11]; *} **)
+(** 				num_words := BYTE_TO_DINT(UploadData_message[12]);  **)
+		(* assign - Stmt *)
+		LD UploadData_message[12]
+		BYTE_TO_DINT 
+		ST num_words
+
+(** 				 **)
+(** 					IF num_words > 11 THEN **)
+		(* if - Cond *)
+		LD num_words
+		GT 11
+		JMPCN ODK_SKIP_00000000000000H_000000000000001
+
+			(* then - Stmts *)
+
+(** 				   		num_words:=11; **)
+			(* assign - Stmt *)
+			LD 11
+			ST num_words
+
+			JMP ODK_END_IF_00000000000000H
+
+(** 					END_IF;     **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000H_000000000000001:
+		ODK_END_IF_00000000000000H:
+
+(** 			 **)
+(** 					Y:=start_adress;  **)
+		(* assign - Stmt *)
+		LD start_adress
+		ST Y
+
+(** 					Z:=10;				 **)
+		(* assign - Stmt *)
+		LD 10
+		ST Z
+
+(** 					Serial_write.data[9] := DINT_TO_BYTE(num_words*2); **)
+		(* assign - Stmt *)
+		LD num_words
+		MUL 2
+		DINT_TO_BYTE 
+		ST serial_write.data[9]
+
+(** 				         **)
+(** 					For Index:=1 to num_words BY 1 DO **)
+		(* for - Init *)
+		LD 1
+		ST Index
+		EQ num_words
+		JMPC ODK_FOR_STMTS_00000000000000I
+
+		(* for - Cond *)
+		ODK_FOR_00000000000000I:
+
+		LD 1
+		GT num_words
+		JMPC ODK_FOR_DOWN_00000000000000I
+
+		LD 0
+		GT 1
+		JMPC ODK_END_FOR_00000000000000I
+
+		LD num_words
+		LT Index
+		JMPC ODK_END_FOR_00000000000000I
+		JMP ODK_FOR_STMTS_00000000000000I
+
+		ODK_FOR_DOWN_00000000000000I:
+
+		LD num_words
+		GT Index
+		JMPC ODK_END_FOR_00000000000000I
+
+		LD 0
+		LT 1
+		JMPC ODK_END_FOR_00000000000000I
+
+			(* for - Stmts *)
+			ODK_FOR_STMTS_00000000000000I:
+
+(** 						ConvWord:=UploadData_ModBus_ValueWord [Y]; **)
+			(* assign - Stmt *)
+			LD UploadData_ModBus_ValueWord[Y]
+			ST ConvWord
+
+(** 						serial_write.data[Z]:=ConvByteH; **)
+			(* assign - Stmt *)
+			LD ConvByteH
+			ST serial_write.data[Z]
+
+(** 						Z:=Z+1; **)
+			(* assign - Stmt *)
+			LD Z
+			ADD 1
+			ST Z
+
+(** 						serial_write.data[Z]:=ConvByteL; **)
+			(* assign - Stmt *)
+			LD ConvByteL
+			ST serial_write.data[Z]
+
+(** 						Y:=Y+1; **)
+			(* assign - Stmt *)
+			LD Y
+			ADD 1
+			ST Y
+
+(** 						Z:=Z+1; **)
+			(* assign - Stmt *)
+			LD Z
+			ADD 1
+			ST Z
+
+		(* for - By *)
+		LD 1
+		ADD Index
+		ST Index
+(** 					END_FOR; **)
+
+		JMP ODK_FOR_00000000000000I
+
+		(* for - End *) 
+		ODK_END_FOR_00000000000000I:
+
+(** 					 **)
+(** 				 **)
+(** 					length := num_words * 2 + 3; **)
+		(* assign - Stmt *)
+		LD num_words
+		MUL 2
+		ADD 3
+		ST length
+
+(** 					tx_length := DINT_TO_BYTE(length); **)
+		(* assign - Stmt *)
+		LD length
+		DINT_TO_BYTE 
+		ST tx_length
+
+(** 					serial_write.data[6] := tx_length; {* lp *} **)
+		(* assign - Stmt *)
+		LD tx_length
+		ST serial_write.data[6]
+
+(** 					ProcStep:=10000; **)
+		(* assign - Stmt *)
+		LD 10000
+		ST ProcStep
+
+		JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(** {****************************************************************************}			 **)
+(** 50: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000006:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 50
+	JMPC ODK_CASE_000000000000002_000000000000007
+
+	JMP ODK_SKIP_000000000000002_000000000000007
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000007:
+
+(** 			{* Write single Coil *} **)
+(** 	 **)
+(** 				 **)
+(** 					Y:=start_adress;  **)
+		(* assign - Stmt *)
+		LD start_adress
+		ST Y
+
+(** 					ConvByteL := UploadData_message[11];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[11]
+		ST ConvByteL
+
+(** 					UploadData_ModBus_ValueBOOL [Y]:= ConvBit0; **)
+		(* assign - Stmt *)
+		LD ConvBit0
+		ST UploadData_ModBus_ValueBOOL[Y]
+
+(** 							 **)
+(** 					ProcStep:=999; **)
+		(* assign - Stmt *)
+		LD 999
+		ST ProcStep
+
+		JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(** 	{****************************************************************************}							 **)
+(** 60: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000007:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 60
+	JMPC ODK_CASE_000000000000002_000000000000008
+
+	JMP ODK_SKIP_000000000000002_000000000000008
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000008:
+
+(** 				{* Write single register *}				 **)
+(** 				{* single write *} **)
+(** 				{* Number of words *} **)
+(** 				{* serial_read.data[11]; *} **)
+(** 				num_words := BYTE_TO_DINT(UploadData_message[12]);  **)
+		(* assign - Stmt *)
+		LD UploadData_message[12]
+		BYTE_TO_DINT 
+		ST num_words
+
+(** 				Y:=start_adress; **)
+		(* assign - Stmt *)
+		LD start_adress
+		ST Y
+
+(** 				ConvByteH:=UploadData_message[11];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[11]
+		ST ConvByteH
+
+(** 			    ConvByteL:=UploadData_message[12];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[12]
+		ST ConvByteL
+
+(** 				UploadData_ModBus_ValueWord [Y]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST UploadData_ModBus_ValueWord[Y]
+
+(** 				 **)
+(** 				 **)
+(** 				ProcStep:=999;	 **)
+		(* assign - Stmt *)
+		LD 999
+		ST ProcStep
+
+		JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(** {****************************************************************************}			 **)
+(** 150: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000008:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 150
+	JMPC ODK_CASE_000000000000002_000000000000009
+
+	JMP ODK_SKIP_000000000000002_000000000000009
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000009:
+
+(** 					{*Write Multiple Coils  *} **)
+(** 					{* Number of Bits *} **)
+(** 				{* serial_read.data[11]; *} **)
+(** 				ConvByteH:= UploadData_message[11];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[11]
+		ST ConvByteH
+
+(** 				ConvByteL:= UploadData_message[12];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[12]
+		ST ConvByteL
+
+(** 				num_Bit  := Word_TO_DINT(ConvWord); **)
+		(* assign - Stmt *)
+		LD ConvWord
+		Word_TO_DINT 
+		ST num_Bit
+
+(** 				num_Byte :=(num_Bit/8)+1; **)
+		(* assign - Stmt *)
+		LD num_Bit
+		DIV 8
+		ADD 1
+		ST num_Byte
+
+(** 				ENDBIT:=(num_Bit/8); **)
+		(* assign - Stmt *)
+		LD num_Bit
+		DIV 8
+		ST ENDBIT
+
+(** 				Extra:=num_Bit-ENDBIT; **)
+		(* assign - Stmt *)
+		LD num_Bit
+		SUB ENDBIT
+		ST Extra
+
+(** 					Y:=start_adress;  **)
+		(* assign - Stmt *)
+		LD start_adress
+		ST Y
+
+(** 					Z:=10;				 **)
+		(* assign - Stmt *)
+		LD 10
+		ST Z
+
+(** 					 **)
+(** 				 IF  ENDBIT <>0 THEN          **)
+		(* if - Cond *)
+		LD ENDBIT
+		NE 0
+		JMPCN ODK_SKIP_00000000000000J_000000000000001
+
+			(* then - Stmts *)
+
+(** 					For Index:=1 to ENDBIT BY 1 DO **)
+			(* for - Init *)
+			LD 1
+			ST Index
+			EQ ENDBIT
+			JMPC ODK_FOR_STMTS_00000000000000K
+
+			(* for - Cond *)
+			ODK_FOR_00000000000000K:
+
+			LD 1
+			GT ENDBIT
+			JMPC ODK_FOR_DOWN_00000000000000K
+
+			LD 0
+			GT 1
+			JMPC ODK_END_FOR_00000000000000K
+
+			LD ENDBIT
+			LT Index
+			JMPC ODK_END_FOR_00000000000000K
+			JMP ODK_FOR_STMTS_00000000000000K
+
+			ODK_FOR_DOWN_00000000000000K:
+
+			LD ENDBIT
+			GT Index
+			JMPC ODK_END_FOR_00000000000000K
+
+			LD 0
+			LT 1
+			JMPC ODK_END_FOR_00000000000000K
+
+				(* for - Stmts *)
+				ODK_FOR_STMTS_00000000000000K:
+
+(** 					 **)
+(** 						ConvByteL:= UploadData_message[Z];  **)
+				(* assign - Stmt *)
+				LD UploadData_message[Z]
+				ST ConvByteL
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit0; **)
+				(* assign - Stmt *)
+				LD ConvBit0
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit1; **)
+				(* assign - Stmt *)
+				LD ConvBit1
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit2; **)
+				(* assign - Stmt *)
+				LD ConvBit2
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit3; **)
+				(* assign - Stmt *)
+				LD ConvBit3
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit4; **)
+				(* assign - Stmt *)
+				LD ConvBit4
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit5; **)
+				(* assign - Stmt *)
+				LD ConvBit5
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit6; **)
+				(* assign - Stmt *)
+				LD ConvBit6
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit7; **)
+				(* assign - Stmt *)
+				LD ConvBit7
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						Z:=Z+1; **)
+				(* assign - Stmt *)
+				LD Z
+				ADD 1
+				ST Z
+
+			(* for - By *)
+			LD 1
+			ADD Index
+			ST Index
+(** 					END_FOR; **)
+
+			JMP ODK_FOR_00000000000000K
+
+			(* for - End *) 
+			ODK_END_FOR_00000000000000K:
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 				END_IF; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000J_000000000000001:
+		ODK_END_IF_00000000000000J:
+
+(** 				 **)
+(** 					 **)
+(** 				{*Fill in last Bits *} **)
+(** 				ConvByteL:= UploadData_message[Z];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[Z]
+		ST ConvByteL
+
+(** 				IF Extra <> 0 Then 	 **)
+		(* if - Cond *)
+		LD Extra
+		NE 0
+		JMPCN ODK_SKIP_00000000000000L_000000000000001
+
+			(* then - Stmts *)
+
+(** 					UploadData_ModBus_ValueBOOL [Y]:=ConvBit0; **)
+			(* assign - Stmt *)
+			LD ConvBit0
+			ST UploadData_ModBus_ValueBOOL[Y]
+
+(** 					If Extra >1 Then 	 **)
+			(* if - Cond *)
+			LD Extra
+			GT 1
+			JMPCN ODK_SKIP_00000000000000M_000000000000001
+
+				(* then - Stmts *)
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit1; **)
+				(* assign - Stmt *)
+				LD ConvBit1
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+				JMP ODK_END_IF_00000000000000M
+
+(** 					END_IF;   **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000M_000000000000001:
+			ODK_END_IF_00000000000000M:
+
+(** 					If Extra >2 Then 	 **)
+			(* if - Cond *)
+			LD Extra
+			GT 2
+			JMPCN ODK_SKIP_00000000000000N_000000000000001
+
+				(* then - Stmts *)
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit2;   **)
+				(* assign - Stmt *)
+				LD ConvBit2
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+				JMP ODK_END_IF_00000000000000N
+
+(** 					END_IF;    **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000N_000000000000001:
+			ODK_END_IF_00000000000000N:
+
+(** 					If Extra >3 Then 	 **)
+			(* if - Cond *)
+			LD Extra
+			GT 3
+			JMPCN ODK_SKIP_00000000000000O_000000000000001
+
+				(* then - Stmts *)
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit3;   **)
+				(* assign - Stmt *)
+				LD ConvBit3
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+				JMP ODK_END_IF_00000000000000O
+
+(** 					END_IF; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000O_000000000000001:
+			ODK_END_IF_00000000000000O:
+
+(** 					If Extra >4 Then 	 **)
+			(* if - Cond *)
+			LD Extra
+			GT 4
+			JMPCN ODK_SKIP_00000000000000P_000000000000001
+
+				(* then - Stmts *)
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit4;    **)
+				(* assign - Stmt *)
+				LD ConvBit4
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+				JMP ODK_END_IF_00000000000000P
+
+(** 					END_IF; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000P_000000000000001:
+			ODK_END_IF_00000000000000P:
+
+(** 					If Extra >5 Then 	 **)
+			(* if - Cond *)
+			LD Extra
+			GT 5
+			JMPCN ODK_SKIP_00000000000000Q_000000000000001
+
+				(* then - Stmts *)
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit5;    **)
+				(* assign - Stmt *)
+				LD ConvBit5
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+				JMP ODK_END_IF_00000000000000Q
+
+(** 					END_IF;         	    **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000Q_000000000000001:
+			ODK_END_IF_00000000000000Q:
+
+(** 					If Extra >6 Then 	 **)
+			(* if - Cond *)
+			LD Extra
+			GT 6
+			JMPCN ODK_SKIP_00000000000000R_000000000000001
+
+				(* then - Stmts *)
+
+(** 						Y:=Y+1; **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+(** 						UploadData_ModBus_ValueBOOL [Y]:=ConvBit6;    **)
+				(* assign - Stmt *)
+				LD ConvBit6
+				ST UploadData_ModBus_ValueBOOL[Y]
+
+				JMP ODK_END_IF_00000000000000R
+
+(** 					END_IF; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000R_000000000000001:
+			ODK_END_IF_00000000000000R:
+
+			JMP ODK_END_IF_00000000000000L
+
+(** 									    **)
+(** 				END_IF; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000L_000000000000001:
+		ODK_END_IF_00000000000000L:
+
+(** 				ProcStep:=999; **)
+		(* assign - Stmt *)
+		LD 999
+		ST ProcStep
+
+		JMP ODK_END_CASE_000000000000002
+
+(** 				 **)
+(**  **)
+(** {****************************************************************************}				 **)
+(** 160: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000009:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 160
+	JMPC ODK_CASE_000000000000002_00000000000000A
+
+	JMP ODK_SKIP_000000000000002_00000000000000A
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_00000000000000A:
+
+(** 				{* Multiple write *} **)
+(** 				num_words:=Byte_TO_DInt(UploadData_message[12]);  **)
+		(* assign - Stmt *)
+		LD UploadData_message[12]
+		BYTE_TO_DINT 
+		ST num_words
+
+(** 				{* Check if message lenght outside the Buffer, if so do what ??? *} **)
+(** 				IF num_words > 9 THEN **)
+		(* if - Cond *)
+		LD num_words
+		GT 9
+		JMPCN ODK_SKIP_00000000000000S_000000000000001
+
+			(* then - Stmts *)
+
+(** 				   num_words:=9; **)
+			(* assign - Stmt *)
+			LD 9
+			ST num_words
+
+			JMP ODK_END_IF_00000000000000S
+
+(** 				END_IF;     **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000S_000000000000001:
+		ODK_END_IF_00000000000000S:
+
+(** 				Y:=start_adress; **)
+		(* assign - Stmt *)
+		LD start_adress
+		ST Y
+
+(** 				X:=14; **)
+		(* assign - Stmt *)
+		LD 14
+		ST X
+
+(** 				End:= Byte_TO_Int(UploadData_message[12]);  **)
+		(* assign - Stmt *)
+		LD UploadData_message[12]
+		Byte_TO_Int 
+		ST End
+
+(** 			 **)
+(** 				For Index:=1 to num_words BY 1 DO **)
+		(* for - Init *)
+		LD 1
+		ST Index
+		EQ num_words
+		JMPC ODK_FOR_STMTS_00000000000000T
+
+		(* for - Cond *)
+		ODK_FOR_00000000000000T:
+
+		LD 1
+		GT num_words
+		JMPC ODK_FOR_DOWN_00000000000000T
+
+		LD 0
+		GT 1
+		JMPC ODK_END_FOR_00000000000000T
+
+		LD num_words
+		LT Index
+		JMPC ODK_END_FOR_00000000000000T
+		JMP ODK_FOR_STMTS_00000000000000T
+
+		ODK_FOR_DOWN_00000000000000T:
+
+		LD num_words
+		GT Index
+		JMPC ODK_END_FOR_00000000000000T
+
+		LD 0
+		LT 1
+		JMPC ODK_END_FOR_00000000000000T
+
+			(* for - Stmts *)
+			ODK_FOR_STMTS_00000000000000T:
+
+(** 					ConvByteH:=UploadData_message[X];  **)
+			(* assign - Stmt *)
+			LD UploadData_message[X]
+			ST ConvByteH
+
+(** 					X:=X+1; **)
+			(* assign - Stmt *)
+			LD X
+			ADD 1
+			ST X
+
+(** 					ConvByteL:=UploadData_message[X];  **)
+			(* assign - Stmt *)
+			LD UploadData_message[X]
+			ST ConvByteL
+
+(** 					UploadData_ModBus_ValueWord [Y]:=ConvWord; **)
+			(* assign - Stmt *)
+			LD ConvWord
+			ST UploadData_ModBus_ValueWord[Y]
+
+(** 					X:=X+1; **)
+			(* assign - Stmt *)
+			LD X
+			ADD 1
+			ST X
+
+(** 					Y:=Y+1; **)
+			(* assign - Stmt *)
+			LD Y
+			ADD 1
+			ST Y
+
+		(* for - By *)
+		LD 1
+		ADD Index
+		ST Index
+(** 				END_FOR; **)
+
+		JMP ODK_FOR_00000000000000T
+
+		(* for - End *) 
+		ODK_END_FOR_00000000000000T:
+
+(** 				 **)
+(** 				ProcStep:=999;				 **)
+		(* assign - Stmt *)
+		LD 999
+		ST ProcStep
+
+		JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(**  **)
+(** {****************************************************************************} **)
+(** 999: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_00000000000000A:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 999
+	JMPC ODK_CASE_000000000000002_00000000000000B
+
+	JMP ODK_SKIP_000000000000002_00000000000000B
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_00000000000000B:
+
+(**  **)
+(** 				{*Send Echo *} **)
+(** 					Serial_write.data[9] := UploadData_message[9]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[9]
+		ST serial_write.data[9]
+
+(** 					serial_write.data[10] := UploadData_message[10];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[10]
+		ST serial_write.data[10]
+
+(** 					serial_write.data[11] := UploadData_message[11]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[11]
+		ST serial_write.data[11]
+
+(** 					serial_write.data[12] := UploadData_message[12]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[12]
+		ST serial_write.data[12]
+
+(** 					 **)
+(** 					length :=6; **)
+		(* assign - Stmt *)
+		LD 6
+		ST length
+
+(** 					tx_length := DINT_TO_BYTE(length); **)
+		(* assign - Stmt *)
+		LD length
+		DINT_TO_BYTE 
+		ST tx_length
+
+(** 			        serial_write.data[6] := tx_length; {* lp *} **)
+		(* assign - Stmt *)
+		LD tx_length
+		ST serial_write.data[6]
+
+(** 					ProcStep:=10000; **)
+		(* assign - Stmt *)
+		LD 10000
+		ST ProcStep
+
+		JMP ODK_END_CASE_000000000000002
+
+(** 			 **)
+(** {****************************************************************************}					 **)
+(** 10000: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_00000000000000B:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 10000
+	JMPC ODK_CASE_000000000000002_00000000000000C
+
+	JMP ODK_SKIP_000000000000002_00000000000000C
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_00000000000000C:
+
+(** 	 **)
+(** 			{*Send Data *} **)
+(** 				 **)
+(** 			serial_write.length := BYTE_TO_INT(tx_header_length) + BYTE_TO_INT(tx_length); **)
+		(* assign - Stmt *)
+		LD tx_header_length
+		Byte_TO_Int 
+		ADD ( tx_length
+			Byte_TO_Int 
+		)
+		ST serial_write.length
+
+(** 			serial_write(); **)
+		(* call - Stmt *)
+		CAL serial_write
+
+(** 			 **)
+(** 			serial_write.length := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST serial_write.length
+
+(** 			serial_write(); **)
+		(* call - Stmt *)
+		CAL serial_write
+
+(** 					 **)
+(** 			 **)
+(** 			IF serial_write.sent<>0 or serial_write.error<>0 Then **)
+		(* if - Cond *)
+		LD serial_write.sent
+		NE 0
+		OR ( serial_write.error
+			NE 0
+		)
+		JMPCN ODK_SKIP_00000000000000U_000000000000001
+
+			(* then - Stmts *)
+
+(** 				ProcStep:=0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST ProcStep
+
+(** 				DebugCounter := DebugCounter + 1; **)
+			(* assign - Stmt *)
+			LD DebugCounter
+			ADD 1
+			ST DebugCounter
+
+			JMP ODK_END_IF_00000000000000U
+
+(** 			End_IF; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000U_000000000000001:
+		ODK_END_IF_00000000000000U:
+
+		JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(** end_case; **)
+	(* case - End *) 
+	ODK_SKIP_000000000000002_00000000000000C:
+	ODK_END_CASE_000000000000002:
+
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

@@ -1,0 +1,66 @@
+FUNCTION_BLOCK LS2000_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+	Slowdown : bool;
+END_VAR
+
+VAR
+	LS2000Field1TON :TON;
+	LS2000Field2TON :TON;
+END_VAR
+(* Function to slow down, and eventually stop, if there is an obstacle in the path of the LS2000. *)
+
+LS2000Field1TON (IN:= NDC8.LS2000.Field1_Triggered, PT:=T#160ms); (*Timer 160ms to filter signal*)
+LS2000Field2TON (IN:= NDC8.LS2000.Field2_Triggered, PT:=T#160ms); (*Timer 160ms to filter signal *)
+
+(* Stop window (Field 1), relative the scanner. *)
+NDC8.LS2000.Field1_X1 := NDC8.LS2000.X - 100;	(* 500 mm behind. 		*)
+NDC8.LS2000.Field1_X2 := NDC8.LS2000.X + 100;	(* 500 mm in front. 	*)
+NDC8.LS2000.Field1_Y1 := NDC8.LS2000.Y - 100;	(* 500 mm to the left. 	*)
+NDC8.LS2000.Field1_Y2 := NDC8.LS2000.Y + 100;	(* 500 mm to the right. *)
+
+(* Slow down window (Field 2), relative the scanner. *)
+NDC8.LS2000.Field2_X1 := NDC8.LS2000.X - 100;	(* 1000 mm behind.		*)
+NDC8.LS2000.Field2_X2 := NDC8.LS2000.X + 100;	(* 1000 mm in front.	*)
+NDC8.LS2000.Field2_Y1 := NDC8.LS2000.Y - 100;	(* 1000 mm to the left.	*)
+NDC8.LS2000.Field2_Y2 := NDC8.LS2000.Y + 100;	(* 1000 mm to the right.*)
+
+
+if INPUT.Manual  or NDC8.LoadOperation.OperationCode <> 0 then
+	NDC8.LS2000.Field1_X1 := NDC8.LS2000.X ;	(* 500 mm behind. 		*)
+	NDC8.LS2000.Field1_X2 := NDC8.LS2000.X;	(* 500 mm in front. 	*)
+	NDC8.LS2000.Field1_Y1 := NDC8.LS2000.Y;	(* 500 mm to the left. 	*)
+	NDC8.LS2000.Field1_Y2 := NDC8.LS2000.Y;	(* 500 mm to the right. *)
+
+	NDC8.LS2000.Field2_X1 := NDC8.LS2000.X;	(* 1000 mm behind.		*)
+	NDC8.LS2000.Field2_X2 := NDC8.LS2000.X;	(* 1000 mm in front.	*)
+	NDC8.LS2000.Field2_Y1 := NDC8.LS2000.Y;	(* 1000 mm to the left.	*)
+	NDC8.LS2000.Field2_Y2 := NDC8.LS2000.Y;	(* 1000 mm to the right.*)
+end_if;
+
+
+(* Stop the vehicle if it is about to run into a low hanging obstacle and hit the LS2000. *)
+StopLS2000 := LS2000Field1TON.q ;
+DisplayStopString(INStatus:=StopLS2000, StopString:=197, StopValue:=0);	
+
+(* Slow the vehicle down if it is about to run into a low hanging obstacle and hit the LS2000. *)
+Slowdown := LS2000Field2TON.q  ;
+DisplayStopString(INStatus:=Slowdown, StopString:=198, StopValue:=0);	
+
+
+
+
+
+
+
+
+
+
+END_FUNCTION_BLOCK

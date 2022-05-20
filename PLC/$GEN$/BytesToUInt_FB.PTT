@@ -1,0 +1,15 @@
+FUNCTION_BLOCK BytesToUInt_FB 
+
+
+ VAR_INPUT
+  Byte1 : byte ;
+  Byte2 : byte ;
+  END_VAR 
+
+ VAR_OUTPUT
+  UIntValue : uint ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

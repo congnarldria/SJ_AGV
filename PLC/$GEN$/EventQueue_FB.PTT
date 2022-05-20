@@ -1,0 +1,20 @@
+FUNCTION_BLOCK EventQueue_FB 
+
+
+ VAR_INPUT
+  EventCode : DINT ;
+  Par1 : DINT ;
+  Par2 : DINT ;
+  Par3 : DINT ;
+  Par4 : DINT ;
+  END_VAR 
+
+ VAR_OUTPUT
+  Error : DINT ;
+  Slot : DINT ;
+  ID : DINT ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

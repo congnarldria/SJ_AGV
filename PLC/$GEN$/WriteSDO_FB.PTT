@@ -1,0 +1,19 @@
+FUNCTION_BLOCK WriteSDO_FB 
+
+
+ VAR_INPUT
+  Node , ObjectIndex , SubIndex , Value : dint ;
+  DataType , StrValue : STRING ;
+  END_VAR 
+
+ VAR_OUTPUT
+  ErrorCode : STRING ;
+  Finished : BOOL := false ;
+  Valid : BOOL ;
+  State_WriteSdo : DINT := 1 ;
+  Count : dint ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

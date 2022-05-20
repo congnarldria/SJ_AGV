@@ -1,0 +1,285 @@
+FUNCTION_BLOCK DRIVERSUPERVISION_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;	
+
+END_VAR
+
+VAR_INPUT
+	Command : INT;
+	FeedBack : INT;
+	Range : INT;
+	Timeout : TIME;
+	Moving : BOOL;
+	
+END_VAR
+
+VAR_OUTPUT
+	OverRangeFail : BOOL;
+	NotMovingFail : BOOL;
+END_VAR
+
+VAR
+	iFeedBack : INT;
+	Diff : INT;
+	
+	OverRange_failure : BOOL;
+	NotMoving_failure : BOOL;
+
+	MovingR : R_Trig;
+	MovingF : F_Trig;
+	
+	OverRangeFailTimerTON : TON;
+	NotMovingFailTimerTON : TON;
+	
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+END_VAR
+(** OverRangeFailTimerTON(IN:=OverRange_failure, Pt:=Timeout); **)
+	(* call - Stmt *)
+	CAL OverRangeFailTimerTON (
+		IN := OverRange_failure,
+		Pt := Timeout
+	)
+
+(** NotMovingFailTimerTON(IN:=NotMoving_failure, Pt:=Timeout); **)
+	(* call - Stmt *)
+	CAL NotMovingFailTimerTON (
+		IN := NotMoving_failure,
+		Pt := Timeout
+	)
+
+(**  **)
+(** MovingR(CLK:= Moving); **)
+	(* call - Stmt *)
+	CAL MovingR (
+		CLK := Moving
+	)
+
+(** MovingF(CLK:= Moving); **)
+	(* call - Stmt *)
+	CAL MovingF (
+		CLK := Moving
+	)
+
+(**  **)
+(** if MovingF.Q then **)
+	(* if - Cond *)
+	LD MovingF.Q
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	OverRangeFailTimerTON(IN := FALSE); **)
+		(* call - Stmt *)
+		CAL OverRangeFailTimerTON (
+			IN := FALSE
+		)
+
+(** 	NotMovingFailTimerTON(IN := FALSE); **)
+		(* call - Stmt *)
+		CAL NotMovingFailTimerTON (
+			IN := FALSE
+		)
+
+(** 	 **)
+(** 	NotMoving_failure := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NotMoving_failure
+
+(** 	OverRange_failure := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST OverRange_failure
+
+(** 	 **)
+(** 	OverRangeFail := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST OverRangeFail
+
+(** 	NotMovingFail := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NotMovingFail
+
+		JMP ODK_END_IF_000000000000001
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(** if MovingR.Q then **)
+	(* if - Cond *)
+	LD MovingR.Q
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
+(** 	iFeedBack := FeedBack; **)
+		(* assign - Stmt *)
+		LD FeedBack
+		ST iFeedBack
+
+		JMP ODK_END_IF_000000000000002
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000002_000000000000001:
+	ODK_END_IF_000000000000002:
+
+(** 	 **)
+(** Diff := FeedBack - Command; **)
+	(* assign - Stmt *)
+	LD FeedBack
+	SUB Command
+	ST Diff
+
+(**  **)
+(** if abs(Diff) > Range then  **)
+	(* if - Cond *)
+	LD Diff
+	abs 
+	GT Range
+	JMPCN ODK_SKIP_000000000000003_000000000000001
+
+		(* then - Stmts *)
+
+(** 	OverRange_failure := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST OverRange_failure
+
+		JMP ODK_END_IF_000000000000003
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000003_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	OverRange_failure := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST OverRange_failure
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000003:
+
+(**  **)
+(** if OverRangeFailTimerTON.Q = TRUE then **)
+	(* if - Cond *)
+	LD OverRangeFailTimerTON.Q
+	EQ TRUE
+	JMPCN ODK_SKIP_000000000000004_000000000000001
+
+		(* then - Stmts *)
+
+(** 	OverRangeFail := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST OverRangeFail
+
+		JMP ODK_END_IF_000000000000004
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000004_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	OverRangeFail := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST OverRangeFail
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000004:
+
+(**  **)
+(** if Moving then  **)
+	(* if - Cond *)
+	LD Moving
+	JMPCN ODK_SKIP_000000000000005_000000000000001
+
+		(* then - Stmts *)
+
+(** 	if FeedBack = iFeedBack then **)
+		(* if - Cond *)
+		LD FeedBack
+		EQ iFeedBack
+		JMPCN ODK_SKIP_000000000000006_000000000000001
+
+			(* then - Stmts *)
+
+(** 		NotMoving_failure:= TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NotMoving_failure
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	else  **)
+		(* else *) 
+		ODK_SKIP_000000000000006_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		NotMoving_failure := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NotMoving_failure
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000006:
+
+(**  **)
+(** 	if NotMovingFailTimerTON.Q = TRUE then **)
+		(* if - Cond *)
+		LD NotMovingFailTimerTON.Q
+		EQ TRUE
+		JMPCN ODK_SKIP_000000000000007_000000000000001
+
+			(* then - Stmts *)
+
+(** 		NotMovingFail := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NotMovingFail
+
+			JMP ODK_END_IF_000000000000007
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_000000000000007_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		NotMovingFail := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NotMovingFail
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000007:
+
+		JMP ODK_END_IF_000000000000005
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000005_000000000000001:
+	ODK_END_IF_000000000000005:
+
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

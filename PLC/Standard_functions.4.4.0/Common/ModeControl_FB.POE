@@ -1,0 +1,913 @@
+FUNCTION_BLOCK MODECONTROL_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;
+	INPUT : INPUT_T;
+	TRUCK : TRUCK_T;
+		
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+		Auto			: bool; (* 8 *)
+		Manual			: bool; (* 1 *)
+		Semi			: bool; (* 2 *)
+		PPA				: bool; (* 4 *)
+
+END_VAR
+
+VAR
+	State			: dint;
+	SteerModeRT		: r_trig;
+	SteerModeRT2	: r_trig;
+	SteerMode	: dint;
+	
+	StepDelay : TON;
+	
+	NoMcdTimer : TON;
+
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	STOPRESET : BOOL;
+	DISPLAYSTOPSTRING : DisplayStopString_FB;
+	INSTATUS : bool;
+	G_STARTFINDSYNC : BOOL;
+	STOPWORD2 : DWORD;
+	STOPMANUAL : BOOL;
+	STOPWORD : DWORD;
+	STOPLOADOP : BOOL;
+	G_ERRORCODE : WORD;
+END_VAR
+(** {*****************************************************************************************} **)
+(** {* Truck Modes of Operation: **)
+(**  **)
+(** 	Auto  					- full AGV control **)
+(** 	Manual					- Vehicle driven from tiller arm or MCD. **)
+(** 	PPA Tune  				- AGV drive mode, but vehicle controller set to manual mode to allow PPA Tuning  **)
+(** 	 **)
+(** 	NDC8.Manual.PlcSelectMask	DINT 	Individually select mask:  **)
+(** 		Bit0:PlcAngle 				2#00000 **)
+(** 		Bit1:PlcSpeed 				2#00010 **)
+(** 		Bit2:PlcSetOperationMode 	2#00100 **)
+(** 		Bit3:Reserved 				2#01000 **)
+(** 		Bit4:PlcSteerMethod			2#10000 **)
+(** 	*} **)
+(**  **)
+(** NDC8.Manual.PlcSelect := true;							{* By default, allow overrides.*} **)
+	(* assign - Stmt *)
+	LD true
+	ST NDC8.Manual.PlcSelect
+
+(** NDC8.Manual.PlcSelectMask := 0;							{* By default, don't override anything*} **)
+	(* assign - Stmt *)
+	LD 0
+	ST NDC8.Manual.PlcSelectMask
+
+(**  **)
+(** {* only one mode is allowed at one time *} **)
+(** Auto 			:= word_to_bool(dint_to_word(State) and 16#8); **)
+	(* assign - Stmt *)
+	LD State
+	dint_to_word 
+	AND 16#8
+	word_to_bool 
+	ST Auto
+
+(** Manual			:= word_to_bool(dint_to_word(State) and 16#1); **)
+	(* assign - Stmt *)
+	LD State
+	dint_to_word 
+	AND 16#1
+	word_to_bool 
+	ST Manual
+
+(** Semi			:= word_to_bool(dint_to_word(State) and 16#2); **)
+	(* assign - Stmt *)
+	LD State
+	dint_to_word 
+	AND 16#2
+	word_to_bool 
+	ST Semi
+
+(** PPA 			:= word_to_bool(dint_to_word(State) and 16#4);		 **)
+	(* assign - Stmt *)
+	LD State
+	dint_to_word 
+	AND 16#4
+	word_to_bool 
+	ST PPA
+
+(**  **)
+(** INPUT.Auto := Auto; **)
+	(* assign - Stmt *)
+	LD Auto
+	ST INPUT.Auto
+
+(** INPUT.Manual := Manual; **)
+	(* assign - Stmt *)
+	LD Manual
+	ST INPUT.Manual
+
+(** INPUT.Semi := Semi; **)
+	(* assign - Stmt *)
+	LD Semi
+	ST INPUT.Semi
+
+(** INPUT.PPA := PPA; **)
+	(* assign - Stmt *)
+	LD PPA
+	ST INPUT.PPA
+
+(**  **)
+(**  **)
+(** if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then **)
+	(* if - Cond *)
+	LD NDC8.Mcd.Valid
+	EQ true
+	AND ( g_StartFindSync
+		EQ FALSE
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	SteerModeRT(CLK:=Input.ChangeSteerMode_PB);		{* New steer mode requested (Quad vehicle)   **)
+		(* call - Stmt *)
+		CAL SteerModeRT (
+			CLK := INPUT.ChangeSteerMode_PB
+		)
+
+(** 															0: 2*SD Anti-parallel **)
+(** 															1: 2*SD Parallel  **)
+(** 															2: DiffDrive  				*} **)
+(** 	SteerModeRT2(CLK:=Input.ChangeSteerMode_PB2); **)
+		(* call - Stmt *)
+		CAL SteerModeRT2 (
+			CLK := INPUT.ChangeSteerMode_PB2
+		)
+
+(**  **)
+(** 	case State of	 **)
+(** 	{***************************************************************************************** **)
+(** 				Automatic mode **)
+(** 	*****************************************************************************************} **)
+(** 	0: State := 8; **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000002_000000000000000:
+
+		(* case - Cond *)
+		LD State
+		EQ 0
+		JMPC ODK_CASE_000000000000002_000000000000001
+
+		JMP ODK_SKIP_000000000000002_000000000000001
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000002_000000000000001:
+
+			(* assign - Stmt *)
+			LD 8
+			ST State
+
+			JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(** 	8:	NDC8.Manual.PlcSetOperationMode := 0;			{* Operation mode Auto *} **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000002_000000000000001:
+
+		(* case - Cond *)
+		LD State
+		EQ 8
+		JMPC ODK_CASE_000000000000002_000000000000002
+
+		JMP ODK_SKIP_000000000000002_000000000000002
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000002_000000000000002:
+
+			(* assign - Stmt *)
+			LD 0
+			ST NDC8.Manual.PlcSetOperationMode
+
+(** 		NDC8.Manual.PlcSelectMask		:= 2#00110;	{* Override Set speed, to allow autinsert from outside safety zone  **)
+			(* assign - Stmt *)
+			LD 2#00110
+			ST NDC8.Manual.PlcSelectMask
+
+(** 														 Speed is set in AutoInsert FB. *} **)
+(** 	 **)
+(** 		{**** Exit this mode? ***}	 **)
+(** 		if NDC8.Mcd.Button2 and NDC8.Mcd.Valid then		{* MCD semi mode *} **)
+			(* if - Cond *)
+			LD NDC8.Mcd.Button2
+			AND NDC8.Mcd.Valid
+			JMPCN ODK_SKIP_000000000000003_000000000000001
+
+				(* then - Stmts *)
+
+(** 			State := 2; **)
+				(* assign - Stmt *)
+				LD 2
+				ST State
+
+				JMP ODK_END_IF_000000000000003
+
+(** 		 **)
+(** 		elsif (NDC8.Mcd.Button3 and NDC8.Mcd.Valid)		{* MCD manual mode *} **)
+(** 			or INPUT.TillerArmDown 						{* Manual arm down, switch to manual mode		*} **)
+(** 			or INPUT.GateOpen **)
+(** 			or INPUT.PlatformNotUpperPos then					 **)
+			(* elseif - Cond *) 
+			ODK_SKIP_000000000000003_000000000000001:
+			LD NDC8.Mcd.Button3
+			AND NDC8.Mcd.Valid
+			OR INPUT.TillerArmDown
+			OR INPUT.GateOpen
+			OR INPUT.PlatformNotUpperPos
+			JMPCN ODK_SKIP_000000000000003_000000000000002
+
+				(* elsif - Stmts *)
+
+(** 				State := 1; **)
+				(* assign - Stmt *)
+				LD 1
+				ST State
+
+				JMP ODK_END_IF_000000000000003
+
+(** 									 **)
+(** 		elsif NDC8.Userdefined.PPAEnable = 2 then		{* Change to PPA mode if set in OPT	expert menu.*} **)
+			(* elseif - Cond *) 
+			ODK_SKIP_000000000000003_000000000000002:
+			LD NDC8.Userdefined.PPAEnable
+			EQ 2
+			JMPCN ODK_SKIP_000000000000003_000000000000003
+
+				(* elsif - Stmts *)
+
+(** 				State := 4; **)
+				(* assign - Stmt *)
+				LD 4
+				ST State
+
+				JMP ODK_END_IF_000000000000003
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_000000000000003_000000000000003:
+			ODK_END_IF_000000000000003:
+
+			JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(**  **)
+(** 	{***************************************************************************************** **)
+(** 				Semi mode (MCD throttle, automatic steering) **)
+(** 	*****************************************************************************************} **)
+(** 	2:	NDC8.Manual.PlcSetOperationMode := 2;			{* Set semi mode *} **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000002_000000000000002:
+
+		(* case - Cond *)
+		LD State
+		EQ 2
+		JMPC ODK_CASE_000000000000002_000000000000003
+
+		JMP ODK_SKIP_000000000000002_000000000000003
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000002_000000000000003:
+
+			(* assign - Stmt *)
+			LD 2
+			ST NDC8.Manual.PlcSetOperationMode
+
+(** 		NDC8.Manual.PlcSelectMask 		:= 2#10010;	{* Override operation mode and steer mode (quad) *} **)
+			(* assign - Stmt *)
+			LD 2#10010
+			ST NDC8.Manual.PlcSelectMask
+
+(** 			 **)
+(** 		 **)
+(** 		{**** Exit this mode? ***}	 **)
+(** 		if NDC8.Mcd.Button1 or not NDC8.Mcd.Valid then		{* If disconnect the MCD or switch modes, to auto *} **)
+			(* if - Cond *)
+			LD NDC8.Mcd.Button1
+			OR ( NDC8.Mcd.Valid
+				NOT
+			)
+			JMPCN ODK_SKIP_000000000000004_000000000000001
+
+				(* then - Stmts *)
+
+(** 			State := 8; **)
+				(* assign - Stmt *)
+				LD 8
+				ST State
+
+				JMP ODK_END_IF_000000000000004
+
+(** 		 **)
+(** 		elsif (NDC8.Mcd.Button3 and NDC8.Mcd.Valid) then	{* If disconnect the MCD or switch modes, to auto *} **)
+			(* elseif - Cond *) 
+			ODK_SKIP_000000000000004_000000000000001:
+			LD NDC8.Mcd.Button3
+			AND NDC8.Mcd.Valid
+			JMPCN ODK_SKIP_000000000000004_000000000000002
+
+				(* elsif - Stmts *)
+
+(** 			State := 1; **)
+				(* assign - Stmt *)
+				LD 1
+				ST State
+
+				JMP ODK_END_IF_000000000000004
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_000000000000004_000000000000002:
+			ODK_END_IF_000000000000004:
+
+			JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(** 	{***************************************************************************************** **)
+(** 				Manual driving **)
+(** 	*****************************************************************************************} **)
+(** 	1:	NDC8.Manual.PlcSetOperationMode := 1;				{* Set Manual mode 							*} **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000002_000000000000003:
+
+		(* case - Cond *)
+		LD State
+		EQ 1
+		JMPC ODK_CASE_000000000000002_000000000000004
+
+		JMP ODK_SKIP_000000000000002_000000000000004
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000002_000000000000004:
+
+			(* assign - Stmt *)
+			LD 1
+			ST NDC8.Manual.PlcSetOperationMode
+
+(** 		StopLoadOP := False;								{* Clear load op cancel stop bit			*} **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST StopLoadOP
+
+(** 	 **)
+(** 		if SteerModeRT.q then **)
+			(* if - Cond *)
+			LD SteerModeRT.q
+			JMPCN ODK_SKIP_000000000000005_000000000000001
+
+				(* then - Stmts *)
+
+(** 			SteerMode:= SteerMode + 1;          			{* Toggle steermode *} **)
+				(* assign - Stmt *)
+				LD SteerMode
+				ADD 1
+				ST SteerMode
+
+(** 	        if SteerMode > 2 then                  			{* Limit *} **)
+				(* if - Cond *)
+				LD SteerMode
+				GT 2
+				JMPCN ODK_SKIP_000000000000006_000000000000001
+
+					(* then - Stmts *)
+
+(** 	        	SteerMode:= 0;                				{* Reset *} **)
+					(* assign - Stmt *)
+					LD 0
+					ST SteerMode
+
+					JMP ODK_END_IF_000000000000006
+
+(** 			end_if; **)
+				(* if - End *) 
+				ODK_SKIP_000000000000006_000000000000001:
+				ODK_END_IF_000000000000006:
+
+(** 	        NDC8.Manual.PLCSteerMode:= SteerMode;   		{* Use steermode *} **)
+				(* assign - Stmt *)
+				LD SteerMode
+				ST NDC8.Manual.PLCSteerMode
+
+				JMP ODK_END_IF_000000000000005
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_000000000000005_000000000000001:
+			ODK_END_IF_000000000000005:
+
+(** 		 **)
+(** 		if SteerModeRT2.q then **)
+			(* if - Cond *)
+			LD SteerModeRT2.q
+			JMPCN ODK_SKIP_000000000000007_000000000000001
+
+				(* then - Stmts *)
+
+(** 			SteerMode:= SteerMode - 1;          		{* Toggle steermode *} **)
+				(* assign - Stmt *)
+				LD SteerMode
+				SUB 1
+				ST SteerMode
+
+(** 	        if SteerMode < 0 then                  		{* Limit *} **)
+				(* if - Cond *)
+				LD SteerMode
+				LT 0
+				JMPCN ODK_SKIP_000000000000008_000000000000001
+
+					(* then - Stmts *)
+
+(** 	        	SteerMode:= 2;                			{* Reset *} **)
+					(* assign - Stmt *)
+					LD 2
+					ST SteerMode
+
+					JMP ODK_END_IF_000000000000008
+
+(** 			end_if; **)
+				(* if - End *) 
+				ODK_SKIP_000000000000008_000000000000001:
+				ODK_END_IF_000000000000008:
+
+(** 	        NDC8.Manual.PLCSteerMode:= SteerMode;   	{* Use steermode *} **)
+				(* assign - Stmt *)
+				LD SteerMode
+				ST NDC8.Manual.PLCSteerMode
+
+				JMP ODK_END_IF_000000000000007
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_000000000000007_000000000000001:
+			ODK_END_IF_000000000000007:
+
+(**  **)
+(** 		if NDC8.Mcd.Valid then								{* If mcd connected						 	*} **)
+			(* if - Cond *)
+			LD NDC8.Mcd.Valid
+			JMPCN ODK_SKIP_000000000000009_000000000000001
+
+				(* then - Stmts *)
+
+(** 			if Input.ZeroSteerAngle_PB then					{* If "set zero angle" key					*}		 **)
+				(* if - Cond *)
+				LD INPUT.ZeroSteerAngle_PB
+				JMPCN ODK_SKIP_00000000000000A_000000000000001
+
+					(* then - Stmts *)
+
+(** 				NDC8.Manual.PLCAngle 			:= 0;		{* Set angle to 0							*} **)
+					(* assign - Stmt *)
+					LD 0
+					ST NDC8.Manual.PLCAngle
+
+(** 				 **)
+(** 				if StopWord = 0 and StopWord2 = 0  then **)
+					(* if - Cond *)
+					LD StopWord
+					EQ 0
+					AND ( StopWord2
+						EQ 0
+					)
+					JMPCN ODK_SKIP_00000000000000B_000000000000001
+
+						(* then - Stmts *)
+
+(** 					NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed; **)
+						(* assign - Stmt *)
+						LD NDC8.Mcd.Speed
+						ST NDC8.Manual.PlcSpeed
+
+						JMP ODK_END_IF_00000000000000B
+
+(** 				elsif NDC8.Mcd.Button8 = FALSE then **)
+					(* elseif - Cond *) 
+					ODK_SKIP_00000000000000B_000000000000001:
+					LD NDC8.Mcd.Button8
+					EQ FALSE
+					JMPCN ODK_SKIP_00000000000000B_000000000000002
+
+						(* elsif - Stmts *)
+
+(** 					NDC8.Manual.PlcSpeed			:= 0; **)
+						(* assign - Stmt *)
+						LD 0
+						ST NDC8.Manual.PlcSpeed
+
+						JMP ODK_END_IF_00000000000000B
+
+(** 				elsif NDC8.Mcd.Button8 = TRUE then **)
+					(* elseif - Cond *) 
+					ODK_SKIP_00000000000000B_000000000000002:
+					LD NDC8.Mcd.Button8
+					EQ true
+					JMPCN ODK_SKIP_00000000000000B_000000000000003
+
+						(* elsif - Stmts *)
+
+(** 					NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed; **)
+						(* assign - Stmt *)
+						LD NDC8.Mcd.Speed
+						ST NDC8.Manual.PlcSpeed
+
+						JMP ODK_END_IF_00000000000000B
+
+(** 				end_if; **)
+					(* if - End *) 
+					ODK_SKIP_00000000000000B_000000000000003:
+					ODK_END_IF_00000000000000B:
+
+(** 				 **)
+(** 				NDC8.Manual.PlcSelectMask 		:= 2#10111;{* Override operation mode, steer mode and set angle	*} **)
+					(* assign - Stmt *)
+					LD 2#10111
+					ST NDC8.Manual.PlcSelectMask
+
+					JMP ODK_END_IF_00000000000000A
+
+(** 			else **)
+				(* else *) 
+				ODK_SKIP_00000000000000A_000000000000001:
+
+					(* else - Stmts *)
+
+(** 				NDC8.Manual.PLCAngle 			:= NDC8.Mcd.Angle / 3; **)
+					(* assign - Stmt *)
+					LD NDC8.Mcd.Angle
+					DIV 3
+					ST NDC8.Manual.PLCAngle
+
+(** 				 **)
+(** 				if StopWord = 0 and StopWord2 = 0  then **)
+					(* if - Cond *)
+					LD StopWord
+					EQ 0
+					AND ( StopWord2
+						EQ 0
+					)
+					JMPCN ODK_SKIP_00000000000000C_000000000000001
+
+						(* then - Stmts *)
+
+(** 					NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed; **)
+						(* assign - Stmt *)
+						LD NDC8.Mcd.Speed
+						ST NDC8.Manual.PlcSpeed
+
+						JMP ODK_END_IF_00000000000000C
+
+(** 				elsif NDC8.Mcd.Button8 = FALSE then **)
+					(* elseif - Cond *) 
+					ODK_SKIP_00000000000000C_000000000000001:
+					LD NDC8.Mcd.Button8
+					EQ FALSE
+					JMPCN ODK_SKIP_00000000000000C_000000000000002
+
+						(* elsif - Stmts *)
+
+(** 					NDC8.Manual.PlcSpeed			:= 0; **)
+						(* assign - Stmt *)
+						LD 0
+						ST NDC8.Manual.PlcSpeed
+
+						JMP ODK_END_IF_00000000000000C
+
+(** 				elsif NDC8.Mcd.Button8 = TRUE then **)
+					(* elseif - Cond *) 
+					ODK_SKIP_00000000000000C_000000000000002:
+					LD NDC8.Mcd.Button8
+					EQ true
+					JMPCN ODK_SKIP_00000000000000C_000000000000003
+
+						(* elsif - Stmts *)
+
+(** 					NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed; **)
+						(* assign - Stmt *)
+						LD NDC8.Mcd.Speed
+						ST NDC8.Manual.PlcSpeed
+
+						JMP ODK_END_IF_00000000000000C
+
+(** 				end_if; **)
+					(* if - End *) 
+					ODK_SKIP_00000000000000C_000000000000003:
+					ODK_END_IF_00000000000000C:
+
+(** 				 **)
+(** 				NDC8.Manual.PlcSelectMask 		:= 2#10111;{* Override operation mode and steer mode		*} **)
+					(* assign - Stmt *)
+					LD 2#10111
+					ST NDC8.Manual.PlcSelectMask
+
+(** 			end_if; **)
+				(* if - End *) 
+				ODK_END_IF_00000000000000A:
+
+(** 			DisplayStopString(INStatus:=Input.ZeroSteerAngle_PB, StopString:=184, StopValue:=0); **)
+				(* call - Stmt *)
+				CAL DisplayStopString (
+					INStatus := INPUT.ZeroSteerAngle_PB,
+					StopString := 184,
+					StopValue := 0
+				)
+
+(** 			StopManual := false; **)
+				(* assign - Stmt *)
+				LD FALSE
+				ST StopManual
+
+				JMP ODK_END_IF_000000000000009
+
+(**  **)
+(** 		else **)
+			(* else *) 
+			ODK_SKIP_000000000000009_000000000000001:
+
+				(* else - Stmts *)
+
+(** 			NDC8.Manual.PlcSelectMask 		:= 2#10101;			{* Override operation mode, set angle and steer mode		*} **)
+				(* assign - Stmt *)
+				LD 2#10101
+				ST NDC8.Manual.PlcSelectMask
+
+(** 			NDC8.Manual.PlcAngle := Input.SteerEncAngle;		{* Follow encoder angle, to start autoinsert with this set angle. *} **)
+				(* assign - Stmt *)
+				LD INPUT.SteerEncAngle
+				ST NDC8.Manual.PLCAngle
+
+(**  **)
+(** 			StopManual	:= not Input.GateOpen 					{* Set stop bit while waiting to go to auto.	*} **)
+(** 						and not Input.TillerArmDown  **)
+(** 						and not Input.PlatformNotUpperPos **)
+(** 						and not Input.Reset_PB; **)
+				(* assign - Stmt *)
+				LD INPUT.GateOpen
+				NOT
+				AND ( INPUT.TillerArmDown
+					NOT
+				)
+				AND ( INPUT.PlatformNotUpperPos
+					NOT
+				)
+				AND ( INPUT.Reset_PB
+					NOT
+				)
+				ST StopManual
+
+(** 			StopReset	:= StopReset OR StopManual; 			{* This stop signal needs to be reset			*} **)
+				(* assign - Stmt *)
+				LD StopReset
+				OR StopManual
+				ST StopReset
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_END_IF_000000000000009:
+
+(** 	 **)
+(** 		{**** Exit this mode? ***}	 **)
+(** 		if NDC8.Mcd.Valid then									{* If MCD is connected							*} **)
+			(* if - Cond *)
+			LD NDC8.Mcd.Valid
+			JMPCN ODK_SKIP_00000000000000D_000000000000001
+
+				(* then - Stmts *)
+
+(** 			if NDC8.Mcd.Button1 then							{* Auto mode on MCD? Switch to automatic mode.	*} **)
+				(* if - Cond *)
+				LD NDC8.Mcd.Button1
+				JMPCN ODK_SKIP_00000000000000E_000000000000001
+
+					(* then - Stmts *)
+
+(** 				State := 8; **)
+					(* assign - Stmt *)
+					LD 8
+					ST State
+
+					JMP ODK_END_IF_00000000000000E
+
+(** 			elsif NDC8.Mcd.Button2 then							{* Semi mode on mcd? Switch to semi mode		*} **)
+				(* elseif - Cond *) 
+				ODK_SKIP_00000000000000E_000000000000001:
+				LD NDC8.Mcd.Button2
+				JMPCN ODK_SKIP_00000000000000E_000000000000002
+
+					(* elsif - Stmts *)
+
+(** 				State := 2; **)
+					(* assign - Stmt *)
+					LD 2
+					ST State
+
+					JMP ODK_END_IF_00000000000000E
+
+(** 			end_if; **)
+				(* if - End *) 
+				ODK_SKIP_00000000000000E_000000000000002:
+				ODK_END_IF_00000000000000E:
+
+				JMP ODK_END_IF_00000000000000D
+
+(** 		else **)
+			(* else *) 
+			ODK_SKIP_00000000000000D_000000000000001:
+
+				(* else - Stmts *)
+
+(** 			if 	not Input.TillerArmDown							{* Tiller arm up								*} **)
+(** 				and not Input.GateOpen							{* and gate closed 								*} **)
+(** 				and not Input.PlatformNotUpperPos				{* and platform up 								*} **)
+(** 				and Input.Reset_PB then							{* and reset push button! 						*} **)
+				(* if - Cond *)
+				LD INPUT.TillerArmDown
+				NOT
+				AND ( INPUT.GateOpen
+					NOT
+				)
+				AND ( INPUT.PlatformNotUpperPos
+					NOT
+				)
+				AND INPUT.Reset_PB
+				JMPCN ODK_SKIP_00000000000000F_000000000000001
+
+					(* then - Stmts *)
+
+(** 					State := 8;							{* Switch to automatic mode						*} **)
+					(* assign - Stmt *)
+					LD 8
+					ST State
+
+					JMP ODK_END_IF_00000000000000F
+
+(** 			end_if;				 **)
+				(* if - End *) 
+				ODK_SKIP_00000000000000F_000000000000001:
+				ODK_END_IF_00000000000000F:
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_END_IF_00000000000000D:
+
+			JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(**  **)
+(** 	{***************************************************************************************** **)
+(** 				Physical Parameter Adjust (PPA) **)
+(** 	*****************************************************************************************} **)
+(**  **)
+(** 	4:	NDC8.Manual.PlcSetOperationMode  := 1;			{* Set Manual mode								*} **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000002_000000000000004:
+
+		(* case - Cond *)
+		LD State
+		EQ 4
+		JMPC ODK_CASE_000000000000002_000000000000005
+
+		JMP ODK_SKIP_000000000000002_000000000000005
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000002_000000000000005:
+
+			(* assign - Stmt *)
+			LD 1
+			ST NDC8.Manual.PlcSetOperationMode
+
+(** 		NDC8.Manual.PlcSelectMask 		 := 2#00100;	{* Override operation mode 						*} **)
+			(* assign - Stmt *)
+			LD 2#00100
+			ST NDC8.Manual.PlcSelectMask
+
+(** 	 **)
+(** 		{**** Exit this mode? ***}	 **)
+(** 		if INPUT.TillerArmDown  **)
+(** 			or INPUT.GateOpen **)
+(** 			or INPUT.PlatformNotUpperPos then					 **)
+			(* if - Cond *)
+			LD INPUT.TillerArmDown
+			OR INPUT.GateOpen
+			OR INPUT.PlatformNotUpperPos
+			JMPCN ODK_SKIP_00000000000000G_000000000000001
+
+				(* then - Stmts *)
+
+(** 				State := 1;						{* Manual arm down, switch to manual mode		*} **)
+				(* assign - Stmt *)
+				LD 1
+				ST State
+
+				JMP ODK_END_IF_00000000000000G
+
+(** 			 **)
+(** 		elsif NDC8.Userdefined.PPAEnable <> 2 then		{* PPA symbol changed? Go back to auto.			*} **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000G_000000000000001:
+			LD NDC8.Userdefined.PPAEnable
+			NE 2
+			JMPCN ODK_SKIP_00000000000000G_000000000000002
+
+				(* elsif - Stmts *)
+
+(** 				State := 8; **)
+				(* assign - Stmt *)
+				LD 8
+				ST State
+
+				JMP ODK_END_IF_00000000000000G
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000G_000000000000002:
+			ODK_END_IF_00000000000000G:
+
+			JMP ODK_END_CASE_000000000000002
+
+(**  **)
+(**  **)
+(** 	end_case; **)
+		(* case - End *) 
+		ODK_SKIP_000000000000002_000000000000005:
+		ODK_END_CASE_000000000000002:
+
+(**  **)
+(** 	NoMcdTimer(IN:= FALSE); **)
+		(* call - Stmt *)
+		CAL NoMcdTimer (
+			IN := FALSE
+		)
+
+		JMP ODK_END_IF_000000000000001
+
+(** elsif NDC8.Mcd.Valid = FALSE and g_StartFindSync = FALSE and g_ErrorCode = 0 then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	LD NDC8.Mcd.Valid
+	EQ FALSE
+	AND ( g_StartFindSync
+		EQ FALSE
+	)
+	AND ( g_ErrorCode
+		EQ 0
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000002
+
+		(* elsif - Stmts *)
+
+(**  **)
+(** 	NoMcdTimer(IN:= TRUE, PT:=t#5s); **)
+		(* call - Stmt *)
+		CAL NoMcdTimer (
+			IN := true,
+			PT := t#5s
+		)
+
+		JMP ODK_END_IF_000000000000001
+
+(** 	 **)
+(** ; **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000002:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(**  **)
+(** {**************************************************************************************} **)
+(** {* Update Display *} **)
+(**  **)
+(** DisplayStopString(INStatus:=StopManual, StopString:=85, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		INStatus := StopManual,
+		StopString := 85,
+		StopValue := 0
+	)
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

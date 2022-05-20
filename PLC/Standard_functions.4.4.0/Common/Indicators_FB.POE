@@ -1,0 +1,804 @@
+FUNCTION_BLOCK INDICATORS_FB
+VAR_EXTERNAL
+	(** IN **)
+	NDC8 : NDC8_T;
+	INPUT : INPUT_T;
+	Output : OUTPUT_T;
+	
+END_VAR
+
+VAR_INPUT
+	SetHeight						: dint;
+	ForkTarget,
+	AutoInsertNotInsideTargetSafety,
+	AutoinsertInProgress,
+	SensorsBuzzerTest,
+	StartDelayStartWarning,
+	LS2000SlowDown					: bool;
+
+END_VAR
+	
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+	FlashError,
+	FlashWarning,
+	FlashRight,
+	FlashLeft,
+	FlashForward,
+	FlashBackward,
+	FlashSegment : Bool;
+	FlashBrakeRel : BOOL;
+	ModeAutoTON :TON;
+	
+	Display : bool;
+	SlowBeep : bool;
+
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	STOPRESET : BOOL;
+	STOPLIFT : BOOL;
+	STOPLOADCHANGE : BOOL;
+	INSTATUS : bool;
+	STOPFORKFARTOOHIGH : BOOL;
+	STOPSIDE : BOOL;
+	STOPSTEERSYNC : BOOL;
+	STOPLS2000 : BOOL;
+	STOPMANUAL : BOOL;
+	STOPFORKTOOHIGH : BOOL;
+	STOPFORKTOOLOW : BOOL;
+	STOPREAR : BOOL;
+	TIMER : Timer_FB;
+	STOPOBSTACLE : BOOL;
+END_VAR
+(** {* **)
+(** ------------------------------------------------------------------------------------                               **)
+(**  INDICATORS_FB                     **)
+(**  ------------------  **)
+(**                        **)
+(**  Description:                      **)
+(**  This PLC controls the flashing of the lights and the sounding of the buzzer. **)
+(**  The lights and buzzer functionality is made according to safety regulations EN-1525. **)
+(**  **)
+(**  **)
+(** -------------------------------------------------------------------------------------*} **)
+(**  **)
+(** {* make default *} **)
+(** Output.PositionKnownLamp 	:= false; **)
+	(* assign - Stmt *)
+	LD false
+	ST Output.PositionKnownLamp
+
+(** Output.EmergencyStopLamp 	:= false; **)
+	(* assign - Stmt *)
+	LD false
+	ST Output.EmergencyStopLamp
+
+(** Output.LoadOnBoardLamp	 	:= false; **)
+	(* assign - Stmt *)
+	LD false
+	ST Output.LoadOnBoardLamp
+
+(** Output.InSystemLamp			:= false; **)
+	(* assign - Stmt *)
+	LD false
+	ST Output.InSystemLamp
+
+(** Output.FrontLeftLamp 		:= false; **)
+	(* assign - Stmt *)
+	LD false
+	ST Output.FrontLeftLamp
+
+(** Output.FrontRightLamp 		:= false; **)
+	(* assign - Stmt *)
+	LD false
+	ST Output.FrontRightLamp
+
+(** Output.RearLeftLamp 		:= false; **)
+	(* assign - Stmt *)
+	LD false
+	ST Output.RearLeftLamp
+
+(** Output.RearRightLamp 		:= false; **)
+	(* assign - Stmt *)
+	LD false
+	ST Output.RearRightLamp
+
+(** Output.WarningBuzzerTop		:= false; **)
+	(* assign - Stmt *)
+	LD false
+	ST Output.WarningBuzzerTop
+
+(** Output.WarningLightTop		:= false; **)
+	(* assign - Stmt *)
+	LD false
+	ST Output.WarningLightTop
+
+(** Output.Buzzer 				:= false; **)
+	(* assign - Stmt *)
+	LD false
+	ST Output.Buzzer
+
+(** Output.OPTBuzzer			:= false; **)
+	(* assign - Stmt *)
+	LD false
+	ST Output.OPTBuzzer
+
+(**  **)
+(** {*************************************************************************************** **)
+(** 	Evaluate which signals to set  **)
+(** ****************************************************************************************} **)
+(** {*Emergency stop or any stop flags*} **)
+(** FlashError	:=	NDC8.VehicleControl.Estop **)
+(** 				or StopRear **)
+(** 				or StopSide **)
+(** 				or StopObstacle **)
+(** 				or StopLift **)
+(** 				or StopLoadChange **)
+(** 				or StopReset **)
+(** 				or StopSteerSync **)
+(** 				or StopForkFarTooHigh **)
+(** 				or StopForkTooHigh **)
+(** 				or StopForkTooLow **)
+(** 				or NDC8.Opt.VehicleStatusID = 11;		 **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleControl.Estop
+	OR StopRear
+	OR StopSide
+	OR StopObstacle
+	OR StopLift
+	OR StopLoadChange
+	OR StopReset
+	OR StopSteerSync
+	OR StopForkFarTooHigh
+	OR StopForkTooHigh
+	OR StopForkTooLow
+	OR ( NDC8.Opt.VehicleStatusID
+		EQ 11
+	)
+	ST FlashError
+
+(** 				 **)
+(** 				 **)
+(** FlashBrakeRel := INPUT.Auto = TRUE and NDC8.SDIO.DigitalInput5_BTN_BRK = TRUE;		 **)
+	(* assign - Stmt *)
+	LD INPUT.Auto
+	EQ TRUE
+	AND ( NDC8.SDIO.DigitalInput5_BTN_BRK
+		EQ TRUE
+	)
+	ST FlashBrakeRel
+
+(**  **)
+(** {*Segment trigger flash*} **)
+(** FlashSegment := NDC8.VehicleControl.Moving; **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleControl.Moving
+	ST FlashSegment
+
+(**  **)
+(**  **)
+(**  **)
+(** {*Segment trigger or Vehical right turn*} **)
+(** FlashRight 	:= 	Input.SD_Right or Input.DD_Right; **)
+	(* assign - Stmt *)
+	LD INPUT.SD_Right
+	OR INPUT.DD_Right
+	ST FlashRight
+
+(**  **)
+(** 						 **)
+(** {*Segment trigger or Vehical right turn*} **)
+(** FlashLeft 	:=	Input.SD_Left or Input.DD_Left; **)
+	(* assign - Stmt *)
+	LD INPUT.SD_Left
+	OR INPUT.DD_Left
+	ST FlashLeft
+
+(**  **)
+(** 				 **)
+(** {*Segment trigger or Vehical Forward*} **)
+(** FlashForward := Input.SD_Forward; **)
+	(* assign - Stmt *)
+	LD INPUT.SD_Forward
+	ST FlashForward
+
+(** 				 **)
+(** {*Segment trigger or Vehical Backward*} **)
+(** FlashBackward := Input.SD_Backward; **)
+	(* assign - Stmt *)
+	LD INPUT.SD_Backward
+	ST FlashBackward
+
+(**  **)
+(** 				 **)
+(** {* Special case for when we want to flash both right _and_left *} **)
+(** {*If FlashRight and FlashLeft then **)
+(** 	  FlashRight	:= NDC8.TurnSignal.RightTurnDistance < NDC8.TurnSignal.LeftTurnDistance; **)
+(** 	  FlashLeft		:= NDC8.TurnSignal.LeftTurnDistance < NDC8.TurnSignal.RightTurnDistance; **)
+(** End_if;*} **)
+(**  **)
+(** 		 **)
+(** {*Vehicle moving backwards, forks are moving or before starting to drive *} **)
+(** FlashWarning := (SetHeight > 0 and not ForkTarget ) **)
+(** 				or (NDC8.VehicleControl.Moving and NDC8.VehicleControl.TravelDir = 0) **)
+(** 				or INPUT.SafetyScannerSlowDown **)
+(** 				or StartDelayStartWarning **)
+(** 				or (NDC8.Guidance.StopReason = 1 **)
+	(* assign - Stmt *)
+	LD SetHeight
+	GT 0
+	AND ( ForkTarget
+		NOT
+	)
+	OR ( NDC8.VehicleControl.Moving
+		AND ( NDC8.VehicleControl.TravelDir
+			EQ 0
+		)
+	)
+	OR INPUT.SafetyScannerSlowDown
+	OR StartDelayStartWarning
+	OR ( NDC8.Guidance.StopReason
+		EQ 1
+(**   					and NDC8.Guidance.DistanceToStop < 1500 **)
+		AND ( NDC8.Guidance.DistanceToStop
+			LT 1500
+		)
+(**   					and NDC8.VehicleControl.TravelDir = 1);		{* Vehicle will stop and change travel directions and reverse. *} **)
+		AND ( NDC8.VehicleControl.TravelDir
+			EQ 1
+		)
+	)
+	ST FlashWarning
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(** {***************************************************************************************} **)
+(** {*			LAMPS 					*} **)
+(** {***************************************************************************************} **)
+(** {* GREEN lamp;	Position known *} **)
+(** if 	NDC8.Position.Valid then **)
+	(* if - Cond *)
+	LD NDC8.Position.Valid
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	if NDC8.VehicleControl.OperationMode = 0 then			 **)
+		(* if - Cond *)
+		LD NDC8.VehicleControl.OperationMode
+		EQ 0
+		JMPCN ODK_SKIP_000000000000002_000000000000001
+
+			(* then - Stmts *)
+
+(** 		Output.PositionKnownLamp := true;										{* Automatic mode: 		ON 		*} **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST Output.PositionKnownLamp
+
+			JMP ODK_END_IF_000000000000002
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_000000000000002_000000000000001:
+
+			(* else - Stmts *)
+
+(** 	 	Output.PositionKnownLamp := Timer.Info;								{* Semi/manual mode: 	BLINK 	*} **)
+			(* assign - Stmt *)
+			LD Timer.Info
+			ST Output.PositionKnownLamp
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000002:
+
+		JMP ODK_END_IF_000000000000001
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(**  **)
+(** {***************************************************************************************} **)
+(** {* WHITE lamp; reset button *} **)
+(**  **)
+(** Output.ResetButtonLamp	:= (StopReset or												{* need reset	*} **)
+(** 					   		StopManual or **)
+(** 					   		AutoInsertNotInsideTargetSafety 								{* vehicle need assistance during autoinsert *} **)
+(** 							)  **)
+(** 							and Timer.Info; **)
+	(* assign - Stmt *)
+	LD StopReset
+	OR StopManual
+	OR AutoInsertNotInsideTargetSafety
+	AND Timer.Info
+	ST Output.ResetButtonLamp
+
+(**  **)
+(**  **)
+(** {***************************************************************************************} **)
+(** {* YELLOW lamp; Load on board*} **)
+(** Output.LoadOnBoardLamp := INPUT.LoadOnBoard and Timer.Info; **)
+	(* assign - Stmt *)
+	LD INPUT.LoadOnBoard
+	AND Timer.Info
+	ST Output.LoadOnBoardLamp
+
+(**  **)
+(** 				 **)
+(** {***************************************************************************************} **)
+(** {* RED lamp; S100 stop *} **)
+(** Output.EmergencyStopLamp := NDC8.VehicleControl.OperationMode = 0 and StopObstacle and Timer.Error;								{* S100 stop *} **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 0
+	AND StopObstacle
+	AND Timer.Error
+	ST Output.EmergencyStopLamp
+
+(**  **)
+(**  **)
+(**  **)
+(** {***************************************************************************************} **)
+(** {* BLUE lamp; In system *} **)
+(**  **)
+(** if NDC8.VehicleControl.OperationMode = 0 then **)
+	(* if - Cond *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 0
+	JMPCN ODK_SKIP_000000000000003_000000000000001
+
+		(* then - Stmts *)
+
+(** 	Output.InSystemLamp :=	NDC8.LayoutPosition.InSystem 							{* in system *} **)
+(** 				or (AutoinsertInProgress and NDC8.VehicleControl.Moving and Timer.Warning) **)
+(** 				 **)
+(** 				or (INPUT.Reset_PB  								{*	 on when pressed and outside safety	*} **)
+(** 					and AutoInsertNotInsideTargetSafety **)
+(** 					) **)
+(** 				or (AutoinsertInProgress				{* 	 need more RESET help 	*}			 **)
+		(* assign - Stmt *)
+		LD NDC8.LayoutPosition.InSystem
+		OR ( AutoinsertInProgress
+			AND NDC8.VehicleControl.Moving
+			AND Timer.Warning
+		)
+		OR ( INPUT.Reset_PB
+			AND AutoInsertNotInsideTargetSafety
+		)
+		OR ( AutoinsertInProgress
+(** 					and not NDC8.VehicleControl.Moving  **)
+			AND ( NDC8.VehicleControl.Moving
+				NOT
+			)
+(** 					and Timer.Info); **)
+			AND Timer.Info
+		)
+		ST Output.InSystemLamp
+
+		JMP ODK_END_IF_000000000000003
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000003_000000000000001:
+	ODK_END_IF_000000000000003:
+
+(**  **)
+(**  **)
+(** {***************************************************************************************} **)
+(** {* SIDE ORANGE lamp; warning/turn indicators *} **)
+(** InStatus := NDC8.VehicleControl.OperationMode = 0; **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 0
+	ST InStatus
+
+(** ModeAutoTON(IN:=InStatus,PT:=t#2s);	{* Wait 2 sec before flashing when entering auto*} **)
+	(* call - Stmt *)
+	CAL ModeAutoTON (
+		IN := InStatus,
+		PT := t#2s
+	)
+
+(** if TRUE then **)
+	(* if - Cond *)
+	LD TRUE
+	JMPCN ODK_SKIP_000000000000004_000000000000001
+
+		(* then - Stmts *)
+
+(** 	if FlashError then **)
+		(* if - Cond *)
+		LD FlashError
+		JMPCN ODK_SKIP_000000000000005_000000000000001
+
+			(* then - Stmts *)
+
+(** 		Output.RearLeftLamp 	:= Timer.Error; **)
+			(* assign - Stmt *)
+			LD Timer.Error
+			ST Output.RearLeftLamp
+
+(** 		Output.RearRightLamp	:= Timer.Error; **)
+			(* assign - Stmt *)
+			LD Timer.Error
+			ST Output.RearRightLamp
+
+(** 		Output.FrontLeftLamp 	:= Timer.Error; **)
+			(* assign - Stmt *)
+			LD Timer.Error
+			ST Output.FrontLeftLamp
+
+(** 		Output.FrontRightLamp	:= Timer.Error; **)
+			(* assign - Stmt *)
+			LD Timer.Error
+			ST Output.FrontRightLamp
+
+			JMP ODK_END_IF_000000000000005
+
+(** 		{* vehicle moving or vehicle error both flash *} **)
+(** 		{* **)
+(** 	elsif FlashWarning or FlashSegment then				 **)
+(** 		Output.RearLeftLamp 	:= Timer.Warning; **)
+(** 		Output.RearRightLamp	:= Timer.Warning; **)
+(** 		Output.FrontLeftLamp 	:= Timer.Warning; **)
+(** 		Output.FrontRightLamp	:= Timer.Warning;*} **)
+(** 	elsif FlashBrakeRel then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000005_000000000000001:
+		LD FlashBrakeRel
+		JMPCN ODK_SKIP_000000000000005_000000000000002
+
+			(* elsif - Stmts *)
+
+(** 		Output.FrontLeftLamp 	:= TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST Output.FrontLeftLamp
+
+(** 		Output.RearLeftLamp 	:= TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST Output.RearLeftLamp
+
+(** 		Output.FrontRightLamp 	:= TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST Output.FrontRightLamp
+
+(** 		Output.RearRightLamp 	:= TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST Output.RearRightLamp
+
+			JMP ODK_END_IF_000000000000005
+
+(** 	elsif FlashForward then								{* vehicle turning to the left *} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000005_000000000000002:
+		LD FlashForward
+		JMPCN ODK_SKIP_000000000000005_000000000000003
+
+			(* elsif - Stmts *)
+
+(** 		Output.FrontLeftLamp 	:= Timer.Warning; **)
+			(* assign - Stmt *)
+			LD Timer.Warning
+			ST Output.FrontLeftLamp
+
+(** 		Output.RearLeftLamp 	:= Timer.Warning; **)
+			(* assign - Stmt *)
+			LD Timer.Warning
+			ST Output.RearLeftLamp
+
+(** 		Output.FrontRightLamp 	:= Timer.Warning; **)
+			(* assign - Stmt *)
+			LD Timer.Warning
+			ST Output.FrontRightLamp
+
+(** 		Output.RearRightLamp 	:= Timer.Warning; **)
+			(* assign - Stmt *)
+			LD Timer.Warning
+			ST Output.RearRightLamp
+
+			JMP ODK_END_IF_000000000000005
+
+(** 	elsif FlashBackward then								{* vehicle turning to the left *} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000005_000000000000003:
+		LD FlashBackward
+		JMPCN ODK_SKIP_000000000000005_000000000000004
+
+			(* elsif - Stmts *)
+
+(** 		Output.FrontLeftLamp 	:= Timer.Warning; **)
+			(* assign - Stmt *)
+			LD Timer.Warning
+			ST Output.FrontLeftLamp
+
+(** 		Output.RearLeftLamp 	:= Timer.Warning; **)
+			(* assign - Stmt *)
+			LD Timer.Warning
+			ST Output.RearLeftLamp
+
+(** 		Output.FrontRightLamp 	:= Timer.Warning; **)
+			(* assign - Stmt *)
+			LD Timer.Warning
+			ST Output.FrontRightLamp
+
+(** 		Output.RearRightLamp 	:= Timer.Warning; **)
+			(* assign - Stmt *)
+			LD Timer.Warning
+			ST Output.RearRightLamp
+
+			JMP ODK_END_IF_000000000000005
+
+(** 	elsif FlashRight then								{* vehicle turning to the right *} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000005_000000000000004:
+		LD FlashRight
+		JMPCN ODK_SKIP_000000000000005_000000000000005
+
+			(* elsif - Stmts *)
+
+(** 		Output.FrontLeftLamp 	:= false; **)
+			(* assign - Stmt *)
+			LD false
+			ST Output.FrontLeftLamp
+
+(** 		Output.RearLeftLamp 	:= false; **)
+			(* assign - Stmt *)
+			LD false
+			ST Output.RearLeftLamp
+
+(** 		Output.FrontRightLamp 	:= Timer.Warning; **)
+			(* assign - Stmt *)
+			LD Timer.Warning
+			ST Output.FrontRightLamp
+
+(** 		Output.RearRightLamp 	:= Timer.Warning; **)
+			(* assign - Stmt *)
+			LD Timer.Warning
+			ST Output.RearRightLamp
+
+			JMP ODK_END_IF_000000000000005
+
+(** 	elsif FlashLeft then								{* vehicle turning to the left *} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000005_000000000000005:
+		LD FlashLeft
+		JMPCN ODK_SKIP_000000000000005_000000000000006
+
+			(* elsif - Stmts *)
+
+(** 		Output.FrontLeftLamp 	:= Timer.Warning; **)
+			(* assign - Stmt *)
+			LD Timer.Warning
+			ST Output.FrontLeftLamp
+
+(** 		Output.RearLeftLamp 	:= Timer.Warning; **)
+			(* assign - Stmt *)
+			LD Timer.Warning
+			ST Output.RearLeftLamp
+
+(** 		Output.FrontRightLamp 	:= false; **)
+			(* assign - Stmt *)
+			LD false
+			ST Output.FrontRightLamp
+
+(** 		Output.RearRightLamp 	:= false; **)
+			(* assign - Stmt *)
+			LD false
+			ST Output.RearRightLamp
+
+			JMP ODK_END_IF_000000000000005
+
+(** 	elsif NDC8.VehicleControl.Moving = FALSE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000005_000000000000006:
+		LD NDC8.VehicleControl.Moving
+		EQ false
+		JMPCN ODK_SKIP_000000000000005_000000000000007
+
+			(* elsif - Stmts *)
+
+(** 		Output.FrontLeftLamp 	:= TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST Output.FrontLeftLamp
+
+(** 		Output.RearLeftLamp 	:= TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST Output.RearLeftLamp
+
+(** 		Output.FrontRightLamp 	:= TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST Output.FrontRightLamp
+
+(** 		Output.RearRightLamp 	:= TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST Output.RearRightLamp
+
+			JMP ODK_END_IF_000000000000005
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000005_000000000000007:
+		ODK_END_IF_000000000000005:
+
+		JMP ODK_END_IF_000000000000004
+
+(** elsif StopReset then									{* Reset required *} **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000004_000000000000001:
+	LD StopReset
+	JMPCN ODK_SKIP_000000000000004_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 		Output.FrontLeftLamp 	:= Timer.Info and Timer.Error and Timer.Warning; **)
+		(* assign - Stmt *)
+		LD Timer.Info
+		AND Timer.Error
+		AND Timer.Warning
+		ST Output.FrontLeftLamp
+
+(** 		Output.FrontRightLamp 	:= Timer.Info and Timer.Error and Timer.Warning; **)
+		(* assign - Stmt *)
+		LD Timer.Info
+		AND Timer.Error
+		AND Timer.Warning
+		ST Output.FrontRightLamp
+
+(** 		Output.RearLeftLamp 	:= Timer.Info and Timer.Error and Timer.Warning; **)
+		(* assign - Stmt *)
+		LD Timer.Info
+		AND Timer.Error
+		AND Timer.Warning
+		ST Output.RearLeftLamp
+
+(** 		Output.RearRightLamp 	:= Timer.Info and Timer.Error and Timer.Warning; **)
+		(* assign - Stmt *)
+		LD Timer.Info
+		AND Timer.Error
+		AND Timer.Warning
+		ST Output.RearRightLamp
+
+		JMP ODK_END_IF_000000000000004
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000004_000000000000002:
+	ODK_END_IF_000000000000004:
+
+(**  **)
+(**  **)
+(** if StopLS2000 or LS2000SlowDown then							{* Vehicle is about to drive into something and hit LS2000! *} **)
+	(* if - Cond *)
+	LD StopLS2000
+	OR LS2000SlowDown
+	JMPCN ODK_SKIP_000000000000006_000000000000001
+
+		(* then - Stmts *)
+
+(** 		Output.RearLeftLamp 	:= Timer.Warning; **)
+		(* assign - Stmt *)
+		LD Timer.Warning
+		ST Output.RearLeftLamp
+
+(** 		Output.RearRightLamp	:= Timer.Warning; **)
+		(* assign - Stmt *)
+		LD Timer.Warning
+		ST Output.RearRightLamp
+
+(** 		Output.FrontLeftLamp 	:= Timer.Warning; **)
+		(* assign - Stmt *)
+		LD Timer.Warning
+		ST Output.FrontLeftLamp
+
+(** 		Output.FrontRightLamp	:= Timer.Warning; **)
+		(* assign - Stmt *)
+		LD Timer.Warning
+		ST Output.FrontRightLamp
+
+		JMP ODK_END_IF_000000000000006
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000006_000000000000001:
+	ODK_END_IF_000000000000006:
+
+(** 	 **)
+(**  **)
+(**  **)
+(**  **)
+(** {***************************************************************************************} **)
+(** {* 					BUZZERS 					*} **)
+(** {***************************************************************************************} **)
+(** {* High frequency tone. Sound only when there is a drive command. *}  **)
+(** InStatus := NDC8.VehicleControl.OperationMode = 0; **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 0
+	ST InStatus
+
+(** ModeAutoTON(IN:=InStatus,PT:=t#3s);	{* Wait 3 sec before buzzing when entering auto *} **)
+	(* call - Stmt *)
+	CAL ModeAutoTON (
+		IN := InStatus,
+		PT := t#3s
+	)
+
+(** Output.Buzzer	:=	(ModeAutoTON.Q and **)
+(** 						NDC8.Automatic.ExecDriveCommand	and **)
+(** 							(FlashError and Timer.Error)				{* Error *} **)
+(** 						 	or						 **)
+(** 						 	(FlashWarning and Timer.Warning)					{* Info *} **)
+(** 						)	 **)
+(** 					or SensorsBuzzerTest **)
+(** 					or (StopLS2000 or LS2000SlowDown and Timer.Warning);			{* Vehicle is about to drive into something and hit LS2000! *} **)
+	(* assign - Stmt *)
+	LD ModeAutoTON.Q
+	AND NDC8.Automatic.ExecDriveCommand
+	AND ( FlashError
+		AND Timer.Error
+	)
+	OR ( FlashWarning
+		AND Timer.Warning
+	)
+	OR SensorsBuzzerTest
+	OR ( StopLS2000
+		OR ( LS2000SlowDown
+			AND Timer.Warning
+		)
+	)
+	ST Output.Buzzer
+
+(** 			 **)
+(**  **)
+(** {* OPT 100 BUZZER Low frequency tone *} **)
+(** OUTPUT.OPTBuzzer	:= StartDelayStartWarning					{* Sound during start or if reset is required. *} **)
+(** 						or  **)
+	(* assign - Stmt *)
+	LD StartDelayStartWarning
+	OR ( StopReset
+(** 							(StopReset or StopLS2000 or LS2000SlowDown)  **)
+		OR StopLS2000
+		OR LS2000SlowDown
+(** 							and Timer.Info  **)
+		AND Timer.Info
+(** 							and Timer.Error **)
+		AND Timer.Error
+(** 							and Timer.Warning **)
+		AND Timer.Warning
+(** 							and SlowBeep; **)
+		AND SlowBeep
+	)
+	ST Output.OPTBuzzer
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

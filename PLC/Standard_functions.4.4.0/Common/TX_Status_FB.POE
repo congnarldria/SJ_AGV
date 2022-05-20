@@ -1,0 +1,3493 @@
+FUNCTION_BLOCK TX_STATUS_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;
+	Input : Input_T;
+
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+
+	Load_F : F_Trig;
+	Load_F_FLAG : BOOL;
+	
+	Load_F_Timer : TON;
+	
+	BCD_Compare_R : F_Trig;
+	BCD_Fail_R : F_Trig;
+	
+	BatLowR : R_Trig;
+	BatLowF : F_Trig;
+
+	ErrorCodeD : DINT;
+	LastErrorCode : Word := 0;
+	ErrorTrigFlag : bool;
+	ErrorTrigR : R_Trig;
+	ErrorTrigF : F_Trig;
+	
+	InsertDone : BOOL;
+	InsertDoneR : R_Trig;
+	
+	PowerOffR	: R_Trig;
+	
+	WaitChargeR	: R_Trig;
+	WaitChargeF	: F_Trig;
+	
+	ChargingR : R_Trig;
+	ChargingF : F_Trig;
+	
+	ChargeDoneR : R_Trig;
+	
+	
+	LoadStatusR :R_Trig;
+	LoadStatusF :F_Trig;
+	
+	ManualModeR :R_Trig;
+	ManualModeF :F_Trig;
+	
+	LostR :R_Trig;
+	LostF :F_Trig;
+	
+	LocalModeR :R_Trig;
+	LocalModeF :F_Trig;
+	
+	LocalInterlockFailCodeD : DINT;
+	LocalInterlockFailFlag : bool;
+	LocalInterlockFailR :R_Trig; 
+	
+	DriveOutR : R_Trig;
+	
+	BrakeReleaseR : R_Trig;
+	BrakeReleaseF : F_Trig;
+	
+	BeamStop_R : R_Trig;
+	BeamStop_F : F_Trig;
+	
+	BlockFlagR : R_Trig;
+	BlockFlagF : F_Trig;
+	BlockModeFlag : BOOL;
+	
+	
+	
+	BCDReadFailR :R_Trig;
+
+	
+	
+	(* Battery *)
+	ChrgFlag_R_L : BOOL;
+	TX_LowBatt_R : R_Trig;
+	TX_ChgComp_R : R_Trig;
+	Chrg_Right_Left_R : R_Trig;
+	TX_Load_R : R_Trig;
+	
+	
+	DINT_BMS2 : DINT;
+	DINT_BMS3 : DINT;
+	DINT_BMS_BatV : DINT;
+	DINT_BMS_BatT : DINT;
+	DINT_BMS_BatC : DINT;
+	DINT_BMS_BatA : DINT;
+	DINT_BMS_Main : DINT;
+	DINT_BMS_Chan : DINT;
+	DINT_BMS_ID4L : DINT;
+	DINT_BMS_ID4H : DINT;
+	
+	
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	ENABMSEV10 : BOOL;
+	OM_PLC_W1_BIT_WAITCHARGE : BOOL;
+	A : bool;
+	ENABMSEV09 : BOOL;
+	ENABMSEV08 : BOOL;
+	ENABMSEV07 : BOOL;
+	ENABMSEV06 : BOOL;
+	ENABMSEV05 : BOOL;
+	ENABMSEV04 : BOOL;
+	ENABMSEV03 : BOOL;
+	ENABMSEV02 : BOOL;
+	ENABMSEV01 : BOOL;
+	BMS_ENAEVENT : WORD;
+	PLC_TX03_BIT_STR_BLOCK : BOOL;
+	PLC_RX01_BIT_ENABLELD_I : BOOL;
+	PLC_TX01_BIT_LOCALMODE : BOOL;
+	PLC_RX_WORD18_BMS_BATC : WORD;
+	OM_PLC_W2_BIT_ERR_BCR : BOOL;
+	PLC_RX04_BIT_STW_DRVOUT : BOOL;
+	OM_PLC_WORD2 : WORD;
+	OM_PLC_WORD1 : WORD;
+	EVENTQUEUE : EventQueue_FB;
+	PLC_RX_WORD24_BMS_ID4H : WORD;
+	G_POWEROFFFLAG : BOOL;
+	OM_PLC_W2_BIT_ERR_COMP : BOOL;
+	OM_PLC_W1_BIT_WAITORDER : BOOL;
+	PLC_RX_WORD22_BMS_CHAN : WORD;
+	PLC_RX_WORD16_BMS_BATV : WORD;
+	PLC_RX_WORD10_STW_ILER : WORD;
+	PLC_RX_WORD14_BMS_2 : WORD;
+	PLC_RX01_BIT_LOAD_I : BOOL;
+	PLC_TX04_BIT_CANCEL_ST : BOOL;
+	STOPESTOPBUTTON : BOOL;
+	PLC_RX_WORD19_BMS_BATA : WORD;
+	PLC_TX01_BIT_MANMODE : BOOL;
+	PLC_RX_WORD23_BMS_ID4L : WORD;
+	PLC_RX_WORD21_BMS_MAIN : WORD;
+	PLC_RX_WORD17_BMS_BATT : WORD;
+	OM_PLC_W1_BIT_SETLOWBATT : BOOL;
+	PLC_RX_WORD15_BMS_3 : WORD;
+	STOPOBSTACLE : BOOL;
+	G_ERRORCODE : WORD;
+END_VAR
+(** {* **)
+(** ------------------------------------------------------------------------------------                               **)
+(**  TX_status **)
+(**  ------------------       **)
+(**               **)
+(**  Description:                      **)
+(**  Sends status bits to master controller. **)
+(**   **)
+(** -------------------------------------------------------------------------------------*} **)
+(** {*TxStatus bits*} **)
+(**  **)
+(** OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM); **)
+	(* assign - Stmt *)
+	LD NDC8.OMPLC.ChargeOM
+	INT_TO_WORD 
+	ST OM_PLC_Word1
+
+(** OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM); **)
+	(* assign - Stmt *)
+	LD NDC8.OMPLC.Stop_OM
+	INT_TO_WORD 
+	ST OM_PLC_Word2
+
+(**  **)
+(** NDC8.PLC_Application.TxStatusBit0_Load := INPUT.LoadOnBoard; **)
+	(* assign - Stmt *)
+	LD INPUT.LoadOnBoard
+	ST NDC8.PLC_Application.TxStatusBit0_Load
+
+(** NDC8.PLC_Application.TxStatusBit1_EaLD := PLC_RX01_Bit_EnableLD_i; **)
+	(* assign - Stmt *)
+	LD PLC_RX01_Bit_EnableLD_i
+	ST NDC8.PLC_Application.TxStatusBit1_EaLD
+
+(**  **)
+(** if NDC8.LoadOperation.OperationCode <> 0 then  **)
+	(* if - Cond *)
+	LD NDC8.LoadOperation.OperationCode
+	NE 0
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.PLC_Application.TxStatusBit2_HaveCmd := true;	{*Operation Code OK*} **)
+		(* assign - Stmt *)
+		LD true
+		ST NDC8.PLC_Application.TxStatusBit2_HaveCmd
+
+		JMP ODK_END_IF_000000000000001
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000001_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	NDC8.PLC_Application.TxStatusBit2_HaveCmd := false;	{*Operation Code OK*} **)
+		(* assign - Stmt *)
+		LD false
+		ST NDC8.PLC_Application.TxStatusBit2_HaveCmd
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(** NDC8.PLC_Application.TxStatusBit3_RelBRK := NDC8.SDIO.DigitalInput5_BTN_BRK; {*Brake release*} **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput5_BTN_BRK
+	ST NDC8.PLC_Application.TxStatusBit3_RelBRK
+
+(**  **)
+(** Load_F(CLK:=PLC_RX01_Bit_Load_i); **)
+	(* call - Stmt *)
+	CAL Load_F (
+		CLK := PLC_RX01_Bit_Load_i
+	)
+
+(**  **)
+(** if Load_F.Q then **)
+	(* if - Cond *)
+	LD Load_F.Q
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
+(** 	Load_F_FLAG := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST Load_F_FLAG
+
+		JMP ODK_END_IF_000000000000002
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000002_000000000000001:
+	ODK_END_IF_000000000000002:
+
+(**  **)
+(** Load_F_Timer(IN:=Load_F_FLAG, PT:=t#1s); **)
+	(* call - Stmt *)
+	CAL Load_F_Timer (
+		IN := Load_F_FLAG,
+		PT := t#1s
+	)
+
+(**  **)
+(**  **)
+(** if Load_F_Timer.Q then **)
+	(* if - Cond *)
+	LD Load_F_Timer.Q
+	JMPCN ODK_SKIP_000000000000003_000000000000001
+
+		(* then - Stmts *)
+
+(** 	Load_F_FLAG := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST Load_F_FLAG
+
+		JMP ODK_END_IF_000000000000003
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000003_000000000000001:
+	ODK_END_IF_000000000000003:
+
+(**  **)
+(**  **)
+(** if (OM_PLC_W1_Bit_WaitCharge = TRUE and OM_PLC_W1_Bit_SetLowBatt = FALSE) or OM_PLC_W1_Bit_WaitOrder = TRUE then **)
+	(* if - Cond *)
+	LD OM_PLC_W1_Bit_WaitCharge
+	EQ true
+	AND ( OM_PLC_W1_Bit_SetLowBatt
+		EQ false
+	)
+	OR ( OM_PLC_W1_Bit_WaitOrder
+		EQ true
+	)
+	JMPCN ODK_SKIP_000000000000004_000000000000001
+
+		(* then - Stmts *)
+
+(** 	 **)
+(** 	if NDC8.PLC_Application.TxStatusBit5_WaitLow = FALSE then **)
+		(* if - Cond *)
+		LD NDC8.PLC_Application.TxStatusBit5_WaitLow
+		EQ false
+		JMPCN ODK_SKIP_000000000000005_000000000000001
+
+			(* then - Stmts *)
+
+(** 		NDC8.PLC_Application.TxStatusBit5_WaitLow := TRUE; {*Charge Wait*} **)
+			(* assign - Stmt *)
+			LD true
+			ST NDC8.PLC_Application.TxStatusBit5_WaitLow
+
+			JMP ODK_END_IF_000000000000005
+
+(** 	elsif Load_F_FLAG = TRUE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000005_000000000000001:
+		LD Load_F_FLAG
+		EQ true
+		JMPCN ODK_SKIP_000000000000005_000000000000002
+
+			(* elsif - Stmts *)
+
+(** 		OM_PLC_W1_Bit_WaitCharge := FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST OM_PLC_W1_Bit_WaitCharge
+
+(** 		NDC8.PLC_Application.TxStatusBit5_WaitLow := FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST NDC8.PLC_Application.TxStatusBit5_WaitLow
+
+(** 		Load_F_FLAG := FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST Load_F_FLAG
+
+			JMP ODK_END_IF_000000000000005
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000005_000000000000002:
+		ODK_END_IF_000000000000005:
+
+		JMP ODK_END_IF_000000000000004
+
+(** 		 **)
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000004_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	NDC8.PLC_Application.TxStatusBit5_WaitLow := FALSE; {*Charge Wait*} **)
+		(* assign - Stmt *)
+		LD false
+		ST NDC8.PLC_Application.TxStatusBit5_WaitLow
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000004:
+
+(**  **)
+(** NDC8.PLC_Application.TxStatusBit4_LowBatt := (INPUT.LowBattery or NDC8.Userdefined.LowBatSim or OM_PLC_W1_Bit_SetLowBatt)and NDC8.PLC_Application.TxStatusBit5_WaitLow = FALSE ; {*Battery Low*} **)
+	(* assign - Stmt *)
+	LD INPUT.LowBattery
+	OR NDC8.Userdefined.LowBatSim
+	OR OM_PLC_W1_Bit_SetLowBatt
+	AND ( NDC8.PLC_Application.TxStatusBit5_WaitLow
+		EQ false
+	)
+	ST NDC8.PLC_Application.TxStatusBit4_LowBatt
+
+(**  **)
+(** NDC8.PLC_Application.TxStatusBit6_Charge := NDC8.SDIO.DigitalOutput16_Charger; {*Charging*} **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalOutput16_Charger
+	ST NDC8.PLC_Application.TxStatusBit6_Charge
+
+(**  **)
+(** {* **)
+(** if PLC_RX03_Bit_STw_FullCg = TRUE or PLC_RX15_Bit_BMS_ChgCmp = TRUE then **)
+(** 	NDC8.PLC_Application.TxStatusBit7_ChgComp := TRUE; **)
+(** elsif PLC_RX01_Bit_ChrgIdle = TRUE or NDC8.PLC_Application.TxStatusBit9_EStop = TRUE then **)
+(** 	NDC8.PLC_Application.TxStatusBit7_ChgComp := FALSE; **)
+(** end_if; **)
+(** *} **)
+(**  **)
+(** NDC8.PLC_Application.TxStatusBit8_Manual := PLC_TX01_Bit_ManMode; {*Manual Mode*} **)
+	(* assign - Stmt *)
+	LD PLC_TX01_Bit_ManMode
+	ST NDC8.PLC_Application.TxStatusBit8_Manual
+
+(** NDC8.PLC_Application.TxStatusBit9_EStop := NDC8.VehicleControl.Estop or StopEstopButton; {*Emergency Stop*} **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleControl.Estop
+	OR StopEstopButton
+	ST NDC8.PLC_Application.TxStatusBit9_EStop
+
+(** NDC8.PLC_Application.TxStatusBit10_Blocked := PLC_TX03_Bit_STr_Block;  {*Blocked*} **)
+	(* assign - Stmt *)
+	LD PLC_TX03_Bit_STr_Block
+	ST NDC8.PLC_Application.TxStatusBit10_Blocked
+
+(** NDC8.PLC_Application.TxStatusBit11_IrStop := false; {*Obstacle sensor Stop*} **)
+	(* assign - Stmt *)
+	LD false
+	ST NDC8.PLC_Application.TxStatusBit11_IrStop
+
+(** NDC8.PLC_Application.TxStatusBit12_LostP := g_ErrorCode = 137; {*Lost Position*} **)
+	(* assign - Stmt *)
+	LD g_ErrorCode
+	EQ 137
+	ST NDC8.PLC_Application.TxStatusBit12_LostP
+
+(** NDC8.PLC_Application.TxStatusBit13 := false; **)
+	(* assign - Stmt *)
+	LD false
+	ST NDC8.PLC_Application.TxStatusBit13
+
+(** NDC8.PLC_Application.TxStatusBit14 := false; **)
+	(* assign - Stmt *)
+	LD false
+	ST NDC8.PLC_Application.TxStatusBit14
+
+(** NDC8.PLC_Application.TxStatusBit15 := false; **)
+	(* assign - Stmt *)
+	LD false
+	ST NDC8.PLC_Application.TxStatusBit15
+
+(**  **)
+(**  **)
+(** {*Tx Event*} **)
+(** {*---------------------------------------------------------------------------*} **)
+(**  **)
+(** {* User Event 3: Battery ON *} **)
+(** BatLowR(CLK:= NDC8.PLC_Application.TxStatusBit4_LowBatt); **)
+	(* call - Stmt *)
+	CAL BatLowR (
+		CLK := NDC8.PLC_Application.TxStatusBit4_LowBatt
+	)
+
+(** if BatLowR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD BatLowR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_000000000000006_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=3, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 3,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000006
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000006_000000000000001:
+	ODK_END_IF_000000000000006:
+
+(**  **)
+(** {* User Event 33: Battery OFF *} **)
+(** BatLowF(CLK:= NDC8.PLC_Application.TxStatusBit4_LowBatt); **)
+	(* call - Stmt *)
+	CAL BatLowF (
+		CLK := NDC8.PLC_Application.TxStatusBit4_LowBatt
+	)
+
+(** if BatLowF.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD BatLowF.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_000000000000007_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=33, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 33,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000007
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000007_000000000000001:
+	ODK_END_IF_000000000000007:
+
+(**  **)
+(**  **)
+(** {* User Event 2: Load Status ON *} **)
+(** LoadStatusR(CLK:= PLC_RX01_Bit_Load_i); **)
+	(* call - Stmt *)
+	CAL LoadStatusR (
+		CLK := PLC_RX01_Bit_Load_i
+	)
+
+(** if LoadStatusR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD LoadStatusR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_000000000000008_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=2, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 2,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000008
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000008_000000000000001:
+	ODK_END_IF_000000000000008:
+
+(**  **)
+(** {* User Event 32: Load Status OFF *} **)
+(** LoadStatusF(CLK:= PLC_RX01_Bit_Load_i); **)
+	(* call - Stmt *)
+	CAL LoadStatusF (
+		CLK := PLC_RX01_Bit_Load_i
+	)
+
+(** if LoadStatusF.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD LoadStatusF.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_000000000000009_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=32, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 32,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000009
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000009_000000000000001:
+	ODK_END_IF_000000000000009:
+
+(**  **)
+(** {* User Event 1: Error ON ErrorCode *} **)
+(** {* User Event 91: Error ON Current Segment*} **)
+(** {* User Event 92: Error ON Mode 0:Auto 1:Manual*} **)
+(**  **)
+(** if g_ErrorCode = 0 then **)
+	(* if - Cond *)
+	LD g_ErrorCode
+	EQ 0
+	JMPCN ODK_SKIP_00000000000000A_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ErrorTrigFlag := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST ErrorTrigFlag
+
+(** 	LastErrorCode := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST LastErrorCode
+
+		JMP ODK_END_IF_00000000000000A
+
+(** elsif LastErrorCode <> g_ErrorCode then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_00000000000000A_000000000000001:
+	LD LastErrorCode
+	NE g_ErrorCode
+	JMPCN ODK_SKIP_00000000000000A_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	ErrorTrigFlag := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST ErrorTrigFlag
+
+		JMP ODK_END_IF_00000000000000A
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000A_000000000000002:
+	ODK_END_IF_00000000000000A:
+
+(**  **)
+(** ErrorTrigR(CLK:= ErrorTrigFlag); **)
+	(* call - Stmt *)
+	CAL ErrorTrigR (
+		CLK := ErrorTrigFlag
+	)
+
+(**  **)
+(** if ErrorTrigR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD ErrorTrigR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000B_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	LastErrorCode := g_ErrorCode; **)
+		(* assign - Stmt *)
+		LD g_ErrorCode
+		ST LastErrorCode
+
+(** 	ErrorCodeD := WORD_TO_DINT(LastErrorCode); **)
+		(* assign - Stmt *)
+		LD LastErrorCode
+		WORD_TO_DINT 
+		ST ErrorCodeD
+
+(** 	 **)
+(** 	EventQueue(EventCode:=1, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 1,
+(** 			Par1:=ErrorCodeD, **)
+			Par1 := ErrorCodeD,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+(** 	 **)
+(** 	EventQueue(EventCode:=91, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 91,
+(** 			Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+(** 	 **)
+(** 	if INPUT.Auto then **)
+		(* if - Cond *)
+		LD INPUT.Auto
+		JMPCN ODK_SKIP_00000000000000C_000000000000001
+
+			(* then - Stmts *)
+
+(** 		EventQueue(EventCode:=92, **)
+			(* call - Stmt *)
+			CAL EventQueue (
+				EventCode := 92,
+(** 			Par1:=0, **)
+				Par1 := 0,
+(** 			Par2:=0, **)
+				Par2 := 0,
+(** 			Par3:=0, **)
+				Par3 := 0,
+(** 			Par4:=0); **)
+				Par4 := 0
+			)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+			(* assign - Stmt *)
+			LD 'EventCode'
+			TRACE_DINT EventQueue.EventCode
+			ST a
+
+			JMP ODK_END_IF_00000000000000C
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_00000000000000C_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		EventQueue(EventCode:=92, **)
+			(* call - Stmt *)
+			CAL EventQueue (
+				EventCode := 92,
+(** 			Par1:=1, **)
+				Par1 := 1,
+(** 			Par2:=0, **)
+				Par2 := 0,
+(** 			Par3:=0, **)
+				Par3 := 0,
+(** 			Par4:=0); **)
+				Par4 := 0
+			)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+			(* assign - Stmt *)
+			LD 'EventCode'
+			TRACE_DINT EventQueue.EventCode
+			ST a
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_00000000000000C:
+
+(** 	 **)
+(** 	LastErrorCode := g_ErrorCode; **)
+		(* assign - Stmt *)
+		LD g_ErrorCode
+		ST LastErrorCode
+
+		JMP ODK_END_IF_00000000000000B
+
+(** 	 **)
+(** end_if;	 **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000B_000000000000001:
+	ODK_END_IF_00000000000000B:
+
+(**  **)
+(** {* User Event 31: Error OFF *} **)
+(**  **)
+(** {*PLC*} **)
+(** ErrorTrigF(CLK:= ErrorTrigFlag); **)
+	(* call - Stmt *)
+	CAL ErrorTrigF (
+		CLK := ErrorTrigFlag
+	)
+
+(**  **)
+(** if ErrorTrigF.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD ErrorTrigF.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000D_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	ErrorCodeD := WORD_TO_DINT(LastErrorCode); **)
+		(* assign - Stmt *)
+		LD LastErrorCode
+		WORD_TO_DINT 
+		ST ErrorCodeD
+
+(** 	EventQueue(EventCode:=31, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 31,
+(** 		Par1:=ErrorCodeD, **)
+			Par1 := ErrorCodeD,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000D
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000D_000000000000001:
+	ODK_END_IF_00000000000000D:
+
+(**  **)
+(** {* User Event 61: Insert ON *} **)
+(**  **)
+(** InsertDone := NDC8.Autoinsert.StatusID = 5; **)
+	(* assign - Stmt *)
+	LD NDC8.Autoinsert.StatusID
+	EQ 5
+	ST InsertDone
+
+(**  **)
+(** InsertDoneR(CLK:= InsertDone); **)
+	(* call - Stmt *)
+	CAL InsertDoneR (
+		CLK := InsertDone
+	)
+
+(** if InsertDoneR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD InsertDoneR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000E_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=61, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 61,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000E
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000E_000000000000001:
+	ODK_END_IF_00000000000000E:
+
+(**  **)
+(** {* User Event 93: Auto Power OFF *} **)
+(** PowerOffR(CLK:= g_PowerOffFlag); **)
+	(* call - Stmt *)
+	CAL PowerOffR (
+		CLK := g_PowerOffFlag
+	)
+
+(** if PowerOffR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD PowerOffR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000F_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=93, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 93,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000F
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000F_000000000000001:
+	ODK_END_IF_00000000000000F:
+
+(**  **)
+(** {* User Event 4: Charge Wait ON *} **)
+(** WaitChargeR(CLK:= NDC8.PLC_Application.TxStatusBit5_WaitLow); **)
+	(* call - Stmt *)
+	CAL WaitChargeR (
+		CLK := NDC8.PLC_Application.TxStatusBit5_WaitLow
+	)
+
+(** if WaitChargeR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD WaitChargeR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000G_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=4, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 4,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000G
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000G_000000000000001:
+	ODK_END_IF_00000000000000G:
+
+(**  **)
+(** {* User Event 34: Charge Wait OFF *} **)
+(** WaitChargeF(CLK:= NDC8.PLC_Application.TxStatusBit5_WaitLow); **)
+	(* call - Stmt *)
+	CAL WaitChargeF (
+		CLK := NDC8.PLC_Application.TxStatusBit5_WaitLow
+	)
+
+(** if WaitChargeF.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD WaitChargeF.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000H_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=34, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 34,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000H
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000H_000000000000001:
+	ODK_END_IF_00000000000000H:
+
+(**  **)
+(** {* User Event 6: Charge Complete *} **)
+(** ChargeDoneR(CLK:= NDC8.PLC_Application.TxStatusBit7_ChgComp); **)
+	(* call - Stmt *)
+	CAL ChargeDoneR (
+		CLK := NDC8.PLC_Application.TxStatusBit7_ChgComp
+	)
+
+(** if ChargeDoneR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD ChargeDoneR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000I_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=6, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 6,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000I
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000I_000000000000001:
+	ODK_END_IF_00000000000000I:
+
+(**  **)
+(** {* User Event 5: Charging ON*} **)
+(** ChargingR(CLK:= NDC8.PLC_Application.TxStatusBit6_Charge); **)
+	(* call - Stmt *)
+	CAL ChargingR (
+		CLK := NDC8.PLC_Application.TxStatusBit6_Charge
+	)
+
+(** if ChargingR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD ChargingR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000J_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=5, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 5,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000J
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000J_000000000000001:
+	ODK_END_IF_00000000000000J:
+
+(**  **)
+(** {* User Event 35: Charging OFF*} **)
+(** ChargingF(CLK:= NDC8.PLC_Application.TxStatusBit6_Charge); **)
+	(* call - Stmt *)
+	CAL ChargingF (
+		CLK := NDC8.PLC_Application.TxStatusBit6_Charge
+	)
+
+(** if ChargingF.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD ChargingF.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000K_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=35, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 35,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000K
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000K_000000000000001:
+	ODK_END_IF_00000000000000K:
+
+(**  **)
+(** {* User Event 7: Manual Mode ON*} **)
+(** ManualModeR(CLK:= PLC_TX01_Bit_ManMode); **)
+	(* call - Stmt *)
+	CAL ManualModeR (
+		CLK := PLC_TX01_Bit_ManMode
+	)
+
+(** if ManualModeR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD ManualModeR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000L_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=7, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 7,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000L
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000L_000000000000001:
+	ODK_END_IF_00000000000000L:
+
+(**  **)
+(** {* User Event 37: Manaul Mode OFF*} **)
+(** ManualModeF(CLK:= PLC_TX01_Bit_ManMode); **)
+	(* call - Stmt *)
+	CAL ManualModeF (
+		CLK := PLC_TX01_Bit_ManMode
+	)
+
+(** if ManualModeF.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD ManualModeF.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000M_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=37, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 37,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000M
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000M_000000000000001:
+	ODK_END_IF_00000000000000M:
+
+(**  **)
+(** {* User Event 10: Lost ON*} **)
+(** LostF(CLK:= NDC8.LayoutPosition.InSystem); **)
+	(* call - Stmt *)
+	CAL LostF (
+		CLK := NDC8.LayoutPosition.InSystem
+	)
+
+(** if LostF.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD LostF.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000N_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=10, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 10,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000N
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000N_000000000000001:
+	ODK_END_IF_00000000000000N:
+
+(**  **)
+(** {* User Event 40: Lost OFF*} **)
+(** LostR(CLK:= NDC8.LayoutPosition.InSystem); **)
+	(* call - Stmt *)
+	CAL LostR (
+		CLK := NDC8.LayoutPosition.InSystem
+	)
+
+(** if LostR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD LostR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000O_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=40, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 40,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000O
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000O_000000000000001:
+	ODK_END_IF_00000000000000O:
+
+(**  **)
+(** {* User Event 11: Local Mode ON*} **)
+(** LocalModeR(CLK:= PLC_TX01_Bit_LocalMode); **)
+	(* call - Stmt *)
+	CAL LocalModeR (
+		CLK := PLC_TX01_Bit_LocalMode
+	)
+
+(** if LocalModeR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD LocalModeR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000P_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=11, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 11,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000P
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000P_000000000000001:
+	ODK_END_IF_00000000000000P:
+
+(**  **)
+(**  **)
+(** {* User Event 41: Local Mode OFF*} **)
+(** LocalModeF(CLK:= PLC_TX01_Bit_LocalMode); **)
+	(* call - Stmt *)
+	CAL LocalModeF (
+		CLK := PLC_TX01_Bit_LocalMode
+	)
+
+(** if LocalModeF.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD LocalModeF.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000Q_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=41, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 41,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000Q
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000Q_000000000000001:
+	ODK_END_IF_00000000000000Q:
+
+(**  **)
+(** if PLC_TX04_Bit_Cancel_ST = FALSE then **)
+	(* if - Cond *)
+	LD PLC_TX04_Bit_Cancel_ST
+	EQ false
+	JMPCN ODK_SKIP_00000000000000R_000000000000001
+
+		(* then - Stmts *)
+
+(** 	{* User Event 71: Local Interlock Fail*} **)
+(** 	if PLC_RX_Word10_STw_ILEr <> 0 then **)
+		(* if - Cond *)
+		LD PLC_RX_Word10_STw_ILEr
+		NE 0
+		JMPCN ODK_SKIP_00000000000000S_000000000000001
+
+			(* then - Stmts *)
+
+(** 		LocalInterlockFailFlag := TRUE; **)
+			(* assign - Stmt *)
+			LD true
+			ST LocalInterlockFailFlag
+
+			JMP ODK_END_IF_00000000000000S
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_00000000000000S_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		LocalInterlockFailFlag := FALSe; **)
+			(* assign - Stmt *)
+			LD false
+			ST LocalInterlockFailFlag
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_00000000000000S:
+
+(**  **)
+(**  **)
+(** 	LocalInterlockFailR(CLK:= LocalInterlockFailFlag); **)
+		(* call - Stmt *)
+		CAL LocalInterlockFailR (
+			CLK := LocalInterlockFailFlag
+		)
+
+(** 	if LocalInterlockFailR.Q and NDC8.Master.MasterLinkUp then **)
+		(* if - Cond *)
+		LD LocalInterlockFailR.Q
+		AND NDC8.Master.MasterLinkUp
+		JMPCN ODK_SKIP_00000000000000T_000000000000001
+
+			(* then - Stmts *)
+
+(** 	 **)
+(** 		if PLC_RX_Word10_STw_ILEr = 1 then **)
+			(* if - Cond *)
+			LD PLC_RX_Word10_STw_ILEr
+			EQ 1
+			JMPCN ODK_SKIP_00000000000000U_000000000000001
+
+				(* then - Stmts *)
+
+(** 			LocalInterlockFailCodeD := 243; **)
+				(* assign - Stmt *)
+				LD 243
+				ST LocalInterlockFailCodeD
+
+				JMP ODK_END_IF_00000000000000U
+
+(** 		elsif PLC_RX_Word10_STw_ILEr = 2 then **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000U_000000000000001:
+			LD PLC_RX_Word10_STw_ILEr
+			EQ 2
+			JMPCN ODK_SKIP_00000000000000U_000000000000002
+
+				(* elsif - Stmts *)
+
+(** 			LocalInterlockFailCodeD := 242; **)
+				(* assign - Stmt *)
+				LD 242
+				ST LocalInterlockFailCodeD
+
+				JMP ODK_END_IF_00000000000000U
+
+(** 		elsif PLC_RX_Word10_STw_ILEr = 3 then **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000U_000000000000002:
+			LD PLC_RX_Word10_STw_ILEr
+			EQ 3
+			JMPCN ODK_SKIP_00000000000000U_000000000000003
+
+				(* elsif - Stmts *)
+
+(** 			LocalInterlockFailCodeD := 245; **)
+				(* assign - Stmt *)
+				LD 245
+				ST LocalInterlockFailCodeD
+
+				JMP ODK_END_IF_00000000000000U
+
+(** 		elsif PLC_RX_Word10_STw_ILEr = 4 then **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000U_000000000000003:
+			LD PLC_RX_Word10_STw_ILEr
+			EQ 4
+			JMPCN ODK_SKIP_00000000000000U_000000000000004
+
+				(* elsif - Stmts *)
+
+(** 			LocalInterlockFailCodeD := 259; **)
+				(* assign - Stmt *)
+				LD 259
+				ST LocalInterlockFailCodeD
+
+				JMP ODK_END_IF_00000000000000U
+
+(** 		elsif PLC_RX_Word10_STw_ILEr = 5 then **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000U_000000000000004:
+			LD PLC_RX_Word10_STw_ILEr
+			EQ 5
+			JMPCN ODK_SKIP_00000000000000U_000000000000005
+
+				(* elsif - Stmts *)
+
+(** 			LocalInterlockFailCodeD := 260; **)
+				(* assign - Stmt *)
+				LD 260
+				ST LocalInterlockFailCodeD
+
+				JMP ODK_END_IF_00000000000000U
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000U_000000000000005:
+			ODK_END_IF_00000000000000U:
+
+(** 	 **)
+(** 		EventQueue(EventCode:=71, **)
+			(* call - Stmt *)
+			CAL EventQueue (
+				EventCode := 71,
+(** 			Par1:=LocalInterlockFailCodeD, **)
+				Par1 := LocalInterlockFailCodeD,
+(** 			Par2:=0, **)
+				Par2 := 0,
+(** 			Par3:=0, **)
+				Par3 := 0,
+(** 			Par4:=0); **)
+				Par4 := 0
+			)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+			(* assign - Stmt *)
+			LD 'EventCode'
+			TRACE_DINT EventQueue.EventCode
+			ST a
+
+			JMP ODK_END_IF_00000000000000T
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000T_000000000000001:
+		ODK_END_IF_00000000000000T:
+
+		JMP ODK_END_IF_00000000000000R
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000R_000000000000001:
+	ODK_END_IF_00000000000000R:
+
+(**  **)
+(**  **)
+(** {* User Event 72: Drive Out Request*} **)
+(** DriveOutR(CLK:= PLC_RX04_Bit_STw_DrvOut); **)
+	(* call - Stmt *)
+	CAL DriveOutR (
+		CLK := PLC_RX04_Bit_STw_DrvOut
+	)
+
+(**  **)
+(** if DriveOutR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD DriveOutR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000V_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=72, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 72,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000V
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000V_000000000000001:
+	ODK_END_IF_00000000000000V:
+
+(**  **)
+(**  **)
+(** {* User Event 12: Brake Release ON *} **)
+(** BrakeReleaseR(CLK:= NDC8.SDIO.DigitalInput5_BTN_BRK); **)
+	(* call - Stmt *)
+	CAL BrakeReleaseR (
+		CLK := NDC8.SDIO.DigitalInput5_BTN_BRK
+	)
+
+(**  **)
+(** if BrakeReleaseR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD BrakeReleaseR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000W_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=12, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 12,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000W
+
+(** end_if;	 **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000W_000000000000001:
+	ODK_END_IF_00000000000000W:
+
+(**  **)
+(** {* User Event 42: Brake Release OFF *} **)
+(** BrakeReleaseF(CLK:= NDC8.SDIO.DigitalInput5_BTN_BRK); **)
+	(* call - Stmt *)
+	CAL BrakeReleaseF (
+		CLK := NDC8.SDIO.DigitalInput5_BTN_BRK
+	)
+
+(**  **)
+(** if BrakeReleaseF.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD BrakeReleaseF.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000X_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=42, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 42,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000X
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000X_000000000000001:
+	ODK_END_IF_00000000000000X:
+
+(**  **)
+(** {* User Event 8: Block ON *} **)
+(** if NDC8.Automatic.SetOrderMode = 1 or NDC8.Automatic.SetOrderMode = 3 then **)
+	(* if - Cond *)
+	LD NDC8.Automatic.SetOrderMode
+	EQ 1
+	OR ( NDC8.Automatic.SetOrderMode
+		EQ 3
+	)
+	JMPCN ODK_SKIP_00000000000000Y_000000000000001
+
+		(* then - Stmts *)
+
+(** 	BlockModeFlag := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST BlockModeFlag
+
+		JMP ODK_END_IF_00000000000000Y
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000Y_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	BlockModeFlag := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST BlockModeFlag
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000Y:
+
+(**  **)
+(** BlockFlagR(CLK:=BlockModeFlag); **)
+	(* call - Stmt *)
+	CAL BlockFlagR (
+		CLK := BlockModeFlag
+	)
+
+(** if BlockFlagR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD BlockFlagR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_00000000000000Z_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=8, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 8,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000000Z
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000Z_000000000000001:
+	ODK_END_IF_00000000000000Z:
+
+(**  **)
+(** {* User Event 38: Block OFF *} **)
+(** BlockFlagF(CLK:=BlockModeFlag); **)
+	(* call - Stmt *)
+	CAL BlockFlagF (
+		CLK := BlockModeFlag
+	)
+
+(** if BlockFlagF.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD BlockFlagF.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_000000000000010_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=38, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 38,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000010
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000010_000000000000001:
+	ODK_END_IF_000000000000010:
+
+(**  **)
+(**  **)
+(** {* User Event 9: Beam Sensor Stop ON *} **)
+(** BeamStop_R(CLK:=StopObstacle); **)
+	(* call - Stmt *)
+	CAL BeamStop_R (
+		CLK := StopObstacle
+	)
+
+(** if BeamStop_R.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD BeamStop_R.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_000000000000011_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=9, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 9,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000011
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000011_000000000000001:
+	ODK_END_IF_000000000000011:
+
+(**  **)
+(** {* User Event 39: Beam Sensor Stop OFF*} **)
+(** BeamStop_F(CLK:=StopObstacle); **)
+	(* call - Stmt *)
+	CAL BeamStop_F (
+		CLK := StopObstacle
+	)
+
+(** if BeamStop_F.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD BeamStop_F.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_000000000000012_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=39, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 39,
+(** 		Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000012
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000012_000000000000001:
+	ODK_END_IF_000000000000012:
+
+(**  **)
+(** {* User Event 71: BCD Read Fail*} **)
+(** BCD_Compare_R(CLK:=OM_PLC_W2_Bit_Err_Comp); **)
+	(* call - Stmt *)
+	CAL BCD_Compare_R (
+		CLK := OM_PLC_W2_Bit_Err_Comp
+	)
+
+(**  **)
+(** if BCD_Compare_R.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD BCD_Compare_R.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_000000000000013_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=71, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 71,
+(** 		Par1:=155, **)
+			Par1 := 155,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000013
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000013_000000000000001:
+	ODK_END_IF_000000000000013:
+
+(**  **)
+(**  **)
+(** BCDReadFailR(CLK:=OM_PLC_W2_Bit_Err_BCR); **)
+	(* call - Stmt *)
+	CAL BCDReadFailR (
+		CLK := OM_PLC_W2_Bit_Err_BCR
+	)
+
+(**  **)
+(** if BCDReadFailR.Q and NDC8.Master.MasterLinkUp then **)
+	(* if - Cond *)
+	LD BCDReadFailR.Q
+	AND NDC8.Master.MasterLinkUp
+	JMPCN ODK_SKIP_000000000000014_000000000000001
+
+		(* then - Stmts *)
+
+(** 	EventQueue(EventCode:=71, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 71,
+(** 		Par1:=156, **)
+			Par1 := 156,
+(** 		Par2:=0, **)
+			Par2 := 0,
+(** 		Par3:=0, **)
+			Par3 := 0,
+(** 		Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000014
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000014_000000000000001:
+	ODK_END_IF_000000000000014:
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(** {* Bat Event Trig *} **)
+(** 	ChrgFlag_R_L := NDC8.PointTrigger.Bit9_Chrg_Right or NDC8.PointTrigger.Bit10_Chrg_Left; **)
+	(* assign - Stmt *)
+	LD NDC8.PointTrigger.Bit9_Chrg_Right
+	OR NDC8.PointTrigger.Bit10_Chrg_Left
+	ST ChrgFlag_R_L
+
+(** 	TX_LowBatt_R(CLK:= NDC8.PLC_Application.TxStatusBit4_LowBatt); **)
+	(* call - Stmt *)
+	CAL TX_LowBatt_R (
+		CLK := NDC8.PLC_Application.TxStatusBit4_LowBatt
+	)
+
+(** 	TX_ChgComp_R(CLK:= NDC8.PLC_Application.TxStatusBit7_ChgComp); **)
+	(* call - Stmt *)
+	CAL TX_ChgComp_R (
+		CLK := NDC8.PLC_Application.TxStatusBit7_ChgComp
+	)
+
+(** 	Chrg_Right_Left_R(CLK:= ChrgFlag_R_L); **)
+	(* call - Stmt *)
+	CAL Chrg_Right_Left_R (
+		CLK := ChrgFlag_R_L
+	)
+
+(** 	TX_Load_R(CLK:= NDC8.PLC_Application.TxStatusBit0_Load); **)
+	(* call - Stmt *)
+	CAL TX_Load_R (
+		CLK := NDC8.PLC_Application.TxStatusBit0_Load
+	)
+
+(**  **)
+(** 	BMS_EnaEvent := 16#35C; **)
+	(* assign - Stmt *)
+	LD 16#35C
+	ST BMS_EnaEvent
+
+(** 	 **)
+(** {* Bat_Low Event *} **)
+(**  **)
+(** 	DINT_BMS2 := WORD_TO_DINT(PLC_RX_Word14_BMS_2); **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word14_BMS_2
+	WORD_TO_DINT 
+	ST DINT_BMS2
+
+(** 	DINT_BMS3 := WORD_TO_DINT(PLC_RX_Word15_BMS_3); **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word15_BMS_3
+	WORD_TO_DINT 
+	ST DINT_BMS3
+
+(** 	DINT_BMS_BatV := WORD_TO_DINT(PLC_RX_Word16_BMS_BatV); **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word16_BMS_BatV
+	WORD_TO_DINT 
+	ST DINT_BMS_BatV
+
+(** 	DINT_BMS_BatT := WORD_TO_DINT(PLC_RX_Word17_BMS_BatT); **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word17_BMS_BatT
+	WORD_TO_DINT 
+	ST DINT_BMS_BatT
+
+(** 	DINT_BMS_BatC := WORD_TO_DINT(PLC_RX_Word18_BMS_BatC); **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word18_BMS_BatC
+	WORD_TO_DINT 
+	ST DINT_BMS_BatC
+
+(** 	DINT_BMS_BatA := WORD_TO_DINT(PLC_RX_Word19_BMS_BatA); **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word19_BMS_BatA
+	WORD_TO_DINT 
+	ST DINT_BMS_BatA
+
+(** 	DINT_BMS_Main := WORD_TO_DINT(PLC_RX_Word21_BMS_Main); **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word21_BMS_Main
+	WORD_TO_DINT 
+	ST DINT_BMS_Main
+
+(** 	DINT_BMS_Chan := WORD_TO_DINT(PLC_RX_Word22_BMS_Chan); **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word22_BMS_Chan
+	WORD_TO_DINT 
+	ST DINT_BMS_Chan
+
+(** 	DINT_BMS_ID4L := WORD_TO_DINT(PLC_RX_Word23_BMS_ID4L); **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word23_BMS_ID4L
+	WORD_TO_DINT 
+	ST DINT_BMS_ID4L
+
+(** 	DINT_BMS_ID4H := WORD_TO_DINT(PLC_RX_Word24_BMS_ID4H); **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word24_BMS_ID4H
+	WORD_TO_DINT 
+	ST DINT_BMS_ID4H
+
+(**  **)
+(**  **)
+(** 	if TX_LowBatt_R.Q and EnaBMSEv01 = TRUE then **)
+	(* if - Cond *)
+	LD TX_LowBatt_R.Q
+	AND ( EnaBMSEv01
+		EQ true
+	)
+	JMPCN ODK_SKIP_000000000000015_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev11 *} **)
+(** 		EventQueue(EventCode:=81, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 81,
+(** 			Par1:=DINT_BMS2, **)
+			Par1 := DINT_BMS2,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000015
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000015_000000000000001:
+	ODK_END_IF_000000000000015:
+
+(** 	 **)
+(** 	if TX_LowBatt_R.Q and EnaBMSEv02 = TRUE then **)
+	(* if - Cond *)
+	LD TX_LowBatt_R.Q
+	AND ( EnaBMSEv02
+		EQ true
+	)
+	JMPCN ODK_SKIP_000000000000016_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev12 *} **)
+(** 		EventQueue(EventCode:=82, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 82,
+(** 			Par1:=DINT_BMS3, **)
+			Par1 := DINT_BMS3,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000016
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000016_000000000000001:
+	ODK_END_IF_000000000000016:
+
+(** 	 **)
+(** 	if TX_LowBatt_R.Q and EnaBMSEv03 = TRUE then **)
+	(* if - Cond *)
+	LD TX_LowBatt_R.Q
+	AND ( EnaBMSEv03
+		EQ true
+	)
+	JMPCN ODK_SKIP_000000000000017_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev13 *} **)
+(** 		EventQueue(EventCode:=83, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 83,
+(** 			Par1:=DINT_BMS_BatV, **)
+			Par1 := DINT_BMS_BatV,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000017
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000017_000000000000001:
+	ODK_END_IF_000000000000017:
+
+(** 	 **)
+(** 	if TX_LowBatt_R.Q and EnaBMSEv04 = TRUE then **)
+	(* if - Cond *)
+	LD TX_LowBatt_R.Q
+	AND ( EnaBMSEv04
+		EQ true
+	)
+	JMPCN ODK_SKIP_000000000000018_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev14 *} **)
+(** 		EventQueue(EventCode:=84, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 84,
+(** 			Par1:=DINT_BMS_BatT, **)
+			Par1 := DINT_BMS_BatT,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000018
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000018_000000000000001:
+	ODK_END_IF_000000000000018:
+
+(** 	 **)
+(** 	if TX_LowBatt_R.Q and EnaBMSEv05 = TRUE then **)
+	(* if - Cond *)
+	LD TX_LowBatt_R.Q
+	AND ( EnaBMSEv05
+		EQ true
+	)
+	JMPCN ODK_SKIP_000000000000019_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev15 *} **)
+(** 		EventQueue(EventCode:=85, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 85,
+(** 			Par1:=DINT_BMS_BatC, **)
+			Par1 := DINT_BMS_BatC,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000019
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000019_000000000000001:
+	ODK_END_IF_000000000000019:
+
+(** 	 **)
+(** 	if TX_LowBatt_R.Q and EnaBMSEv06 = TRUE then **)
+	(* if - Cond *)
+	LD TX_LowBatt_R.Q
+	AND ( EnaBMSEv06
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001A_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev16 *} **)
+(** 		EventQueue(EventCode:=86, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 86,
+(** 			Par1:=DINT_BMS_BatA, **)
+			Par1 := DINT_BMS_BatA,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001A
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001A_000000000000001:
+	ODK_END_IF_00000000000001A:
+
+(** 	 **)
+(** 	if TX_LowBatt_R.Q and EnaBMSEv07 = TRUE then **)
+	(* if - Cond *)
+	LD TX_LowBatt_R.Q
+	AND ( EnaBMSEv07
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001B_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev17 *} **)
+(** 		EventQueue(EventCode:=87, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 87,
+(** 			Par1:=DINT_BMS_Main, **)
+			Par1 := DINT_BMS_Main,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001B
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001B_000000000000001:
+	ODK_END_IF_00000000000001B:
+
+(** 	 **)
+(** 	if TX_LowBatt_R.Q and EnaBMSEv08 = TRUE then **)
+	(* if - Cond *)
+	LD TX_LowBatt_R.Q
+	AND ( EnaBMSEv08
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001C_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev18 *} **)
+(** 		EventQueue(EventCode:=88, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 88,
+(** 			Par1:=DINT_BMS_Chan, **)
+			Par1 := DINT_BMS_Chan,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001C
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001C_000000000000001:
+	ODK_END_IF_00000000000001C:
+
+(** 	 **)
+(** {* Chg_Comp Event *} **)
+(** 	if TX_ChgComp_R.Q and EnaBMSEv01 = TRUE then **)
+	(* if - Cond *)
+	LD TX_ChgComp_R.Q
+	AND ( EnaBMSEv01
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001D_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev21 *} **)
+(** 		EventQueue(EventCode:=81, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 81,
+(** 			Par1:=DINT_BMS2, **)
+			Par1 := DINT_BMS2,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001D
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001D_000000000000001:
+	ODK_END_IF_00000000000001D:
+
+(** 	 **)
+(** 	if TX_ChgComp_R.Q and EnaBMSEv02 = TRUE then **)
+	(* if - Cond *)
+	LD TX_ChgComp_R.Q
+	AND ( EnaBMSEv02
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001E_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev22 *} **)
+(** 		EventQueue(EventCode:=82, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 82,
+(** 			Par1:=DINT_BMS3, **)
+			Par1 := DINT_BMS3,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001E
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001E_000000000000001:
+	ODK_END_IF_00000000000001E:
+
+(** 	 **)
+(** 	if TX_ChgComp_R.Q and EnaBMSEv03 = TRUE then **)
+	(* if - Cond *)
+	LD TX_ChgComp_R.Q
+	AND ( EnaBMSEv03
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001F_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev23 *} **)
+(** 		EventQueue(EventCode:=83, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 83,
+(** 			Par1:=DINT_BMS_BatV, **)
+			Par1 := DINT_BMS_BatV,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001F
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001F_000000000000001:
+	ODK_END_IF_00000000000001F:
+
+(** 	 **)
+(** 	if TX_ChgComp_R.Q and EnaBMSEv04 = TRUE then **)
+	(* if - Cond *)
+	LD TX_ChgComp_R.Q
+	AND ( EnaBMSEv04
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001G_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev24 *} **)
+(** 		EventQueue(EventCode:=84, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 84,
+(** 			Par1:=DINT_BMS_BatT, **)
+			Par1 := DINT_BMS_BatT,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001G
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001G_000000000000001:
+	ODK_END_IF_00000000000001G:
+
+(**  **)
+(** 	if TX_ChgComp_R.Q and EnaBMSEv05 = TRUE then **)
+	(* if - Cond *)
+	LD TX_ChgComp_R.Q
+	AND ( EnaBMSEv05
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001H_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev25 *} **)
+(** 		EventQueue(EventCode:=85, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 85,
+(** 			Par1:=DINT_BMS_BatC, **)
+			Par1 := DINT_BMS_BatC,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001H
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001H_000000000000001:
+	ODK_END_IF_00000000000001H:
+
+(** 	 **)
+(** 	if TX_ChgComp_R.Q and EnaBMSEv06 = TRUE then **)
+	(* if - Cond *)
+	LD TX_ChgComp_R.Q
+	AND ( EnaBMSEv06
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001I_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev26 *} **)
+(** 		EventQueue(EventCode:=86, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 86,
+(** 			Par1:=DINT_BMS_BatA, **)
+			Par1 := DINT_BMS_BatA,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001I
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001I_000000000000001:
+	ODK_END_IF_00000000000001I:
+
+(** 	 **)
+(** 	if TX_ChgComp_R.Q and EnaBMSEv07 = TRUE then **)
+	(* if - Cond *)
+	LD TX_ChgComp_R.Q
+	AND ( EnaBMSEv07
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001J_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev27 *} **)
+(** 		EventQueue(EventCode:=87, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 87,
+(** 			Par1:=DINT_BMS_Main, **)
+			Par1 := DINT_BMS_Main,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001J
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001J_000000000000001:
+	ODK_END_IF_00000000000001J:
+
+(** 	 **)
+(** 	if TX_ChgComp_R.Q and EnaBMSEv08 = TRUE then **)
+	(* if - Cond *)
+	LD TX_ChgComp_R.Q
+	AND ( EnaBMSEv08
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001K_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev28 *} **)
+(** 		EventQueue(EventCode:=88, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 88,
+(** 			Par1:=DINT_BMS_Chan, **)
+			Par1 := DINT_BMS_Chan,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001K
+
+(** 	end_if;	 **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001K_000000000000001:
+	ODK_END_IF_00000000000001K:
+
+(** 		 **)
+(** {* Chg_Strt Event*} **)
+(** 	if Chrg_Right_Left_R.Q and EnaBMSEv01 = TRUE then **)
+	(* if - Cond *)
+	LD Chrg_Right_Left_R.Q
+	AND ( EnaBMSEv01
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001L_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev31 *} **)
+(** 		EventQueue(EventCode:=81, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 81,
+(** 			Par1:=DINT_BMS2, **)
+			Par1 := DINT_BMS2,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001L
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001L_000000000000001:
+	ODK_END_IF_00000000000001L:
+
+(** 	 **)
+(** 	if Chrg_Right_Left_R.Q and EnaBMSEv02 = TRUE then **)
+	(* if - Cond *)
+	LD Chrg_Right_Left_R.Q
+	AND ( EnaBMSEv02
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001M_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev32 *} **)
+(** 		EventQueue(EventCode:=82, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 82,
+(** 			Par1:=DINT_BMS3, **)
+			Par1 := DINT_BMS3,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001M
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001M_000000000000001:
+	ODK_END_IF_00000000000001M:
+
+(** 	 **)
+(** 	if Chrg_Right_Left_R.Q and EnaBMSEv03 = TRUE then **)
+	(* if - Cond *)
+	LD Chrg_Right_Left_R.Q
+	AND ( EnaBMSEv03
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001N_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev33 *} **)
+(** 		EventQueue(EventCode:=83, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 83,
+(** 			Par1:=DINT_BMS_BatV, **)
+			Par1 := DINT_BMS_BatV,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001N
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001N_000000000000001:
+	ODK_END_IF_00000000000001N:
+
+(** 	 **)
+(** 	if Chrg_Right_Left_R.Q and EnaBMSEv04 = TRUE then **)
+	(* if - Cond *)
+	LD Chrg_Right_Left_R.Q
+	AND ( EnaBMSEv04
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001O_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev34 *} **)
+(** 		EventQueue(EventCode:=84, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 84,
+(** 			Par1:=DINT_BMS_BatT, **)
+			Par1 := DINT_BMS_BatT,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001O
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001O_000000000000001:
+	ODK_END_IF_00000000000001O:
+
+(**  **)
+(** 	if Chrg_Right_Left_R.Q and EnaBMSEv05 = TRUE then **)
+	(* if - Cond *)
+	LD Chrg_Right_Left_R.Q
+	AND ( EnaBMSEv05
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001P_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev35 *} **)
+(** 		EventQueue(EventCode:=85, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 85,
+(** 			Par1:=DINT_BMS_BatC, **)
+			Par1 := DINT_BMS_BatC,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001P
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001P_000000000000001:
+	ODK_END_IF_00000000000001P:
+
+(** 	 **)
+(** 	if Chrg_Right_Left_R.Q and EnaBMSEv06 = TRUE then **)
+	(* if - Cond *)
+	LD Chrg_Right_Left_R.Q
+	AND ( EnaBMSEv06
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001Q_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev36 *} **)
+(** 		EventQueue(EventCode:=86, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 86,
+(** 			Par1:=DINT_BMS_BatA, **)
+			Par1 := DINT_BMS_BatA,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001Q
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001Q_000000000000001:
+	ODK_END_IF_00000000000001Q:
+
+(** 	 **)
+(** 	if Chrg_Right_Left_R.Q and EnaBMSEv07 = TRUE then **)
+	(* if - Cond *)
+	LD Chrg_Right_Left_R.Q
+	AND ( EnaBMSEv07
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001R_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev37 *} **)
+(** 		EventQueue(EventCode:=87, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 87,
+(** 			Par1:=DINT_BMS_Main, **)
+			Par1 := DINT_BMS_Main,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001R
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001R_000000000000001:
+	ODK_END_IF_00000000000001R:
+
+(** 	 **)
+(** 	if Chrg_Right_Left_R.Q and EnaBMSEv08 = TRUE then **)
+	(* if - Cond *)
+	LD Chrg_Right_Left_R.Q
+	AND ( EnaBMSEv08
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001S_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev38 *} **)
+(** 		EventQueue(EventCode:=88, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 88,
+(** 			Par1:=DINT_BMS_Chan, **)
+			Par1 := DINT_BMS_Chan,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001S
+
+(** 	end_if;	 **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001S_000000000000001:
+	ODK_END_IF_00000000000001S:
+
+(** 	 **)
+(** 	if Chrg_Right_Left_R.Q and EnaBMSEv09 = TRUE then **)
+	(* if - Cond *)
+	LD Chrg_Right_Left_R.Q
+	AND ( EnaBMSEv09
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001T_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev39 *} **)
+(** 		EventQueue(EventCode:=89, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 89,
+(** 			Par1:=DINT_BMS_ID4L, **)
+			Par1 := DINT_BMS_ID4L,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001T
+
+(** 	end_if;	 **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001T_000000000000001:
+	ODK_END_IF_00000000000001T:
+
+(** 	 **)
+(** 	if Chrg_Right_Left_R.Q and EnaBMSEv10 = TRUE then **)
+	(* if - Cond *)
+	LD Chrg_Right_Left_R.Q
+	AND ( EnaBMSEv10
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001U_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev40 *} **)
+(** 		EventQueue(EventCode:=90, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 90,
+(** 			Par1:=DINT_BMS_ID4H, **)
+			Par1 := DINT_BMS_ID4H,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001U
+
+(** 	end_if;	 **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001U_000000000000001:
+	ODK_END_IF_00000000000001U:
+
+(**  **)
+(**  **)
+(** {* Load Event *} **)
+(** 	if TX_Load_R.Q and EnaBMSEv01 = TRUE then **)
+	(* if - Cond *)
+	LD TX_Load_R.Q
+	AND ( EnaBMSEv01
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001V_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev41 *} **)
+(** 		EventQueue(EventCode:=81, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 81,
+(** 			Par1:=DINT_BMS2, **)
+			Par1 := DINT_BMS2,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001V
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001V_000000000000001:
+	ODK_END_IF_00000000000001V:
+
+(** 	 **)
+(** 	if TX_Load_R.Q and EnaBMSEv02 = TRUE then **)
+	(* if - Cond *)
+	LD TX_Load_R.Q
+	AND ( EnaBMSEv02
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001W_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev42 *} **)
+(** 		EventQueue(EventCode:=82, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 82,
+(** 			Par1:=DINT_BMS3, **)
+			Par1 := DINT_BMS3,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001W
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001W_000000000000001:
+	ODK_END_IF_00000000000001W:
+
+(** 	 **)
+(** 	if TX_Load_R.Q and EnaBMSEv03 = TRUE then **)
+	(* if - Cond *)
+	LD TX_Load_R.Q
+	AND ( EnaBMSEv03
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001X_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev43 *} **)
+(** 		EventQueue(EventCode:=83, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 83,
+(** 			Par1:=DINT_BMS_BatV, **)
+			Par1 := DINT_BMS_BatV,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001X
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001X_000000000000001:
+	ODK_END_IF_00000000000001X:
+
+(** 	 **)
+(** 	if TX_Load_R.Q and EnaBMSEv04 = TRUE then **)
+	(* if - Cond *)
+	LD TX_Load_R.Q
+	AND ( EnaBMSEv04
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001Y_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev44 *} **)
+(** 		EventQueue(EventCode:=84, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 84,
+(** 			Par1:=DINT_BMS_BatT, **)
+			Par1 := DINT_BMS_BatT,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001Y
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001Y_000000000000001:
+	ODK_END_IF_00000000000001Y:
+
+(**  **)
+(** 	if TX_Load_R.Q and EnaBMSEv05 = TRUE then **)
+	(* if - Cond *)
+	LD TX_Load_R.Q
+	AND ( EnaBMSEv05
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001Z_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev45 *} **)
+(** 		EventQueue(EventCode:=85, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 85,
+(** 			Par1:=DINT_BMS_BatC, **)
+			Par1 := DINT_BMS_BatC,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_00000000000001Z
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001Z_000000000000001:
+	ODK_END_IF_00000000000001Z:
+
+(** 	 **)
+(** 	if TX_Load_R.Q and EnaBMSEv06 = TRUE then **)
+	(* if - Cond *)
+	LD TX_Load_R.Q
+	AND ( EnaBMSEv06
+		EQ true
+	)
+	JMPCN ODK_SKIP_000000000000020_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev46 *} **)
+(** 		EventQueue(EventCode:=86, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 86,
+(** 			Par1:=DINT_BMS_BatA, **)
+			Par1 := DINT_BMS_BatA,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000020
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000020_000000000000001:
+	ODK_END_IF_000000000000020:
+
+(** 	 **)
+(** 	if TX_Load_R.Q and EnaBMSEv07 = TRUE then **)
+	(* if - Cond *)
+	LD TX_Load_R.Q
+	AND ( EnaBMSEv07
+		EQ true
+	)
+	JMPCN ODK_SKIP_000000000000021_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev47 *} **)
+(** 		EventQueue(EventCode:=87, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 87,
+(** 			Par1:=DINT_BMS_Main, **)
+			Par1 := DINT_BMS_Main,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000021
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000021_000000000000001:
+	ODK_END_IF_000000000000021:
+
+(** 	 **)
+(** 	if TX_Load_R.Q and EnaBMSEv08 = TRUE then **)
+	(* if - Cond *)
+	LD TX_Load_R.Q
+	AND ( EnaBMSEv08
+		EQ true
+	)
+	JMPCN ODK_SKIP_000000000000022_000000000000001
+
+		(* then - Stmts *)
+
+(** 		{* BMS_ev48 *} **)
+(** 		EventQueue(EventCode:=88, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 88,
+(** 			Par1:=DINT_BMS_Chan, **)
+			Par1 := DINT_BMS_Chan,
+(** 			Par2:=0, **)
+			Par2 := 0,
+(** 			Par3:=0, **)
+			Par3 := 0,
+(** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 		a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000022
+
+(** 	end_if;	 **)
+	(* if - End *) 
+	ODK_SKIP_000000000000022_000000000000001:
+	ODK_END_IF_000000000000022:
+
+(**  **)
+(** {* Error event *} **)
+(**  **)
+(**  **)
+(** NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1); **)
+	(* assign - Stmt *)
+	LD OM_PLC_Word1
+	WORD_TO_INT 
+	ST NDC8.OMPLC.ChargeOM
+
+(** NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2); **)
+	(* assign - Stmt *)
+	LD OM_PLC_Word2
+	WORD_TO_INT 
+	ST NDC8.OMPLC.Stop_OM
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

@@ -1,0 +1,65 @@
+FUNCTION_BLOCK RESETBUTTON_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;
+	INPUT : INPUT_T;
+
+	
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+	StopResetRT,
+	ResetButtonRT 	 : r_trig;
+	EstopFT,
+	ResetButtonFT	 : F_Trig;
+
+END_VAR
+(**************************************************************************************)
+(* RESET STOP: *)
+StopResetRT(CLK:=StopReset);
+ResetButtonRT(CLK:=Input.Reset_PB);
+ResetButtonFT(CLK:=Input.Reset_PB);
+
+
+(* Reset push needed *)
+if ResetButtonRT.Q and NDC8.LayoutPosition.InSystem 
+	and not (INPUT.ForkTipCentreRight
+				or INPUT.ForkTipCentreLeft
+				or INPUT.ForkTipSensorRight
+				or INPUT.ForkTipSensorLeft) then 			(* Set stop signal while button is pressed,
+																	so the vehicle does not start to drive, 
+																	except during autoinsert or during override of rear obstacle *)
+	StopResetButton := true;											
+end_if;
+
+if Input.Reset_PB 
+	or Input.TillerArmDown 
+	or Input.GateOpen
+	or Input.PlatformNotUpperPos then												(* Release StopReset bit when pressing the button *)
+		StopReset 	:= false;
+end_if;
+
+if ResetButtonFT.Q or 
+	NDC8.VehicleControl.OperationMode = 1 then
+		StopReset 						:= false;
+		StopResetButton 				:= false;
+end_if;
+
+
+
+
+
+InStatus	:= 	StopReset and NDC8.VehicleControl.OperationMode <> 0;
+DisplayStopString(INStatus:=InStatus, StopString:=74, StopValue:=0);
+
+InStatus	:= 	StopResetButton	and NDC8.VehicleControl.OperationMode <> 0;
+DisplayStopString(INStatus:=InStatus, StopString:=124, StopValue:=0);
+
+END_FUNCTION_BLOCK

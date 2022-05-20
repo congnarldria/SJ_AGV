@@ -1,0 +1,4264 @@
+FUNCTION_BLOCK PLC_COMMUNICATION_FB
+VAR_EXTERNAL
+	
+END_VAR
+
+VAR_INPUT
+	ComStart : bool := TRUE; 
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+	BMS_BatLowSel : INT;
+	BMS_BatLow : BOOL;
+	
+	TP_PB_NoSelTimer : TON;
+	
+	Debug_PB_Cont : BOOL := FALSE;
+	Debug_PB_Finish : BOOL := FALSE;
+	Debug_PB_Cancel : BOOL := FALSE;
+	Debug_PB_Change : BOOL := FALSE;
+	
+	RST_Flag : BOOL;
+	RST_R : R_Trig;
+	
+	RST_Keep : BOOL;
+	RST_Keep_Timer : TON;
+	
+	BatLow : BOOL;
+	
+	
+	TempInt : int;
+	TempWord : word;
+	WordL :int;
+	WordH :int;
+	
+	FinalPnt : DINT;
+	
+	SwitchHostFlag : BOOL;
+	Host_R : R_Trig;
+	Host_R_Flag : BOOL;
+	
+	Host_R_Delay : TON;
+	
+	init  : bool := false;
+	ComStep : int := 0;
+	
+	serial_read : NDC8_SERIAL_READ;
+	serial_write : NDC8_SERIAL_WRITE;
+	
+	to_bytes 		: NDC8_STRING_TO_BYTES;
+	to_string		: NDC8_BYTES_TO_STRING; 
+	
+	PLC_LastHeartBeat : BOOL;
+	PLC_HeartBeatNoChange : BOOL;
+	
+	PLC_HeartBeatTimeout : TON;
+	
+	LoadDataSendFlag : BOOL;
+	UnloadDataSendFlag : BOOL;
+	
+	TestDataSend : BOOL;
+	
+	OrderMode:OrderMode_FB;
+	LocalOrder : LocalOrder_FB;
+	NavInit : NavInit_FB;
+	
+	STw_NewcmdR : R_Trig;
+	STw_Newcmd_Flag : BOOL;
+	
+	LocalManual : BOOL;
+	LocalManual_R : R_Trig;
+	SetToLocal : BOOL;
+	
+	Str_AckT : TON;
+	STr_AckR : BOOL;
+	
+	(*---------Rev Data ----------*)
+	Start : int;
+	StartOffset : int;
+	
+	DataIndex1 : Int;
+	DataIndex2 : Int;
+	DataIndex3 : Int;
+	DataIndex4 : Int;
+	DataIndex5 : Int;
+
+	
+	RevDataLength : int := 0;
+
+	TempString : string;
+	
+	HeaderString : string;
+	DecodeString : string(200);
+	DecodeString_RS : string(200);
+	DecodeString_WS : string(200);
+
+	TempData : ARRAY[1..32] OF BYTE;	
+
+	SendData_Req : ARRAY[1..32] OF BYTE;
+	
+	ReceiveData_Status : ARRAY[1..1074] OF BYTE;
+	(*--------------------------------------*)
+	
+	
+	(*Send 16 Word Data *)
+	EncoderStart : int;
+	EncoderStartOffset : int;
+	MessageLen : int;
+	
+	Message : string;
+	SendTempString : string;
+	
+	SendData_Status1 : ARRAY[1..32] OF BYTE;
+	SendData_Status2 : ARRAY[1..32] OF BYTE;
+	SendData_Status3 : ARRAY[1..32] OF BYTE;
+	SendData_Status4 : ARRAY[1..32] OF BYTE;
+		
+	(*--------------------------------------*)
+	
+	
+	(*Decode WS Data*)
+	DecodeStart_WS : int;
+	
+	DecodeString_WS_Data :string(200);
+	SplitString : string;
+	
+	SplitPos : int;
+	SplitPosOffset1 : int;
+	
+	DecodeDataArray : ARRAY[1..25] of WORD;
+	
+	(*---------------------------------------*)
+	
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	PLC_RX03_BIT_STW_MOD_UT : BOOL;
+	PLC_TX03_BIT_STR_BRAKE : BOOL;
+	PLC_TX03_BIT_STR_CHARGE : BOOL;
+	PLC_TX01_BIT_ONLN_MODEP : BOOL;
+	A : bool;
+	OM_PLC_W1_BIT_OM_CONT : BOOL;
+	PLC_RX04_BIT_STW_LOWOT : BOOL;
+	PLC_TX_WORD15_STR_BCD2 : WORD;
+	PLC_TX04_BIT_STR_INS_ER : BOOL;
+	G_PLCCOMLINKUP : BOOL;
+	PLC_TX04_BIT_STR_INS_DN : BOOL;
+	PLC_RX04_BIT_STW_CANCEL : BOOL;
+	PLC_TX03_BIT_STR_BLOCK : BOOL;
+	PLC_RX_WORD12_STW_PINT : WORD;
+	PLC_RX04_BIT_STW_CHANGE : BOOL;
+	PLC_RX03_BIT_STW_MOD_HT : BOOL;
+	PLC_RX01_BIT_ENABLELD_I : BOOL;
+	PLC_TX01_BIT_STR_HOME : BOOL;
+	PLC_TX01_BIT_STR_MOD_NT : BOOL;
+	PLC_TX01_BIT_LOCALMODE : BOOL;
+	PLC_RX_WORD18_BMS_BATC : WORD;
+	PLC_RX_WORD11_INS_PNO : WORD;
+	CONVBYTEH : Byte;
+	OM_PLC_WORD2 : WORD;
+	OM_PLC_WORD1 : WORD;
+	PLC_RX04_BIT_STW_FINISH : BOOL;
+	PLC_RX03_BIT_STW_MOD_NT : BOOL;
+	PLC_TX_WORD6 : WORD;
+	PLC_TX_WORD5 : WORD;
+	PLC_TX04_BIT_AGVERR_O : BOOL;
+	PLC_TX04_BIT_STR_CMD_DN : BOOL;
+	PLC_TX_WORD4 : WORD;
+	PLC_TX03_BIT_STR_ROT_L : BOOL;
+	PLC_TX_WORD3 : WORD;
+	PLC_TX_WORD2 : WORD;
+	PLC_TX_WORD1 : WORD;
+	PLC_RX_WORD25 : WORD;
+	PLC_TX_WORD12_STR_BATD : WORD;
+	PLC_TX03_BIT_STR_SEARCH : BOOL;
+	PLC_RX_WORD24_BMS_ID4H : WORD;
+	OM_PLC_W1_BIT_OM_CANCEL : BOOL;
+	PLC_RX_WORD9_STW_BCD1 : WORD;
+	PLC_RX_WORD8_STW_BCD2 : WORD;
+	PLC_RX_WORD7_STW_BCD3 : WORD;
+	PLC_RX03_BIT_STW_MOD_LT : BOOL;
+	PLC_RX_WORD22_BMS_CHAN : WORD;
+	CONVBYTEL : Byte;
+	OM_PLC_W2_BIT_SETEMGSTOP : BOOL;
+	PLC_RX_WORD6 : WORD;
+	PLC_RX_WORD5 : WORD;
+	PLC_RX_WORD4 : WORD;
+	PLC_RX03_BIT_STW_NEWCMD : BOOL;
+	PLC_RX_WORD3 : WORD;
+	PLC_RX_WORD2 : WORD;
+	PLC_RX_WORD1 : WORD;
+	PLC_RX_WORD16_BMS_BATV : WORD;
+	PLC_TX_WORD13_STR_ERR : WORD;
+	PLC_TX_WORD8_STR_SEG : WORD;
+	PLC_TX_WORD7_STR_VECL : WORD;
+	PLC_RX_WORD10_STW_ILER : WORD;
+	INPUT : INPUT_T;
+	OM_PLC_W1_BIT_OM_CHANGE : BOOL;
+	PLC_RX_WORD14_BMS_2 : WORD;
+	PLC_TX_WORD16_STR_BCD1 : WORD;
+	PLC_TX04_BIT_CHKCOM_TX : BOOL;
+	PLC_TX03_BIT_STR_DD_L : BOOL;
+	PLC_TX03_BIT_STR_DD_R : BOOL;
+	PLC_TX03_BIT_STR_SD_R : BOOL;
+	PLC_TX03_BIT_STR_SD_F : BOOL;
+	PLC_TX03_BIT_STR_IDLE : BOOL;
+	PLC_RX_WORD19_BMS_BATA : WORD;
+	G_REMOTERESET : BOOL;
+	G_AGV_ERRORRESET : BOOL;
+	PLC_TX01_BIT_STR_BATLOW : BOOL;
+	PLC_TX01_BIT_MANMODE : BOOL;
+	PLC_TX_WORD10_STR_BATV : WORD;
+	PLC_RX04_BIT_STW_CONT : BOOL;
+	PLC_RX_WORD23_BMS_ID4L : WORD;
+	PLC_RX_WORD21_BMS_MAIN : WORD;
+	PLC_RX_WORD17_BMS_BATT : WORD;
+	PLC_RX15_BIT_BMS_CHGRQH : BOOL;
+	PLC_RX15_BIT_BMS_CHGRQM : BOOL;
+	PLC_RX15_BIT_BMS_CHGRQL : BOOL;
+	PLC_TX_WORD14_STR_BCD3 : WORD;
+	PLC_TX01_BIT_HOSTMODE : BOOL;
+	G_POWEROFFFLAG_PLC : BOOL;
+	PLC_RX_WORD15_BMS_3 : WORD;
+	PLC_TX04_BIT_RESET_O : BOOL;
+	PLC_TX01_BIT_STR_MOD_UT : BOOL;
+	NDC8 : NDC8_T;
+	PLC_RX_WORD20_PLC_ERRD : WORD;
+	PLC_TX_WORD9_STR_PNT : WORD;
+	CONVWORD : WORD;
+	OM_PLC_W1_BIT_OM_FINISH : BOOL;
+	PLC_TX03_BIT_STR_IR_R : BOOL;
+	PLC_TX03_BIT_STR_IR_F : BOOL;
+	PLC_TX03_BIT_STR_ROT_R : BOOL;
+	PLC_TX01_BIT_STR_ACK : BOOL;
+	STOPOBSTACLE : BOOL;
+	PLC_RX_WORD13_INS_ANO : WORD;
+	PLC_TX_WORD11_STR_TEMP : WORD;
+END_VAR
+(** if init = false then **)
+	(* if - Cond *)
+	LD init
+	EQ false
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	serial_read.port := 'COM1'; **)
+		(* assign - Stmt *)
+		LD 'COM1'
+		ST serial_read.port
+
+(** 	serial_write.port := 'COM1'; **)
+		(* assign - Stmt *)
+		LD 'COM1'
+		ST serial_write.port
+
+(** 	 **)
+(** 	StartOffset := 1; **)
+		(* assign - Stmt *)
+		LD 1
+		ST StartOffset
+
+(** 	 **)
+(** 	SendData_Req[1] := 16#02; **)
+		(* assign - Stmt *)
+		LD 16#02
+		ST SendData_Req[1]
+
+(** 	SendData_Req[2] := 16#30; **)
+		(* assign - Stmt *)
+		LD 16#30
+		ST SendData_Req[2]
+
+(** 	SendData_Req[3] := 16#30; **)
+		(* assign - Stmt *)
+		LD 16#30
+		ST SendData_Req[3]
+
+(** 	SendData_Req[4] := 16#46; **)
+		(* assign - Stmt *)
+		LD 16#46
+		ST SendData_Req[4]
+
+(** 	SendData_Req[5] := 16#30; **)
+		(* assign - Stmt *)
+		LD 16#30
+		ST SendData_Req[5]
+
+(** 	SendData_Req[6] := 16#58; **)
+		(* assign - Stmt *)
+		LD 16#58
+		ST SendData_Req[6]
+
+(** 	SendData_Req[7] := 16#30; **)
+		(* assign - Stmt *)
+		LD 16#30
+		ST SendData_Req[7]
+
+(** 	SendData_Req[8] := 16#30; **)
+		(* assign - Stmt *)
+		LD 16#30
+		ST SendData_Req[8]
+
+(** 	SendData_Req[9] := 16#03; **)
+		(* assign - Stmt *)
+		LD 16#03
+		ST SendData_Req[9]
+
+(** 	SendData_Req[10] := 16#0D; **)
+		(* assign - Stmt *)
+		LD 16#0D
+		ST SendData_Req[10]
+
+(** 	SendData_Req[11] := 16#0A; **)
+		(* assign - Stmt *)
+		LD 16#0A
+		ST SendData_Req[11]
+
+(** 	 **)
+(** 	init := true; **)
+		(* assign - Stmt *)
+		LD true
+		ST init
+
+		JMP ODK_END_IF_000000000000001
+
+(** 	 **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(**  **)
+(** {*TX Data Proc*} **)
+(** {*I00800*} **)
+(**  **)
+(** SwitchHostFlag := INPUT.Auto = TRUE and INPUT.StartMode = TRUE and NDC8.LayoutPosition.InSystem and NDC8.Master.MasterLinkUp; **)
+	(* assign - Stmt *)
+	LD INPUT.Auto
+	EQ true
+	AND ( INPUT.StartMode
+		EQ true
+	)
+	AND NDC8.LayoutPosition.InSystem
+	AND NDC8.Master.MasterLinkUp
+	ST SwitchHostFlag
+
+(**  **)
+(** Host_R(CLK:= SwitchHostFlag); **)
+	(* call - Stmt *)
+	CAL Host_R (
+		CLK := SwitchHostFlag
+	)
+
+(**  **)
+(** if SwitchHostFlag then **)
+	(* if - Cond *)
+	LD SwitchHostFlag
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	Host_R_Delay(IN:= PLC_RX01_Bit_EnableLD_i, PT:=t#1s); **)
+		(* call - Stmt *)
+		CAL Host_R_Delay (
+			IN := PLC_RX01_Bit_EnableLD_i,
+			PT := t#1s
+		)
+
+(** 	 **)
+(** 	 **)
+(** 	if Host_R.Q then **)
+		(* if - Cond *)
+		LD Host_R.Q
+		JMPCN ODK_SKIP_000000000000003_000000000000001
+
+			(* then - Stmts *)
+
+(** 		Host_R_Flag := TRUE; **)
+			(* assign - Stmt *)
+			LD true
+			ST Host_R_Flag
+
+			JMP ODK_END_IF_000000000000003
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000003_000000000000001:
+		ODK_END_IF_000000000000003:
+
+(** 	 **)
+(** 	if NDC8.UserDefined.Boolean_20_OnlineOrderMode = FALSE  then **)
+		(* if - Cond *)
+		LD NDC8.UserDefined.Boolean_20_OnlineOrderMode
+		EQ false
+		JMPCN ODK_SKIP_000000000000004_000000000000001
+
+			(* then - Stmts *)
+
+(** 	 **)
+(** 		if NDC8.Automatic.CurrentOrderMode = 1 then **)
+			(* if - Cond *)
+			LD NDC8.Automatic.CurrentOrderMode
+			EQ 1
+			JMPCN ODK_SKIP_000000000000005_000000000000001
+
+				(* then - Stmts *)
+
+(** 			Host_R_Flag := FALSE; **)
+				(* assign - Stmt *)
+				LD false
+				ST Host_R_Flag
+
+				JMP ODK_END_IF_000000000000005
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_000000000000005_000000000000001:
+			ODK_END_IF_000000000000005:
+
+(** 	 **)
+(** 		if NDC8.Automatic.CurrentOrderMode <> 1 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q then **)
+			(* if - Cond *)
+			LD NDC8.Automatic.CurrentOrderMode
+			NE 1
+			AND ( Host_R_Flag
+				EQ true
+			)
+			AND ( PLC_RX01_Bit_EnableLD_i
+				EQ true
+			)
+			AND Host_R_Delay.Q
+			JMPCN ODK_SKIP_000000000000006_000000000000001
+
+				(* then - Stmts *)
+
+(** 			NDC8.Automatic.SetOrderMode := 1; **)
+				(* assign - Stmt *)
+				LD 1
+				ST NDC8.Automatic.SetOrderMode
+
+(** 			OrderMode(); **)
+				(* call - Stmt *)
+				CAL OrderMode
+
+				JMP ODK_END_IF_000000000000006
+
+(** 		elsif NDC8.Automatic.CurrentOrderMode <> 1 and Host_R_Flag = FALSE then **)
+			(* elseif - Cond *) 
+			ODK_SKIP_000000000000006_000000000000001:
+			LD NDC8.Automatic.CurrentOrderMode
+			NE 1
+			AND ( Host_R_Flag
+				EQ false
+			)
+			JMPCN ODK_SKIP_000000000000006_000000000000002
+
+				(* elsif - Stmts *)
+
+				JMP ODK_END_IF_000000000000006
+
+(** 			; **)
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_000000000000006_000000000000002:
+			ODK_END_IF_000000000000006:
+
+			JMP ODK_END_IF_000000000000004
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_000000000000004_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		if NDC8.Automatic.CurrentOrderMode = 3 then **)
+			(* if - Cond *)
+			LD NDC8.Automatic.CurrentOrderMode
+			EQ 3
+			JMPCN ODK_SKIP_000000000000007_000000000000001
+
+				(* then - Stmts *)
+
+(** 			Host_R_Flag := FALSE; **)
+				(* assign - Stmt *)
+				LD false
+				ST Host_R_Flag
+
+				JMP ODK_END_IF_000000000000007
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_000000000000007_000000000000001:
+			ODK_END_IF_000000000000007:
+
+(** 	 **)
+(** 		if NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q then **)
+			(* if - Cond *)
+			LD NDC8.Automatic.CurrentOrderMode
+			NE 3
+			AND ( Host_R_Flag
+				EQ true
+			)
+			AND ( PLC_RX01_Bit_EnableLD_i
+				EQ true
+			)
+			AND Host_R_Delay.Q
+			JMPCN ODK_SKIP_000000000000008_000000000000001
+
+				(* then - Stmts *)
+
+(** 			NDC8.Automatic.SetOrderMode := 3; **)
+				(* assign - Stmt *)
+				LD 3
+				ST NDC8.Automatic.SetOrderMode
+
+(** 			OrderMode(); **)
+				(* call - Stmt *)
+				CAL OrderMode
+
+				JMP ODK_END_IF_000000000000008
+
+(** 		elsif NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = FALSE then **)
+			(* elseif - Cond *) 
+			ODK_SKIP_000000000000008_000000000000001:
+			LD NDC8.Automatic.CurrentOrderMode
+			NE 3
+			AND ( Host_R_Flag
+				EQ false
+			)
+			JMPCN ODK_SKIP_000000000000008_000000000000002
+
+				(* elsif - Stmts *)
+
+				JMP ODK_END_IF_000000000000008
+
+(** 			; **)
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_000000000000008_000000000000002:
+			ODK_END_IF_000000000000008:
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000004:
+
+		JMP ODK_END_IF_000000000000002
+
+(** 	 **)
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000002_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	PLC_TX01_Bit_HostMode := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX01_Bit_HostMode
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000002:
+
+(**  **)
+(** {*I00801*} **)
+(**  **)
+(** PLC_TX01_Bit_ManMode := NDC8.Mcd.Button3; **)
+	(* assign - Stmt *)
+	LD NDC8.Mcd.Button3
+	ST PLC_TX01_Bit_ManMode
+
+(**  **)
+(** if PLC_TX01_Bit_ManMode = TRUE then **)
+	(* if - Cond *)
+	LD PLC_TX01_Bit_ManMode
+	EQ true
+	JMPCN ODK_SKIP_000000000000009_000000000000001
+
+		(* then - Stmts *)
+
+(** 	INPUT.StartMode := FALSe; **)
+		(* assign - Stmt *)
+		LD false
+		ST INPUT.StartMode
+
+(** 	OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM); **)
+		(* assign - Stmt *)
+		LD NDC8.OMPLC.Stop_OM
+		INT_TO_WORD 
+		ST OM_PLC_Word2
+
+(** 		OM_PLC_W2_Bit_SetEmgStop := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST OM_PLC_W2_Bit_SetEmgStop
+
+(** 	NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2); **)
+		(* assign - Stmt *)
+		LD OM_PLC_Word2
+		WORD_TO_INT 
+		ST NDC8.OMPLC.Stop_OM
+
+		JMP ODK_END_IF_000000000000009
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000009_000000000000001:
+	ODK_END_IF_000000000000009:
+
+(** 	 **)
+(** {*I00802*} **)
+(** if INPUT.Auto = TRUE and (NDC8.Automatic.CurrentOrderMode = 2 or NDC8.Automatic.CurrentOrderMode = 3) then **)
+	(* if - Cond *)
+	LD INPUT.Auto
+	EQ true
+	AND ( NDC8.Automatic.CurrentOrderMode
+		EQ 2
+		OR ( NDC8.Automatic.CurrentOrderMode
+			EQ 3
+		)
+	)
+	JMPCN ODK_SKIP_00000000000000A_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX01_Bit_HostMode := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX01_Bit_HostMode
+
+(** 	PLC_TX01_Bit_LocalMode := true; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX01_Bit_LocalMode
+
+		JMP ODK_END_IF_00000000000000A
+
+(** 	 **)
+(** elsif INPUT.Auto = TRUE and NDC8.Automatic.CurrentOrderMode = 1 then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_00000000000000A_000000000000001:
+	LD INPUT.Auto
+	EQ true
+	AND ( NDC8.Automatic.CurrentOrderMode
+		EQ 1
+	)
+	JMPCN ODK_SKIP_00000000000000A_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	PLC_TX01_Bit_HostMode := true; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX01_Bit_HostMode
+
+(** 	PLC_TX01_Bit_LocalMode := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX01_Bit_LocalMode
+
+		JMP ODK_END_IF_00000000000000A
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000A_000000000000002:
+
+		(* else - Stmts *)
+
+(** 	PLC_TX01_Bit_HostMode := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX01_Bit_HostMode
+
+(** 	PLC_TX01_Bit_LocalMode := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX01_Bit_LocalMode
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000A:
+
+(**  **)
+(** {* I00803 *} **)
+(** if INPUT.StartMode and (PLC_TX01_Bit_HostMode = true or PLC_TX01_Bit_LocalMode = true) and PLC_HeartBeatTimeout.Q = FALSE then **)
+	(* if - Cond *)
+	LD INPUT.StartMode
+	AND ( PLC_TX01_Bit_HostMode
+		EQ true
+		OR ( PLC_TX01_Bit_LocalMode
+			EQ true
+		)
+	)
+	AND ( PLC_HeartBeatTimeout.Q
+		EQ false
+	)
+	JMPCN ODK_SKIP_00000000000000B_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX01_Bit_OnLn_ModeP := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX01_Bit_OnLn_ModeP
+
+		JMP ODK_END_IF_00000000000000B
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000B_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	PLC_TX01_Bit_OnLn_ModeP := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX01_Bit_OnLn_ModeP
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000B:
+
+(**  **)
+(** if NDC8.Automatic.CurrentOrderMode = 2 then **)
+	(* if - Cond *)
+	LD NDC8.Automatic.CurrentOrderMode
+	EQ 2
+	JMPCN ODK_SKIP_00000000000000C_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX01_Bit_STr_Mod_NT := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX01_Bit_STr_Mod_NT
+
+(** 	PLC_TX01_Bit_STr_Mod_UT := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX01_Bit_STr_Mod_UT
+
+		JMP ODK_END_IF_00000000000000C
+
+(** elsif NDC8.Automatic.CurrentOrderMode = 1 or NDC8.Automatic.CurrentOrderMode = 3 then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_00000000000000C_000000000000001:
+	LD NDC8.Automatic.CurrentOrderMode
+	EQ 1
+	OR ( NDC8.Automatic.CurrentOrderMode
+		EQ 3
+	)
+	JMPCN ODK_SKIP_00000000000000C_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	PLC_TX01_Bit_STr_Mod_NT := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX01_Bit_STr_Mod_NT
+
+(** 	PLC_TX01_Bit_STr_Mod_UT := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX01_Bit_STr_Mod_UT
+
+		JMP ODK_END_IF_00000000000000C
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000C_000000000000002:
+	ODK_END_IF_00000000000000C:
+
+(**  **)
+(** {* I00808 *} **)
+(**  **)
+(** if g_PlcComLinkUp = TRUE then **)
+	(* if - Cond *)
+	LD g_PlcComLinkUp
+	EQ true
+	JMPCN ODK_SKIP_00000000000000D_000000000000001
+
+		(* then - Stmts *)
+
+(** 	if INPUT.LowBattery then **)
+		(* if - Cond *)
+		LD INPUT.LowBattery
+		JMPCN ODK_SKIP_00000000000000E_000000000000001
+
+			(* then - Stmts *)
+
+(** 		PLC_TX01_Bit_STr_BatLow := TRUE; **)
+			(* assign - Stmt *)
+			LD true
+			ST PLC_TX01_Bit_STr_BatLow
+
+			JMP ODK_END_IF_00000000000000E
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_00000000000000E_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		PLC_TX01_Bit_STr_BatLow := FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST PLC_TX01_Bit_STr_BatLow
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_00000000000000E:
+
+		JMP ODK_END_IF_00000000000000D
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000D_000000000000001:
+	ODK_END_IF_00000000000000D:
+
+(** 	 **)
+(** {* I00809 *} **)
+(** 	PLC_TX01_Bit_STr_Home := NDC8.PointTrigger.Bit8_HP_Pnt; **)
+	(* assign - Stmt *)
+	LD NDC8.PointTrigger.Bit8_HP_Pnt
+	ST PLC_TX01_Bit_STr_Home
+
+(**  **)
+(** {* I00810 *} **)
+(**  **)
+(** STr_AckT(IN := STr_AckR, PT:= t#10s); **)
+	(* call - Stmt *)
+	CAL STr_AckT (
+		IN := STr_AckR,
+		PT := t#10s
+	)
+
+(**  **)
+(** if PLC_TX01_Bit_OnLn_ModeP = TRUE then **)
+	(* if - Cond *)
+	LD PLC_TX01_Bit_OnLn_ModeP
+	EQ true
+	JMPCN ODK_SKIP_00000000000000F_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(**  **)
+(** 	if 	PLC_RX04_Bit_STw_Cont = TRUE **)
+(** 		or PLC_RX04_Bit_STw_Finish = TRUE **)
+(** 		or PLC_RX04_Bit_STw_Cancel = TRUE **)
+(** 		or PLC_RX04_Bit_STw_Change = TRUE then **)
+		(* if - Cond *)
+		LD PLC_RX04_Bit_STw_Cont
+		EQ true
+		OR ( PLC_RX04_Bit_STw_Finish
+			EQ true
+		)
+		OR ( PLC_RX04_Bit_STw_Cancel
+			EQ true
+		)
+		OR ( PLC_RX04_Bit_STw_Change
+			EQ true
+		)
+		JMPCN ODK_SKIP_00000000000000G_000000000000001
+
+			(* then - Stmts *)
+
+(** 		 **)
+(** 		TP_PB_NoSelTimer(IN:= FALSE); **)
+			(* call - Stmt *)
+			CAL TP_PB_NoSelTimer (
+				IN := false
+			)
+
+(** 		 **)
+(** 		OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM); **)
+			(* assign - Stmt *)
+			LD NDC8.OMPLC.ChargeOM
+			INT_TO_WORD 
+			ST OM_PLC_Word1
+
+(** 		 **)
+(** 		OM_PLC_W1_Bit_OM_Cont			:= PLC_RX04_Bit_STw_Cont; **)
+			(* assign - Stmt *)
+			LD PLC_RX04_Bit_STw_Cont
+			ST OM_PLC_W1_Bit_OM_Cont
+
+(** 		OM_PLC_W1_Bit_OM_Finish			:= PLC_RX04_Bit_STw_Finish; **)
+			(* assign - Stmt *)
+			LD PLC_RX04_Bit_STw_Finish
+			ST OM_PLC_W1_Bit_OM_Finish
+
+(** 		OM_PLC_W1_Bit_OM_Cancel			:= PLC_RX04_Bit_STw_Cancel; **)
+			(* assign - Stmt *)
+			LD PLC_RX04_Bit_STw_Cancel
+			ST OM_PLC_W1_Bit_OM_Cancel
+
+(** 		OM_PLC_W1_Bit_OM_Change			:= PLC_RX04_Bit_STw_Change; **)
+			(* assign - Stmt *)
+			LD PLC_RX04_Bit_STw_Change
+			ST OM_PLC_W1_Bit_OM_Change
+
+(** 	 **)
+(** 		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1); **)
+			(* assign - Stmt *)
+			LD OM_PLC_Word1
+			WORD_TO_INT 
+			ST NDC8.OMPLC.ChargeOM
+
+(** 		 **)
+(** 		STr_AckR := TRUE; **)
+			(* assign - Stmt *)
+			LD true
+			ST STr_AckR
+
+(** 			 **)
+(** 		if STr_AckT.Q then **)
+			(* if - Cond *)
+			LD STr_AckT.Q
+			JMPCN ODK_SKIP_00000000000000H_000000000000001
+
+				(* then - Stmts *)
+
+(** 			PLC_TX01_Bit_STr_Ack := TRUE; **)
+				(* assign - Stmt *)
+				LD true
+				ST PLC_TX01_Bit_STr_Ack
+
+				JMP ODK_END_IF_00000000000000H
+
+(** 		else **)
+			(* else *) 
+			ODK_SKIP_00000000000000H_000000000000001:
+
+				(* else - Stmts *)
+
+(** 			PLC_TX01_Bit_STr_Ack := FALSE; **)
+				(* assign - Stmt *)
+				LD false
+				ST PLC_TX01_Bit_STr_Ack
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_END_IF_00000000000000H:
+
+			JMP ODK_END_IF_00000000000000G
+
+(** 		 **)
+(** 	elsif PLC_RX04_Bit_STw_Cont = FALSE **)
+(** 		or PLC_RX04_Bit_STw_Finish = FALSE **)
+(** 		or PLC_RX04_Bit_STw_Cancel = FALSE **)
+(** 		or PLC_RX04_Bit_STw_Change = FALSE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000G_000000000000001:
+		LD PLC_RX04_Bit_STw_Cont
+		EQ false
+		OR ( PLC_RX04_Bit_STw_Finish
+			EQ false
+		)
+		OR ( PLC_RX04_Bit_STw_Cancel
+			EQ false
+		)
+		OR ( PLC_RX04_Bit_STw_Change
+			EQ false
+		)
+		JMPCN ODK_SKIP_00000000000000G_000000000000002
+
+			(* elsif - Stmts *)
+
+(** 		 **)
+(** 		OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM); **)
+			(* assign - Stmt *)
+			LD NDC8.OMPLC.ChargeOM
+			INT_TO_WORD 
+			ST OM_PLC_Word1
+
+(** 		 **)
+(** 		TP_PB_NoSelTimer(IN:=TRUE, PT:= t#10s); **)
+			(* call - Stmt *)
+			CAL TP_PB_NoSelTimer (
+				IN := true,
+				PT := t#10s
+			)
+
+(** 		 **)
+(** 		OM_PLC_W1_Bit_OM_Cont			:= FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST OM_PLC_W1_Bit_OM_Cont
+
+(** 		OM_PLC_W1_Bit_OM_Finish			:= FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST OM_PLC_W1_Bit_OM_Finish
+
+(** 		OM_PLC_W1_Bit_OM_Cancel			:= FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST OM_PLC_W1_Bit_OM_Cancel
+
+(** 		OM_PLC_W1_Bit_OM_Change			:= FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST OM_PLC_W1_Bit_OM_Change
+
+(** 		 **)
+(** 		 **)
+(** 		if TP_PB_NoSelTimer.Q then **)
+			(* if - Cond *)
+			LD TP_PB_NoSelTimer.Q
+			JMPCN ODK_SKIP_00000000000000I_000000000000001
+
+				(* then - Stmts *)
+
+(** 			OM_PLC_W1_Bit_OM_Cont := TRUE; **)
+				(* assign - Stmt *)
+				LD true
+				ST OM_PLC_W1_Bit_OM_Cont
+
+				JMP ODK_END_IF_00000000000000I
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000I_000000000000001:
+			ODK_END_IF_00000000000000I:
+
+(** 		 **)
+(** 		 **)
+(** 		if Debug_PB_Cont = TRUE then **)
+			(* if - Cond *)
+			LD Debug_PB_Cont
+			EQ true
+			JMPCN ODK_SKIP_00000000000000J_000000000000001
+
+				(* then - Stmts *)
+
+(** 			OM_PLC_W1_Bit_OM_Cont := TRUE; **)
+				(* assign - Stmt *)
+				LD true
+				ST OM_PLC_W1_Bit_OM_Cont
+
+				JMP ODK_END_IF_00000000000000J
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000J_000000000000001:
+			ODK_END_IF_00000000000000J:
+
+(** 		 **)
+(** 		if Debug_PB_Finish = TRUE then **)
+			(* if - Cond *)
+			LD Debug_PB_Finish
+			EQ true
+			JMPCN ODK_SKIP_00000000000000K_000000000000001
+
+				(* then - Stmts *)
+
+(** 			OM_PLC_W1_Bit_OM_Finish := TRUE; **)
+				(* assign - Stmt *)
+				LD true
+				ST OM_PLC_W1_Bit_OM_Finish
+
+				JMP ODK_END_IF_00000000000000K
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000K_000000000000001:
+			ODK_END_IF_00000000000000K:
+
+(** 		 **)
+(** 		if Debug_PB_Cancel = TRUE then **)
+			(* if - Cond *)
+			LD Debug_PB_Cancel
+			EQ true
+			JMPCN ODK_SKIP_00000000000000L_000000000000001
+
+				(* then - Stmts *)
+
+(** 			OM_PLC_W1_Bit_OM_Cancel := TRUE; **)
+				(* assign - Stmt *)
+				LD true
+				ST OM_PLC_W1_Bit_OM_Cancel
+
+				JMP ODK_END_IF_00000000000000L
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000L_000000000000001:
+			ODK_END_IF_00000000000000L:
+
+(** 		 **)
+(** 		if Debug_PB_Change = TRUE then **)
+			(* if - Cond *)
+			LD Debug_PB_Change
+			EQ true
+			JMPCN ODK_SKIP_00000000000000M_000000000000001
+
+				(* then - Stmts *)
+
+(** 			OM_PLC_W1_Bit_OM_Change := TRUE; **)
+				(* assign - Stmt *)
+				LD true
+				ST OM_PLC_W1_Bit_OM_Change
+
+				JMP ODK_END_IF_00000000000000M
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000M_000000000000001:
+			ODK_END_IF_00000000000000M:
+
+(** 		 **)
+(** 		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1); **)
+			(* assign - Stmt *)
+			LD OM_PLC_Word1
+			WORD_TO_INT 
+			ST NDC8.OMPLC.ChargeOM
+
+(** 		 **)
+(** 		PLC_TX01_Bit_STr_Ack := FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST PLC_TX01_Bit_STr_Ack
+
+			JMP ODK_END_IF_00000000000000G
+
+(** 	 **)
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000G_000000000000002:
+		ODK_END_IF_00000000000000G:
+
+		JMP ODK_END_IF_00000000000000F
+
+(** 	 **)
+(** 	 **)
+(** 	 **)
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000F_000000000000001:
+
+		(* else - Stmts *)
+
+(**  **)
+(** 	TP_PB_NoSelTimer(IN:= FALSE); **)
+		(* call - Stmt *)
+		CAL TP_PB_NoSelTimer (
+			IN := false
+		)
+
+(** 	 **)
+(** 	OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM); **)
+		(* assign - Stmt *)
+		LD NDC8.OMPLC.ChargeOM
+		INT_TO_WORD 
+		ST OM_PLC_Word1
+
+(** 	 **)
+(** 	OM_PLC_W1_Bit_OM_Cont			:= FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST OM_PLC_W1_Bit_OM_Cont
+
+(** 	OM_PLC_W1_Bit_OM_Finish			:= FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST OM_PLC_W1_Bit_OM_Finish
+
+(** 	OM_PLC_W1_Bit_OM_Cancel			:= FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST OM_PLC_W1_Bit_OM_Cancel
+
+(** 	OM_PLC_W1_Bit_OM_Change			:= FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST OM_PLC_W1_Bit_OM_Change
+
+(** 	 **)
+(** 	NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1); **)
+		(* assign - Stmt *)
+		LD OM_PLC_Word1
+		WORD_TO_INT 
+		ST NDC8.OMPLC.ChargeOM
+
+(** 	 **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000F:
+
+(**  **)
+(** PLC_TX_Word3 := 0; **)
+	(* assign - Stmt *)
+	LD 0
+	ST PLC_TX_Word3
+
+(**  **)
+(** {* I00817 *} **)
+(** PLC_TX03_Bit_STr_SD_F := Input.SD_Forward; **)
+	(* assign - Stmt *)
+	LD INPUT.SD_Forward
+	ST PLC_TX03_Bit_STr_SD_F
+
+(**  **)
+(** {* I00818 *} **)
+(** PLC_TX03_Bit_STr_SD_R := Input.SD_Backward; **)
+	(* assign - Stmt *)
+	LD INPUT.SD_Backward
+	ST PLC_TX03_Bit_STr_SD_R
+
+(**  **)
+(** {* I00819 *} **)
+(** PLC_TX03_Bit_STr_Rot_L := Input.SD_Left; **)
+	(* assign - Stmt *)
+	LD INPUT.SD_Left
+	ST PLC_TX03_Bit_STr_Rot_L
+
+(**  **)
+(** {* I00820 *} **)
+(** PLC_TX03_Bit_STr_Rot_R := Input.SD_Right; **)
+	(* assign - Stmt *)
+	LD INPUT.SD_Right
+	ST PLC_TX03_Bit_STr_Rot_R
+
+(**  **)
+(** {* I00821 *} **)
+(** PLC_TX03_Bit_STr_DD_R := Input.SD_Right; **)
+	(* assign - Stmt *)
+	LD INPUT.SD_Right
+	ST PLC_TX03_Bit_STr_DD_R
+
+(**  **)
+(** {* I00822 *} **)
+(** PLC_TX03_Bit_STr_DD_L := Input.SD_Left; **)
+	(* assign - Stmt *)
+	LD INPUT.SD_Left
+	ST PLC_TX03_Bit_STr_DD_L
+
+(**  **)
+(**  **)
+(** {* I00823 *} **)
+(** if g_PlcComLinkUp = TRUE then **)
+	(* if - Cond *)
+	LD g_PlcComLinkUp
+	EQ true
+	JMPCN ODK_SKIP_00000000000000N_000000000000001
+
+		(* then - Stmts *)
+
+(** 	if NDC8.SDIO.DigitalOutput16_Charger = TRUE then **)
+		(* if - Cond *)
+		LD NDC8.SDIO.DigitalOutput16_Charger
+		EQ true
+		JMPCN ODK_SKIP_00000000000000O_000000000000001
+
+			(* then - Stmts *)
+
+(** 		PLC_TX03_Bit_STr_Charge := TRUE; **)
+			(* assign - Stmt *)
+			LD true
+			ST PLC_TX03_Bit_STr_Charge
+
+			JMP ODK_END_IF_00000000000000O
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_00000000000000O_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		PLC_TX03_Bit_STr_Charge := FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST PLC_TX03_Bit_STr_Charge
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_00000000000000O:
+
+		JMP ODK_END_IF_00000000000000N
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000N_000000000000001:
+	ODK_END_IF_00000000000000N:
+
+(**  **)
+(** {* I00824 *} **)
+(** if NDC8.BlockedInfo.BlockedById <> 1 and NDC8.BlockedInfo.BlockedById <> 0 then **)
+	(* if - Cond *)
+	LD NDC8.BlockedInfo.BlockedById
+	NE 1
+	AND ( NDC8.BlockedInfo.BlockedById
+		NE 0
+	)
+	JMPCN ODK_SKIP_00000000000000P_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX03_Bit_STr_Block := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX03_Bit_STr_Block
+
+		JMP ODK_END_IF_00000000000000P
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000P_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	PLC_TX03_Bit_STr_Block := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX03_Bit_STr_Block
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000P:
+
+(**  **)
+(** {* I00825 *} **)
+(** if (NDC8.CAN_IO_3.DigitalInput9_AreaF_IN1 = FALSE or NDC8.CAN_IO_3.DigitalInput10_AreaF_IN2 = FALSE) and StopObstacle = TRUE then **)
+	(* if - Cond *)
+	LD NDC8.CAN_IO_3.DigitalInput9_AreaF_IN1
+	EQ false
+	OR ( NDC8.CAN_IO_3.DigitalInput10_AreaF_IN2
+		EQ false
+	)
+	AND ( StopObstacle
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000000Q_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX03_Bit_STr_Ir_F := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX03_Bit_STr_Ir_F
+
+		JMP ODK_END_IF_00000000000000Q
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000Q_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	PLC_TX03_Bit_STr_Ir_F := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX03_Bit_STr_Ir_F
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000Q:
+
+(**  **)
+(** {* I00826 *} **)
+(** if (NDC8.CAN_IO_3.DigitalInput13_AreaR_IN1 = FALSE or NDC8.CAN_IO_3.DigitalInput14_AreaR_IN2 = FALSE) and StopObstacle = TRUE then **)
+	(* if - Cond *)
+	LD NDC8.CAN_IO_3.DigitalInput13_AreaR_IN1
+	EQ false
+	OR ( NDC8.CAN_IO_3.DigitalInput14_AreaR_IN2
+		EQ false
+	)
+	AND ( StopObstacle
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000000R_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX03_Bit_STr_Ir_R := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX03_Bit_STr_Ir_R
+
+		JMP ODK_END_IF_00000000000000R
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000R_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	PLC_TX03_Bit_STr_Ir_R := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX03_Bit_STr_Ir_R
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000R:
+
+(**   **)
+(**  **)
+(** {* I00827 *} **)
+(** 	PLC_TX03_Bit_STr_Brake := NDC8.SDIO.DigitalInput5_BTN_BRK; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput5_BTN_BRK
+	ST PLC_TX03_Bit_STr_Brake
+
+(**  **)
+(** {* I00828 *} **)
+(** if NDC8.Autoinsert.StatusID = 1 then **)
+	(* if - Cond *)
+	LD NDC8.Autoinsert.StatusID
+	EQ 1
+	JMPCN ODK_SKIP_00000000000000S_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX03_Bit_STr_Search := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX03_Bit_STr_Search
+
+		JMP ODK_END_IF_00000000000000S
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000S_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	PLC_TX03_Bit_STr_Search := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX03_Bit_STr_Search
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000S:
+
+(**  **)
+(**  **)
+(** {* I00816 *} **)
+(** if PLC_TX_Word3 <= 1 then **)
+	(* if - Cond *)
+	LD PLC_TX_Word3
+	LE 1
+	JMPCN ODK_SKIP_00000000000000T_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX03_Bit_STr_Idle := TRUE ; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX03_Bit_STr_Idle
+
+		JMP ODK_END_IF_00000000000000T
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000T_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	PLC_TX03_Bit_STr_Idle := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX03_Bit_STr_Idle
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000T:
+
+(**  **)
+(** {* I00832 *} **)
+(** if NDC8.LayoutPosition.InSystem then **)
+	(* if - Cond *)
+	LD NDC8.LayoutPosition.InSystem
+	JMPCN ODK_SKIP_00000000000000U_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX04_Bit_STr_Ins_dn := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX04_Bit_STr_Ins_dn
+
+		JMP ODK_END_IF_00000000000000U
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000U_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	PLC_TX04_Bit_STr_Ins_dn := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX04_Bit_STr_Ins_dn
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000U:
+
+(**  **)
+(** {* I00835 *} **)
+(** {*PLC_TX04_Bit_Cancel_ST := IN_OPCD_Bit_Cmd_EnaEmg;*} **)
+(** {*InAutoLoad Process*} **)
+(**  **)
+(** {* I00836 *} **)
+(** RST_Flag := NDC8.SDIO.DigitalInput2_BTN_RST or g_RemoteReset; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput2_BTN_RST
+	OR g_RemoteReset
+	ST RST_Flag
+
+(**  **)
+(** RST_R(CLK := RST_Flag); **)
+	(* call - Stmt *)
+	CAL RST_R (
+		CLK := RST_Flag
+	)
+
+(**  **)
+(** if RST_R.Q then **)
+	(* if - Cond *)
+	LD RST_R.Q
+	JMPCN ODK_SKIP_00000000000000V_000000000000001
+
+		(* then - Stmts *)
+
+(** 	RST_Keep := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST RST_Keep
+
+(** 	RST_Keep_Timer(IN:= FALSE); **)
+		(* call - Stmt *)
+		CAL RST_Keep_Timer (
+			IN := false
+		)
+
+		JMP ODK_END_IF_00000000000000V
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000V_000000000000001:
+	ODK_END_IF_00000000000000V:
+
+(**  **)
+(** if RST_Keep = TRUE then **)
+	(* if - Cond *)
+	LD RST_Keep
+	EQ true
+	JMPCN ODK_SKIP_00000000000000W_000000000000001
+
+		(* then - Stmts *)
+
+(** 	RST_Keep_Timer(IN:= TRUE, PT := t#1.5s); **)
+		(* call - Stmt *)
+		CAL RST_Keep_Timer (
+			IN := true,
+			PT := t#1.5s
+		)
+
+		JMP ODK_END_IF_00000000000000W
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000W_000000000000001:
+	ODK_END_IF_00000000000000W:
+
+(**  **)
+(** if RST_Keep_Timer.Q then **)
+	(* if - Cond *)
+	LD RST_Keep_Timer.Q
+	JMPCN ODK_SKIP_00000000000000X_000000000000001
+
+		(* then - Stmts *)
+
+(** 	RST_Keep := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST RST_Keep
+
+(** 	RST_Keep_Timer(IN:= FALSE); **)
+		(* call - Stmt *)
+		CAL RST_Keep_Timer (
+			IN := false
+		)
+
+		JMP ODK_END_IF_00000000000000X
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000X_000000000000001:
+	ODK_END_IF_00000000000000X:
+
+(**  **)
+(** if PLC_RX_Word20_PLC_ErrD <> 0 then **)
+	(* if - Cond *)
+	LD PLC_RX_Word20_PLC_ErrD
+	NE 0
+	JMPCN ODK_SKIP_00000000000000Y_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX04_Bit_Reset_o := RST_Keep; **)
+		(* assign - Stmt *)
+		LD RST_Keep
+		ST PLC_TX04_Bit_Reset_o
+
+		JMP ODK_END_IF_00000000000000Y
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000Y_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	PLC_TX04_Bit_Reset_o := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX04_Bit_Reset_o
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000Y:
+
+(**  **)
+(** g_AGV_ErrorReset := RST_Keep; **)
+	(* assign - Stmt *)
+	LD RST_Keep
+	ST g_AGV_ErrorReset
+
+(**  **)
+(**  **)
+(** {* I00837 *} **)
+(** if PLC_TX_Word13_STr_Err <> 0 then  **)
+	(* if - Cond *)
+	LD PLC_TX_Word13_STr_Err
+	NE 0
+	JMPCN ODK_SKIP_00000000000000Z_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX04_Bit_AgvErr_o := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX04_Bit_AgvErr_o
+
+		JMP ODK_END_IF_00000000000000Z
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000Z_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	PLC_TX04_Bit_AgvErr_o := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX04_Bit_AgvErr_o
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000Z:
+
+(**  **)
+(** {* I00838 *} **)
+(**  **)
+(** {*   **)
+(** if StopWord <> 0 then **)
+(** 	PLC_TX04_Bit_AgvErr_o := TRUE; **)
+(** 	PLC_TX_Word13_STr_Err := INT_TO_WORD(DWORD_TO_INT(StopWord)); **)
+(** else **)
+(** 	PLC_TX04_Bit_AgvErr_o := FALSE; **)
+(** 	PLC_TX_Word13_STr_Err := 0; **)
+(** 	 **)
+(** end_if; **)
+(** *} **)
+(**  **)
+(** {*I00846*} **)
+(** if PLC_TX04_Bit_ChkCom_Tx <> PLC_LastHeartBeat then **)
+	(* if - Cond *)
+	LD PLC_TX04_Bit_ChkCom_Tx
+	NE PLC_LastHeartBeat
+	JMPCN ODK_SKIP_000000000000010_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_HeartBeatNoChange := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_HeartBeatNoChange
+
+		JMP ODK_END_IF_000000000000010
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000010_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	PLC_HeartBeatNoChange := true; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_HeartBeatNoChange
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000010:
+
+(**  **)
+(** PLC_LastHeartBeat := PLC_TX04_Bit_ChkCom_Tx; **)
+	(* assign - Stmt *)
+	LD PLC_TX04_Bit_ChkCom_Tx
+	ST PLC_LastHeartBeat
+
+(**  **)
+(** PLC_HeartBeatTimeout(IN:= PLC_HeartBeatNoChange, PT:= t#10s); **)
+	(* call - Stmt *)
+	CAL PLC_HeartBeatTimeout (
+		IN := PLC_HeartBeatNoChange,
+		PT := t#10s
+	)
+
+(**  **)
+(** {* D507 *} **)
+(** PLC_TX_Word7_STr_Vecl := DINT_TO_WORD(NDC8.Vehicle.VehicleID); **)
+	(* assign - Stmt *)
+	LD NDC8.Vehicle.VehicleID
+	DINT_TO_WORD 
+	ST PLC_TX_Word7_STr_Vecl
+
+(**  **)
+(** {* D508 *} **)
+(** PLC_TX_Word8_STr_Seg := DINT_TO_WORD(NDC8.LayoutPosition.Segment); **)
+	(* assign - Stmt *)
+	LD NDC8.LayoutPosition.Segment
+	DINT_TO_WORD 
+	ST PLC_TX_Word8_STr_Seg
+
+(**  **)
+(** {* D509 *} **)
+(**  **)
+(** if PLC_TX01_Bit_LocalMode then **)
+	(* if - Cond *)
+	LD PLC_TX01_Bit_LocalMode
+	JMPCN ODK_SKIP_000000000000011_000000000000001
+
+		(* then - Stmts *)
+
+(** 	if NDC8.LocalOrder.DestPoint <> 0 then **)
+		(* if - Cond *)
+		LD NDC8.LocalOrder.DestPoint
+		NE 0
+		JMPCN ODK_SKIP_000000000000012_000000000000001
+
+			(* then - Stmts *)
+
+(** 		FinalPnt := NDC8.LocalOrder.DestPoint; **)
+			(* assign - Stmt *)
+			LD NDC8.LocalOrder.DestPoint
+			ST FinalPnt
+
+			JMP ODK_END_IF_000000000000012
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000012_000000000000001:
+		ODK_END_IF_000000000000012:
+
+		JMP ODK_END_IF_000000000000011
+
+(** elsif PLC_TX01_Bit_HostMode then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000011_000000000000001:
+	LD PLC_TX01_Bit_HostMode
+	JMPCN ODK_SKIP_000000000000011_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	if NDC8.Automatic.DestPoint <> 0 then **)
+		(* if - Cond *)
+		LD NDC8.Automatic.DestPoint
+		NE 0
+		JMPCN ODK_SKIP_000000000000013_000000000000001
+
+			(* then - Stmts *)
+
+(** 		FinalPnt := NDC8.Automatic.DestPoint; **)
+			(* assign - Stmt *)
+			LD NDC8.Automatic.DestPoint
+			ST FinalPnt
+
+			JMP ODK_END_IF_000000000000013
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000013_000000000000001:
+		ODK_END_IF_000000000000013:
+
+		JMP ODK_END_IF_000000000000011
+
+(** end_if;	 **)
+	(* if - End *) 
+	ODK_SKIP_000000000000011_000000000000002:
+	ODK_END_IF_000000000000011:
+
+(**  **)
+(** PLC_TX_Word9_STr_Pnt := DINT_TO_WORD(FinalPnt); **)
+	(* assign - Stmt *)
+	LD FinalPnt
+	DINT_TO_WORD 
+	ST PLC_TX_Word9_STr_Pnt
+
+(**  **)
+(** {* D510 *} **)
+(** PLC_TX_Word10_STr_BatV := PLC_RX_Word16_BMS_BatV; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word16_BMS_BatV
+	ST PLC_TX_Word10_STr_BatV
+
+(**  **)
+(** {* D511 *} **)
+(** PLC_TX_Word11_STr_Temp := PLC_RX_Word17_BMS_BatT; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word17_BMS_BatT
+	ST PLC_TX_Word11_STr_Temp
+
+(**  **)
+(** {* D514 *} **)
+(** ConvWord := INT_TO_WORD(NDC8.OMPLC.R_BCD3); **)
+	(* assign - Stmt *)
+	LD NDC8.OMPLC.R_BCD3
+	INT_TO_WORD 
+	ST ConvWord
+
+(**  **)
+(** WordL := BYTE_TO_INT(ConvByteH); **)
+	(* assign - Stmt *)
+	LD ConvByteH
+	BYTE_TO_INT 
+	ST WordL
+
+(** WordH := BYTE_TO_INT(ConvByteL); **)
+	(* assign - Stmt *)
+	LD ConvByteL
+	BYTE_TO_INT 
+	ST WordH
+
+(** TempInt := WordH * 256 + WordL; **)
+	(* assign - Stmt *)
+	LD WordH
+	MUL 256
+	ADD WordL
+	ST TempInt
+
+(** TempWord := INT_TO_WORD(TempInt); **)
+	(* assign - Stmt *)
+	LD TempInt
+	INT_TO_WORD 
+	ST TempWord
+
+(**  **)
+(** PLC_TX_Word14_STr_BCD3 := TempWord; **)
+	(* assign - Stmt *)
+	LD TempWord
+	ST PLC_TX_Word14_STr_BCD3
+
+(**  **)
+(** {* D515 *} **)
+(** ConvWord := INT_TO_WORD(NDC8.OMPLC.R_BCD2); **)
+	(* assign - Stmt *)
+	LD NDC8.OMPLC.R_BCD2
+	INT_TO_WORD 
+	ST ConvWord
+
+(**  **)
+(** WordL := BYTE_TO_INT(ConvByteH); **)
+	(* assign - Stmt *)
+	LD ConvByteH
+	BYTE_TO_INT 
+	ST WordL
+
+(** WordH := BYTE_TO_INT(ConvByteL); **)
+	(* assign - Stmt *)
+	LD ConvByteL
+	BYTE_TO_INT 
+	ST WordH
+
+(** TempInt := WordH * 256 + WordL; **)
+	(* assign - Stmt *)
+	LD WordH
+	MUL 256
+	ADD WordL
+	ST TempInt
+
+(** TempWord := INT_TO_WORD(TempInt); **)
+	(* assign - Stmt *)
+	LD TempInt
+	INT_TO_WORD 
+	ST TempWord
+
+(**  **)
+(** PLC_TX_Word15_STr_BCD2 := TempWord; **)
+	(* assign - Stmt *)
+	LD TempWord
+	ST PLC_TX_Word15_STr_BCD2
+
+(**  **)
+(** {* D516 *} **)
+(** ConvWord := INT_TO_WORD(NDC8.OMPLC.R_BCD1); **)
+	(* assign - Stmt *)
+	LD NDC8.OMPLC.R_BCD1
+	INT_TO_WORD 
+	ST ConvWord
+
+(**  **)
+(** WordL := BYTE_TO_INT(ConvByteH); **)
+	(* assign - Stmt *)
+	LD ConvByteH
+	BYTE_TO_INT 
+	ST WordL
+
+(** WordH := BYTE_TO_INT(ConvByteL); **)
+	(* assign - Stmt *)
+	LD ConvByteL
+	BYTE_TO_INT 
+	ST WordH
+
+(** TempInt := WordH * 256 + WordL; **)
+	(* assign - Stmt *)
+	LD WordH
+	MUL 256
+	ADD WordL
+	ST TempInt
+
+(** TempWord := INT_TO_WORD(TempInt); **)
+	(* assign - Stmt *)
+	LD TempInt
+	INT_TO_WORD 
+	ST TempWord
+
+(**  **)
+(** PLC_TX_Word16_STr_BCD1 := TempWord; **)
+	(* assign - Stmt *)
+	LD TempWord
+	ST PLC_TX_Word16_STr_BCD1
+
+(** 			 **)
+(** 			 **)
+(** {*RX Data Proc*} **)
+(** {*Set Local order mode*} **)
+(** if PLC_RX03_Bit_STw_Mod_LT and not PLC_RX03_Bit_STw_Mod_NT and not PLC_RX03_Bit_STw_Mod_UT then **)
+	(* if - Cond *)
+	LD PLC_RX03_Bit_STw_Mod_LT
+	AND ( PLC_RX03_Bit_STw_Mod_NT
+		NOT
+	)
+	AND ( PLC_RX03_Bit_STw_Mod_UT
+		NOT
+	)
+	JMPCN ODK_SKIP_000000000000014_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.Automatic.SetOrderMode := 3; **)
+		(* assign - Stmt *)
+		LD 3
+		ST NDC8.Automatic.SetOrderMode
+
+(** 	OrderMode(); **)
+		(* call - Stmt *)
+		CAL OrderMode
+
+		JMP ODK_END_IF_000000000000014
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000014_000000000000001:
+	ODK_END_IF_000000000000014:
+
+(**  **)
+(** LocalManual := NDC8.Mcd.Button3; **)
+	(* assign - Stmt *)
+	LD NDC8.Mcd.Button3
+	ST LocalManual
+
+(**  **)
+(** LocalManual_R(CLK:= LocalManual); **)
+	(* call - Stmt *)
+	CAL LocalManual_R (
+		CLK := LocalManual
+	)
+
+(**  **)
+(** if LocalManual_R.Q then **)
+	(* if - Cond *)
+	LD LocalManual_R.Q
+	JMPCN ODK_SKIP_000000000000015_000000000000001
+
+		(* then - Stmts *)
+
+(** 	SetToLocal := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST SetToLocal
+
+		JMP ODK_END_IF_000000000000015
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000015_000000000000001:
+	ODK_END_IF_000000000000015:
+
+(**  **)
+(** if SetToLocal then **)
+	(* if - Cond *)
+	LD SetToLocal
+	JMPCN ODK_SKIP_000000000000016_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.Automatic.SetOrderMode := 3; **)
+		(* assign - Stmt *)
+		LD 3
+		ST NDC8.Automatic.SetOrderMode
+
+(** 	OrderMode(); **)
+		(* call - Stmt *)
+		CAL OrderMode
+
+(** 	 **)
+(** 	if NDC8.Automatic.CurrentOrderMode = 3 then **)
+		(* if - Cond *)
+		LD NDC8.Automatic.CurrentOrderMode
+		EQ 3
+		JMPCN ODK_SKIP_000000000000017_000000000000001
+
+			(* then - Stmts *)
+
+(** 		SetToLocal := false; **)
+			(* assign - Stmt *)
+			LD false
+			ST SetToLocal
+
+			JMP ODK_END_IF_000000000000017
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000017_000000000000001:
+		ODK_END_IF_000000000000017:
+
+		JMP ODK_END_IF_000000000000016
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000016_000000000000001:
+	ODK_END_IF_000000000000016:
+
+(**  **)
+(**  **)
+(** if (PLC_RX03_Bit_STw_Mod_LT and PLC_RX03_Bit_STw_Mod_NT) then **)
+	(* if - Cond *)
+	LD PLC_RX03_Bit_STw_Mod_LT
+	AND PLC_RX03_Bit_STw_Mod_NT
+	JMPCN ODK_SKIP_000000000000018_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.Automatic.SetOrderMode := 2; **)
+		(* assign - Stmt *)
+		LD 2
+		ST NDC8.Automatic.SetOrderMode
+
+(** 	OrderMode(); **)
+		(* call - Stmt *)
+		CAL OrderMode
+
+		JMP ODK_END_IF_000000000000018
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000018_000000000000001:
+	ODK_END_IF_000000000000018:
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(** if PLC_RX03_Bit_STw_Mod_LT and PLC_RX03_Bit_STw_Mod_UT then **)
+	(* if - Cond *)
+	LD PLC_RX03_Bit_STw_Mod_LT
+	AND PLC_RX03_Bit_STw_Mod_UT
+	JMPCN ODK_SKIP_000000000000019_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.Automatic.SetOrderMode := 3; **)
+		(* assign - Stmt *)
+		LD 3
+		ST NDC8.Automatic.SetOrderMode
+
+(** 	OrderMode(); **)
+		(* call - Stmt *)
+		CAL OrderMode
+
+(** 	 **)
+(** 	if OrderMode.Finished then **)
+		(* if - Cond *)
+		LD OrderMode.Finished
+		JMPCN ODK_SKIP_00000000000001A_000000000000001
+
+			(* then - Stmts *)
+
+(** 		PLC_TX01_Bit_STr_Mod_NT := FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST PLC_TX01_Bit_STr_Mod_NT
+
+(** 		PLC_TX01_Bit_STr_Mod_UT := TRUE; **)
+			(* assign - Stmt *)
+			LD true
+			ST PLC_TX01_Bit_STr_Mod_UT
+
+			JMP ODK_END_IF_00000000000001A
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000001A_000000000000001:
+		ODK_END_IF_00000000000001A:
+
+		JMP ODK_END_IF_000000000000019
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000019_000000000000001:
+	ODK_END_IF_000000000000019:
+
+(**  **)
+(** {*Set Host order mode*} **)
+(** if PLC_RX03_Bit_STw_Mod_HT then **)
+	(* if - Cond *)
+	LD PLC_RX03_Bit_STw_Mod_HT
+	JMPCN ODK_SKIP_00000000000001B_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.Automatic.SetOrderMode := 1; **)
+		(* assign - Stmt *)
+		LD 1
+		ST NDC8.Automatic.SetOrderMode
+
+(** 	OrderMode(); **)
+		(* call - Stmt *)
+		CAL OrderMode
+
+		JMP ODK_END_IF_00000000000001B
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001B_000000000000001:
+	ODK_END_IF_00000000000001B:
+
+(**  **)
+(**  **)
+(** {* Set Insert Point *} **)
+(** if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then **)
+	(* if - Cond *)
+	LD NDC8.LayoutPosition.InSystem
+	EQ false
+	AND ( PLC_RX_Word11_Ins_Pno
+		NE 0
+	)
+	JMPCN ODK_SKIP_00000000000001C_000000000000001
+
+		(* then - Stmts *)
+
+(** 	 **)
+(** 	NDC8.NavInit.Target := Word_To_DINT(PLC_RX_Word11_Ins_Pno); **)
+		(* assign - Stmt *)
+		LD PLC_RX_Word11_Ins_Pno
+		Word_To_DINT 
+		ST NDC8.NavInit.Target
+
+(** 	NavInit(Method:= 1); **)
+		(* call - Stmt *)
+		CAL NavInit (
+			Method := 1
+		)
+
+(** 	if NavInit.Finished and NavInit.ErrorCode <> 0 then **)
+		(* if - Cond *)
+		LD NavInit.Finished
+		AND ( NavInit.ErrorCode
+			NE 0
+		)
+		JMPCN ODK_SKIP_00000000000001D_000000000000001
+
+			(* then - Stmts *)
+
+(** 		PLC_TX04_Bit_STr_Ins_dn := TRUE; **)
+			(* assign - Stmt *)
+			LD true
+			ST PLC_TX04_Bit_STr_Ins_dn
+
+(** 		PLC_TX04_Bit_STr_Ins_er := FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST PLC_TX04_Bit_STr_Ins_er
+
+			JMP ODK_END_IF_00000000000001D
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_00000000000001D_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		PLC_TX04_Bit_STr_Ins_dn := FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST PLC_TX04_Bit_STr_Ins_dn
+
+(** 		PLC_TX04_Bit_STr_Ins_er := TRUE; **)
+			(* assign - Stmt *)
+			LD true
+			ST PLC_TX04_Bit_STr_Ins_er
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_00000000000001D:
+
+		JMP ODK_END_IF_00000000000001C
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001C_000000000000001:
+	ODK_END_IF_00000000000001C:
+
+(**  **)
+(** {* Set Local Order Data*} **)
+(** STw_NewcmdR(CLK:= PLC_RX03_Bit_STw_Newcmd); **)
+	(* call - Stmt *)
+	CAL STw_NewcmdR (
+		CLK := PLC_RX03_Bit_STw_Newcmd
+	)
+
+(**  **)
+(** if STw_NewcmdR.Q then **)
+	(* if - Cond *)
+	LD STw_NewcmdR.Q
+	JMPCN ODK_SKIP_00000000000001E_000000000000001
+
+		(* then - Stmts *)
+
+(** 	STw_Newcmd_Flag := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST STw_Newcmd_Flag
+
+		JMP ODK_END_IF_00000000000001E
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001E_000000000000001:
+	ODK_END_IF_00000000000001E:
+
+(**  **)
+(** if STw_Newcmd_Flag then **)
+	(* if - Cond *)
+	LD STw_Newcmd_Flag
+	JMPCN ODK_SKIP_00000000000001F_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.LocalOrder.DestPoint := Word_To_DINT(PLC_RX_Word12_STw_Pint); **)
+		(* assign - Stmt *)
+		LD PLC_RX_Word12_STw_Pint
+		Word_To_DINT 
+		ST NDC8.LocalOrder.DestPoint
+
+(** 	NDC8.LocalOrder.OpCode := Word_To_DINT(PLC_RX_Word5); **)
+		(* assign - Stmt *)
+		LD PLC_RX_Word5
+		Word_To_DINT 
+		ST NDC8.LocalOrder.OpCode
+
+(** 	PLC_TX04_Bit_STr_Cmd_dn := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX04_Bit_STr_Cmd_dn
+
+(** 	 **)
+(** 	LocalOrder(); **)
+		(* call - Stmt *)
+		CAL LocalOrder
+
+(** 	if LocalOrder.Finished then **)
+		(* if - Cond *)
+		LD LocalOrder.Finished
+		JMPCN ODK_SKIP_00000000000001G_000000000000001
+
+			(* then - Stmts *)
+
+(** 		STw_Newcmd_Flag := FALSE; **)
+			(* assign - Stmt *)
+			LD false
+			ST STw_Newcmd_Flag
+
+			JMP ODK_END_IF_00000000000001G
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000001G_000000000000001:
+		ODK_END_IF_00000000000001G:
+
+		JMP ODK_END_IF_00000000000001F
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001F_000000000000001:
+	ODK_END_IF_00000000000001F:
+
+(**  **)
+(** if INPUT.AutoLoadDone then  **)
+	(* if - Cond *)
+	LD INPUT.AutoLoadDone
+	JMPCN ODK_SKIP_00000000000001H_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX04_Bit_STr_Cmd_dn := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST PLC_TX04_Bit_STr_Cmd_dn
+
+		JMP ODK_END_IF_00000000000001H
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000001H_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	PLC_TX04_Bit_STr_Cmd_dn := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX04_Bit_STr_Cmd_dn
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000001H:
+
+(**  **)
+(** if PLC_RX03_Bit_STw_Newcmd = FALSE then **)
+	(* if - Cond *)
+	LD PLC_RX03_Bit_STw_Newcmd
+	EQ false
+	JMPCN ODK_SKIP_00000000000001I_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX04_Bit_STr_Cmd_dn := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST PLC_TX04_Bit_STr_Cmd_dn
+
+		JMP ODK_END_IF_00000000000001I
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001I_000000000000001:
+	ODK_END_IF_00000000000001I:
+
+(**  **)
+(** {* Battery Voltage*} **)
+(** if g_PlcComLinkUp = TRUE then **)
+	(* if - Cond *)
+	LD g_PlcComLinkUp
+	EQ true
+	JMPCN ODK_SKIP_00000000000001J_000000000000001
+
+		(* then - Stmts *)
+
+(** 	Input.Display_BatteryLevel := PLC_RX_Word16_BMS_BatV; **)
+		(* assign - Stmt *)
+		LD PLC_RX_Word16_BMS_BatV
+		ST INPUT.Display_BatteryLevel
+
+		JMP ODK_END_IF_00000000000001J
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000001J_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	Input.Display_BatteryLevel := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST INPUT.Display_BatteryLevel
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000001J:
+
+(**   **)
+(**   **)
+(** BMS_BatLowSel := DINT_TO_INT(NDC8.UserDefined.Integer32_51_BattLowSel); **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_51_BattLowSel
+	DINT_TO_INT 
+	ST BMS_BatLowSel
+
+(**   **)
+(** case BMS_BatLowSel of **)
+(**  **)
+(** 3:  **)
+	(* case - Elm *) 
+	ODK_SKIP_00000000000001K_000000000000000:
+
+	(* case - Cond *)
+	LD BMS_BatLowSel
+	EQ 3
+	JMPC ODK_CASE_00000000000001K_000000000000001
+
+	JMP ODK_SKIP_00000000000001K_000000000000001
+
+	(* case - Stmts *) 
+	ODK_CASE_00000000000001K_000000000000001:
+
+(** 	BMS_BatLow := PLC_RX15_Bit_BMS_ChgRqH; **)
+		(* assign - Stmt *)
+		LD PLC_RX15_Bit_BMS_ChgRqH
+		ST BMS_BatLow
+
+		JMP ODK_END_CASE_00000000000001K
+
+(** 2: **)
+	(* case - Elm *) 
+	ODK_SKIP_00000000000001K_000000000000001:
+
+	(* case - Cond *)
+	LD BMS_BatLowSel
+	EQ 2
+	JMPC ODK_CASE_00000000000001K_000000000000002
+
+	JMP ODK_SKIP_00000000000001K_000000000000002
+
+	(* case - Stmts *) 
+	ODK_CASE_00000000000001K_000000000000002:
+
+(** 	BMS_BatLow := PLC_RX15_Bit_BMS_ChgRqM or PLC_RX15_Bit_BMS_ChgRqH; **)
+		(* assign - Stmt *)
+		LD PLC_RX15_Bit_BMS_ChgRqM
+		OR PLC_RX15_Bit_BMS_ChgRqH
+		ST BMS_BatLow
+
+		JMP ODK_END_CASE_00000000000001K
+
+(** 1: **)
+	(* case - Elm *) 
+	ODK_SKIP_00000000000001K_000000000000002:
+
+	(* case - Cond *)
+	LD BMS_BatLowSel
+	EQ 1
+	JMPC ODK_CASE_00000000000001K_000000000000003
+
+	JMP ODK_SKIP_00000000000001K_000000000000003
+
+	(* case - Stmts *) 
+	ODK_CASE_00000000000001K_000000000000003:
+
+(** 	BMS_BatLow := PLC_RX15_Bit_BMS_ChgRqL or PLC_RX15_Bit_BMS_ChgRqM or PLC_RX15_Bit_BMS_ChgRqH; **)
+		(* assign - Stmt *)
+		LD PLC_RX15_Bit_BMS_ChgRqL
+		OR PLC_RX15_Bit_BMS_ChgRqM
+		OR PLC_RX15_Bit_BMS_ChgRqH
+		ST BMS_BatLow
+
+		JMP ODK_END_CASE_00000000000001K
+
+(** end_case; **)
+	(* case - End *) 
+	ODK_SKIP_00000000000001K_000000000000003:
+	ODK_END_CASE_00000000000001K:
+
+(**  **)
+(** if NDC8.UserDefined.Integer32_50_BattLowVol = 0 or NDC8.UserDefined.Integer32_50_BattLowVol < 0 then **)
+	(* if - Cond *)
+	LD NDC8.UserDefined.Integer32_50_BattLowVol
+	EQ 0
+	OR ( NDC8.UserDefined.Integer32_50_BattLowVol
+		LT 0
+	)
+	JMPCN ODK_SKIP_00000000000001L_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.UserDefined.Integer32_50_BattLowVol := 240; **)
+		(* assign - Stmt *)
+		LD 240
+		ST NDC8.UserDefined.Integer32_50_BattLowVol
+
+		JMP ODK_END_IF_00000000000001L
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001L_000000000000001:
+	ODK_END_IF_00000000000001L:
+
+(**  **)
+(** if PLC_RX_Word16_BMS_BatV < DINT_TO_WORD(NDC8.UserDefined.Integer32_50_BattLowVol) then **)
+	(* if - Cond *)
+	LD PLC_RX_Word16_BMS_BatV
+	LT ( NDC8.UserDefined.Integer32_50_BattLowVol
+		DINT_TO_WORD 
+	)
+	JMPCN ODK_SKIP_00000000000001M_000000000000001
+
+		(* then - Stmts *)
+
+(** 	BatLow := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST BatLow
+
+		JMP ODK_END_IF_00000000000001M
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000001M_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	BatLow:= FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST BatLow
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000001M:
+
+(**   **)
+(** if (BMS_BatLow = TRUE or BatLow = TRUE)then **)
+	(* if - Cond *)
+	LD BMS_BatLow
+	EQ true
+	OR ( BatLow
+		EQ true
+	)
+	JMPCN ODK_SKIP_00000000000001N_000000000000001
+
+		(* then - Stmts *)
+
+(** 	INPUT.LowBattery := TRUE; **)
+		(* assign - Stmt *)
+		LD true
+		ST INPUT.LowBattery
+
+		JMP ODK_END_IF_00000000000001N
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000001N_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	INPUT.LowBattery := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST INPUT.LowBattery
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000001N:
+
+(**  **)
+(** {* Battery Temperature *} **)
+(** if g_PlcComLinkUp = TRUE then **)
+	(* if - Cond *)
+	LD g_PlcComLinkUp
+	EQ true
+	JMPCN ODK_SKIP_00000000000001O_000000000000001
+
+		(* then - Stmts *)
+
+(** 	Input.Display_Temperature := PLC_RX_Word17_BMS_BatT; **)
+		(* assign - Stmt *)
+		LD PLC_RX_Word17_BMS_BatT
+		ST INPUT.Display_Temperature
+
+		JMP ODK_END_IF_00000000000001O
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000001O_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	Input.Display_Temperature := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST INPUT.Display_Temperature
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000001O:
+
+(**  **)
+(** {* Battery Low OT *} **)
+(** if g_PlcComLinkUp = TRUE then **)
+	(* if - Cond *)
+	LD g_PlcComLinkUp
+	EQ true
+	JMPCN ODK_SKIP_00000000000001P_000000000000001
+
+		(* then - Stmts *)
+
+(** 	g_PowerOffFlag_PLC := PLC_RX04_Bit_STw_LowOT; **)
+		(* assign - Stmt *)
+		LD PLC_RX04_Bit_STw_LowOT
+		ST g_PowerOffFlag_PLC
+
+		JMP ODK_END_IF_00000000000001P
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001P_000000000000001:
+	ODK_END_IF_00000000000001P:
+
+(**  **)
+(**  **)
+(** {*Communication*} **)
+(**  **)
+(** if ComStart = true then **)
+	(* if - Cond *)
+	LD ComStart
+	EQ true
+	JMPCN ODK_SKIP_00000000000001Q_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	if init = true then **)
+		(* if - Cond *)
+		LD init
+		EQ true
+		JMPCN ODK_SKIP_00000000000001R_000000000000001
+
+			(* then - Stmts *)
+
+(**  **)
+(** 		serial_read(); **)
+			(* call - Stmt *)
+			CAL serial_read
+
+(** 		 **)
+(** 		if serial_read.length > 0 then **)
+			(* if - Cond *)
+			LD serial_read.length
+			GT 0
+			JMPCN ODK_SKIP_00000000000001S_000000000000001
+
+				(* then - Stmts *)
+
+(** 			 **)
+(** 			RevDataLength := serial_read.length; **)
+				(* assign - Stmt *)
+				LD serial_read.length
+				ST RevDataLength
+
+(** 	 **)
+(** 			if StartOffset > 200 then **)
+				(* if - Cond *)
+				LD StartOffset
+				GT 200
+				JMPCN ODK_SKIP_00000000000001T_000000000000001
+
+					(* then - Stmts *)
+
+(** 				StartOffset := 1; **)
+					(* assign - Stmt *)
+					LD 1
+					ST StartOffset
+
+(** 				DecodeString := ''; **)
+					(* assign - Stmt *)
+					LD ''
+					ST DecodeString
+
+					JMP ODK_END_IF_00000000000001T
+
+(** 			else **)
+				(* else *) 
+				ODK_SKIP_00000000000001T_000000000000001:
+
+					(* else - Stmts *)
+
+(** 				for Start := 1 to serial_read.length BY 1 DO **)
+					(* for - Init *)
+					LD 1
+					ST Start
+					EQ serial_read.length
+					JMPC ODK_FOR_STMTS_00000000000001U
+
+					(* for - Cond *)
+					ODK_FOR_00000000000001U:
+
+					LD 1
+					GT serial_read.length
+					JMPC ODK_FOR_DOWN_00000000000001U
+
+					LD 0
+					GT 1
+					JMPC ODK_END_FOR_00000000000001U
+
+					LD serial_read.length
+					LT Start
+					JMPC ODK_END_FOR_00000000000001U
+					JMP ODK_FOR_STMTS_00000000000001U
+
+					ODK_FOR_DOWN_00000000000001U:
+
+					LD serial_read.length
+					GT Start
+					JMPC ODK_END_FOR_00000000000001U
+
+					LD 0
+					LT 1
+					JMPC ODK_END_FOR_00000000000001U
+
+						(* for - Stmts *)
+						ODK_FOR_STMTS_00000000000001U:
+
+(** 				 **)
+(** 					if serial_read.data[Start] = 16#02 then **)
+						(* if - Cond *)
+						LD serial_read.data[Start]
+						EQ 16#02
+						JMPCN ODK_SKIP_00000000000001V_000000000000001
+
+							(* then - Stmts *)
+
+(** 						StartOffset := 1; **)
+							(* assign - Stmt *)
+							LD 1
+							ST StartOffset
+
+(** 						DecodeString := ''; **)
+							(* assign - Stmt *)
+							LD ''
+							ST DecodeString
+
+							JMP ODK_END_IF_00000000000001V
+
+(** 					end_if; **)
+						(* if - End *) 
+						ODK_SKIP_00000000000001V_000000000000001:
+						ODK_END_IF_00000000000001V:
+
+(** 					 **)
+(** 					ReceiveData_Status[StartOffset] := serial_read.data[Start]; **)
+						(* assign - Stmt *)
+						LD serial_read.data[Start]
+						ST ReceiveData_Status[StartOffset]
+
+(** 				 **)
+(** 				 **)
+(** 					if ReceiveData_Status[StartOffset] <> 16#02 and  **)
+(** 						ReceiveData_Status[StartOffset] <> 16#03 and **)
+(** 						ReceiveData_Status[StartOffset] <> 16#0D and **)
+(** 						ReceiveData_Status[StartOffset] <> 16#0A then **)
+						(* if - Cond *)
+						LD ReceiveData_Status[StartOffset]
+						NE 16#02
+						AND ( ReceiveData_Status[StartOffset]
+							NE 16#03
+						)
+						AND ( ReceiveData_Status[StartOffset]
+							NE 16#0D
+						)
+						AND ( ReceiveData_Status[StartOffset]
+							NE 16#0A
+						)
+						JMPCN ODK_SKIP_00000000000001W_000000000000001
+
+							(* then - Stmts *)
+
+(** 				 **)
+(** 						TempData[1] := ReceiveData_Status[StartOffset]; **)
+							(* assign - Stmt *)
+							LD ReceiveData_Status[StartOffset]
+							ST TempData[1]
+
+(** 					 **)
+(** 						to_string(bytes := TempData, length := 1); **)
+							(* call - Stmt *)
+							CAL to_string (
+								bytes := TempData,
+								length := 1
+							)
+
+(** 					 **)
+(** 					 **)
+(** 						TempString := to_string.str; **)
+							(* assign - Stmt *)
+							LD to_string.str
+							ST TempString
+
+(** 			 **)
+(** 						DecodeString := CONCAT(DecodeString, TempString); **)
+							(* assign - Stmt *)
+							LD DecodeString
+							CONCAT TempString
+							ST DecodeString
+
+							JMP ODK_END_IF_00000000000001W
+
+(** 					end_if; **)
+						(* if - End *) 
+						ODK_SKIP_00000000000001W_000000000000001:
+						ODK_END_IF_00000000000001W:
+
+(** 				 **)
+(** 					StartOffset := StartOffset + 1; **)
+						(* assign - Stmt *)
+						LD StartOffset
+						ADD 1
+						ST StartOffset
+
+					(* for - By *)
+					LD 1
+					ADD Start
+					ST Start
+(** 				end_for; **)
+
+					JMP ODK_FOR_00000000000001U
+
+					(* for - End *) 
+					ODK_END_FOR_00000000000001U:
+
+(** 		 **)
+(** 				DataIndex1 := 1; **)
+					(* assign - Stmt *)
+					LD 1
+					ST DataIndex1
+
+(** 				DataIndex2 := StartOffset - 2; **)
+					(* assign - Stmt *)
+					LD StartOffset
+					SUB 2
+					ST DataIndex2
+
+(** 				DataIndex3 := StartOffset - 1; **)
+					(* assign - Stmt *)
+					LD StartOffset
+					SUB 1
+					ST DataIndex3
+
+(** 			 **)
+(** 				if DataIndex1 > 0 and DataIndex2 > 0 and DataIndex3 > 0 then **)
+					(* if - Cond *)
+					LD DataIndex1
+					GT 0
+					AND ( DataIndex2
+						GT 0
+					)
+					AND ( DataIndex3
+						GT 0
+					)
+					JMPCN ODK_SKIP_00000000000001X_000000000000001
+
+						(* then - Stmts *)
+
+(** 					if ReceiveData_Status[DataIndex1] = 16#02 and ReceiveData_Status[DataIndex2] = 16#0D and ReceiveData_Status[DataIndex3] = 16#0A then **)
+						(* if - Cond *)
+						LD ReceiveData_Status[DataIndex1]
+						EQ 16#02
+						AND ( ReceiveData_Status[DataIndex2]
+							EQ 16#0D
+						)
+						AND ( ReceiveData_Status[DataIndex3]
+							EQ 16#0A
+						)
+						JMPCN ODK_SKIP_00000000000001Y_000000000000001
+
+							(* then - Stmts *)
+
+(** 					 **)
+(** 						HeaderString := left(DecodeString, 7); **)
+							(* assign - Stmt *)
+							LD DecodeString
+							left 7
+							ST HeaderString
+
+(** 					 **)
+(** 						if HeaderString = '00F0XRS' then **)
+							(* if - Cond *)
+							LD HeaderString
+							EQ '00F0XRS'
+							JMPCN ODK_SKIP_00000000000001Z_000000000000001
+
+								(* then - Stmts *)
+
+(** 							DecodeString_RS := DecodeString; **)
+								(* assign - Stmt *)
+								LD DecodeString
+								ST DecodeString_RS
+
+(** 							DecodeString := ''; **)
+								(* assign - Stmt *)
+								LD ''
+								ST DecodeString
+
+(** 							RevDataLength := 0; **)
+								(* assign - Stmt *)
+								LD 0
+								ST RevDataLength
+
+(** 							StartOffset := 1; **)
+								(* assign - Stmt *)
+								LD 1
+								ST StartOffset
+
+(** 							ComStep := 10; **)
+								(* assign - Stmt *)
+								LD 10
+								ST ComStep
+
+								JMP ODK_END_IF_00000000000001Z
+
+(** 						elsif HeaderString = '00F0XWS' then **)
+							(* elseif - Cond *) 
+							ODK_SKIP_00000000000001Z_000000000000001:
+							LD HeaderString
+							EQ '00F0XWS'
+							JMPCN ODK_SKIP_00000000000001Z_000000000000002
+
+								(* elsif - Stmts *)
+
+(** 							DecodeString_WS := DecodeString; **)
+								(* assign - Stmt *)
+								LD DecodeString
+								ST DecodeString_WS
+
+(** 							DecodeString := ''; **)
+								(* assign - Stmt *)
+								LD ''
+								ST DecodeString
+
+(** 							RevDataLength := 0; **)
+								(* assign - Stmt *)
+								LD 0
+								ST RevDataLength
+
+(** 							StartOffset := 1; **)
+								(* assign - Stmt *)
+								LD 1
+								ST StartOffset
+
+(** 							ComStep := 20; **)
+								(* assign - Stmt *)
+								LD 20
+								ST ComStep
+
+								JMP ODK_END_IF_00000000000001Z
+
+(** 						else **)
+							(* else *) 
+							ODK_SKIP_00000000000001Z_000000000000002:
+
+								(* else - Stmts *)
+
+(** 							DecodeString := ''; **)
+								(* assign - Stmt *)
+								LD ''
+								ST DecodeString
+
+(** 							RevDataLength := 0; **)
+								(* assign - Stmt *)
+								LD 0
+								ST RevDataLength
+
+(** 							StartOffset := 1; **)
+								(* assign - Stmt *)
+								LD 1
+								ST StartOffset
+
+(** 							ComStep := 0; **)
+								(* assign - Stmt *)
+								LD 0
+								ST ComStep
+
+(** 						end_if; **)
+							(* if - End *) 
+							ODK_END_IF_00000000000001Z:
+
+							JMP ODK_END_IF_00000000000001Y
+
+(** 					 **)
+(** 					 **)
+(** 					end_if; **)
+						(* if - End *) 
+						ODK_SKIP_00000000000001Y_000000000000001:
+						ODK_END_IF_00000000000001Y:
+
+						JMP ODK_END_IF_00000000000001X
+
+(** 					 **)
+(** 				end_if; **)
+					(* if - End *) 
+					ODK_SKIP_00000000000001X_000000000000001:
+					ODK_END_IF_00000000000001X:
+
+(** 			 **)
+(** 		 **)
+(** 			end_if; **)
+				(* if - End *) 
+				ODK_END_IF_00000000000001T:
+
+				JMP ODK_END_IF_00000000000001S
+
+(** 			 **)
+(** 				 **)
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000001S_000000000000001:
+			ODK_END_IF_00000000000001S:
+
+(** 		 **)
+(** 		 **)
+(** 		{*PLC Act*} **)
+(** 		 **)
+(** 		case ComStep of **)
+(** 		0: **)
+			(* case - Elm *) 
+			ODK_SKIP_000000000000020_000000000000000:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 0
+			JMPC ODK_CASE_000000000000020_000000000000001
+
+			JMP ODK_SKIP_000000000000020_000000000000001
+
+			(* case - Stmts *) 
+			ODK_CASE_000000000000020_000000000000001:
+
+				JMP ODK_END_CASE_000000000000020
+
+(** 			; **)
+(** 		 **)
+(** 		10: **)
+			(* case - Elm *) 
+			ODK_SKIP_000000000000020_000000000000001:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 10
+			JMPC ODK_CASE_000000000000020_000000000000002
+
+			JMP ODK_SKIP_000000000000020_000000000000002
+
+			(* case - Stmts *) 
+			ODK_CASE_000000000000020_000000000000002:
+
+(** 			{*Send 16 Word Data-1*} **)
+(** 			{*Header + 1 Word*} **)
+(** 		 **)
+(** 			Message := '00F0X00,'; **)
+				(* assign - Stmt *)
+				LD '00F0X00,'
+				ST Message
+
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word1); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word1
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 		 **)
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			to_bytes(str := Message); **)
+				(* call - Stmt *)
+				CAL to_bytes (
+					str := Message
+				)
+
+(** 			MessageLen := Len(Message); **)
+				(* assign - Stmt *)
+				LD Message
+				Len 
+				ST MessageLen
+
+(** 		 **)
+(** 			for EncoderStart:=1 to MessageLen BY 1 DO **)
+				(* for - Init *)
+				LD 1
+				ST EncoderStart
+				EQ MessageLen
+				JMPC ODK_FOR_STMTS_000000000000021
+
+				(* for - Cond *)
+				ODK_FOR_000000000000021:
+
+				LD 1
+				GT MessageLen
+				JMPC ODK_FOR_DOWN_000000000000021
+
+				LD 0
+				GT 1
+				JMPC ODK_END_FOR_000000000000021
+
+				LD MessageLen
+				LT EncoderStart
+				JMPC ODK_END_FOR_000000000000021
+				JMP ODK_FOR_STMTS_000000000000021
+
+				ODK_FOR_DOWN_000000000000021:
+
+				LD MessageLen
+				GT EncoderStart
+				JMPC ODK_END_FOR_000000000000021
+
+				LD 0
+				LT 1
+				JMPC ODK_END_FOR_000000000000021
+
+					(* for - Stmts *)
+					ODK_FOR_STMTS_000000000000021:
+
+(** 				EncoderStartOffset := EncoderStart + 1; **)
+					(* assign - Stmt *)
+					LD EncoderStart
+					ADD 1
+					ST EncoderStartOffset
+
+(** 				SendData_Status1[EncoderStartOffset] := to_bytes.bytes[EncoderStart]; **)
+					(* assign - Stmt *)
+					LD to_bytes.bytes[EncoderStart]
+					ST SendData_Status1[EncoderStartOffset]
+
+				(* for - By *)
+				LD 1
+				ADD EncoderStart
+				ST EncoderStart
+(** 			end_for; **)
+
+				JMP ODK_FOR_000000000000021
+
+				(* for - End *) 
+				ODK_END_FOR_000000000000021:
+
+(** 		 **)
+(** 			SendData_Status1[1] := 16#02; **)
+				(* assign - Stmt *)
+				LD 16#02
+				ST SendData_Status1[1]
+
+(** 		 **)
+(** 			serial_write.length := MessageLen + 1;  **)
+				(* assign - Stmt *)
+				LD MessageLen
+				ADD 1
+				ST serial_write.length
+
+(** 			serial_write(data := SendData_Status1); **)
+				(* call - Stmt *)
+				CAL serial_write (
+					data := SendData_Status1
+				)
+
+(** 		 **)
+(** 			Message := ''; **)
+				(* assign - Stmt *)
+				LD ''
+				ST Message
+
+(** 		 **)
+(** 			ComStep := 11; **)
+				(* assign - Stmt *)
+				LD 11
+				ST ComStep
+
+				JMP ODK_END_CASE_000000000000020
+
+(** 		 **)
+(** 		11: **)
+			(* case - Elm *) 
+			ODK_SKIP_000000000000020_000000000000002:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 11
+			JMPC ODK_CASE_000000000000020_000000000000003
+
+			JMP ODK_SKIP_000000000000020_000000000000003
+
+			(* case - Stmts *) 
+			ODK_CASE_000000000000020_000000000000003:
+
+(** 			{*Send 16 Word Data-2*} **)
+(** 			{*5 Word*} **)
+(** 			{*Heart Beat*} **)
+(** 			if PLC_TX04_Bit_ChkCom_Tx = true then **)
+				(* if - Cond *)
+				LD PLC_TX04_Bit_ChkCom_Tx
+				EQ true
+				JMPCN ODK_SKIP_000000000000022_000000000000001
+
+					(* then - Stmts *)
+
+(** 				PLC_TX04_Bit_ChkCom_Tx := false; **)
+					(* assign - Stmt *)
+					LD false
+					ST PLC_TX04_Bit_ChkCom_Tx
+
+					JMP ODK_END_IF_000000000000022
+
+(** 			else **)
+				(* else *) 
+				ODK_SKIP_000000000000022_000000000000001:
+
+					(* else - Stmts *)
+
+(** 				PLC_TX04_Bit_ChkCom_Tx := true; **)
+					(* assign - Stmt *)
+					LD true
+					ST PLC_TX04_Bit_ChkCom_Tx
+
+(** 			end_if; **)
+				(* if - End *) 
+				ODK_END_IF_000000000000022:
+
+(** 			 **)
+(** 			 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word2); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word2
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word3); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word3
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word4); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word4
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word5); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word5
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word6); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word6
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			to_bytes(str := Message); **)
+				(* call - Stmt *)
+				CAL to_bytes (
+					str := Message
+				)
+
+(** 			MessageLen := Len(Message); **)
+				(* assign - Stmt *)
+				LD Message
+				Len 
+				ST MessageLen
+
+(** 		 **)
+(** 			for EncoderStart:=1 to MessageLen BY 1 DO **)
+				(* for - Init *)
+				LD 1
+				ST EncoderStart
+				EQ MessageLen
+				JMPC ODK_FOR_STMTS_000000000000023
+
+				(* for - Cond *)
+				ODK_FOR_000000000000023:
+
+				LD 1
+				GT MessageLen
+				JMPC ODK_FOR_DOWN_000000000000023
+
+				LD 0
+				GT 1
+				JMPC ODK_END_FOR_000000000000023
+
+				LD MessageLen
+				LT EncoderStart
+				JMPC ODK_END_FOR_000000000000023
+				JMP ODK_FOR_STMTS_000000000000023
+
+				ODK_FOR_DOWN_000000000000023:
+
+				LD MessageLen
+				GT EncoderStart
+				JMPC ODK_END_FOR_000000000000023
+
+				LD 0
+				LT 1
+				JMPC ODK_END_FOR_000000000000023
+
+					(* for - Stmts *)
+					ODK_FOR_STMTS_000000000000023:
+
+(** 				EncoderStartOffset := EncoderStart; **)
+					(* assign - Stmt *)
+					LD EncoderStart
+					ST EncoderStartOffset
+
+(** 				SendData_Status2[EncoderStartOffset] := to_bytes.bytes[EncoderStart]; **)
+					(* assign - Stmt *)
+					LD to_bytes.bytes[EncoderStart]
+					ST SendData_Status2[EncoderStartOffset]
+
+				(* for - By *)
+				LD 1
+				ADD EncoderStart
+				ST EncoderStart
+(** 			end_for; **)
+
+				JMP ODK_FOR_000000000000023
+
+				(* for - End *) 
+				ODK_END_FOR_000000000000023:
+
+(** 		 **)
+(** 			serial_write.length := MessageLen;  **)
+				(* assign - Stmt *)
+				LD MessageLen
+				ST serial_write.length
+
+(** 			serial_write(data := SendData_Status2); **)
+				(* call - Stmt *)
+				CAL serial_write (
+					data := SendData_Status2
+				)
+
+(** 		 **)
+(** 			Message := ''; **)
+				(* assign - Stmt *)
+				LD ''
+				ST Message
+
+(** 		 **)
+(** 			ComStep := 12; **)
+				(* assign - Stmt *)
+				LD 12
+				ST ComStep
+
+				JMP ODK_END_CASE_000000000000020
+
+(** 		 **)
+(** 		12: **)
+			(* case - Elm *) 
+			ODK_SKIP_000000000000020_000000000000003:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 12
+			JMPC ODK_CASE_000000000000020_000000000000004
+
+			JMP ODK_SKIP_000000000000020_000000000000004
+
+			(* case - Stmts *) 
+			ODK_CASE_000000000000020_000000000000004:
+
+(** 			{*Send 16 Word Data-3*} **)
+(** 			{*5 Word*} **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word7_STr_Vecl); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word7_STr_Vecl
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word8_STr_Seg); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word8_STr_Seg
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word9_STr_Pnt); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word9_STr_Pnt
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word10_STr_BatV); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word10_STr_BatV
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word11_STr_Temp); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word11_STr_Temp
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			to_bytes(str := Message); **)
+				(* call - Stmt *)
+				CAL to_bytes (
+					str := Message
+				)
+
+(** 			MessageLen := Len(Message); **)
+				(* assign - Stmt *)
+				LD Message
+				Len 
+				ST MessageLen
+
+(** 		 **)
+(** 			for EncoderStart:=1 to MessageLen BY 1 DO **)
+				(* for - Init *)
+				LD 1
+				ST EncoderStart
+				EQ MessageLen
+				JMPC ODK_FOR_STMTS_000000000000024
+
+				(* for - Cond *)
+				ODK_FOR_000000000000024:
+
+				LD 1
+				GT MessageLen
+				JMPC ODK_FOR_DOWN_000000000000024
+
+				LD 0
+				GT 1
+				JMPC ODK_END_FOR_000000000000024
+
+				LD MessageLen
+				LT EncoderStart
+				JMPC ODK_END_FOR_000000000000024
+				JMP ODK_FOR_STMTS_000000000000024
+
+				ODK_FOR_DOWN_000000000000024:
+
+				LD MessageLen
+				GT EncoderStart
+				JMPC ODK_END_FOR_000000000000024
+
+				LD 0
+				LT 1
+				JMPC ODK_END_FOR_000000000000024
+
+					(* for - Stmts *)
+					ODK_FOR_STMTS_000000000000024:
+
+(** 				EncoderStartOffset := EncoderStart; **)
+					(* assign - Stmt *)
+					LD EncoderStart
+					ST EncoderStartOffset
+
+(** 				SendData_Status3[EncoderStartOffset] := to_bytes.bytes[EncoderStart]; **)
+					(* assign - Stmt *)
+					LD to_bytes.bytes[EncoderStart]
+					ST SendData_Status3[EncoderStartOffset]
+
+				(* for - By *)
+				LD 1
+				ADD EncoderStart
+				ST EncoderStart
+(** 			end_for; **)
+
+				JMP ODK_FOR_000000000000024
+
+				(* for - End *) 
+				ODK_END_FOR_000000000000024:
+
+(** 		 **)
+(** 			serial_write.length := MessageLen;  **)
+				(* assign - Stmt *)
+				LD MessageLen
+				ST serial_write.length
+
+(** 			serial_write(data := SendData_Status3); **)
+				(* call - Stmt *)
+				CAL serial_write (
+					data := SendData_Status3
+				)
+
+(** 		 **)
+(** 			Message := ''; **)
+				(* assign - Stmt *)
+				LD ''
+				ST Message
+
+(** 		 **)
+(** 			ComStep := 13; **)
+				(* assign - Stmt *)
+				LD 13
+				ST ComStep
+
+				JMP ODK_END_CASE_000000000000020
+
+(** 	 **)
+(** 		13: **)
+			(* case - Elm *) 
+			ODK_SKIP_000000000000020_000000000000004:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 13
+			JMPC ODK_CASE_000000000000020_000000000000005
+
+			JMP ODK_SKIP_000000000000020_000000000000005
+
+			(* case - Stmts *) 
+			ODK_CASE_000000000000020_000000000000005:
+
+(** 			{*Send 16 Word Data-4*} **)
+(** 			{*5 Word*} **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word12_STr_BatD); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word12_STr_BatD
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word13_STr_Err); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word13_STr_Err
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word14_STr_BCD3); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word14_STr_BCD3
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 			 **)
+(** 		 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word15_STr_BCD2); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word15_STr_BCD2
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 			Message := CONCAT(Message, ','); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT ','
+				ST Message
+
+(** 		 **)
+(** 			SendTempString := WORD_TO_STRING(PLC_TX_Word16_STr_BCD1); **)
+				(* assign - Stmt *)
+				LD PLC_TX_Word16_STr_BCD1
+				WORD_TO_STRING 
+				ST SendTempString
+
+(** 			Message := CONCAT(Message, SendTempString); **)
+				(* assign - Stmt *)
+				LD Message
+				CONCAT SendTempString
+				ST Message
+
+(** 		 **)
+(** 			to_bytes(str := Message); **)
+				(* call - Stmt *)
+				CAL to_bytes (
+					str := Message
+				)
+
+(** 			MessageLen := Len(Message); **)
+				(* assign - Stmt *)
+				LD Message
+				Len 
+				ST MessageLen
+
+(** 		 **)
+(** 			for EncoderStart:=1 to MessageLen BY 1 DO **)
+				(* for - Init *)
+				LD 1
+				ST EncoderStart
+				EQ MessageLen
+				JMPC ODK_FOR_STMTS_000000000000025
+
+				(* for - Cond *)
+				ODK_FOR_000000000000025:
+
+				LD 1
+				GT MessageLen
+				JMPC ODK_FOR_DOWN_000000000000025
+
+				LD 0
+				GT 1
+				JMPC ODK_END_FOR_000000000000025
+
+				LD MessageLen
+				LT EncoderStart
+				JMPC ODK_END_FOR_000000000000025
+				JMP ODK_FOR_STMTS_000000000000025
+
+				ODK_FOR_DOWN_000000000000025:
+
+				LD MessageLen
+				GT EncoderStart
+				JMPC ODK_END_FOR_000000000000025
+
+				LD 0
+				LT 1
+				JMPC ODK_END_FOR_000000000000025
+
+					(* for - Stmts *)
+					ODK_FOR_STMTS_000000000000025:
+
+(** 				EncoderStartOffset := EncoderStart; **)
+					(* assign - Stmt *)
+					LD EncoderStart
+					ST EncoderStartOffset
+
+(** 				SendData_Status4[EncoderStartOffset] := to_bytes.bytes[EncoderStart]; **)
+					(* assign - Stmt *)
+					LD to_bytes.bytes[EncoderStart]
+					ST SendData_Status4[EncoderStartOffset]
+
+				(* for - By *)
+				LD 1
+				ADD EncoderStart
+				ST EncoderStart
+(** 			end_for; **)
+
+				JMP ODK_FOR_000000000000025
+
+				(* for - End *) 
+				ODK_END_FOR_000000000000025:
+
+(** 		 **)
+(** 			EncoderStartOffset := MessageLen + 1; **)
+				(* assign - Stmt *)
+				LD MessageLen
+				ADD 1
+				ST EncoderStartOffset
+
+(** 			SendData_Status4[EncoderStartOffset] := 16#03; **)
+				(* assign - Stmt *)
+				LD 16#03
+				ST SendData_Status4[EncoderStartOffset]
+
+(** 		 **)
+(** 			EncoderStartOffset := MessageLen + 2; **)
+				(* assign - Stmt *)
+				LD MessageLen
+				ADD 2
+				ST EncoderStartOffset
+
+(** 			SendData_Status4[EncoderStartOffset] := 16#0D; **)
+				(* assign - Stmt *)
+				LD 16#0D
+				ST SendData_Status4[EncoderStartOffset]
+
+(** 		 **)
+(** 			EncoderStartOffset := MessageLen + 3; **)
+				(* assign - Stmt *)
+				LD MessageLen
+				ADD 3
+				ST EncoderStartOffset
+
+(** 			SendData_Status4[EncoderStartOffset] := 16#0A; **)
+				(* assign - Stmt *)
+				LD 16#0A
+				ST SendData_Status4[EncoderStartOffset]
+
+(** 		 **)
+(** 			serial_write.length := MessageLen + 3;  **)
+				(* assign - Stmt *)
+				LD MessageLen
+				ADD 3
+				ST serial_write.length
+
+(** 			serial_write(data := SendData_Status4); **)
+				(* call - Stmt *)
+				CAL serial_write (
+					data := SendData_Status4
+				)
+
+(** 		 **)
+(** 			Message := ''; **)
+				(* assign - Stmt *)
+				LD ''
+				ST Message
+
+(** 			 **)
+(** 			ComStep := 0; **)
+				(* assign - Stmt *)
+				LD 0
+				ST ComStep
+
+				JMP ODK_END_CASE_000000000000020
+
+(** 		20: **)
+			(* case - Elm *) 
+			ODK_SKIP_000000000000020_000000000000005:
+
+			(* case - Cond *)
+			LD ComStep
+			EQ 20
+			JMPC ODK_CASE_000000000000020_000000000000006
+
+			JMP ODK_SKIP_000000000000020_000000000000006
+
+			(* case - Stmts *) 
+			ODK_CASE_000000000000020_000000000000006:
+
+(** 			{*Send 02 30 30 46 30 58 30 30 03 0D 0A (00F0X00) *} **)
+(** 		 **)
+(** 			serial_write.length := 11;  **)
+				(* assign - Stmt *)
+				LD 11
+				ST serial_write.length
+
+(** 			serial_write(data := SendData_Req); **)
+				(* call - Stmt *)
+				CAL serial_write (
+					data := SendData_Req
+				)
+
+(**  **)
+(** 			 **)
+(** 			{* Decoding Rev Data *} **)
+(** 	 **)
+(** 			{*Trim Receive String*} **)
+(** 			DecodeString_WS_Data := delete(DecodeString_WS, 11, 1); **)
+				(* assign - Stmt *)
+				LD DecodeString_WS
+				delete 11, 1
+				ST DecodeString_WS_Data
+
+(** 	 **)
+(** 			{*Decode Receive String*} **)
+(** 			for DecodeStart_WS := 1 To 25 Do **)
+				(* for - Init *)
+				LD 1
+				ST DecodeStart_WS
+				EQ 25
+				JMPC ODK_FOR_STMTS_000000000000026
+
+				(* for - Cond *)
+				ODK_FOR_000000000000026:
+
+				LD 1
+				GT 25
+				JMPC ODK_FOR_DOWN_000000000000026
+
+				LD 0
+				GT 1
+				JMPC ODK_END_FOR_000000000000026
+
+				LD 25
+				LT DecodeStart_WS
+				JMPC ODK_END_FOR_000000000000026
+				JMP ODK_FOR_STMTS_000000000000026
+
+				ODK_FOR_DOWN_000000000000026:
+
+				LD 25
+				GT DecodeStart_WS
+				JMPC ODK_END_FOR_000000000000026
+
+				LD 0
+				LT 1
+				JMPC ODK_END_FOR_000000000000026
+
+					(* for - Stmts *)
+					ODK_FOR_STMTS_000000000000026:
+
+(** 				 **)
+(** 				if DecodeStart_WS < 25 then **)
+					(* if - Cond *)
+					LD DecodeStart_WS
+					LT 25
+					JMPCN ODK_SKIP_000000000000027_000000000000001
+
+						(* then - Stmts *)
+
+(** 					SplitPos := find(DecodeString_WS_Data, ','); **)
+						(* assign - Stmt *)
+						LD DecodeString_WS_Data
+						find ','
+						ST SplitPos
+
+						JMP ODK_END_IF_000000000000027
+
+(** 				else **)
+					(* else *) 
+					ODK_SKIP_000000000000027_000000000000001:
+
+						(* else - Stmts *)
+
+(** 					SplitPos := len(DecodeString_WS_Data); **)
+						(* assign - Stmt *)
+						LD DecodeString_WS_Data
+						Len 
+						ST SplitPos
+
+(** 				end_if; **)
+					(* if - End *) 
+					ODK_END_IF_000000000000027:
+
+(** 				 **)
+(** 				SplitPosOffset1 := SplitPos - 1; **)
+					(* assign - Stmt *)
+					LD SplitPos
+					SUB 1
+					ST SplitPosOffset1
+
+(** 	 **)
+(** 				SplitString := left(DecodeString_WS_Data, SplitPosOffset1); **)
+					(* assign - Stmt *)
+					LD DecodeString_WS_Data
+					left SplitPosOffset1
+					ST SplitString
+
+(** 	 **)
+(** 				DecodeString_WS_Data := delete(DecodeString_WS_Data, SplitPos, 1); **)
+					(* assign - Stmt *)
+					LD DecodeString_WS_Data
+					delete SplitPos, 1
+					ST DecodeString_WS_Data
+
+(** 	 **)
+(** 				DecodeDataArray[DecodeStart_WS] := STRING_TO_WORD(SplitString); **)
+					(* assign - Stmt *)
+					LD SplitString
+					STRING_TO_WORD 
+					ST DecodeDataArray[DecodeStart_WS]
+
+				(* for - By *)
+				LD 1
+				ADD DecodeStart_WS
+				ST DecodeStart_WS
+(** 				 **)
+(** 				 **)
+(** 			end_for; **)
+
+				JMP ODK_FOR_000000000000026
+
+				(* for - End *) 
+				ODK_END_FOR_000000000000026:
+
+(** 		 **)
+(** 			PLC_RX_Word1 := DecodeDataArray[1]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[1]
+				ST PLC_RX_Word1
+
+(** 			PLC_RX_Word2 := DecodeDataArray[2]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[2]
+				ST PLC_RX_Word2
+
+(** 			PLC_RX_Word3 := DecodeDataArray[3]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[3]
+				ST PLC_RX_Word3
+
+(** 			PLC_RX_Word4 := DecodeDataArray[4]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[4]
+				ST PLC_RX_Word4
+
+(** 			PLC_RX_Word5 := DecodeDataArray[5]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[5]
+				ST PLC_RX_Word5
+
+(** 			PLC_RX_Word6 := DecodeDataArray[6]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[6]
+				ST PLC_RX_Word6
+
+(** 			PLC_RX_Word7_STw_BCD3 := DecodeDataArray[7]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[7]
+				ST PLC_RX_Word7_STw_BCD3
+
+(** 			PLC_RX_Word8_STw_BCD2 := DecodeDataArray[8]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[8]
+				ST PLC_RX_Word8_STw_BCD2
+
+(** 			PLC_RX_Word9_STw_BCD1 := DecodeDataArray[9]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[9]
+				ST PLC_RX_Word9_STw_BCD1
+
+(** 			PLC_RX_Word10_STw_ILEr := DecodeDataArray[10]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[10]
+				ST PLC_RX_Word10_STw_ILEr
+
+(** 			PLC_RX_Word11_Ins_Pno := DecodeDataArray[11]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[11]
+				ST PLC_RX_Word11_Ins_Pno
+
+(** 			PLC_RX_Word12_STw_Pint := DecodeDataArray[12]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[12]
+				ST PLC_RX_Word12_STw_Pint
+
+(** 			PLC_RX_Word13_Ins_Ano := DecodeDataArray[13]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[13]
+				ST PLC_RX_Word13_Ins_Ano
+
+(** 			PLC_RX_Word14_BMS_2 := DecodeDataArray[14]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[14]
+				ST PLC_RX_Word14_BMS_2
+
+(** 			PLC_RX_Word15_BMS_3 := DecodeDataArray[15]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[15]
+				ST PLC_RX_Word15_BMS_3
+
+(** 			PLC_RX_Word16_BMS_BatV := DecodeDataArray[16]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[16]
+				ST PLC_RX_Word16_BMS_BatV
+
+(** 			PLC_RX_Word17_BMS_BatT := DecodeDataArray[17]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[17]
+				ST PLC_RX_Word17_BMS_BatT
+
+(** 			PLC_RX_Word18_BMS_BatC := DecodeDataArray[18]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[18]
+				ST PLC_RX_Word18_BMS_BatC
+
+(** 			PLC_RX_Word19_BMS_BatA := DecodeDataArray[19]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[19]
+				ST PLC_RX_Word19_BMS_BatA
+
+(** 			PLC_RX_Word20_PLC_ErrD := DecodeDataArray[20]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[20]
+				ST PLC_RX_Word20_PLC_ErrD
+
+(** 			PLC_RX_Word21_BMS_Main := DecodeDataArray[21]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[21]
+				ST PLC_RX_Word21_BMS_Main
+
+(** 			PLC_RX_Word22_BMS_Chan := DecodeDataArray[22]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[22]
+				ST PLC_RX_Word22_BMS_Chan
+
+(** 			PLC_RX_Word23_BMS_ID4L := DecodeDataArray[23]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[23]
+				ST PLC_RX_Word23_BMS_ID4L
+
+(** 			PLC_RX_Word24_BMS_ID4H := DecodeDataArray[24]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[24]
+				ST PLC_RX_Word24_BMS_ID4H
+
+(** 			PLC_RX_Word25 := DecodeDataArray[25]; **)
+				(* assign - Stmt *)
+				LD DecodeDataArray[25]
+				ST PLC_RX_Word25
+
+(** 			 **)
+(** 			ComStep := 0; **)
+				(* assign - Stmt *)
+				LD 0
+				ST ComStep
+
+				JMP ODK_END_CASE_000000000000020
+
+(** 			 **)
+(** 		end_case; **)
+			(* case - End *) 
+			ODK_SKIP_000000000000020_000000000000006:
+			ODK_END_CASE_000000000000020:
+
+			JMP ODK_END_IF_00000000000001R
+
+(**  **)
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000001R_000000000000001:
+		ODK_END_IF_00000000000001R:
+
+		JMP ODK_END_IF_00000000000001Q
+
+(** 	 **)
+(** 	 **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001Q_000000000000001:
+	ODK_END_IF_00000000000001Q:
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

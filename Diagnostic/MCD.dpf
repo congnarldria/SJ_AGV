@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8SelectedParameterFile">
+  <FileInfo FileType="dpf" FileRevision="1" FileFormat="2" Description="NDC8 Vehicle Diagnostic File" CreationDate="2019-09-25" CreationTime="10:43:26.2943403+08:00" CreatedBy="haoin" ModificationDate="2019-09-25" ModificationTime="10:43:26.2943403+08:00" ModifiedBy="haoin" ModifiedWith="P41716V3.4.0.18015" ModifiedWithSerial="" />
+  <Parameters>
+    <Parameter Group="Mcd" Parameter="Angle" SymbolAddress="Mcd.Angle" Visibility="Service" DataType="INTEGER32" MinValue="-2147483648" MaxValue="2147483647" Category="Runtime" AccessType="ro" Remark="Angle from Mcd" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Button1" SymbolAddress="Mcd.Button1" Visibility="Service" DataType="BOOLEAN" MinValue="0" MaxValue="1" Category="Runtime" AccessType="ro" Remark="Auto mode button" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Button10" SymbolAddress="Mcd.Button10" Visibility="Service" DataType="BOOLEAN" MinValue="0" MaxValue="1" Category="Runtime" AccessType="ro" Remark="Load2 left button" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Button11" SymbolAddress="Mcd.Button11" Visibility="Service" DataType="BOOLEAN" MinValue="0" MaxValue="1" Category="Runtime" AccessType="ro" Remark="Load2 right button" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Button2" SymbolAddress="Mcd.Button2" Visibility="Service" DataType="BOOLEAN" MinValue="0" MaxValue="1" Category="Runtime" AccessType="ro" Remark="Semi mode button" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Button3" SymbolAddress="Mcd.Button3" Visibility="Service" DataType="BOOLEAN" MinValue="0" MaxValue="1" Category="Runtime" AccessType="ro" Remark="Man mode button" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Button4" SymbolAddress="Mcd.Button4" Visibility="Service" DataType="BOOLEAN" MinValue="0" MaxValue="1" Category="Runtime" AccessType="ro" Remark="Forward backward button" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Button5" SymbolAddress="Mcd.Button5" Visibility="Service" DataType="BOOLEAN" MinValue="0" MaxValue="1" Category="Runtime" AccessType="ro" Remark="Low speed button" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Button6" SymbolAddress="Mcd.Button6" Visibility="Service" DataType="BOOLEAN" MinValue="0" MaxValue="1" Category="Runtime" AccessType="ro" Remark="High speed button" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Button7" SymbolAddress="Mcd.Button7" Visibility="Service" DataType="BOOLEAN" MinValue="0" MaxValue="1" Category="Runtime" AccessType="ro" Remark="Override button" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Button8" SymbolAddress="Mcd.Button8" Visibility="Service" DataType="BOOLEAN" MinValue="0" MaxValue="1" Category="Runtime" AccessType="ro" Remark="Load1 up button" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Button9" SymbolAddress="Mcd.Button9" Visibility="Service" DataType="BOOLEAN" MinValue="0" MaxValue="1" Category="Runtime" AccessType="ro" Remark="Load1 down button" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Buttons" SymbolAddress="Mcd.Buttons" Visibility="Service" DataType="INTEGER32" MinValue="-2147483648" MaxValue="2147483647" Category="Runtime" AccessType="ro" Remark="Buttons from Mcd" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="DeviceType" SymbolAddress="Mcd.DeviceType" Visibility="Service" DataType="VISIBLE_STRING" MinValue="0" MaxValue="32" Category="Runtime" AccessType="ro" Remark="A Manual Control Device" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="McdHighSpeed" SymbolAddress="Mcd.McdHighSpeed" Visibility="Service" DataType="INTEGER32" MinValue="0" MaxValue="2147483647" Category="Config" AccessType="rw" Remark="Mcd high or max speed" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="McdLowSpeed" SymbolAddress="Mcd.McdLowSpeed" Visibility="Service" DataType="INTEGER32" MinValue="0" MaxValue="2147483647" Category="Config" AccessType="rw" Remark="Mcd low speed" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Speed" SymbolAddress="Mcd.Speed" Visibility="Service" DataType="INTEGER32" MinValue="-2147483648" MaxValue="2147483647" Category="Runtime" AccessType="ro" Remark="Speed from Mcd" Device="Mcd" />
+    <Parameter Group="Mcd" Parameter="Valid" SymbolAddress="Mcd.Valid" Visibility="Service" DataType="BOOLEAN" MinValue="0" MaxValue="1" Category="Runtime" AccessType="ro" Remark="Set when an MCD device is up and running" Device="Mcd" />
+  </Parameters>
+</File>

@@ -1,0 +1,136 @@
+FUNCTION_BLOCK SENSORHANDLING_FB
+VAR_EXTERNAL
+
+END_VAR
+
+VAR_INPUT
+	Input		: bool;
+	EventID		: dint;
+	StopStringID: dint;
+	Enable		: bool;
+	OnDelay		: time;
+	OffDelay 	: time;
+END_VAR
+
+VAR_OUTPUT
+	Stop	: bool;
+END_VAR
+
+VAR
+	OnFilterTON	: TON;
+	OffFilterTP: TP;
+	StopRT		: R_Trig;
+	Off_FT		: F_Trig;
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	DISPLAYSTOPSTRING : DisplayStopString_FB;
+	INSTATUS : bool;
+END_VAR
+(** {* filter indata with on delay *} **)
+(** OnFilterTON(IN:=Input, PT:=OnDelay); **)
+	(* call - Stmt *)
+	CAL OnFilterTON (
+		IN := Input,
+		PT := OnDelay
+	)
+
+(**  **)
+(** {* Off delay *} **)
+(** OffFilterTP(IN:=OnFilterTON.q, PT:=OffDelay); **)
+	(* call - Stmt *)
+	CAL OffFilterTP (
+		IN := OnFilterTON.q,
+		PT := OffDelay
+	)
+
+(**  **)
+(** {* Set/reset or disable stop signal. *} **)
+(** if not Enable then **)
+	(* if - Cond *)
+	LD Enable
+	NOT
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	Stop:=false; **)
+		(* assign - Stmt *)
+		LD false
+		ST Stop
+
+		JMP ODK_END_IF_000000000000001
+
+(** elsif OnFilterTON.Q then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	LD OnFilterTON.q
+	JMPCN ODK_SKIP_000000000000001_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	Stop:=true; **)
+		(* assign - Stmt *)
+		LD true
+		ST Stop
+
+		JMP ODK_END_IF_000000000000001
+
+(** elsif not OffFilterTP.q then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000001_000000000000002:
+	LD OffFilterTP.q
+	NOT
+	JMPCN ODK_SKIP_000000000000001_000000000000003
+
+		(* elsif - Stmts *)
+
+(** 	Stop:=false; **)
+		(* assign - Stmt *)
+		LD false
+		ST Stop
+
+		JMP ODK_END_IF_000000000000001
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000003:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(** {* generate events *} **)
+(** StopRT(CLK:=Stop); **)
+	(* call - Stmt *)
+	CAL StopRT (
+		CLK := Stop
+	)
+
+(** if StopRT.Q then **)
+	(* if - Cond *)
+	LD StopRT.q
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
+		JMP ODK_END_IF_000000000000002
+
+(** 	; **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000002_000000000000001:
+	ODK_END_IF_000000000000002:
+
+(**  **)
+(** {* Display update *} **)
+(** DisplayStopString(INStatus:=Stop, StopString:=StopStringID, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		INStatus := Stop,
+		StopString := StopStringID,
+		StopValue := 0
+	)
+
+(**  **)
+
+END_FUNCTION_BLOCK

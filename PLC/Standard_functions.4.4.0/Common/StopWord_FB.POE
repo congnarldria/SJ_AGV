@@ -1,0 +1,661 @@
+FUNCTION_BLOCK STOPWORD_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;
+END_VAR
+
+VAR_INPUT
+END_VAR
+
+VAR_OUTPUT
+END_VAR
+
+VAR
+	WaitingForSteerWheelTurn : bool;
+	Stop_RT : R_Trig;
+	Stop_FT : F_Trig;
+	TempValue : dint ; 
+	StopTON : ton;	
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	STOPLOADDROPPEDWHILEUNLOADING : BOOL;
+	STOPRESET : BOOL;
+	STOPROBOTNOTIDLE : BOOL;
+	STOPBYERRORCODE : BOOL;
+	STOPHALT : BOOL;
+	STOPNOOPCODE : BOOL;
+	STOPLIFT : BOOL;
+	STOPFAILURECAN : BOOL;
+	STOPFINDSYNC : BOOL;
+	STOPSAFETY : BOOL;
+	DISPLAYSTOPSTRING : DisplayStopString_FB;
+	STOPCLAMP : BOOL;
+	STOPLOADCHANGE : BOOL;
+	INSTATUS : bool;
+	STOPBATLOWOT : BOOL;
+	STOPWORD2 : DWORD;
+	STOPFAILCODE : BOOL;
+	STOPCHARGE : BOOL;
+	STOPFLEX : BOOL;
+	OUTPUT : OUTPUT_T;
+	STOPBYCANERR_NODE10 : BOOL;
+	STOPFORKFARTOOHIGH : BOOL;
+	STOPOBSTACLEFAULT : BOOL;
+	STOPSIDE : BOOL;
+	STOPSTEERSYNC : BOOL;
+	STOPESTOPCHAINERROR : BOOL;
+	STOPCHARGESTATIONMISSING : BOOL;
+	STOPLS2000 : BOOL;
+	STOPBUMPERFAULT : BOOL;
+	INPUT : INPUT_T;
+	STOPMANUAL : BOOL;
+	STOPESTOPBUTTON : BOOL;
+	STOPWORD : DWORD;
+	STOPBYCANERR_NODE9 : BOOL;
+	STOPBYCANERR_NODE8 : BOOL;
+	STOPBYCANERR_NODE7 : BOOL;
+	STOPBYCANERR_NODE6 : BOOL;
+	STOPBYCANERR_NODE5 : BOOL;
+	STOPBYCANERR_NODE4 : BOOL;
+	STOPBYCANERR_NODE3 : BOOL;
+	STOPBYCANERR_NODE2 : BOOL;
+	STOPBYCANERR_NODE1 : BOOL;
+	STOPBYOM_PLC : BOOL;
+	STOPFORKTOOHIGH : BOOL;
+	STOPFORKTOOLOW : BOOL;
+	STOPRESETBUTTON : BOOL;
+	STOPSTARTDELAY : BOOL;
+	STOPREAR : BOOL;
+	STOPBYBCD : BOOL;
+	STOPTRUCKDRIVESAFESTATE : BOOL;
+	STOPSOFT : BOOL;
+	STOPSPINNINGWHEEL : BOOL;
+	STOPLOADOP : BOOL;
+	STOPOBSTACLE : BOOL;
+END_VAR
+(** {**************************************************************************************} **)
+(** {* LOAD OPERATION STOP *} **)
+(** {* Do not enter station w/o OP code *} **)
+(** {*StopNoOPCode := NDC8.LoadOperation.OperationCode = 0  **)
+(** 				and NDC8.Automatic.ExecDriveCommand; **)
+(** DisplayStopString(InStatus:=StopNoOPCode, StopString:=94, StopValue:=0); **)
+(**  **)
+(** *} **)
+(**  **)
+(** {**************************************************************************************} **)
+(** {* Waiting for steering wheel to turn *} **)
+(** {* If no other errors, it's most likely the steer wheel which is not within NDC8.Vehicle.WaitForWheelTurnMaxAngle. *} **)
+(**  **)
+(** WaitingForSteerWheelTurn := NDC8.Automatic.ExecDriveCommand **)
+(** 							and NDC8.CanOpenMaster.NMTState = 5 **)
+(** 							and NDC8.CanOpenMaster.State = 0 **)
+(** 							and NDC8.Position.Valid **)
+(** 							and not NDC8.Vehicle.Blocked **)
+(** 							and not NDC8.VehicleControl.QuickStop **)
+(** 							and not NDC8.VehicleControl.Stop **)
+(** 							and not NDC8.VehicleControl.EStop **)
+(** 							and not NDC8.VehicleControl.SensorStopEnable **)
+(** 							and NDC8.VehicleControl.SetSpeed = 0 **)
+(** 							and abs(Input.SteerEncAngle - Output.SetValueSteer) > NDC8.Vehicle.WaitForWheelTurnMaxAngle; **)
+	(* assign - Stmt *)
+	LD NDC8.Automatic.ExecDriveCommand
+	AND ( NDC8.CanOpenMaster.NMTState
+		EQ 5
+	)
+	AND ( NDC8.CanOpenMaster.State
+		EQ 0
+	)
+	AND NDC8.Position.Valid
+	AND ( NDC8.Vehicle.Blocked
+		NOT
+	)
+	AND ( NDC8.VehicleControl.QuickStop
+		NOT
+	)
+	AND ( NDC8.VehicleControl.Stop
+		NOT
+	)
+	AND ( NDC8.VehicleControl.EStop
+		NOT
+	)
+	AND ( NDC8.VehicleControl.SensorStopEnable
+		NOT
+	)
+	AND ( NDC8.VehicleControl.SetSpeed
+		EQ 0
+	)
+	AND ( Input.SteerEncAngle
+		SUB Output.SetValueSteer
+		abs 
+		GT NDC8.Vehicle.WaitForWheelTurnMaxAngle
+	)
+	ST WaitingForSteerWheelTurn
+
+(**  **)
+(** DisplayStopString(InStatus:=WaitingForSteerWheelTurn, StopString:=138, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := WaitingForSteerWheelTurn,
+		StopString := 138,
+		StopValue := 0
+	)
+
+(**  **)
+(** StopSteerSync	:= not INPUT.SteerEncSyncValid; **)
+	(* assign - Stmt *)
+	LD Input.SteerEncSyncValid
+	NOT
+	ST StopSteerSync
+
+(** DisplayStopString(InStatus:=StopSteerSync, StopString:=181, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopSteerSync,
+		StopString := 181,
+		StopValue := 0
+	)
+
+(**  **)
+(**  **)
+(** DisplayStopString(InStatus:=StopByOM_PLC, StopString:=200, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByOM_PLC,
+		StopString := 200,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopByErrorCode, StopString:=201, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByErrorCode,
+		StopString := 201,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopBatLowOT, StopString:=202, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopBatLowOT,
+		StopString := 202,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopFindSync, StopString:=203, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopFindSync,
+		StopString := 203,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopRobotNotIdle, StopString:=204, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopRobotNotIdle,
+		StopString := 204,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopByBCD, StopString:=205, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByBCD,
+		StopString := 205,
+		StopValue := 0
+	)
+
+(**  **)
+(**  **)
+(** DisplayStopString(InStatus:=StopLift, 				StopString:=210, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopLift,
+		StopString := 210,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopRear,				StopString:=211, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopRear,
+		StopString := 211,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopSafety, 			StopString:=212, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopSafety,
+		StopString := 212,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopFailureCAN, 		StopString:=213, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopFailureCAN,
+		StopString := 213,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopStartDelay,	 		StopString:=214, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopStartDelay,
+		StopString := 214,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopFlex, 				StopString:=215, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopFlex,
+		StopString := 215,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopSoft, 				StopString:=216, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopSoft,
+		StopString := 216,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopLoadChange,	 		StopString:=217, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopLoadChange,
+		StopString := 217,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopObstacle, 			StopString:=218, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopObstacle,
+		StopString := 218,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopEStopChainError, 	StopString:=219, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopEStopChainError,
+		StopString := 219,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopSteerSync, 			StopString:=220, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopSteerSync,
+		StopString := 220,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopEstopButton, 		StopString:=221, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopEstopButton,
+		StopString := 221,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopSide, 				StopString:=222, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopSide,
+		StopString := 222,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopReset,				StopString:=223, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopReset,
+		StopString := 223,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopNoOpCode, 			StopString:=224, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopNoOpCode,
+		StopString := 224,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopManual, 			StopString:=225, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopManual,
+		StopString := 225,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopCharge, 			StopString:=226, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopCharge,
+		StopString := 226,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopClamp, 				StopString:=227, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopClamp,
+		StopString := 227,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopFailCode, 			StopString:=228, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopFailCode,
+		StopString := 228,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopResetButton, 		StopString:=229, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopResetButton,
+		StopString := 229,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopLoadOP, 			StopString:=230, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopLoadOP,
+		StopString := 230,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopBumperFault, 		StopString:=231, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopBumperFault,
+		StopString := 231,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopObstacleFault, 		StopString:=232, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopObstacleFault,
+		StopString := 232,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopTruckDriveSafeState,StopString:=233, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopTruckDriveSafeState,
+		StopString := 233,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopLS2000, 			StopString:=234, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopLS2000,
+		StopString := 234,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopHalt, 				StopString:=235, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopHalt,
+		StopString := 235,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopLoadDroppedWhileUnloading, StopString:=236, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopLoadDroppedWhileUnloading,
+		StopString := 236,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopSpinningWheel, 		StopString:=237, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopSpinningWheel,
+		StopString := 237,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopForkTooLow, 		StopString:=238, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopForkTooLow,
+		StopString := 238,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopForkTooHigh, 		StopString:=239, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopForkTooHigh,
+		StopString := 239,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopForkFarTooHigh, 	StopString:=240, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopForkFarTooHigh,
+		StopString := 240,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopChargeStationMissing, StopString:=241, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopChargeStationMissing,
+		StopString := 241,
+		StopValue := 0
+	)
+
+(**  **)
+(** DisplayStopString(InStatus:=StopByCanErr_Node1, StopString:=244, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByCanErr_Node1,
+		StopString := 244,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopByCanErr_Node2, StopString:=245, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByCanErr_Node2,
+		StopString := 245,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopByCanErr_Node3, StopString:=246, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByCanErr_Node3,
+		StopString := 246,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopByCanErr_Node4, StopString:=247, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByCanErr_Node4,
+		StopString := 247,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopByCanErr_Node5, StopString:=248, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByCanErr_Node5,
+		StopString := 248,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopByCanErr_Node6, StopString:=249, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByCanErr_Node6,
+		StopString := 249,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopByCanErr_Node7, StopString:=250, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByCanErr_Node7,
+		StopString := 250,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopByCanErr_Node8, StopString:=251, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByCanErr_Node8,
+		StopString := 251,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopByCanErr_Node9, StopString:=252, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByCanErr_Node9,
+		StopString := 252,
+		StopValue := 0
+	)
+
+(** DisplayStopString(InStatus:=StopByCanErr_Node10, StopString:=253, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopByCanErr_Node10,
+		StopString := 253,
+		StopValue := 0
+	)
+
+(**  **)
+(** {**************************************************************************************} **)
+(** {* QUICK STOP  (Stop with emergency deceleration ramp) 								  *} **)
+(** {*NDC8.VehicleControl.QuickStop := StopFlex or StopObstacle or StopSafety; **)
+(** *} **)
+(** DisplayStopString(INStatus:=NDC8.VehicleControl.QuickStop, StopString:=179, StopValue:=0);  		 **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := NDC8.VehicleControl.QuickStop,
+		StopString := 179,
+		StopValue := 0
+	)
+
+(**  **)
+(**  **)
+(** {**************************************************************************************} **)
+(** {* STOP WORD sets stop signal 														  *} **)
+(** NDC8.VehicleControl.Stop 	:= 	(Input.Auto and (DWORD_TO_BOOL(StopWord) or DWORD_TO_BOOL(StopWord2))) or **)
+	(* assign - Stmt *)
+	LD Input.Auto
+	AND ( StopWord
+		DWORD_TO_BOOL 
+		OR ( StopWord2
+			DWORD_TO_BOOL 
+		)
+	)
+	OR ( Input.Manual
+(** 								(Input.Manual and NDC8.Mcd.Button8 = FALSE and (DWORD_TO_BOOL(StopWord) or DWORD_TO_BOOL(StopWord2))); **)
+		AND ( NDC8.Mcd.Button8
+			EQ FALSE
+		)
+		AND ( StopWord
+			DWORD_TO_BOOL 
+			OR ( StopWord2
+				DWORD_TO_BOOL 
+			)
+		)
+	)
+	ST NDC8.VehicleControl.Stop
+
+(** NDC8.UserDefined.StopWord	:=	DWORD_TO_DINT(StopWord); **)
+	(* assign - Stmt *)
+	LD StopWord
+	DWORD_TO_DINT 
+	ST NDC8.UserDefined.StopWord
+
+(** NDC8.OMPLC.StopWord			:=	DWORD_TO_INT(StopWord); **)
+	(* assign - Stmt *)
+	LD StopWord
+	DWORD_TO_INT 
+	ST NDC8.OMPLC.StopWord
+
+(**  **)
+(** StopTON(IN:=NDC8.VehicleControl.Stop,PT:=t#10s); **)
+	(* call - Stmt *)
+	CAL StopTON (
+		IN := NDC8.VehicleControl.Stop,
+		PT := t#10s
+	)
+
+(** Stop_RT(CLK:=StopTON.q); **)
+	(* call - Stmt *)
+	CAL Stop_RT (
+		CLK := StopTON.q
+	)
+
+(** if Stop_RT.Q and not StopStartDelay then **)
+	(* if - Cond *)
+	LD Stop_RT.q
+	AND ( StopStartDelay
+		NOT
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	TempValue:=DWord_To_DINT(StopWord); **)
+		(* assign - Stmt *)
+		LD StopWord
+		DWORD_TO_DINT 
+		ST TempValue
+
+		JMP ODK_END_IF_000000000000001
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(** {* Send event that stopword has been cleared. * ) **)
+(** Stop_FT(CLK:=NDC8.VehicleControl.Stop); **)
+(** if Stop_FT.q then **)
+(** 	EventQueue(EventCode:=101,Par1:=NDC8.Vehicle.VehicleID,Par2:=0,Par3:=0,Par4:=0); **)
+(** end_if; **)
+(** *} **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

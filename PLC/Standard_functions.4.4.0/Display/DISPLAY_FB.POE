@@ -1,0 +1,351 @@
+FUNCTION_BLOCK DISPLAY_FB
+VAR_EXTERNAL
+	NDC8: NDC8_T;
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	DISPLAYSTOPSTRING : DisplayStopString_FB;
+	INSTATUS : bool;
+	INPUT : INPUT_T;
+END_VAR
+(**  **)
+(** {*   INFORMATION UPDATE FOR ALL TYPES OF DISPLAYS   *} **)
+(**  **)
+(**  **)
+(** {*****************************************************************************************} **)
+(** {* No Traffic Manager *}  **)
+(** InStatus := NDC8.Automatic.CurrentOrderMode = 2; **)
+	(* assign - Stmt *)
+	LD NDC8.Automatic.CurrentOrderMode
+	EQ 2
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=175, StopValue:=0);				{* No Traffic Manager! *}  **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 175,
+		StopValue := 0
+	)
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=176, StopValue:=0);			 	{* COLLISION RISK ! *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 176,
+		StopValue := 0
+	)
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(** {*****************************************************************************************} **)
+(** {* SAFESTATE *} **)
+(** INStatus := (NDC8.CanOpenMaster.State = 1) and (NDC8.CanOpenMaster.NMTState = 5); **)
+	(* assign - Stmt *)
+	LD NDC8.CanOpenMaster.State
+	EQ 1
+	AND ( NDC8.CanOpenMaster.NMTState
+		EQ 5
+	)
+	ST InStatus
+
+(**  **)
+(** DisplayStopString(INStatus:=INStatus, StopString:=112, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 112,
+		StopValue := 0
+	)
+
+(** DisplayStopString(INStatus:=INStatus, StopString:=113, StopValue:=NDC8.CanOpenMaster.EMCY_NodeID); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 113,
+		StopValue := NDC8.CanOpenMaster.EMCY_NodeID
+	)
+
+(** DisplayStopString(INStatus:=INStatus, StopString:=114, StopValue:=NDC8.CanOpenMaster.EMCY_Code); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 114,
+		StopValue := NDC8.CanOpenMaster.EMCY_Code
+	)
+
+(** DisplayStopString(INStatus:=INStatus, StopString:=115, StopValue:=NDC8.CanOpenMaster.EMCY_ErrReg); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 115,
+		StopValue := NDC8.CanOpenMaster.EMCY_ErrReg
+	)
+
+(** DisplayStopString(INStatus:=INStatus, StopString:=116, StopValue:=NDC8.CanOpenMaster.EMCY_Byte1); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 116,
+		StopValue := NDC8.CanOpenMaster.EMCY_Byte1
+	)
+
+(** DisplayStopString(INStatus:=INStatus, StopString:=117, StopValue:=NDC8.CanOpenMaster.EMCY_Byte2); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 117,
+		StopValue := NDC8.CanOpenMaster.EMCY_Byte2
+	)
+
+(** DisplayStopString(INStatus:=INStatus, StopString:=118, StopValue:=NDC8.CanOpenMaster.EMCY_Byte3); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 118,
+		StopValue := NDC8.CanOpenMaster.EMCY_Byte3
+	)
+
+(** DisplayStopString(INStatus:=INStatus, StopString:=119, StopValue:=NDC8.CanOpenMaster.EMCY_Byte4); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 119,
+		StopValue := NDC8.CanOpenMaster.EMCY_Byte4
+	)
+
+(** DisplayStopString(INStatus:=INStatus, StopString:=120, StopValue:=NDC8.CanOpenMaster.EMCY_Byte5); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 120,
+		StopValue := NDC8.CanOpenMaster.EMCY_Byte5
+	)
+
+(**  **)
+(** DisplayStopString(INStatus:=INStatus, StopString:=130, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 130,
+		StopValue := 0
+	)
+
+(**  **)
+(**  **)
+(**  **)
+(** {*****************************************************************************************} **)
+(** {* BLOCKED STATUS *} **)
+(**  **)
+(** INStatus 	:= (NDC8.Vehicle.Blocked and NDC8.BlockedInfo.BlockedById = 2);			{* SSIO *} **)
+	(* assign - Stmt *)
+	LD NDC8.Vehicle.Blocked
+	AND ( NDC8.BlockedInfo.BlockedById
+		EQ 2
+	)
+	ST InStatus
+
+(** DisplayStopString(INStatus:=INStatus, StopString:=110, StopValue:=NDC8.BlockedInfo.IoId); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 110,
+		StopValue := NDC8.BlockedInfo.IoId
+	)
+
+(**  **)
+(** INStatus 	:= (NDC8.Vehicle.Blocked and NDC8.BlockedInfo.BlockedById = 3);			{* AGV *} **)
+	(* assign - Stmt *)
+	LD NDC8.Vehicle.Blocked
+	AND ( NDC8.BlockedInfo.BlockedById
+		EQ 3
+	)
+	ST InStatus
+
+(** DisplayStopString(INStatus:=INStatus, StopString:=67, StopValue:=NDC8.BlockedInfo.Vehicle1); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 67,
+		StopValue := NDC8.BlockedInfo.Vehicle1
+	)
+
+(**  **)
+(** InStatus 	:= not NDC8.Master.MasterLinkUp and NDC8.Automatic.CurrentOrderMode <> 2 ;  **)
+	(* assign - Stmt *)
+	LD NDC8.Master.MasterLinkUp
+	NOT
+	AND ( NDC8.Automatic.CurrentOrderMode
+		NE 2
+	)
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=104, StopValue:=0);			{* No comm. with stationary system *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 104,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.Vehicle.SimulationMode);  **)
+	(* assign - Stmt *)
+	LD NDC8.Vehicle.SimulationMode
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=63, StopValue:=0);				{* Simulation Mode *}  **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 63,
+		StopValue := 0
+	)
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(** {*****************************************************************************************} **)
+(** {* Tiller arm lower position *} **)
+(** DisplayStopString(INStatus:=INPUT.TillerArmLowerPos, StopString:=82, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := INPUT.TillerArmLowerPos,
+		StopString := 82,
+		StopValue := 0
+	)
+
+(**  **)
+(** {*****************************************************************************************} **)
+(** {* PLATFORM *} **)
+(** InStatus := INPUT.PlatformNotUpperPos and not Input.TillerArmDown; **)
+	(* assign - Stmt *)
+	LD INPUT.PlatformNotUpperPos
+	AND ( INPUT.TillerArmDown
+		NOT
+	)
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=92, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 92,
+		StopValue := 0
+	)
+
+(**  **)
+(** {*****************************************************************************************} **)
+(** {* GATE *} **)
+(** InStatus := INPUT.GateOpen and not Input.TillerArmDown; **)
+	(* assign - Stmt *)
+	LD INPUT.GateOpen
+	AND ( INPUT.TillerArmDown
+		NOT
+	)
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=91, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 91,
+		StopValue := 0
+	)
+
+(**  **)
+(** {*****************************************************************************************} **)
+(** {* Waiting for flexible distance information *} **)
+(** InStatus := NDC8.LoadDocking.RequestDistance and not NDC8.VehicleControl.Moving; **)
+	(* assign - Stmt *)
+	LD NDC8.LoadDocking.RequestDistance
+	AND ( NDC8.VehicleControl.Moving
+		NOT
+	)
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=182, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 182,
+		StopValue := 0
+	)
+
+(**  **)
+(** {*************************************************************************************} **)
+(** {* WLAN signal below -75dB or no System Manager link. *} **)
+(** InStatus := ndc8.wlan.SignalLevel < -75	and NDC8.Master.Mastercom = 'WLAN'; **)
+	(* assign - Stmt *)
+	LD NDC8.wlan.SignalLevel
+	LT -75
+	AND ( NDC8.Master.Mastercom
+		EQ 'WLAN'
+	)
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=185, StopValue:=ndc8.wlan.SignalLevel); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 185,
+		StopValue := NDC8.wlan.SignalLevel
+	)
+
+(**  **)
+(** {*************************************************************************************} **)
+(** {* System Manager options *} **)
+(** InStatus := (ndc8.VehicleOptions.StatusID = 1 and NDC8.Automatic.CurrentOrderMode <> 2);		{* Unknown *} **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleOptions.StatusID
+	EQ 1
+	AND ( NDC8.Automatic.CurrentOrderMode
+		NE 2
+	)
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=186, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 186,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus := (ndc8.VehicleOptions.StatusID = 2 and NDC8.Automatic.CurrentOrderMode <> 2);		{* Invalid options *} **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleOptions.StatusID
+	EQ 2
+	AND ( NDC8.Automatic.CurrentOrderMode
+		NE 2
+	)
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=187, StopValue:=ndc8.vehicle.OptionClass); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 187,
+		StopValue := NDC8.Vehicle.OptionClass
+	)
+
+(**  **)
+
+END_FUNCTION_BLOCK

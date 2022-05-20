@@ -1,0 +1,14 @@
+FUNCTION_BLOCK StartDelay_FB 
+
+
+ VAR_INPUT
+  END_VAR 
+
+ VAR_OUTPUT
+  StartWarning : BOOL ;
+  StartDelayState : DINT ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

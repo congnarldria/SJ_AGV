@@ -1,0 +1,15 @@
+FUNCTION_BLOCK AutoInsert_FB 
+
+
+ VAR_INPUT
+  END_VAR 
+
+ VAR_OUTPUT
+  InProgress : BOOL ;
+  NotInsideTargetSafety : BOOL ;
+  Failed : BOOL ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

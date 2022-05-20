@@ -1,0 +1,202 @@
+FUNCTION_BLOCK LS2000_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+	Slowdown : bool;
+END_VAR
+
+VAR
+	LS2000Field1TON :TON;
+	LS2000Field2TON :TON;
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	DISPLAYSTOPSTRING : DisplayStopString_FB;
+	INSTATUS : bool;
+	STOPLS2000 : BOOL;
+	INPUT : INPUT_T;
+END_VAR
+(** {* Function to slow down, and eventually stop, if there is an obstacle in the path of the LS2000. *} **)
+(**  **)
+(** LS2000Field1TON (IN:= NDC8.LS2000.Field1_Triggered, PT:=T#160ms); {*Timer 160ms to filter signal*} **)
+	(* call - Stmt *)
+	CAL LS2000Field1TON (
+		IN := NDC8.LS2000.Field1_Triggered,
+		PT := T#160ms
+	)
+
+(** LS2000Field2TON (IN:= NDC8.LS2000.Field2_Triggered, PT:=T#160ms); {*Timer 160ms to filter signal *} **)
+	(* call - Stmt *)
+	CAL LS2000Field2TON (
+		IN := NDC8.LS2000.Field2_Triggered,
+		PT := T#160ms
+	)
+
+(**  **)
+(** {* Stop window (Field 1), relative the scanner. *} **)
+(** NDC8.LS2000.Field1_X1 := NDC8.LS2000.X - 100;	{* 500 mm behind. 		*} **)
+	(* assign - Stmt *)
+	LD NDC8.LS2000.X
+	SUB 100
+	ST NDC8.LS2000.Field1_X1
+
+(** NDC8.LS2000.Field1_X2 := NDC8.LS2000.X + 100;	{* 500 mm in front. 	*} **)
+	(* assign - Stmt *)
+	LD NDC8.LS2000.X
+	ADD 100
+	ST NDC8.LS2000.Field1_X2
+
+(** NDC8.LS2000.Field1_Y1 := NDC8.LS2000.Y - 100;	{* 500 mm to the left. 	*} **)
+	(* assign - Stmt *)
+	LD NDC8.LS2000.Y
+	SUB 100
+	ST NDC8.LS2000.Field1_Y1
+
+(** NDC8.LS2000.Field1_Y2 := NDC8.LS2000.Y + 100;	{* 500 mm to the right. *} **)
+	(* assign - Stmt *)
+	LD NDC8.LS2000.Y
+	ADD 100
+	ST NDC8.LS2000.Field1_Y2
+
+(**  **)
+(** {* Slow down window (Field 2), relative the scanner. *} **)
+(** NDC8.LS2000.Field2_X1 := NDC8.LS2000.X - 100;	{* 1000 mm behind.		*} **)
+	(* assign - Stmt *)
+	LD NDC8.LS2000.X
+	SUB 100
+	ST NDC8.LS2000.Field2_X1
+
+(** NDC8.LS2000.Field2_X2 := NDC8.LS2000.X + 100;	{* 1000 mm in front.	*} **)
+	(* assign - Stmt *)
+	LD NDC8.LS2000.X
+	ADD 100
+	ST NDC8.LS2000.Field2_X2
+
+(** NDC8.LS2000.Field2_Y1 := NDC8.LS2000.Y - 100;	{* 1000 mm to the left.	*} **)
+	(* assign - Stmt *)
+	LD NDC8.LS2000.Y
+	SUB 100
+	ST NDC8.LS2000.Field2_Y1
+
+(** NDC8.LS2000.Field2_Y2 := NDC8.LS2000.Y + 100;	{* 1000 mm to the right.*} **)
+	(* assign - Stmt *)
+	LD NDC8.LS2000.Y
+	ADD 100
+	ST NDC8.LS2000.Field2_Y2
+
+(**  **)
+(**  **)
+(** if INPUT.Manual  or NDC8.LoadOperation.OperationCode <> 0 then **)
+	(* if - Cond *)
+	LD INPUT.Manual
+	OR ( NDC8.LoadOperation.OperationCode
+		NE 0
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.LS2000.Field1_X1 := NDC8.LS2000.X ;	{* 500 mm behind. 		*} **)
+		(* assign - Stmt *)
+		LD NDC8.LS2000.X
+		ST NDC8.LS2000.Field1_X1
+
+(** 	NDC8.LS2000.Field1_X2 := NDC8.LS2000.X;	{* 500 mm in front. 	*} **)
+		(* assign - Stmt *)
+		LD NDC8.LS2000.X
+		ST NDC8.LS2000.Field1_X2
+
+(** 	NDC8.LS2000.Field1_Y1 := NDC8.LS2000.Y;	{* 500 mm to the left. 	*} **)
+		(* assign - Stmt *)
+		LD NDC8.LS2000.Y
+		ST NDC8.LS2000.Field1_Y1
+
+(** 	NDC8.LS2000.Field1_Y2 := NDC8.LS2000.Y;	{* 500 mm to the right. *} **)
+		(* assign - Stmt *)
+		LD NDC8.LS2000.Y
+		ST NDC8.LS2000.Field1_Y2
+
+(**  **)
+(** 	NDC8.LS2000.Field2_X1 := NDC8.LS2000.X;	{* 1000 mm behind.		*} **)
+		(* assign - Stmt *)
+		LD NDC8.LS2000.X
+		ST NDC8.LS2000.Field2_X1
+
+(** 	NDC8.LS2000.Field2_X2 := NDC8.LS2000.X;	{* 1000 mm in front.	*} **)
+		(* assign - Stmt *)
+		LD NDC8.LS2000.X
+		ST NDC8.LS2000.Field2_X2
+
+(** 	NDC8.LS2000.Field2_Y1 := NDC8.LS2000.Y;	{* 1000 mm to the left.	*} **)
+		(* assign - Stmt *)
+		LD NDC8.LS2000.Y
+		ST NDC8.LS2000.Field2_Y1
+
+(** 	NDC8.LS2000.Field2_Y2 := NDC8.LS2000.Y;	{* 1000 mm to the right.*} **)
+		(* assign - Stmt *)
+		LD NDC8.LS2000.Y
+		ST NDC8.LS2000.Field2_Y2
+
+		JMP ODK_END_IF_000000000000001
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(**  **)
+(** {* Stop the vehicle if it is about to run into a low hanging obstacle and hit the LS2000. *} **)
+(** StopLS2000 := LS2000Field1TON.q or (NDC8.Position.NavLevel < 45 and INPUT.Auto = TRUE); **)
+	(* assign - Stmt *)
+	LD LS2000Field1TON.q
+	OR ( NDC8.Position.NavLevel
+		LT 45
+		AND ( INPUT.Auto
+			EQ TRUE
+		)
+	)
+	ST StopLS2000
+
+(** DisplayStopString(INStatus:=StopLS2000, StopString:=197, StopValue:=0);	 **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		INStatus := StopLS2000,
+		StopString := 197,
+		StopValue := 0
+	)
+
+(**  **)
+(** {* Slow the vehicle down if it is about to run into a low hanging obstacle and hit the LS2000. *} **)
+(** Slowdown := LS2000Field2TON.q  ; **)
+	(* assign - Stmt *)
+	LD LS2000Field2TON.q
+	ST Slowdown
+
+(** DisplayStopString(INStatus:=Slowdown, StopString:=198, StopValue:=0);	 **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		INStatus := Slowdown,
+		StopString := 198,
+		StopValue := 0
+	)
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

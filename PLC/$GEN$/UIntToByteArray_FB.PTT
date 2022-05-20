@@ -1,0 +1,14 @@
+FUNCTION_BLOCK UIntToByteArray_FB 
+
+
+ VAR_INPUT
+  UIntValue : uint ;
+  END_VAR 
+
+ VAR_OUTPUT
+  ByteArray : ARRAY [ 1 .. 2 ] OF BYTE ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

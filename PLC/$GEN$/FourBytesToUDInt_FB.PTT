@@ -1,0 +1,17 @@
+FUNCTION_BLOCK FourBytesToUDInt_FB 
+
+
+ VAR_INPUT
+  Byte1 : byte ;
+  Byte2 : byte ;
+  Byte3 : byte ;
+  Byte4 : byte ;
+  END_VAR 
+
+ VAR_OUTPUT
+  UDIntValue : udint ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

@@ -1,0 +1,97 @@
+FUNCTION_BLOCK Timer_FB
+VAR_OUTPUT
+	Error : bool;
+	Warning : bool;
+	Info : bool;
+	Display : bool;
+	SlowBeep : bool;
+
+END_VAR
+
+
+VAR
+	TimerError 		: blink;
+	TimerWarning 	: blink;
+	TimerInfo 		: blink;
+	TimerDisplay	: blink;
+	TimerSlowBeep	: blink;
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+END_VAR
+(** {* **)
+(** ------------------------------------------------------------------------------------    **)
+(**  FREERUN **)
+(**  ------- **)
+(**   **)
+(**                       **)
+(**  Description:                      **)
+(**  Creates different outputs that will look like a freerunning timer.  **)
+(**  Outputs will toggle with different timebase. **)
+(**  They are all defined globally. **)
+(** ------------------------------------------------------------------------------------   *} **)
+(**  **)
+(** TimerError	(CYCLE :=t#240ms,RUN:=true); **)
+	(* call - Stmt *)
+	CAL TimerError (
+		CYCLE := t#240ms,
+		RUN := true
+	)
+
+(** TimerWarning(CYCLE :=t#480ms,RUN:=true); **)
+	(* call - Stmt *)
+	CAL TimerWarning (
+		CYCLE := t#480ms,
+		RUN := true
+	)
+
+(** TimerInfo	(CYCLE :=t#960ms,RUN:=true); **)
+	(* call - Stmt *)
+	CAL TimerInfo (
+		CYCLE := t#960ms,
+		RUN := true
+	)
+
+(** TimerDisplay(CYCLE :=t#2s,RUN:=true); **)
+	(* call - Stmt *)
+	CAL TimerDisplay (
+		CYCLE := t#2s,
+		RUN := true
+	)
+
+(** TimerSlowBeep(CYCLE :=t#5s,RUN:=true); **)
+	(* call - Stmt *)
+	CAL TimerSlowBeep (
+		CYCLE := t#5s,
+		RUN := true
+	)
+
+(**  **)
+(** Error		:= TimerError.Q1; **)
+	(* assign - Stmt *)
+	LD TimerError.Q1
+	ST Error
+
+(** Warning	:= TimerWarning.Q1; **)
+	(* assign - Stmt *)
+	LD TimerWarning.Q1
+	ST Warning
+
+(** Info		:= TimerInfo.Q1; **)
+	(* assign - Stmt *)
+	LD TimerInfo.Q1
+	ST Info
+
+(** Display	:= TimerDisplay.Q1; **)
+	(* assign - Stmt *)
+	LD TimerDisplay.Q1
+	ST Display
+
+(** SlowBeep	:= TimerSlowBeep.Q1; **)
+	(* assign - Stmt *)
+	LD TimerSlowBeep.Q1
+	ST SlowBeep
+
+
+END_FUNCTION_BLOCK

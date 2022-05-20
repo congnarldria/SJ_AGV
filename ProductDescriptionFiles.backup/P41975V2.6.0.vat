@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<File xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:NDC8TemplateFile">
+   <FileInfo FileType="vat"
+             FileRevision="1"
+             FileFormat="142"
+             Description="NDC8 Vehicle Template File"
+             CreationDate="2003-01-19"
+             CreationTime="09:01:20.1875000+02:00"
+             CreatedBy="david.mattsson"
+             ModificationDate="2019-01-15"
+             ModificationTime="09:56:56"
+             ModifiedBy="lars.svensson"
+             ModifiedWith="XML Notepad"
+             ModifiedWithSerial="0" />
+   <TemplateInfo Description="NDC8 3.3 - Standard Vehicle, P41975V2.6.0 (HW 18446-20)"/>
+   <VehicleInfo>
+      <Devices>
+         <Device Type="CVC600" DeviceName="CVC600" VehicleComponentTemplate="P41975V2.6.0"/>
+      </Devices>
+   </VehicleInfo>
+</File>

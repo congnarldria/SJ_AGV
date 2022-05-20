@@ -1,0 +1,16 @@
+FUNCTION_BLOCK NDC8_SERIAL_READ 
+
+
+ VAR_INPUT
+  port : STRING ;
+  END_VAR 
+
+ VAR_OUTPUT
+  error : INT ;
+  data : ARRAY [ 1 .. 32 ] OF BYTE ;
+  length : INT ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

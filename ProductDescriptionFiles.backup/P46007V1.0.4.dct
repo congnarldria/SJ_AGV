@@ -1,0 +1,966 @@
+<?xml version="1.0"?>
+<File xmlns="urn:NDC8DeviceConfigurationTemplate" version="1.0">
+    <FileInfo FileType="dct" 
+        FileRevision="1" 
+        FileFormat="1" 
+        Description="DCD 50"
+        CreationDate="2011-11-21"
+        CreationTime="12:00:00"
+        CreatedBy="MBJ"
+        ModificationDate="2017-11-28"
+        ModificationTime="16:49:55"
+        ModifiedBy="MBJ"
+        ModifiedWith=""
+        ModifiedWithSerial="" >
+    </FileInfo>
+
+    <TemplateParameters>
+        <TemplateParameter SymbolName="BusID"
+            PublicName="CAN Bus Id"
+            DataType="UNSIGNED16"
+            Min="1"
+            Max="2"
+            Default="1"
+            Remark="CAN Bus Id."/>
+
+        <TemplateParameter SymbolName="NodeId"
+            PublicName="Node Id"
+            DataType="UNSIGNED16" Min="2" Max="31"
+            Remark="Select a unique Node Id. The following are possible to select with the DCD ID pins:
+5, 6, 7, 8, 9, 10, 13, 14, 22, 23, 24, 25, 26, 27, 28, 29"/>
+
+        <TemplateParameter SymbolName="RegulationMode"
+            PublicName="Regulation Mode"
+            DataType="UNSIGNED16" Min="0" Max="7" Default="0"
+            Remark="Choose Steer or Traction">
+            <ValueTranslation Value="0" String="Traction / Speed"/>
+			<ValueTranslation Value="4" String="Steer / Position"/>
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="AllOK"
+            PublicName="Use All OK"
+            DataType="BOOLEAN"
+            Default="true"
+            Remark="Use All OK on Digital Output 1" />
+
+        <TemplateParameter SymbolName="IncreasedDiagnosticRate"
+            PublicName="Increased Diagnostic Rate"
+            DataType="BOOLEAN"
+            Default="true"
+            Remark="Update diagnostic parameters DcBusVoltage, TorqueCurrentReference, and TorqueCurrent at increased rate" />
+
+    </TemplateParameters>
+
+    <xsl:stylesheet xmlns="urn:NDC8DeviceConfigurationFile" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+        <xsl:param name="BusID" />
+        <xsl:param name="NodeId"/>
+        <xsl:param name="RegulationMode"/>
+        <xsl:param name="AllOK"/>
+        <xsl:param name="IncreasedDiagnosticRate"/>
+
+        <xsl:variable name="HelpDeviceName">
+           <xsl:if test='$BusID = "1"'>
+              <xsl:value-of select="concat('DCD_',$NodeId)"/> 
+           </xsl:if>
+           <xsl:if test='$BusID = "2"'> 
+              <xsl:value-of select="concat('DCD_',$BusID,'_',$NodeId)"/> 
+            </xsl:if>
+        </xsl:variable>
+
+        <xsl:variable name="TransmissionType" select="1"/>
+
+        <xsl:variable name="TransmissionTypeDiagnostic">
+            <xsl:choose>
+                <xsl:when test='$IncreasedDiagnosticRate = "true"'>
+                    <xsl:text>1</xsl:text>
+                </xsl:when>
+                <xsl:when test='$IncreasedDiagnosticRate = "false"'>
+                    <xsl:text>33</xsl:text>
+                </xsl:when>
+            </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="Steer">
+            <xsl:choose>
+                <xsl:when test="$RegulationMode = 4">
+                    <xsl:text>true</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:text>false</xsl:text>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="Traction">
+            <xsl:choose>
+                <xsl:when test="$RegulationMode = 0">
+                    <xsl:text>true</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:text>false</xsl:text>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="ExtendedIo" select='"true"'/>
+
+        <xsl:template match="/">
+            <File xmlns="urn:NDC8DeviceConfigurationFile" >
+                <FileInfo FileType="dc"
+                    FileRevision="1"
+                    FileFormat="40"
+                    Description="NDC8 Device Configuration File"
+                    CreationDate="2011-11-21"
+                    CreationTime="12:00:00"
+                    CreatedBy="MBJ"
+                    ModificationDate="2017-11-28"
+                    ModificationTime="16:49:55"
+                    ModifiedBy="MBJ"
+                    ModifiedWith=""
+                    ModifiedWithSerial="" />
+
+                <Configuration Protocol="CANopen"
+                    BusId="{$BusID}"
+                    NodeId="{$NodeId}"
+                    Optional="false"
+                    GenericBoolCondition="{$HelpDeviceName}.ReadyToSwitchOn=1"
+                    Remark="DCD 50">
+
+                    <Guarding
+                        Type="PdoGuarding"
+                        Timeout="500" />
+
+                    <Identification
+                        ArticleNumber="69A21050C03"
+                        ArticleNumberMatch="69A21050C0????"
+                        DeviceType="0x01000000" />
+
+                    <ReadParameters>
+                        <ReadParameter Property="DeviceType"
+                            Index="0x1000"
+                            SubIndex="0"
+                            DataType="UNSIGNED32" />
+                        <ReadParameter Property="ManufacturerDeviceName"
+                            Index="0x1008"
+                            SubIndex="0"
+                            DataType="VISIBLE_STRING" />
+                        <ReadParameter Property="ManufacturerHardwareVersion"
+                            Index="0x5F02"
+                            SubIndex="2"
+                            DataType="VISIBLE_STRING" />
+                        <ReadParameter Property="ManufacturerSoftwareVersion"
+                            Index="0x5F01"
+                            SubIndex="4"
+                            DataType="VISIBLE_STRING" />
+                        <ReadParameter Property="VendorID"
+                            Index="0x1018"
+                            SubIndex="1"
+                            DataType="UNSIGNED32"
+                            ValueRepresentation="Hex" />
+                    </ReadParameters>
+
+                    <SetupValues>
+                        <SetupValue SymbolAddress="ProductApplication.SetupRegulationMode" Value="{$RegulationMode}"/>
+                        <SetupValue SymbolAddress="ApplicationSetupParameters.SpeedRampMode" Value="1"/>
+                        <SetupValue SymbolAddress="TransmitPDO1ComParameters.TransmissionTypePDO1Tx" Value="{$TransmissionType}"/>
+                        <SetupValue SymbolAddress="TransmitPDO2ComParameters.TransmissionTypePDO2Tx" Value="{$TransmissionTypeDiagnostic}"/>
+                        <!-- TRACTION -->
+                        <xsl:if test='$Traction = "true"'>
+                            <SetupValue SymbolAddress="PulseEncoder.Type" Value="1"/>
+                            <SetupValue SymbolAddress="PulseEncoder.SyncEnable" Value="0"/>
+                        </xsl:if>
+                        <!-- STEER -->
+                        <xsl:if test='$Steer = "true"'>
+                            <SetupValue SymbolAddress="PulseEncoder.Type" Value="2"/>
+                            <SetupValue SymbolAddress="PulseEncoder.SyncEnable" Value="1"/>
+                        </xsl:if>
+                    </SetupValues>
+
+                    <ConfigParameters>
+                        <ConfigParameter Property="MotorCurrentRegP" SymbolAddress="MotorControlParametersAndVariables.Pgain_CurrentController" /><!--0x2070:12-->
+                        <ConfigParameter Property="MotorCurrentRegI" SymbolAddress="MotorControlParametersAndVariables.Igain_CurrentController" /><!--0x2070:13-->
+                        <!-- TRACTION -->
+                        <xsl:if test='$Traction = "true"'>
+                            <ConfigParameter Property="MaxCommandSpeed" SymbolAddress="ApplicationSetupParameters.MaxCommandSpeed" /><!--0x2020:11-->
+                        </xsl:if>
+                        <ConfigParameter Property="ForwardMaxAccTorqueCurrent" SymbolAddress="SpeedControlParameters.ForwardMaxAccTorqueCurrent" /><!--0x2095:1-->
+                        <ConfigParameter Property="ReverseMaxAccTorqueCurrent" SymbolAddress="SpeedControlParameters.ReverseMaxAccTorqueCurrent" /><!--0x2095:2-->
+                        <ConfigParameter Property="MaxTorqueCurrentChange" SymbolAddress="SpeedControlParameters.MaxTorqueCurrentChange" /><!--0x2095:3-->
+                        <ConfigParameter Property="ForwardMaxBrakeTorqueCurrent" SymbolAddress="SpeedControlParameters.ForwardMaxBrakeTorqueCurrent" /><!--0x2095:7-->
+                        <ConfigParameter Property="ReverseMaxBrakeTorqueCurrent" SymbolAddress="SpeedControlParameters.ReverseMaxBrakeTorqueCurrent" /><!--0x2095:8-->
+                        <ConfigParameter Property="SpeedRegP" SymbolAddress="SpeedRegulatorPgain.PgainSet0" /><!--0x2090:1-->
+                        <ConfigParameter Property="SpeedRegI" SymbolAddress="SpeedRegulatorIgainSmall.IgainSmallSet0" /><!--0x2091:1-->
+                        <!-- SUPERVISION -->
+                        <ConfigParameter Property="RegSupervisionCheckOutHysteresis" SymbolAddress="RegSupervision.CheckOutHysteresis" />
+                        <ConfigParameter Property="RegSupervisionFailureDelay" SymbolAddress="RegSupervision.FailureDelay" />
+                        <ConfigParameter Property="ReverseEncoderDirection" SymbolAddress="PulseEncoder.ReverseDirection" />
+                      <ConfigParameter Property="VoltageFeedback" SymbolAddress="PulseEncoder.VoltageFeedback" />
+                      <!-- TRACTION -->
+                        <xsl:if test='$Traction = "true"'>
+                            <ConfigParameter Property="DriveEncScale" SymbolAddress="PulseEncoder.Scale" />
+                        </xsl:if>
+                        <!-- STEER -->
+                        <xsl:if test='$Steer = "true"'>
+                            <ConfigParameter Property="SteerEncScale" SymbolAddress="PulseEncoder.Scale" />
+                            <ConfigParameter Property="SteerEncOffset" SymbolAddress="PulseEncoder.Offset" />
+                            <ConfigParameter Property="PosRegP" SymbolAddress="PositionRegulator.Pgain" /><!--0x2200:3-->
+                            <ConfigParameter Property="PosRegI" SymbolAddress="PositionRegulator.Igain" /><!--0x2200:4-->
+                            <ConfigParameter Property="LimOutMax" SymbolAddress="PositionRegulator.LimOutMax" /><!--0x2200:5-->
+                            <ConfigParameter Property="MaxWheelAngle" SymbolAddress="PositionRegulator.MaxWheelAngle" /><!--0x2200:6-->
+                            <ConfigParameter Property="SlowDownZone" SymbolAddress="PositionRegulator.SlowDownZone" /><!--0x2200:8-->
+                            <ConfigParameter Property="LimOutMaxSlowDownZone" SymbolAddress="PositionRegulator.LimOutMaxSlowDownZone" /><!--0x2200:9-->
+                            <ConfigParameter Property="EndLimitSwitchPolarity" SymbolAddress="PositionRegulator.IsEndLimitSwitchNegPolarity" />
+                            <ConfigParameter Property="SyncGate" SymbolAddress="PulseEncoder.SyncGate" />
+                            <ConfigParameter Property="SyncFilter" SymbolAddress="PulseEncoder.SyncFilter" />
+                            <ConfigParameter Property="SyncEmergency" SymbolAddress="PulseEncoder.SyncEmergency" />
+                        </xsl:if>
+                        <ConfigParameter Property="SpeedRegOffset" SymbolAddress="ProductApplication.SpeedRegOffset" />
+                    </ConfigParameters>
+
+                    <TxPdos>
+                        <TxPdo CobId="{384+$NodeId}" ReceiveTimeout="200" TransmissionType="{$TransmissionType}" PdoType="Background">
+                            <PdoMap>
+                                <!-- STEER -->
+                                <xsl:if test='$Steer = "true"'>
+                                    <PdoMapParameter Property="ReadyToSwitchOn" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="SwitchedOn" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="PowerStageEnabled" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="Error" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="" SymbolAddress="" Length="2"/>
+                                    <PdoMapParameter Property="SwitchOnDisabled" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="Warning" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="" SymbolAddress="" Length="8"/>
+                                    <PdoMapParameter Property="" SymbolAddress="" Length="16"/>
+                                    <PdoMapParameter Property="WheelAngle" SymbolAddress="ApplicationStatus.WheelAngle" Length="16"/>
+                                    <PdoMapParameter Property="" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="Reserved_DigitalInput2" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="Reserved_DigitalInput3" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="" SymbolAddress="" Length="13"/>
+                                </xsl:if>
+                                <!-- TRACTION -->
+                                <xsl:if test='$Traction = "true"'>
+                                    <PdoMapParameter Property="ReadyToSwitchOn" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="SwitchedOn" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="PowerStageEnabled" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="Error" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="" SymbolAddress="" Length="2"/>
+                                    <PdoMapParameter Property="SwitchOnDisabled" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="Warning" SymbolAddress="" Length="1"/>
+                                    <PdoMapParameter Property="" SymbolAddress="" Length="8"/>
+                                    <PdoMapParameter Property="DriveEncSpeed" SymbolAddress="PulseEncoder.Speed" Length="16"/>
+                                    <PdoMapParameter Property="DriveEncDist" SymbolAddress="PulseEncoder.Position" Length="16"/>
+                                    <xsl:if test='$ExtendedIo = "true"'>
+                                      <PdoMapParameter Property="" SymbolAddress="" Length="1"/>
+                                      <PdoMapParameter Property="DigitalInput2" SymbolAddress="" Length="1"/>
+                                      <PdoMapParameter Property="DigitalInput3" SymbolAddress="" Length="1"/>
+                                      <PdoMapParameter Property="" SymbolAddress="" Length="13"/>
+                                    </xsl:if>
+                                    <xsl:if test='$ExtendedIo = "false"'>
+                                      <PdoMapParameter Property="DigitalInput1" SymbolAddress="" Length="1"/>
+                                      <PdoMapParameter Property="" SymbolAddress="" Length="15"/>
+                                    </xsl:if>
+                                </xsl:if>
+                            </PdoMap>
+                        </TxPdo>
+                        <!-- Diagnostic PDO, variable rate, not critical. -->
+                        <TxPdo CobId="{640+$NodeId}" ReceiveTimeout="0" TransmissionType="{$TransmissionTypeDiagnostic}" PdoType="Background">
+                            <PdoMap>
+                                <PdoMapParameter Property="DcBusVoltage" SymbolAddress="DcBus.Voltage" Length="16"/>
+                                <PdoMapParameter Property="TorqueCurrentReference" SymbolAddress="MotorControlParametersAndVariables.TorqueCurrentReference" Length="16"/>
+                                <PdoMapParameter Property="TorqueCurrent" SymbolAddress="MotorControlParametersAndVariables.Iq" Length="16"/>
+                            </PdoMap>
+                        </TxPdo>
+                    </TxPdos>
+
+                    <RxPdos>
+                        <RxPdo CobId="{512+$NodeId}" TransmissionType="{$TransmissionType}" PdoType="Background">
+                            <PdoMap>
+                                <PdoMapParameter Property="SwitchOn" SymbolAddress="" Length="1"/>
+                                <PdoMapParameter Property="" SymbolAddress="" Length="2"/>
+                                <PdoMapParameter Property="EnablePowerStage" SymbolAddress="" Length="1"/>
+                                <PdoMapParameter Property="" SymbolAddress="" Length="12"/>
+                                <xsl:if test='$Traction = "true"'>
+                                    <PdoMapParameter Property="SetSpeed" SymbolAddress="ApplicationCommands.CommandSpeed" Length="16"/>
+                                </xsl:if>
+                                <xsl:if test='$Steer = "true"'>
+                                    <PdoMapParameter Property="SetAngle" SymbolAddress="ApplicationCommands.CommandPosition" Length="16"/>
+                                </xsl:if>
+                                <xsl:if test='$AllOK = "true"'>
+                                    <PdoMapParameter Property="AllOK_DigitalOutput1" SymbolAddress="" Length="1" />
+                                </xsl:if>
+                                <xsl:if test='$AllOK = "false"'>
+                                    <PdoMapParameter Property="DigitalOutput1" SymbolAddress="" Length="1" />
+                                </xsl:if>
+                                <PdoMapParameter Property="DigitalOutput2" SymbolAddress="" Length="1" />
+                                <xsl:if test='$ExtendedIo = "true"'>
+                                  <PdoMapParameter Property="DigitalOutput3" SymbolAddress="" Length="1" />
+                                  <PdoMapParameter Property="DigitalOutput4" SymbolAddress="" Length="1" />
+                                  <PdoMapParameter Property="" SymbolAddress="" Length="12" />
+                                </xsl:if>
+                                <xsl:if test='$ExtendedIo = "false"'>
+                                  <PdoMapParameter Property="" SymbolAddress="" Length="14" />
+                                </xsl:if>
+                            </PdoMap>
+                        </RxPdo>
+                    </RxPdos>
+
+                    <ComponentSubType Name="{$HelpDeviceName}"
+                        BaseType="GenericCanDevice">
+
+                        <Interfaces>
+                            <Interface Name="DCD"/>
+                        </Interfaces>
+
+                        <Properties>
+                            <!-- Setup Properties -->
+
+                            <!-- Config Properties -->
+                            <!-- Motor Depending Parameters -->
+                            <!-- Motor Paramters -->
+                            <Property SymbolName="MotorCurrentRegP"
+                                PublicName="Motor Current Regulator Pgain"
+                                DataType="INTEGER16"
+                                AccessType="rw"
+                                Visibility="OEM"
+                                Default="160"
+                                ParameterClass="Config"
+                                Remark="Motor Parameter: Proportional gain in the PI-parts of the current controller."/>
+
+                            <Property SymbolName="MotorCurrentRegI"
+                                PublicName="Motor Current Regulator Igain"
+                                DataType="INTEGER16"
+                                AccessType="rw"
+                                Visibility="OEM"
+                                Default="60"
+                                ParameterClass="Config"
+                                Remark="Motor Parameter: Integral gain in the PI-parts of the current controller."/>
+
+                            <xsl:if test='$Traction = "true"'>
+                                <Property SymbolName="MaxCommandSpeed"
+                                    PublicName="Max Command Speed"
+                                    DataType="UNSIGNED16"
+                                    AccessType="rw"
+                                    Default="2000"
+                                    Unit="mm/s"
+                                    Visibility="OEM"
+                                    ParameterClass="Config"
+                                    Remark="Max command speed"/>
+                            </xsl:if>
+
+                            <!-- COMMON PARAMETERS FOR ALL MOTORS -->
+                            <Property SymbolName="ForwardMaxAccTorqueCurrent"
+                                PublicName="Forward Max Acc Torque Current"
+                                DataType="INTEGER16"
+                                AccessType="rw"
+                                Max="500" 
+                                Visibility="OEM"
+                                Default="500"
+                                Unit="deciAmpere"
+                                ParameterClass="Config"
+                                Remark="Maximum allowed torque current during forward acceleration."/>
+                            
+                            <Property SymbolName="ReverseMaxAccTorqueCurrent"
+                                PublicName="Reverse Max Acceleration Torque Current"
+                                DataType="INTEGER16"
+                                AccessType="rw"
+                                Max="500" 
+                                Visibility="OEM"
+                                Default="500"
+                                Unit="deciAmpere"
+                                ParameterClass="Config"
+                                Remark="Maximum allowed torque current during reverse acceleration."/>
+                            
+                            <Property SymbolName="MaxTorqueCurrentChange"
+                                PublicName="Max Torque Current Change"
+                                DataType="INTEGER16"
+                                AccessType="rw"
+                                Visibility="OEM"
+                                Default="1000"
+                                Unit="deciAmpere/ms"
+                                ParameterClass="Config"
+                                Remark="The maximum allowed change during 1 ms (i.e. derivate) of the Torque Current that is allowed. A too high derivate may for example introduce noise in the gear."/>
+                            
+                            <Property SymbolName="ForwardMaxBrakeTorqueCurrent"
+                                PublicName="Forward Max Brake Torque Current"
+                                DataType="INTEGER16"
+                                AccessType="rw"
+                                Max="500" 
+                                Visibility="OEM"
+                                Default="500"
+                                Unit="deciAmpere"
+                                ParameterClass="Config"
+                                Remark="Maximum allowed torque current during forward braking/deceleration."/>
+                            
+                            <Property SymbolName="ReverseMaxBrakeTorqueCurrent"
+                                PublicName="Reverse Max Brake Torque Current"
+                                DataType="INTEGER16"
+                                AccessType="rw"
+                                Max="500" 
+                                Visibility="OEM"
+                                Default="500"
+                                Unit="deciAmpere"
+                                ParameterClass="Config"
+                                Remark="Maximum allowed torque current during reverse braking/deceleration."/>
+                            
+                            <Property SymbolName="SpeedRegP"
+                                PublicName="Speed Regulator Pgain"
+                                DataType="UNSIGNED16"
+                                AccessType="rw"
+                                Visibility="OEM"
+                                Default="1600"
+                                ParameterClass="Config"
+                                Remark="Proportional gain in the PI-parts of the speed controller."/>
+                            
+                            <Property SymbolName="SpeedRegI"
+                                PublicName="Speed Regulator Igain"
+                                DataType="UNSIGNED16"
+                                AccessType="rw"
+                                Visibility="OEM"
+                                Default="0"
+                                ParameterClass="Config"
+                                Remark="Integral gain in the PI-parts of the speed controller."/>
+
+                            <Property SymbolName="RegSupervisionCheckOutHysteresis"
+                                PublicName="Reg Supervision Check Out Hysteresis"
+                                DataType="UNSIGNED16"
+                                AccessType="rw"
+                                Visibility="OEM"
+                                Default="250"
+                                Unit="deciAmpere"
+                                ParameterClass="Config"
+                                Remark="Current limit for supervision. Supervision is enabled when the requested torque current goes above this limit. (Regulator supervision 0x6210)"/>
+
+                            <Property SymbolName="RegSupervisionFailureDelay"
+                                PublicName="Reg Supervision Failure Delay"
+                                DataType="UNSIGNED16"
+                                AccessType="rw"
+                                Visibility="OEM"
+                                Default="1000"
+                                Unit="ms"
+                                ParameterClass="Config"
+                                Remark="Delay before safe state in absence of movement in correct direction. 0 = Disable. (Regulator supervision 0x6210)"/>
+                            
+                            <!-- PARAMTERS THAT ONLY STEER MOTORS USE-->
+                            <xsl:if test='$Steer = "true"'>
+                                <Property SymbolName="SteerEncScale"
+                                    PublicName="Steering Encoder Scale"
+                                    DataType="UNSIGNED32"
+                                    AccessType="rw"
+                                    Unit="Pulses/360 deg"
+                                    Min="32"
+                                    Max="100000"
+                                    Visibility="Service"
+                                    ParameterClass="Config"
+                                    Remark="Steering Encoder Scale"/>
+
+                                <Property SymbolName="SteerEncOffset"
+                                    PublicName="Steering Encoder Offset"
+                                    DataType="INTEGER16"
+                                    AccessType="rw"
+                                    Visibility="Service"
+                                    Unit="1/100 deg"
+                                    Min="-3000"
+                                    Max="3000"
+                                    Default="0"
+                                    ParameterClass="Config"
+                                    Remark="Steering Encoder Offset (Position of Sync pulse)"/>
+
+                                <Property SymbolName="PosRegP"
+                                    PublicName="Position Regulator Pgain"
+                                    DataType="INTEGER16"
+                                    AccessType="rw"
+                                    Visibility="OEM"
+                                    Default="300"
+                                    ParameterClass="Config"
+                                    Remark="Proportional gain in the PI-parts of the position controller."/>
+                                
+                                <Property SymbolName="PosRegI"
+                                    PublicName="Position Regulator Igain"
+                                    DataType="INTEGER16"
+                                    AccessType="rw"
+                                    Visibility="OEM"
+                                    Default="0"
+                                    ParameterClass="Config"
+                                    Remark="Integral gain in the PI-parts of the position controller."/>
+                                
+                                <Property SymbolName="LimOutMax"
+                                    PublicName="Lim Out Max"
+                                    DataType="INTEGER16"
+                                    AccessType="rw"
+                                    Visibility="OEM"
+                                    Default="16384"
+                                    ParameterClass="Config"
+                                    Remark="Max motor speed as output from position controller and input to speed controller.
+VoltageFeedback: 1024 = 48V, Otherwise: 16384 = 90 deg/s"/>
+                                
+                                <Property SymbolName="MaxWheelAngle"
+                                    PublicName="Max Wheel Angle"
+                                    DataType="INTEGER16"
+                                    AccessType="rw"
+                                    Visibility="OEM"
+                                    Default="0"
+                                    Unit="1/100 deg"
+                                    ParameterClass="Config"
+                                    Remark="Wheel Angle Limit. 0 = No Limit"/>
+                                
+                                <Property SymbolName="SlowDownZone"
+                                    PublicName="Slow Down Zone"
+                                    DataType="INTEGER16"
+                                    AccessType="rw"
+                                    Visibility="OEM"
+                                    Default="0"
+                                    Unit="1/100 deg"
+                                    ParameterClass="Config"
+                                    Remark="Speed limited zone approaching MaxWheelAngle."/>
+
+                                <Property SymbolName="LimOutMaxSlowDownZone"
+                                    PublicName="Lim Out Max Slow Down Zone"
+                                    DataType="UNSIGNED16"
+                                    AccessType="rw"
+                                    Visibility="OEM"
+                                    Default="0"
+                                    Unit="1/100 deg/s"
+                                    ParameterClass="Config"
+                                    Remark="Speed limit for the slow down zone."/>
+
+                                <Property SymbolName="EndLimitSwitchPolarity"
+                                    PublicName="End Limit Switch Polarity"
+                                    DataType="UNSIGNED16"
+                                    AccessType="rw"
+                                    Visibility="OEM"
+                                    Default="0"
+                                    Unit=""
+                                    ParameterClass="Config"
+                                    Remark="Polarity of end limit switch. Default is active high.">
+                                        <ValueTranslation Value="0" String="Active High"/>
+                                        <ValueTranslation Value="1" String="Active Low"/>
+                                </Property>
+
+                                <Property SymbolName="SyncGate"
+                                    PublicName="Sync Gate"
+                                    DataType="BOOLEAN"
+                                    AccessType="rw"
+                                    Visibility="OEM"
+                                    Default="1"
+                                    ParameterClass="Config"
+                                    Remark="Set true to allow sync. Set to false to reject unwanted sync pulse in multi turn application."/>
+
+                                <Property SymbolName="SyncFilter"
+                                    PublicName="Sync filter"
+                                    DataType="UNSIGNED16"
+                                    AccessType="rw"
+                                    Visibility="OEM"
+                                    Default="5"
+                                    Unit="Pulses"
+                                    ParameterClass="Config"
+                                    Remark="Window where we expect sync pulse to appear"/>
+
+                                <Property SymbolName="SyncEmergency"
+                                    PublicName="Sync Emergency"
+                                    DataType="BOOLEAN"
+                                    AccessType="rw"
+                                    Visibility="Internal"
+                                    Default="1"
+                                    ParameterClass="Config"
+                                    Remark="Encoder Sync Emergency. 0 = Sync Emergency disabled. OBS! Disabling the sync emergency can be a serious safety issue!"/>
+                            </xsl:if>
+
+                            <Property SymbolName="ReverseEncoderDirection"
+                                PublicName="Reverse Encoder Direction"
+                                DataType="BOOLEAN"
+                                AccessType="rw"
+                                Visibility="OEM"
+                                Default="0"
+                                ParameterClass="Config"
+                                Remark="Set true to reverse encoder direction. Same effect as swapping A and B signals."/>
+
+                            <Property SymbolName="VoltageFeedback"
+                                PublicName=""
+                                DataType="BOOLEAN"
+                                AccessType="rw"
+                                Visibility="OEM"
+                                Default="0"
+                                ParameterClass="Config"
+                                Remark="Set true to use motor voltage as speed feedback instead of encoder. (Speed scale: 1024 = 48 V)"/>
+
+                            <Property SymbolName="SpeedRegOffset"
+                                PublicName="Speed Regulator Torque Offset"
+                                DataType="INTEGER16"
+                                AccessType="rw"
+                                Visibility="OEM"
+                                Default="0"
+                                Unit="deciAmpere"
+                                ParameterClass="Config"
+                                Remark="Current to compensate for friction. Added to speed regulator output with sign depending on the command speed."/>
+
+                            <!-- Process Data Properties -->
+                            <!-- TxPDO1 -->
+                            <Property SymbolName="ReadyToSwitchOn"
+                                PublicName="Ready To Switch On"
+                                DataType="BOOLEAN"
+                                AccessType="ro"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Ready To Switch On (Dc bus is charged)"/>
+
+                            <Property SymbolName="SwitchedOn"
+                                PublicName="Switched On"
+                                DataType="BOOLEAN"
+                                AccessType="ro"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Switched On"/>
+
+                            <Property SymbolName="PowerStageEnabled"
+                                PublicName="Power Stage Enabled"
+                                DataType="BOOLEAN"
+                                AccessType="ro"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Power Stage Enabled"/>
+
+                            <Property SymbolName="Error"
+                                PublicName="Error"
+                                DataType="BOOLEAN"
+                                AccessType="ro"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Error"/>
+
+                            <Property SymbolName="SwitchOnDisabled"
+                                PublicName="Switch On Disabled"
+                                DataType="BOOLEAN"
+                                AccessType="ro"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Switch On Disabled	(Dc bus voltage to low, charging timeout)"/>
+
+                            <Property SymbolName="Warning"
+                                PublicName="Warning"
+                                DataType="BOOLEAN"
+                                AccessType="ro"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Warning"/>
+
+                            <!-- STEER -->
+                            <xsl:if test='$Steer = "true"'>
+                                <MasterProperty SymbolName="EncoderStatus"
+                                    PublicName="Encoder Status"
+                                    DataType="UNSIGNED16"
+                                    AccessType="ro"
+                                    Visibility="OEM"
+                                    ParameterClass="Runtime"
+                                    Remark="Bit0 - Sync Valid. Set when first sync pulse inside the sync window has been detected"
+                                    ReadPeriod="Periodic,2000,0x2050,1,0"/>
+
+                                <MasterProperty SymbolName="EncoderCounterValue"
+                                    PublicName="Encoder Counter Value"
+                                    DataType="UNSIGNED16"
+                                    AccessType="ro"
+                                    Unit="pulse edges"
+                                    Visibility="Internal"
+                                    ParameterClass="Runtime"
+                                    Remark="Number of pulse edges captured."
+                                    ReadPeriod="Periodic,2000,0x2050,11,0"/>
+
+                                <MasterProperty SymbolName="SpuriousSyncCounter"
+                                    PublicName="Spurious sync pulse counter"
+                                    DataType="UNSIGNED16"
+                                    AccessType="ro"
+                                    Unit=""
+                                    Visibility="OEM"
+                                    ParameterClass="Runtime"
+                                    Remark="Counter for sync pulses detected outside sync window. Valid after first sync pulse inside the sync window has been detected"
+                                    ReadPeriod="Periodic,2000,0x2050,23,0"/>
+
+                                <MasterProperty SymbolName="MissingSyncCounter"
+                                    PublicName="Missing sync pulse counter"
+                                    DataType="UNSIGNED16"
+                                    AccessType="ro"
+                                    Unit=""
+                                    Visibility="OEM"
+                                    ParameterClass="Runtime"
+                                    Remark="Counter for expected but not present sync pulses inside sync window. Valid after first sync pulse inside the sync window has been detected"
+                                    ReadPeriod="Periodic,2000,0x2050,24,0"/>
+
+                                <!-- Denna skall INTE vara rw senare, Ãr bara så att vi kan skriva ner enc värden till att börja med.. -->
+                                <Property SymbolName="WheelAngle"
+                                    PublicName="Wheel Angle"
+                                    DataType="INTEGER16"
+                                    AccessType="rw"
+                                    Unit="1/100 deg"
+                                    Visibility="OEM"
+                                    ParameterClass="Runtime"
+                                    Retentive="1"
+                                    Remark="Wheel Angle"/>
+                            </xsl:if>
+
+                            <!-- TRACTION -->
+                            <xsl:if test='$Traction = "true"'>
+                                <Property SymbolName="DriveEncScale"
+                                    PublicName="Drive Enc Scale"
+                                    DataType="UNSIGNED32"
+                                    AccessType="rw"
+                                    Unit="Pulses/1000 mm"
+                                    Min="32"
+                                    Max="100000"
+                                    Visibility="Service"
+                                    ParameterClass="Config"
+                                    Remark="The number of pulses per 1000 mm."/>
+                                <Property SymbolName="DriveEncDist"
+                                    PublicName="Drive Enc Dist"
+                                    DataType="UNSIGNED16"
+                                    AccessType="ro"
+                                    Unit="mm"
+                                    Visibility="OEM"
+                                    ParameterClass="Runtime"
+                                    Remark="Drive Encoder Distance"/>
+                                <Property SymbolName="DriveEncSpeed"
+                                    PublicName="Drive Enc Speed"
+                                    DataType="INTEGER16"
+                                    AccessType="ro"
+                                    Unit="mm/s"
+                                    Visibility="OEM"
+                                    ParameterClass="Runtime"
+                                    Remark="Drive Enc Speed"/>
+                            </xsl:if>
+                            
+                            <!-- TxPDO2 -->
+                            <xsl:if test='$Steer = "true"'>
+                                <Property SymbolName="Reserved_DigitalInput2"
+                                    PublicName="Digital Input 2 value" 
+                                    DataType="BOOLEAN"
+                                    AccessType="ro"
+                                    Renameable="false"
+                                    Visibility="Internal"
+                                    ParameterClass="Runtime"
+                                    Remark="Digital Input 2 value, encoder sync, pin 14" />
+                                <Property SymbolName="Reserved_DigitalInput3"
+                                    PublicName="Digital Input 3 value" 
+                                    DataType="BOOLEAN"
+                                    AccessType="ro"
+                                    Renameable="false"
+                                    Visibility="Internal"
+                                    ParameterClass="Runtime"
+                                    Remark="Digital Input 3 value, end limit switch, pin 13" />
+                            </xsl:if>
+                            <xsl:if test='$Traction = "true"'>
+                                <xsl:if test='$ExtendedIo = "true"'>
+                                    <Property SymbolName="DigitalInput2"
+                                        PublicName="Digital Input 2 value" 
+                                        DataType="BOOLEAN"
+                                        AccessType="ro"
+                                        Renameable="true"
+                                        Visibility="Operator"
+                                        ParameterClass="Runtime"
+                                        Remark="Digital Input 2 value, pin 14" />
+                                    <Property SymbolName="DigitalInput3"
+                                        PublicName="Digital Input 3 value" 
+                                        DataType="BOOLEAN"
+                                        AccessType="ro"
+                                        Renameable="true"
+                                        Visibility="Operator"
+                                        ParameterClass="Runtime"
+                                        Remark="Digital Input 3 value, pin 13" />
+                                </xsl:if>
+                                <xsl:if test='$ExtendedIo = "false"'>
+                                    <Property SymbolName="DigitalInput1"
+                                        PublicName="Digital Input 1 value"
+                                        DataType="BOOLEAN"
+                                        AccessType="ro"
+                                        Renameable="true"
+                                        Visibility="Operator"
+                                        ParameterClass="Runtime"
+                                        Remark="Digital Input 1 value, pin 11" />
+                                </xsl:if>
+                            </xsl:if>
+                            <!-- RxPDO1 -->
+                            <Property SymbolName="SwitchOn"        
+                                PublicName="Switch On"
+                                DataType="BOOLEAN" 
+                                AccessType="rw"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Switch On"/>
+
+                            <Property SymbolName="EnablePowerStage"        
+                                PublicName="Enable Power Stage" 
+                                DataType="BOOLEAN" 
+                                AccessType="rw"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Enable Power Stage"/>
+
+                            <xsl:if test='$Traction = "true"'>
+                                <Property SymbolName="SetSpeed"
+                                    PublicName="Set Speed"
+                                    DataType="INTEGER16"
+                                    AccessType="rw"
+                                    Unit="mm/s"
+                                    Visibility="OEM"
+                                    ParameterClass="Runtime"
+                                    Remark="Set Speed"/>
+                            </xsl:if>
+
+                            <xsl:if test='$Steer = "true"'>
+                                <Property SymbolName="SetAngle"
+                                    PublicName="Set Angle"
+                                    DataType="INTEGER16"
+                                    AccessType="rw"
+                                    Unit="1/100 deg"
+                                    Visibility="OEM"
+                                    ParameterClass="Runtime"
+                                    Remark="Set Angle"/>
+                            </xsl:if>
+
+                            <!-- RxPDO2 -->
+                            <xsl:if test='$AllOK = "true"'>
+                                <Property SymbolName="AllOK_DigitalOutput1" 
+                                    PublicName="Reserved Digital Output 1 value" 
+                                    DataType="BOOLEAN" 
+                                    AccessType="ro" 
+                                    Visibility="Internal"
+                                    Default="1"
+                                    ParameterClass="Runtime" 
+                                    Remark="Reserved Digital Output 1 value, pin 2"/>
+                            </xsl:if>
+
+                            <xsl:if test='$AllOK = "false"'>
+                                <Property SymbolName="DigitalOutput1"
+                                    PublicName="Digital Output 1 value"
+                                    DataType="BOOLEAN"
+                                    AccessType="rw"
+                                    Renameable="true"
+                                    Visibility="Operator"
+                                    ParameterClass="Runtime"
+                                    Remark="Digital Output 1 value, pin 2" />
+                            </xsl:if>
+
+                            <xsl:if test='$ExtendedIo = "true"'>
+                                <Property SymbolName="DigitalOutput2"
+                                    PublicName="Digital Output 2 value"
+                                    DataType="BOOLEAN"
+                                    AccessType="rw"
+                                    Renameable="true"
+                                    Visibility="Operator"
+                                    ParameterClass="Runtime"
+                                    Remark="Digital Output 2 value, pin 18" />
+                              
+                              <Property SymbolName="DigitalOutput3"
+                                    PublicName="Digital Output 3 value"
+                                    DataType="BOOLEAN"
+                                    AccessType="rw"
+                                    Renameable="true"
+                                    Visibility="Operator"
+                                    ParameterClass="Runtime"
+                                    Remark="Digital Output 3 value, pin 21" />
+
+                                <Property SymbolName="DigitalOutput4"
+                                    PublicName="Digital Output 4 value"
+                                    DataType="BOOLEAN"
+                                    AccessType="rw"
+                                    Renameable="true"
+                                    Visibility="Operator"
+                                    ParameterClass="Runtime"
+                                    Remark="Digital Output 4 value, pin 22" />
+                            </xsl:if>
+                            <xsl:if test='$ExtendedIo = "false"'>
+                                <Property SymbolName="DigitalOutput2"
+                                    PublicName="Digital Output 2 value"
+                                    DataType="BOOLEAN"
+                                    AccessType="rw"
+                                    Renameable="true"
+                                    Visibility="Operator"
+                                    ParameterClass="Runtime"
+                                    Remark="Digital Output 2 value, pin 10" />
+                            </xsl:if>
+
+                          <!-- DIAGNOSTIC SYMBOLS -->
+                            
+                            <!-- TxPdo 2 -->
+
+                            <Property SymbolName="DcBusVoltage"
+                                PublicName="Dc Bus Voltage"
+                                DataType="UNSIGNED16"
+                                AccessType="ro"
+                                Unit="1/100 V"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Runtime voltage measurement on the B+ input"/>
+
+                            <Property SymbolName="TorqueCurrentReference"
+                                PublicName="Torque Current Reference"
+                                DataType="INTEGER16"
+                                AccessType="ro"
+                                Unit="deciAmpere"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Output from speed controller, input to current controller."/>
+
+                            <Property SymbolName="TorqueCurrent"
+                                PublicName="Torque Current"
+                                DataType="INTEGER16"
+                                AccessType="ro"
+                                Unit="deciAmpere"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Actual torque current in current controller."/>
+
+                            <!-- Periodic SDO -->
+
+                            <MasterProperty SymbolName="HeatsinkTemperature"
+                                PublicName="Heatsink Temperature"
+                                DataType="INTEGER16"
+                                AccessType="ro"
+                                Unit="celsius"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Temperature of the heatsink"	
+                                ReadPeriod="Periodic,2000,0x2041,2,0"/>
+
+                            <MasterProperty SymbolName="ExtendedWarnings"
+                                PublicName="Extended Warnings"
+                                DataType="UNSIGNED32"
+                                AccessType="ro"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Extended Warnings set by the drive, valid when Warning bit is set"	
+                                ReadPeriod="Periodic,2000,0x3010,1,0"/>
+
+                            <MasterProperty SymbolName="ExtendedErrors"
+                                PublicName="Extended Errors"
+                                DataType="UNSIGNED32"
+                                AccessType="ro"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Extended Errors set by the drive, valid when Error bit is set"	
+                                ReadPeriod="Periodic,2000,0x3010,2,0"/>
+
+                            <MasterProperty SymbolName="RegSupervisionTimer"
+                                PublicName="Reg Supervision Timer"
+                                DataType="UNSIGNED16"
+                                AccessType="ro"
+                                Unit="ms"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Timer counting absence of movement in correct direction. See: Reg Supervision Failure Delay"
+                                ReadPeriod="Periodic,2000,0x2301,3,0"/>
+
+                            <MasterProperty SymbolName="RegSupervisionTimerMax"
+                                PublicName="Reg Supervision Timer Max"
+                                DataType="UNSIGNED16"
+                                AccessType="ro"
+                                Unit="ms"
+                                Visibility="OEM"
+                                ParameterClass="Runtime"
+                                Remark="Max value of Reg Supervision Timer since power on."
+                                ReadPeriod="Periodic,2000,0x2301,4,0"/>
+
+                        </Properties>
+                    </ComponentSubType>
+                </Configuration>
+            </File>
+        </xsl:template>
+    </xsl:stylesheet>
+</File>

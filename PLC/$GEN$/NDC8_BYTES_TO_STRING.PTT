@@ -1,0 +1,15 @@
+FUNCTION_BLOCK NDC8_BYTES_TO_STRING 
+
+
+ VAR_INPUT
+  bytes : ARRAY [ 1 .. 32 ] OF BYTE ;
+  length : INT := 32 ;
+  END_VAR 
+
+ VAR_OUTPUT
+  str : STRING ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

@@ -1,0 +1,16 @@
+FUNCTION_BLOCK CARRIERCONTROL_FB 
+
+
+ VAR_INPUT
+  FlexSlowdown , LS2000Slowdown : bool ;
+  END_VAR 
+
+ VAR_OUTPUT
+  AutoInsertNotInsideTargetSafety : bool ;
+  AutoinsertInProgress : bool ;
+  StartDelayStartWarning : bool ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

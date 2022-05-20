@@ -1,0 +1,123 @@
+FUNCTION_BLOCK FourBytesToUDInt_FB
+VAR_EXTERNAL
+	NDC8:NDC8_T;
+	DMegaWord:dword;
+	FirstByte:byte;
+	SecondByte:byte;
+	ThirdByte:byte;
+	FourthByte:byte;
+
+END_VAR
+
+VAR_INPUT
+	Byte1 : byte;
+	Byte2 : byte;
+	Byte3 : byte;
+	Byte4 : byte;
+END_VAR
+
+VAR_OUTPUT
+	UDIntValue : udint;
+END_VAR
+	
+VAR
+	littleEndian:bool := true;
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+END_VAR
+(** {* **)
+(**  -----------------------------------------------------------------------------------                               **)
+(**  FourBytesToUDInt_FB                    **)
+(**  -----------------------------------------------------------------------------------                         **)
+(**  **)
+(**  Description:                      **)
+(**  Combines two bytes to an UINT. **)
+(**  littleEndian is used to control if least or most significant byte should come first. **)
+(**   **)
+(**  Rev 	Who		Date  		Desc **)
+(**  ----------------------------------------------------------------------------------- **)
+(**  0.1  	KJN  	140206		Created **)
+(**  -----------------------------------------------------------------------------------*} **)
+(**  **)
+(**  **)
+(** if littleEndian then	{* First byte is least significant *} **)
+	(* if - Cond *)
+	LD littleEndian
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	 **)
+(**  **)
+(** 	FirstByte	:= Byte1; **)
+		(* assign - Stmt *)
+		LD Byte1
+		ST FirstByte
+
+(** 	SecondByte	:= Byte2; **)
+		(* assign - Stmt *)
+		LD Byte2
+		ST SecondByte
+
+(** 	ThirdByte	:= Byte3; **)
+		(* assign - Stmt *)
+		LD Byte3
+		ST ThirdByte
+
+(** 	FourthByte	:= Byte4; **)
+		(* assign - Stmt *)
+		LD Byte4
+		ST FourthByte
+
+(** 	 **)
+(** 	UDIntValue := dword_to_udint(DMegaWord); **)
+		(* assign - Stmt *)
+		LD DMegaWord
+		dword_to_udint 
+		ST UDIntValue
+
+		JMP ODK_END_IF_000000000000001
+
+(** else					{* Second byte is least significant *} **)
+	(* else *) 
+	ODK_SKIP_000000000000001_000000000000001:
+
+		(* else - Stmts *)
+
+(**  **)
+(** 	FirstByte	:= Byte3; **)
+		(* assign - Stmt *)
+		LD Byte3
+		ST FirstByte
+
+(** 	SecondByte	:= Byte4; **)
+		(* assign - Stmt *)
+		LD Byte4
+		ST SecondByte
+
+(** 	ThirdByte	:= Byte1; **)
+		(* assign - Stmt *)
+		LD Byte1
+		ST ThirdByte
+
+(** 	FourthByte	:= Byte2; **)
+		(* assign - Stmt *)
+		LD Byte2
+		ST FourthByte
+
+(** 	 **)
+(** 	UDIntValue := dword_to_udint(DMegaWord); **)
+		(* assign - Stmt *)
+		LD DMegaWord
+		dword_to_udint 
+		ST UDIntValue
+
+(**  **)
+(**  **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000001:
+
+END_FUNCTION_BLOCK

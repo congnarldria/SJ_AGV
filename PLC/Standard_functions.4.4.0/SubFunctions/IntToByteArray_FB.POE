@@ -1,0 +1,90 @@
+FUNCTION_BLOCK IntToByteArray_FB
+VAR_EXTERNAL
+	NDC8:NDC8_T;
+	MegaWord:word;
+	HighByte:byte;
+	LowByte:byte;
+END_VAR
+
+VAR_INPUT
+	IntValue : int;
+END_VAR
+
+VAR_OUTPUT
+	ByteArray : ARRAY[1..2] OF BYTE;
+END_VAR
+	
+VAR
+	littleEndian:bool := true;
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+END_VAR
+(** {* **)
+(**  -----------------------------------------------------------------------------------                               **)
+(**  IntToByteArray_FB                    **)
+(**  -----------------------------------------------------------------------------------                         **)
+(**  **)
+(**  Description:                      **)
+(**  Splits INT into an array of two bytes. **)
+(**  littleEndian is used to control if least or most significant byte should come first. **)
+(**   **)
+(**  Rev 	Who		Date  		Desc **)
+(**  ----------------------------------------------------------------------------------- **)
+(**  0.1  	KJN  	140205		Created **)
+(**  -----------------------------------------------------------------------------------*} **)
+(**  **)
+(**  **)
+(** {* Get word. Saved at same data positions as HighByte and LowByte *} **)
+(** MegaWord := int_to_word(IntValue); **)
+	(* assign - Stmt *)
+	LD IntValue
+	int_to_word 
+	ST MegaWord
+
+(**  **)
+(** if littleEndian then	{* Start with least significant byte *} **)
+	(* if - Cond *)
+	LD littleEndian
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	ByteArray[1] := HighByte; **)
+		(* assign - Stmt *)
+		LD HighByte
+		ST ByteArray[1]
+
+(** 	ByteArray[2] := LowByte; **)
+		(* assign - Stmt *)
+		LD LowByte
+		ST ByteArray[2]
+
+		JMP ODK_END_IF_000000000000001
+
+(**  **)
+(** else				{* Start with most significant byte *} **)
+	(* else *) 
+	ODK_SKIP_000000000000001_000000000000001:
+
+		(* else - Stmts *)
+
+(**  **)
+(** 	ByteArray[2] := HighByte; **)
+		(* assign - Stmt *)
+		LD HighByte
+		ST ByteArray[2]
+
+(** 	ByteArray[1] := LowByte; **)
+		(* assign - Stmt *)
+		LD LowByte
+		ST ByteArray[1]
+
+(** 	 **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000001:
+
+END_FUNCTION_BLOCK

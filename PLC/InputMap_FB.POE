@@ -1,0 +1,669 @@
+FUNCTION_BLOCK INPUTMAP_FB
+VAR_EXTERNAL
+NDC8:NDC8_T;
+Input : Input_T;
+
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+	StartSwitchRise : R_Trig;
+	StartSwitchFlag : BOOL;
+	StartDelay : TON;
+	McdAutoR : R_Trig;
+	McdAutoFlag : BOOL;
+	OrderMode:OrderMode_FB;
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	STOPSAFETY : BOOL;
+	PLC_RX01_BIT_LOAD_I : BOOL;
+	STOPESTOPBUTTON : BOOL;
+	G_ERRORCODE : WORD;
+END_VAR
+(** {* **)
+(** ------------------------------------------------------------------------------------                               **)
+(**  Input_Map_FB                     **)
+(**  -----------                   **)
+(**                               **)
+(**  Description:                      **)
+(** 	 Used to map actual inputs to generic variables. **)
+(**  **)
+(** -------------------------------------------------------------------------------------*} **)
+(**  **)
+(**  **)
+(** {* Minimum required inputs * ) **)
+(** INPUT.ForkEncSyncValid		:= NDC8.. ;		 **)
+(** 								:= TRUE; 									if using CAN encoder or analog input. **)
+(** 								 **)
+(** INPUT.SteerEncSyncValid		:= NDC8.. ;              **)
+(** 								:= (NDC8.DCD_5.EncoderStatus = 1);			for DCD **)
+(** 								:= TRUE ;									for ACD with CAN encoder **)
+(** 								:= NDC8.SDIO.Enc1SyncValid ;				for ACD with incremental encoder **)
+(**  **)
+(**  **)
+(** ( * Frequently used inputs  * ) **)
+(** INPUT.Reset_PB				:= NDC8.. ; **)
+(** INPUT.SafetyScannerStop1	:= NDC8.. ; **)
+(** INPUT.SafetyScannerStop2	:= NDC8.. ; **)
+(** INPUT.LoadOnBoard			:= NDC8.. ; **)
+(** INPUT.TractionSpeed			:= NDC8.. ;		( * DINT * ) **)
+(** INPUT.TractionDistance		:= NDC8.. ;		( * INT * ) **)
+(** INPUT.SafetyScannerSlowDown	:= NDC8.. ; **)
+(**  **)
+(** Input.ManualForkUp_PB 		:= NDC8.MCD.Button8;	( * MCD Load up.	Move the fork up. * ) **)
+(** Input.ManualForkDown_PB 	:= NDC8.MCD.Button9;	( * MCD Load down.	Move the fork down. * ) **)
+(** Input.ZeroSteerAngle_PB		:= NDC8.MCD.Button11;   ( * MCD Load right. Set the steerangle to zero in manual mode * ) **)
+(** Input.ChangeSteerMode_PB	:= NDC8.MCD.Button10;	( * MCD Load left. 	Switch steer modes in manual or semi (QUAD) * ) **)
+(**  **)
+(** Input.LowBattery			:= NDC8.SDIO.B_Plus < 2200 ;			( * Simple example of battery level supervision.  **)
+(** 								Normally CVC600 is connected via filter or DC/DC Battery+, so this value is not valid. * ) **)
+(** Input.BatteryLevel			:=    ( * INT * ) **)
+(**  **)
+(** Input.SteerEncAngle			:= NDC8.. ;		( * DINT * ) **)
+(** 								:= INT_to_DINT(NDC8.DCD_6.WheelAngle) ;  	for DCD **)
+(** 								:= NDC8.CAN_Enc_x.SteerEncAngle ;			for ACD with CAN encoder **)
+(** 								:= INT_TO_DINT(NDC8.SDIO.Enc1Angle) ;		for ACD with incremental encoder **)
+(** NDC8.xCD_x.SyncGate			:= NDC..										for ACD or DCD with multi turn incremental steer encoder. **)
+(** 											 **)
+(** Input.ForkSpeed					:= NDC8.. ;		( * DINT * ) **)
+(** INPUT.ForkHeight				:= NDC8.. ;		( * DINT * ) **)
+(** INPUT.ForkTipSensorLeft			:= NDC8.. ; **)
+(** INPUT.ForkTipSensorRight		:= NDC8.. ; **)
+(** INPUT.ForkTipCentreLeft			:= NDC8.. ; **)
+(** INPUT.ForkTipCentreRight		:= NDC8.. ; **)
+(** INPUT.SideSensorRightBackward	:= NDC8.. ; **)
+(** INPUT.SideSensorRightForward	:= NDC8.. ; **)
+(** INPUT.SideSensorLeftBackward	:= NDC8.. ; **)
+(** INPUT.SideSensorLeftForward		:= NDC8.. ; **)
+(**  **)
+(** *} **)
+(**  **)
+(** {* In the vehicle documentation, and the INPUTS.TYP, more examples of InputMap_FB is found. *} **)
+(** ; **)
+(** {* Button *} **)
+(**  **)
+(** Input.ZeroSteerAngle_PB			:= 	NDC8.MCD.Button7; **)
+	(* assign - Stmt *)
+	LD NDC8.MCD.Button7
+	ST Input.ZeroSteerAngle_PB
+
+(**  **)
+(** INPUT.TractionSpeed := NDC8.VehicleControl.SetSpeed; **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleControl.SetSpeed
+	ST Input.TractionSpeed
+
+(**  **)
+(** Input.ChangeSteerMode_PB	:= NDC8.MCD.Button10; **)
+	(* assign - Stmt *)
+	LD NDC8.MCD.Button10
+	ST Input.ChangeSteerMode_PB
+
+(** Input.ChangeSteerMode_PB2	:= NDC8.Mcd.Button11; **)
+	(* assign - Stmt *)
+	LD NDC8.MCD.Button11
+	ST Input.ChangeSteerMode_PB2
+
+(**  **)
+(** if NDC8.SDIO.DigitalInput3_BMP_O1 = TRUE or NDC8.SDIO.DigitalInput4_BMP_O2 = TRUE then **)
+	(* if - Cond *)
+	LD NDC8.SDIO.DigitalInput3_BMP_O1
+	EQ TRUE
+	OR ( NDC8.SDIO.DigitalInput4_BMP_O2
+		EQ TRUE
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	StopSafety := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST StopSafety
+
+		JMP ODK_END_IF_000000000000001
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000001_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	StopSafety := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST StopSafety
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(** StartSwitchRise(CLK:= NDC8.SDIO.DigitalInput1_BTN_STR); **)
+	(* call - Stmt *)
+	CAL StartSwitchRise (
+		CLK := NDC8.SDIO.DigitalInput1_BTN_STR
+	)
+
+(**  **)
+(** if INPUT.StartMode = FALSE and StartSwitchRise.Q then **)
+	(* if - Cond *)
+	LD Input.StartMode
+	EQ FALSE
+	AND StartSwitchRise.Q
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
+(** 	INPUT.StartMode := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST Input.StartMode
+
+		JMP ODK_END_IF_000000000000002
+
+(** elsif g_ErrorCode <> 0 and g_ErrorCode <> 155 and g_ErrorCode <> 156 then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000002_000000000000001:
+	LD g_ErrorCode
+	NE 0
+	AND ( g_ErrorCode
+		NE 155
+	)
+	AND ( g_ErrorCode
+		NE 156
+	)
+	JMPCN ODK_SKIP_000000000000002_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	INPUT.StartMode := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST Input.StartMode
+
+		JMP ODK_END_IF_000000000000002
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000002_000000000000002:
+	ODK_END_IF_000000000000002:
+
+(**  **)
+(** if INPUT.Manual = TRUE then **)
+	(* if - Cond *)
+	LD Input.Manual
+	EQ TRUE
+	JMPCN ODK_SKIP_000000000000003_000000000000001
+
+		(* then - Stmts *)
+
+(** 	INPUT.StartMode := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST Input.StartMode
+
+		JMP ODK_END_IF_000000000000003
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000003_000000000000001:
+	ODK_END_IF_000000000000003:
+
+(**  **)
+(** McdAutoR(CLK := NDC8.Mcd.Button1); **)
+	(* call - Stmt *)
+	CAL McdAutoR (
+		CLK := NDC8.MCD.Button1
+	)
+
+(**  **)
+(** if McdAutoR.Q then  **)
+	(* if - Cond *)
+	LD McdAutoR.Q
+	JMPCN ODK_SKIP_000000000000004_000000000000001
+
+		(* then - Stmts *)
+
+(** 	Input.BuzzerByPass := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST Input.BuzzerByPass
+
+		JMP ODK_END_IF_000000000000004
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000004_000000000000001:
+	ODK_END_IF_000000000000004:
+
+(** 	 **)
+(**  **)
+(** if NDC8.DCD_6.EncoderStatus = 1 and NDC8.DCD_8.EncoderStatus = 1 then **)
+	(* if - Cond *)
+	LD NDC8.DCD_6.EncoderStatus
+	EQ 1
+	AND ( NDC8.DCD_8.EncoderStatus
+		EQ 1
+	)
+	JMPCN ODK_SKIP_000000000000005_000000000000001
+
+		(* then - Stmts *)
+
+(** 	INPUT.SteerEncSyncValid := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST Input.SteerEncSyncValid
+
+		JMP ODK_END_IF_000000000000005
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000005_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	INPUT.SteerEncSyncValid := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST Input.SteerEncSyncValid
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000005:
+
+(**  **)
+(** if NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L = TRUE or NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R = TRUE then **)
+	(* if - Cond *)
+	LD NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L
+	EQ TRUE
+	OR ( NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R
+		EQ TRUE
+	)
+	JMPCN ODK_SKIP_000000000000006_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.DCD_8.EndLimitSwitchPolarity := 1; **)
+		(* assign - Stmt *)
+		LD 1
+		ST NDC8.DCD_8.EndLimitSwitchPolarity
+
+		JMP ODK_END_IF_000000000000006
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000006_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	NDC8.DCD_8.EndLimitSwitchPolarity := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST NDC8.DCD_8.EndLimitSwitchPolarity
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000006:
+
+(**  **)
+(** if NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L = TRUE or NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R = TRUE then **)
+	(* if - Cond *)
+	LD NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L
+	EQ TRUE
+	OR ( NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R
+		EQ TRUE
+	)
+	JMPCN ODK_SKIP_000000000000007_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.DCD_6.EndLimitSwitchPolarity := 1; **)
+		(* assign - Stmt *)
+		LD 1
+		ST NDC8.DCD_6.EndLimitSwitchPolarity
+
+		JMP ODK_END_IF_000000000000007
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000007_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	NDC8.DCD_6.EndLimitSwitchPolarity := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST NDC8.DCD_6.EndLimitSwitchPolarity
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000007:
+
+(** 	 **)
+(**  **)
+(** Input.CreepOn := abs(NDC8.VehicleControl.SetSpeed) = NDC8.Vehicle.CreepSpeed; **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleControl.SetSpeed
+	abs 
+	EQ NDC8.Vehicle.CreepSpeed
+	ST Input.CreepOn
+
+(**  **)
+(** if  (NDC8.DCD_6.SetAngle > 500 and NDC8.DCD_6.SetAngle <= 8500 and NDC8.DCD_8.SetAngle > 500 and NDC8.DCD_8.SetAngle <= 8500) or  **)
+(** 	(NDC8.DCD_6.SetAngle < -500 and NDC8.DCD_6.SetAngle >= -8500 and NDC8.DCD_8.SetAngle < -500 and NDC8.DCD_8.SetAngle >= -8500) then  **)
+	(* if - Cond *)
+	LD NDC8.DCD_6.SetAngle
+	GT 500
+	AND ( NDC8.DCD_6.SetAngle
+		LE 8500
+	)
+	AND ( NDC8.DCD_8.SetAngle
+		GT 500
+	)
+	AND ( NDC8.DCD_8.SetAngle
+		LE 8500
+	)
+	OR ( NDC8.DCD_6.SetAngle
+		LT -500
+		AND ( NDC8.DCD_6.SetAngle
+			GE -8500
+		)
+		AND ( NDC8.DCD_8.SetAngle
+			LT -500
+		)
+		AND ( NDC8.DCD_8.SetAngle
+			GE -8500
+		)
+	)
+	JMPCN ODK_SKIP_000000000000008_000000000000001
+
+		(* then - Stmts *)
+
+(** 	Input.SteerMode := 1; **)
+		(* assign - Stmt *)
+		LD 1
+		ST Input.SteerMode
+
+		JMP ODK_END_IF_000000000000008
+
+(** elsif abs(NDC8.DCD_6.SetAngle) > 8500 and abs(NDC8.DCD_6.SetAngle) < 9500  **)
+(** 	and abs(NDC8.DCD_8.SetAngle) > 8500 and abs(NDC8.DCD_8.SetAngle) < 9500 then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000008_000000000000001:
+	LD NDC8.DCD_6.SetAngle
+	abs 
+	GT 8500
+	AND ( NDC8.DCD_6.SetAngle
+		abs 
+		LT 9500
+	)
+	AND ( NDC8.DCD_8.SetAngle
+		abs 
+		GT 8500
+	)
+	AND ( NDC8.DCD_8.SetAngle
+		abs 
+		LT 9500
+	)
+	JMPCN ODK_SKIP_000000000000008_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	Input.SteerMode := 2; **)
+		(* assign - Stmt *)
+		LD 2
+		ST Input.SteerMode
+
+		JMP ODK_END_IF_000000000000008
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000008_000000000000002:
+
+		(* else - Stmts *)
+
+(** 	Input.SteerMode := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST Input.SteerMode
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000008:
+
+(**  **)
+(** Input.SD_Right := ((NDC8.SegmentTrigger.Bit13_TurnRght_A and NDC8.VehicleControl.Moving) **)
+(** 					or (Input.SteerMode = 0 and NDC8.DCD_6.SetAngle <= -500) {* SD Mode and Right, Just Check Front Wheel *} **)
+(** 					or (Input.SteerMode = 1 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.DCD_6.SetAngle < 0) {* 2*SD Parallel Mode and Right, Just Check Front Wheel  *} **)
+(** 					or (Input.SteerMode = 1 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.DCD_6.SetAngle > 0)) {* 2*SD Parallel Mode and Right, Just Check Front Wheel  *} **)
+(** 					and NDC8.VehicleControl.Moving; **)
+	(* assign - Stmt *)
+	LD NDC8.SegmentTrigger.Bit13_TurnRght_A
+	AND NDC8.VehicleControl.Moving
+	OR ( Input.SteerMode
+		EQ 0
+		AND ( NDC8.DCD_6.SetAngle
+			LE -500
+		)
+	)
+	OR ( Input.SteerMode
+		EQ 1
+		AND ( NDC8.VehicleControl.SetSpeed
+			GT 0
+		)
+		AND ( NDC8.DCD_6.SetAngle
+			LT 0
+		)
+	)
+	OR ( Input.SteerMode
+		EQ 1
+		AND ( NDC8.VehicleControl.SetSpeed
+			LT 0
+		)
+		AND ( NDC8.DCD_6.SetAngle
+			GT 0
+		)
+	)
+	AND NDC8.VehicleControl.Moving
+	ST Input.SD_Right
+
+(** 			 **)
+(** Input.SD_Left :=  ((NDC8.SegmentTrigger.Bit12_TurnLeft_A and NDC8.VehicleControl.Moving) **)
+(** 					or (Input.SteerMode = 0 and NDC8.DCD_6.SetAngle >= 500) {* SD Mode and Left, Just Check Front Wheel *} **)
+(** 					or (Input.SteerMode = 1 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.DCD_6.SetAngle > 0) {* 2*SD Parallel Mode and Left, Just Check Front Wheel  *} **)
+(** 					or (Input.SteerMode = 1 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.DCD_6.SetAngle < 0)) {* 2*SD Parallel Mode and Left, Just Check Front Wheel  *} **)
+(** 					and NDC8.VehicleControl.Moving; **)
+	(* assign - Stmt *)
+	LD NDC8.SegmentTrigger.Bit12_TurnLeft_A
+	AND NDC8.VehicleControl.Moving
+	OR ( Input.SteerMode
+		EQ 0
+		AND ( NDC8.DCD_6.SetAngle
+			GE 500
+		)
+	)
+	OR ( Input.SteerMode
+		EQ 1
+		AND ( NDC8.VehicleControl.SetSpeed
+			GT 0
+		)
+		AND ( NDC8.DCD_6.SetAngle
+			GT 0
+		)
+	)
+	OR ( Input.SteerMode
+		EQ 1
+		AND ( NDC8.VehicleControl.SetSpeed
+			LT 0
+		)
+		AND ( NDC8.DCD_6.SetAngle
+			LT 0
+		)
+	)
+	AND NDC8.VehicleControl.Moving
+	ST Input.SD_Left
+
+(**  **)
+(**  **)
+(** Input.DD_Right := ((Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.DCD_6.SetAngle < 0) {* Diff Parallel Mode and Right, Just Check Front Wheel  *} **)
+(** 					or (Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.DCD_6.SetAngle > 0)); {* Diff Parallel Mode and Right, Just Check Front Wheel  *} **)
+	(* assign - Stmt *)
+	LD Input.SteerMode
+	EQ 2
+	AND ( NDC8.VehicleControl.SetSpeed
+		LT 0
+	)
+	AND ( NDC8.DCD_6.SetAngle
+		LT 0
+	)
+	OR ( Input.SteerMode
+		EQ 2
+		AND ( NDC8.VehicleControl.SetSpeed
+			GT 0
+		)
+		AND ( NDC8.DCD_6.SetAngle
+			GT 0
+		)
+	)
+	ST Input.DD_Right
+
+(** 				 **)
+(** 				 **)
+(** Input.DD_Left :=  ((Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.DCD_6.SetAngle > 0) {* Diff Parallel Mode and Right, Just Check Front Wheel  *} **)
+(** 					or (Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.DCD_6.SetAngle < 0)); {* Diff Parallel Mode and Right, Just Check Front Wheel  *} **)
+	(* assign - Stmt *)
+	LD Input.SteerMode
+	EQ 2
+	AND ( NDC8.VehicleControl.SetSpeed
+		LT 0
+	)
+	AND ( NDC8.DCD_6.SetAngle
+		GT 0
+	)
+	OR ( Input.SteerMode
+		EQ 2
+		AND ( NDC8.VehicleControl.SetSpeed
+			GT 0
+		)
+		AND ( NDC8.DCD_6.SetAngle
+			LT 0
+		)
+	)
+	ST Input.DD_Left
+
+(** 		 **)
+(** 		 **)
+(** Input.SD_Forward := ((Input.SteerMode = 0 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.VehicleControl.Moving = TRUE) **)
+(** 					or (Input.SteerMode = 1 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.VehicleControl.Moving = TRUE)) **)
+(** 					and (Input.SD_Right = FALSE and Input.SD_Left = FALSE and Input.DD_Right = FALSE and Input.DD_Left = FALSE); **)
+	(* assign - Stmt *)
+	LD Input.SteerMode
+	EQ 0
+	AND ( NDC8.VehicleControl.SetSpeed
+		GT 0
+	)
+	AND ( NDC8.VehicleControl.Moving
+		EQ TRUE
+	)
+	OR ( Input.SteerMode
+		EQ 1
+		AND ( NDC8.VehicleControl.SetSpeed
+			GT 0
+		)
+		AND ( NDC8.VehicleControl.Moving
+			EQ TRUE
+		)
+	)
+	AND ( Input.SD_Right
+		EQ FALSE
+		AND ( Input.SD_Left
+			EQ FALSE
+		)
+		AND ( Input.DD_Right
+			EQ FALSE
+		)
+		AND ( Input.DD_Left
+			EQ FALSE
+		)
+	)
+	ST Input.SD_Forward
+
+(** 				 **)
+(** 				 **)
+(** Input.SD_Backward := ((Input.SteerMode = 0 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.VehicleControl.Moving = TRUE) **)
+(** 					or (Input.SteerMode = 1 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.VehicleControl.Moving = TRUE)) **)
+(** 					and (Input.SD_Right = FALSE and Input.SD_Left = FALSE and Input.DD_Right = FALSE and Input.DD_Left = FALSE); **)
+	(* assign - Stmt *)
+	LD Input.SteerMode
+	EQ 0
+	AND ( NDC8.VehicleControl.SetSpeed
+		LT 0
+	)
+	AND ( NDC8.VehicleControl.Moving
+		EQ TRUE
+	)
+	OR ( Input.SteerMode
+		EQ 1
+		AND ( NDC8.VehicleControl.SetSpeed
+			LT 0
+		)
+		AND ( NDC8.VehicleControl.Moving
+			EQ TRUE
+		)
+	)
+	AND ( Input.SD_Right
+		EQ FALSE
+		AND ( Input.SD_Left
+			EQ FALSE
+		)
+		AND ( Input.DD_Right
+			EQ FALSE
+		)
+		AND ( Input.DD_Left
+			EQ FALSE
+		)
+	)
+	ST Input.SD_Backward
+
+(** 		 **)
+(** 		 **)
+(** INPUT.LoadOnBoard := PLC_RX01_Bit_Load_i; **)
+	(* assign - Stmt *)
+	LD PLC_RX01_Bit_Load_i
+	ST Input.LoadOnBoard
+
+(**  **)
+(**  **)
+(** StopEstopButton := NDC8.SDIO.DigitalInput12_EMO; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput12_EMO
+	ST StopEstopButton
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

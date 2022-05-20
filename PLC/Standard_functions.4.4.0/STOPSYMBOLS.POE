@@ -1,0 +1,522 @@
+$BEGIN_IT_HEADER
+DIRECTGLOBALDEFINITIONS = 1
+$END_IT_HEADER
+PROGRAM StopSymbols
+VAR_GLOBAL
+
+	StopWord AT 			%MX0.0:DWORD;		(*Sum of the stop bits*)
+												(*	   hex  dec   *)
+	StopLift 				AT %MX0.0:BOOL;		(*		 1 	1		Forks in the wrong position 		*)
+	StopRear 				AT %MX0.1:BOOL;		(*		 2 	2		Fork sensors tripped 				*)
+	StopSafety				AT %MX0.2:BOOL;		(*		 4 	4		Safety Laser Bumper sensor tripped  *)
+	StopFailureCAN 			AT %MX0.3:BOOL;		(*		 8 	8		Can Bus Failure						*)
+	StopStartDelay			AT %MX0.4:BOOL;		(*	    10 	16		Start delay after Estop 			*)
+	StopFlex 				AT %MX0.5:BOOL;		(*	    20 	32		Stop the vehicle on flexible segments *)
+	StopSoft 				AT %MX0.6:BOOL;		(*	    40 	64		Softstop button pressed 			*)
+	StopLoadChange 			AT %MX0.7:BOOL;     (*	    80 	128		Stop if vehicle load status changes unexpectantly while in auto *)
+	StopObstacle			AT %MX1.0:BOOL;		(*	   100 	256		Obstacle Laser sensor tripped 		*)
+	StopEStopChainError		AT %MX1.1:BOOL;		(*	   200 	512		Other E-Stop Chain Error 			*)
+	StopSteerSync			AT %MX1.2:BOOL;		(*	   400 	1024	Steer encoder not syncronised 		*)
+	StopEstopButton 		AT %MX1.3:BOOL;		(*	   800 	2048	Pushbutton for emergency stop		*)  
+	StopSide 				AT %MX1.4:BOOL;		(*	  1000 	4096	Side sensors tripped 				*)
+	StopReset 				AT %MX1.5:BOOL;		(*	  2000 	8192	Requires pressing reset button 		*)
+	StopNoOpCode 			AT %MX1.6:BOOL;		(*	  4000 	16384	Do not enter station w/o OP code. 	*)
+	StopManual	 			AT %MX1.7:BOOL;		(*	  8000 	32768	Stop vehicle in MANUAL 				*)
+	StopCharge 				AT %MX2.0:BOOL;		(*	 10000 	65536	Stop on charging point 				*)
+	StopClamp				AT %MX2.1:BOOL;		(*	 20000 			Clamp in the wrong position 		*)
+	StopFailCode			AT %MX2.2:BOOL;		(*	 40000  		Load operation Fail code set. 		*)
+	StopResetButton 		AT %MX2.3:BOOL;		(*	 80000  		Stop vehicle while reset button is pressed*)
+	StopLoadOP				AT %MX2.4:BOOL;		(*  100000 			Stop due to Load Op Fail			*)
+	StopBumperFault			AT %MX2.5:BOOL;		(*  200000 												*)
+	StopObstacleFault 		AT %MX2.6:BOOL;		(*  400000 												*)
+	StopTruckDriveSafeState AT %MX2.7:BOOL;		(*  800000 												*)
+	StopLS2000				AT %MX3.0:BOOL;		(* 1000000			Protection against driving into something with the LS2000 *)
+	StopHalt 				AT %MX3.1:BOOL;		(* 2000000			Stop while master controller is removing acknowledged coming segments *)
+	StopLoadDroppedWhileUnloading	AT %MX3.2:BOOL;		(* 4000000	Stop because no load was present while unloading.	*)
+	StopSpinningWheel 		AT %MX3.3:BOOL;		(* 8000000			Stop because vehicle is stuck and wheel keeps spinning. *)
+	StopForkTooLow 			AT %MX3.4:BOOL;		(* 					Waiting for forks to go up.			*)
+	StopForkTooHigh 		AT %MX3.5:BOOL;		(* 					Waiting for forks to go down.		*)
+	StopForkFarTooHigh		AT %MX3.6:BOOL;		(* 					Forks over the allowed height		*)
+	StopChargeStationMissing 				AT %MX3.7:BOOL;		(* *)
+
+	StopWord2 AT 			%MX4.0:DWORD;		(*Sum of the stop bits*)
+												(*	   hex  dec   *)
+	StopByOM_PLC 			AT %MX4.0:BOOL;		(* *)
+	StopByErrorCode		 	AT %MX4.1:BOOL;		(* *)
+	StopBatLowOT			AT %MX4.2:BOOL;		(* *)
+	StopFindSync 			AT %MX4.3:BOOL;		(* *)
+	StopAutoBrakeRelease	AT %MX4.4:BOOL;		(* *)
+	StopRobotNotIdle 		AT %MX4.5:BOOL;		(* *)
+	StopByBCD 				AT %MX4.6:BOOL;		(* *)
+	StopByCanErr_Node1 		AT %MX4.7:BOOL;     (* *)
+	StopByCanErr_Node2		AT %MX5.0:BOOL;		(* *)
+	StopByCanErr_Node3		AT %MX5.1:BOOL;		(* *)
+	StopByCanErr_Node4		AT %MX5.2:BOOL;		(* *)
+	StopByCanErr_Node5 		AT %MX5.3:BOOL;		(* *)  
+	StopByCanErr_Node6 		AT %MX5.4:BOOL;		(* *)
+	StopByCanErr_Node7 		AT %MX5.5:BOOL;		(* *)
+	StopByCanErr_Node8 		AT %MX5.6:BOOL;		(* *)
+	StopByCanErr_Node9	 	AT %MX5.7:BOOL;		(* *)
+	StopByCanErr_Node10 	AT %MX6.0:BOOL;		(* *)
+	Spare50					AT %MX6.1:BOOL;		(* *)
+	Spare51					AT %MX6.2:BOOL;		(* *)
+	Spare52 				AT %MX6.3:BOOL;		(* *)
+	Spare53					AT %MX6.4:BOOL;		(* *)
+	Spare54					AT %MX6.5:BOOL;		(* *)
+	Spare55 				AT %MX6.6:BOOL;		(* *)
+	Spare56					AT %MX6.7:BOOL;		(* *)
+	Spare57					AT %MX7.0:BOOL;		(* *)
+	Spare58 				AT %MX7.1:BOOL;		(* *)
+	Spare59					AT %MX7.2:BOOL;		(* *)
+	Spare60 				AT %MX7.3:BOOL;		(* *)
+	Spare61 				AT %MX7.4:BOOL;		(* *)
+	Spare62 				AT %MX7.5:BOOL;		(* *)
+	Spare63 				AT %MX7.6:BOOL;		(* *)
+	Spare64 				AT %MX7.7:BOOL;		(* *)
+		
+
+	(*PLC Communication TX Bit Data*)
+	PLC_TX_Word1 AT	%MX10.0:WORD;  (*D501*)
+		PLC_TX01_Bit_HostMode		 	AT %MX10.0:BOOL;
+		PLC_TX01_Bit_ManMode		 	AT %MX10.1:BOOL;
+		PLC_TX01_Bit_LocalMode 			AT %MX10.2:BOOL;
+		PLC_TX01_Bit_OnLn_ModeP 		AT %MX10.3:BOOL;
+		PLC_TX01_Bit_5 					AT %MX10.4:BOOL;
+		PLC_TX01_Bit_6 					AT %MX10.5:BOOL;
+		PLC_TX01_Bit_STr_Mod_NT 		AT %MX10.6:BOOL;
+		PLC_TX01_Bit_STr_Mod_UT 		AT %MX10.7:BOOL;
+		PLC_TX01_Bit_STr_BatLow 		AT %MX11.0:BOOL;
+		PLC_TX01_Bit_STr_Home 			AT %MX11.1:BOOL;
+		PLC_TX01_Bit_STr_Ack 			AT %MX11.2:BOOL;
+		PLC_TX01_Bit_STr_EnaPB 			AT %MX11.3:BOOL;
+		PLC_TX01_Bit_13 				AT %MX11.4:BOOL;
+		PLC_TX01_Bit_14 				AT %MX11.5:BOOL;
+		PLC_TX01_Bit_15 				AT %MX11.6:BOOL;
+		PLC_TX01_Bit_16 				AT %MX11.7:BOOL;
+		
+	PLC_TX_Word2 AT	%MX12.0:WORD;	(*D502*)
+		PLC_TX02_Bit_STr_Ang0			AT %MX12.0:BOOL;
+		PLC_TX02_Bit_STr_Ang90			AT %MX12.1:BOOL;
+		PLC_TX02_Bit_STr_AngN90 		AT %MX12.2:BOOL;
+		PLC_TX02_Bit_STr_Ang180			AT %MX12.3:BOOL;
+		PLC_TX02_Bit_STr_Right			AT %MX12.4:BOOL;
+		PLC_TX02_Bit_STr_Left 			AT %MX12.5:BOOL;
+		PLC_TX02_Bit_7 					AT %MX12.6:BOOL;
+		PLC_TX02_Bit_8 					AT %MX12.7:BOOL;
+		PLC_TX02_Bit_STr_Load 			AT %MX13.0:BOOL;
+		PLC_TX02_Bit_STr_Unload 		AT %MX13.1:BOOL;
+		PLC_TX02_Bit_11 				AT %MX13.2:BOOL;
+		PLC_TX02_Bit_12 				AT %MX13.3:BOOL;
+		PLC_TX02_Bit_13 				AT %MX13.4:BOOL;
+		PLC_TX02_Bit_STr_ShutEQ 		AT %MX13.5:BOOL;
+		PLC_TX02_Bit_STr_DepoST 		AT %MX13.6:BOOL;
+		PLC_TX02_Bit_16 				AT %MX13.7:BOOL;
+		
+	PLC_TX_Word3 AT	%MX14.0:WORD;	(*D503*)
+		PLC_TX03_Bit_STr_Idle			AT %MX14.0:BOOL;
+		PLC_TX03_Bit_STr_SD_F			AT %MX14.1:BOOL;
+		PLC_TX03_Bit_STr_SD_R 			AT %MX14.2:BOOL;
+		PLC_TX03_Bit_STr_Rot_R 			AT %MX14.3:BOOL;
+		PLC_TX03_Bit_STr_Rot_L 			AT %MX14.4:BOOL;
+		PLC_TX03_Bit_STr_DD_R			AT %MX14.5:BOOL;
+		PLC_TX03_Bit_STr_DD_L 			AT %MX14.6:BOOL;
+		PLC_TX03_Bit_STr_Charge 		AT %MX14.7:BOOL;
+		PLC_TX03_Bit_STr_Block 			AT %MX15.0:BOOL;
+		PLC_TX03_Bit_STr_Ir_F 			AT %MX15.1:BOOL;
+		PLC_TX03_Bit_STr_Ir_R 			AT %MX15.2:BOOL;
+		PLC_TX03_Bit_STr_Brake 			AT %MX15.3:BOOL;
+		PLC_TX03_Bit_STr_Search 		AT %MX15.4:BOOL;
+		PLC_TX03_Bit_14 				AT %MX15.5:BOOL;
+		PLC_TX03_Bit_15 				AT %MX15.6:BOOL;
+		PLC_TX03_Bit_16 				AT %MX15.7:BOOL;
+		
+	PLC_TX_Word4 AT	%MX16.0:WORD;	(*D504*)
+		PLC_TX04_Bit_STr_Ins_dn			AT %MX16.0:BOOL;
+		PLC_TX04_Bit_STr_Ins_er	 		AT %MX16.1:BOOL;
+		PLC_TX04_Bit_STr_Cmd_dn			AT %MX16.2:BOOL;
+		PLC_TX04_Bit_Cancel_ST			AT %MX16.3:BOOL;
+		PLC_TX04_Bit_Reset_o			AT %MX16.4:BOOL;
+		PLC_TX04_Bit_AgvErr_o 			AT %MX16.5:BOOL;
+		PLC_TX04_Bit_WantRun 			AT %MX16.6:BOOL;
+		PLC_TX04_Bit_ChrgCmd_C 			AT %MX16.7:BOOL;
+		PLC_TX04_Bit_BCD_Req 			AT %MX17.0:BOOL;
+		PLC_TX04_Bit_BCD_Clr 			AT %MX17.1:BOOL;
+		PLC_TX04_Bit_Shut_OpTxR 		AT %MX17.2:BOOL;
+		PLC_TX04_Bit_Shut_OpTxL 		AT %MX17.3:BOOL;
+		PLC_TX04_Bit_ChrgCmdR_A 		AT %MX17.4:BOOL;
+		PLC_TX04_Bit_ChrgCmdL_A 		AT %MX17.5:BOOL;
+		PLC_TX04_Bit_ChkCom_Tx 			AT %MX17.6:BOOL;
+		PLC_TX04_Bit_16 				AT %MX17.7:BOOL;
+		
+	PLC_TX_Word5 AT	%MX18.0:WORD;	(*D505*)
+		PLC_TX05_Byte1	AT %MX18.0:BYTE;
+		PLC_TX05_Byte2	AT %MX19.0:BYTE;
+		
+		PLC_TX05_Bit_1			 		AT %MX18.0:BOOL;
+		PLC_TX05_Bit_2			 		AT %MX18.1:BOOL;
+		PLC_TX05_Bit_3 					AT %MX18.2:BOOL;
+		PLC_TX05_Bit_4 					AT %MX18.3:BOOL;
+		PLC_TX05_Bit_5 					AT %MX18.4:BOOL;
+		PLC_TX05_Bit_6 					AT %MX18.5:BOOL;
+		PLC_TX05_Bit_7 					AT %MX18.6:BOOL;
+		PLC_TX05_Bit_8 					AT %MX18.7:BOOL;
+		PLC_TX05_Bit_9 					AT %MX19.0:BOOL;
+		PLC_TX05_Bit_10 				AT %MX19.1:BOOL;
+		PLC_TX05_Bit_11 				AT %MX19.2:BOOL;
+		PLC_TX05_Bit_12 				AT %MX19.3:BOOL;
+		PLC_TX05_Bit_13 				AT %MX19.4:BOOL;
+		PLC_TX05_Bit_14 				AT %MX19.5:BOOL;
+		PLC_TX05_Bit_15 				AT %MX19.6:BOOL;
+		PLC_TX05_Bit_16 				AT %MX19.7:BOOL;
+		
+	PLC_TX_Word6 AT	%MX20.0:WORD;	(*D506*)
+		PLC_TX06_Bit_STr_CIO			AT %MX20.0:BOOL;
+		PLC_TX06_Bit_STr_IO1i			AT %MX20.1:BOOL;
+		PLC_TX06_Bit_STr_IO1o			AT %MX20.2:BOOL;
+		PLC_TX06_Bit_STr_IO2i 			AT %MX20.3:BOOL;
+		PLC_TX06_Bit_STr_IO2o 			AT %MX20.4:BOOL;
+		PLC_TX06_Bit_STr_IO3i 			AT %MX20.5:BOOL;
+		PLC_TX06_Bit_STr_IO3o 			AT %MX20.6:BOOL;
+		PLC_TX06_Bit_8 					AT %MX20.7:BOOL;
+		PLC_TX06_Bit_9 					AT %MX21.0:BOOL;
+		PLC_TX06_Bit_10 				AT %MX21.1:BOOL;
+		PLC_TX06_Bit_11 				AT %MX21.2:BOOL;
+		PLC_TX06_Bit_12 				AT %MX21.3:BOOL;
+		PLC_TX06_Bit_13 				AT %MX21.4:BOOL;
+		PLC_TX06_Bit_14 				AT %MX21.5:BOOL;
+		PLC_TX06_Bit_15 				AT %MX21.6:BOOL;
+		PLC_TX06_Bit_16 				AT %MX21.7:BOOL;
+	
+	PLC_TX_Word14_STr_BCD3 AT	%MX22.0:WORD;	(*D506*)
+		PLC_TX14_Byte1	AT %MX22.0:BYTE;
+		PLC_TX14_Byte2	AT %MX23.0:BYTE;
+		
+	PLC_TX_Word15_STr_BCD2 AT	%MX24.0:WORD;	(*D506*)
+		PLC_TX15_Byte1	AT %MX24.0:BYTE;
+		PLC_TX15_Byte2	AT %MX25.0:BYTE;
+		
+	PLC_TX_Word16_STr_BCD1 AT	%MX26.0:WORD;	(*D506*)
+		PLC_TX16_Byte1	AT %MX26.0:BYTE;
+		PLC_TX16_Byte2	AT %MX27.0:BYTE;
+	
+	(*PLC Communication RX Bit Data*)
+	PLC_RX_Word1 AT	%MX30.0:WORD;	(*D533*)
+		PLC_RX01_Bit_Load_i		 		AT %MX30.0:BOOL;
+		PLC_RX01_Bit_LDErr_i	 		AT %MX30.1:BOOL;
+		PLC_RX01_Bit_EnableLD_i			AT %MX30.2:BOOL;
+		PLC_RX01_Bit_LDDone_i			AT %MX30.3:BOOL;
+		PLC_RX01_Bit_LD_T10T_i			AT %MX30.4:BOOL;
+		PLC_RX01_Bit_LD_Cond_i 			AT %MX30.5:BOOL;
+		PLC_RX01_Bit_ManChrg_i 			AT %MX30.6:BOOL;
+		PLC_RX01_Bit_ChrgFast			AT %MX30.7:BOOL;
+		PLC_RX01_Bit_ChrgIdle			AT %MX31.0:BOOL;
+		PLC_RX01_Bit_ChrgBrk			AT %MX31.1:BOOL;
+		PLC_RX01_Bit_ChrgEmg 			AT %MX31.2:BOOL;
+		PLC_RX01_Bit_ChrgDone 			AT %MX31.3:BOOL;
+		PLC_RX01_Bit_Shut_OpRxR			AT %MX31.4:BOOL;
+		PLC_RX01_Bit_Shut_OpTxL 		AT %MX31.5:BOOL;
+		PLC_RX01_Bit_ChkCom_RX 			AT %MX31.6:BOOL;
+		PLC_RX01_Bit_16 				AT %MX31.7:BOOL;
+			
+	PLC_RX_Word2 AT	%MX32.0:WORD;	(*D534*)
+		PLC_RX02_Bit_STw_CIO		 		AT %MX32.0:BOOL;
+		PLC_RX02_Bit_STw_IO1i		 		AT %MX32.1:BOOL;
+		PLC_RX02_Bit_STw_IO1o 				AT %MX32.2:BOOL;
+		PLC_RX02_Bit_STw_IO2i 				AT %MX32.3:BOOL;
+		PLC_RX02_Bit_STw_IO2o 				AT %MX32.4:BOOL;
+		PLC_RX02_Bit_STw_IO3i 				AT %MX32.5:BOOL;
+		PLC_RX02_Bit_STw_IO3o 				AT %MX32.6:BOOL;
+		PLC_RX02_Bit_8 					AT %MX32.7:BOOL;
+		PLC_RX02_Bit_9 					AT %MX33.0:BOOL;
+		PLC_RX02_Bit_10 				AT %MX33.1:BOOL;
+		PLC_RX02_Bit_11 				AT %MX33.2:BOOL;
+		PLC_RX02_Bit_12 				AT %MX33.3:BOOL;
+		PLC_RX02_Bit_13 				AT %MX33.4:BOOL;
+		PLC_RX02_Bit_14 				AT %MX33.5:BOOL;
+		PLC_RX02_Bit_15 				AT %MX33.6:BOOL;
+		PLC_RX02_Bit_16 				AT %MX33.7:BOOL;
+		
+	PLC_RX_Word3 AT	%MX34.0:WORD;	(*D535*)
+		PLC_RX03_Bit_STw_Newcmd		 	AT %MX34.0:BOOL;
+		PLC_RX03_Bit_STw_Mod_LT		 	AT %MX34.1:BOOL;
+		PLC_RX03_Bit_STw_Mod_HT 		AT %MX34.2:BOOL;
+		PLC_RX03_Bit_STw_Mod_NT			AT %MX34.3:BOOL;
+		PLC_RX03_Bit_STw_Mod_UT			AT %MX34.4:BOOL;
+		PLC_RX03_Bit_ChrgReqR_A			AT %MX34.5:BOOL;
+		PLC_RX03_Bit_ChrgReqL_A 		AT %MX34.6:BOOL;
+		PLC_RX03_Bit_CP_HP 				AT %MX34.7:BOOL;
+		PLC_RX03_Bit_Charging_L			AT %MX35.0:BOOL;
+		PLC_RX03_Bit_Charging_R 		AT %MX35.1:BOOL;
+		PLC_RX03_Bit_LD_T30T_i 			AT %MX35.2:BOOL;
+		PLC_RX03_Bit_STw_FullCg 		AT %MX35.3:BOOL;
+		PLC_RX03_Bit_STwDisBMS1 		AT %MX35.4:BOOL;
+		PLC_RX03_Bit_STwDisBMS2			AT %MX35.5:BOOL;
+		PLC_RX03_Bit_STw_EnaChg 		AT %MX35.6:BOOL;
+		PLC_RX03_Bit_16 				AT %MX35.7:BOOL;
+		
+	PLC_RX_Word4 AT	%MX36.0:WORD;	(*D536*)
+		PLC_RX04_Bit_STw_Cont	 		AT %MX36.0:BOOL;
+		PLC_RX04_Bit_STw_Finish	 		AT %MX36.1:BOOL;
+		PLC_RX04_Bit_STw_Cancel 		AT %MX36.2:BOOL;
+		PLC_RX04_Bit_STw_Change			AT %MX36.3:BOOL;
+		PLC_RX04_Bit_STw_DrvOut			AT %MX36.4:BOOL;
+		PLC_RX04_Bit_STw_LowOT 			AT %MX36.5:BOOL;
+		PLC_RX04_Bit_7 					AT %MX36.6:BOOL;
+		PLC_RX04_Bit_8 					AT %MX36.7:BOOL;
+		PLC_RX04_Bit_9 					AT %MX37.0:BOOL;
+		PLC_RX04_Bit_10 				AT %MX37.1:BOOL;
+		PLC_RX04_Bit_11 				AT %MX37.2:BOOL;
+		PLC_RX04_Bit_12 				AT %MX37.3:BOOL;
+		PLC_RX04_Bit_13 				AT %MX37.4:BOOL;
+		PLC_RX04_Bit_14 				AT %MX37.5:BOOL;
+		PLC_RX04_Bit_15 				AT %MX37.6:BOOL;
+		PLC_RX04_Bit_16 				AT %MX37.7:BOOL;
+		
+	PLC_RX_Word5 AT	%MX38.0:WORD;	(*D537*)
+		PLC_RX05_Bit_STw_Ang0			AT %MX38.0:BOOL;
+		PLC_RX05_Bit_STw_Ang90			AT %MX38.1:BOOL;
+		PLC_RX05_Bit_STw_Ang180			AT %MX38.2:BOOL;
+		PLC_RX05_Bit_STw_AngN90 		AT %MX38.3:BOOL;
+		PLC_RX05_Bit_STw_Right 			AT %MX38.4:BOOL;
+		PLC_RX05_Bit_STw_Left 			AT %MX38.5:BOOL;
+		PLC_RX05_Bit_7 					AT %MX38.6:BOOL;
+		PLC_RX05_Bit_8 					AT %MX38.7:BOOL;
+		PLC_RX05_Bit_STw_Load 			AT %MX39.0:BOOL;
+		PLC_RX05_Bit_STw_Unload			AT %MX39.1:BOOL;
+		PLC_RX05_Bit_STw_PowOff 		AT %MX39.2:BOOL;
+		PLC_RX05_Bit_12 				AT %MX39.3:BOOL;
+		PLC_RX05_Bit_STw_Charge 		AT %MX39.4:BOOL;
+		PLC_RX05_Bit_14 				AT %MX39.5:BOOL;
+		PLC_RX05_Bit_15 				AT %MX39.6:BOOL;
+		PLC_RX05_Bit_16 				AT %MX39.7:BOOL;
+		
+	PLC_RX_Word6 AT	%MX40.0:WORD;	(*D538*)
+		PLC_RX06_Bit_BCD_OK			 	AT %MX40.0:BOOL;
+		PLC_RX06_Bit_NoRead_NG			AT %MX40.1:BOOL;
+		PLC_RX06_Bit_BCRHard_NG 		AT %MX40.2:BOOL;
+		PLC_RX06_Bit_BCRData_NG 		AT %MX40.3:BOOL;
+		PLC_RX06_Bit_BCRInit_NG 		AT %MX40.4:BOOL;
+		PLC_RX06_Bit_BCRComm_NG 		AT %MX40.5:BOOL;
+		PLC_RX06_Bit_7 					AT %MX40.6:BOOL;
+		PLC_RX06_Bit_8 					AT %MX40.7:BOOL;
+		PLC_RX06_Bit_9 					AT %MX41.0:BOOL;
+		PLC_RX06_Bit_10 				AT %MX41.1:BOOL;
+		PLC_RX06_Bit_11 				AT %MX41.2:BOOL;
+		PLC_RX06_Bit_12 				AT %MX41.3:BOOL;
+		PLC_RX06_Bit_CompDisabl 		AT %MX41.4:BOOL;
+		PLC_RX06_Bit_14 				AT %MX41.5:BOOL;
+		PLC_RX06_Bit_15 				AT %MX41.6:BOOL;
+		PLC_RX06_Bit_16 				AT %MX41.7:BOOL;
+		
+	PLC_RX_Word14_BMS_2 AT	%MX42.0:WORD;
+		PLC_RX14_Bit_BMS_Short			AT %MX42.0:BOOL;
+		PLC_RX14_Bit_BMS_Over			AT %MX42.1:BOOL;
+		PLC_RX14_Bit_BMS_TempEr 		AT %MX42.2:BOOL;
+		PLC_RX14_Bit_BMS_LowV 			AT %MX42.3:BOOL;
+		PLC_RX14_Bit_BMS_Ch_Req 		AT %MX42.4:BOOL;
+		PLC_RX14_Bit_BMS_Ch_Err 		AT %MX42.5:BOOL;
+		PLC_RX14_Bit_7 					AT %MX42.6:BOOL;
+		PLC_RX14_Bit_BMS_Thermi 		AT %MX42.7:BOOL;
+		PLC_RX14_Bit_BMS_CT 			AT %MX43.0:BOOL;
+		PLC_RX14_Bit_BMS_Couple 		AT %MX43.1:BOOL;
+		PLC_RX14_Bit_BMS_Bat 			AT %MX43.2:BOOL;
+		PLC_RX14_Bit_BMS_NG 			AT %MX43.3:BOOL;
+		PLC_RX14_Bit_13 				AT %MX43.4:BOOL;
+		PLC_RX14_Bit_14 				AT %MX43.5:BOOL;
+		PLC_RX14_Bit_15 				AT %MX43.6:BOOL;
+		PLC_RX14_Bit_16 				AT %MX43.7:BOOL;
+		
+	PLC_RX_Word15_BMS_3 AT	%MX44.0:WORD;	(*D538*)
+		PLC_RX15_Bit_BMS_ChgRqL			AT %MX44.0:BOOL;
+		PLC_RX15_Bit_BMS_ChgRqM			AT %MX44.1:BOOL;
+		PLC_RX15_Bit_BMS_ChgRqH 		AT %MX44.2:BOOL;
+		PLC_RX15_Bit_BMS_Mainte 		AT %MX44.3:BOOL;
+		PLC_RX15_Bit_BMS_NoStop 		AT %MX44.4:BOOL;
+		PLC_RX15_Bit_BMS_ChgCmp 		AT %MX44.5:BOOL;
+		PLC_RX15_Bit_7 					AT %MX44.6:BOOL;
+		PLC_RX15_Bit_BMS_FanDrv 		AT %MX44.7:BOOL;
+		PLC_RX15_Bit_BMS_EEROM 			AT %MX45.0:BOOL;
+		PLC_RX15_Bit_BMS_Comm 			AT %MX45.1:BOOL;
+		PLC_RX15_Bit_BMS_NoChg 			AT %MX45.2:BOOL;
+		PLC_RX15_Bit_12 				AT %MX45.3:BOOL;
+		PLC_RX15_Bit_13			 		AT %MX45.4:BOOL;
+		PLC_RX15_Bit_14 				AT %MX45.5:BOOL;
+		PLC_RX15_Bit_15 				AT %MX45.6:BOOL;
+		PLC_RX15_Bit_16 				AT %MX45.7:BOOL;
+		
+	PLC_RX_Word7_STw_BCD3 AT	%MX46.0:WORD;
+		PLC_RX07_Byte1	AT %MX46.0:BYTE;
+		PLC_RX07_Byte2	AT %MX47.0:BYTE;
+		
+	PLC_RX_Word8_STw_BCD2 AT	%MX48.0:WORD;
+		PLC_RX08_Byte1	AT %MX48.0:BYTE;
+		PLC_RX08_Byte2	AT %MX49.0:BYTE;
+		
+	PLC_RX_Word9_STw_BCD1 AT	%MX56.0:WORD;
+		PLC_RX09_Byte1	AT %MX56.0:BYTE;
+		PLC_RX09_Byte2	AT %MX57.0:BYTE;
+		
+		
+	OM_PLC_Word1 AT	%MX50.0:WORD;	(*ChargeOM*)
+		OM_PLC_W1_Bit_SetLowBatt		AT %MX50.0:BOOL;	(*NT7000->ACC70*)
+		OM_PLC_W1_Bit_WaitCharge		AT %MX50.1:BOOL;	(*NT7000->ACC70*)
+		OM_PLC_W1_Bit_WaitOrder			AT %MX50.2:BOOL;	(*NT7000->ACC70*)
+		OM_PLC_W1_Bit_4					AT %MX50.3:BOOL;
+		OM_PLC_W1_Bit_5					AT %MX50.4:BOOL;
+		OM_PLC_W1_Bit_6					AT %MX50.5:BOOL;
+		OM_PLC_W1_Bit_7					AT %MX50.6:BOOL;
+		OM_PLC_W1_Bit_8					AT %MX50.7:BOOL;
+		OM_PLC_W1_Bit_OM_Cont			AT %MX51.0:BOOL;	(*ACC70->NT7000*)
+		OM_PLC_W1_Bit_OM_Finish			AT %MX51.1:BOOL;	(*ACC70->NT7000*)
+		OM_PLC_W1_Bit_OM_Cancel			AT %MX51.2:BOOL;	(*ACC70->NT7000*)
+		OM_PLC_W1_Bit_OM_Change			AT %MX51.3:BOOL;	(*ACC70->NT7000*)
+		OM_PLC_W1_Bit_13				AT %MX51.4:BOOL;
+		OM_PLC_W1_Bit_14				AT %MX51.5:BOOL;
+		OM_PLC_W1_Bit_15				AT %MX51.6:BOOL;
+		OM_PLC_W1_Bit_16				AT %MX51.7:BOOL;
+		
+	
+	OM_PLC_Word2 AT	%MX52.0:WORD;	(*Stop_OM*)
+		OM_PLC_W2_Bit_SetEmgStop		AT %MX52.0:BOOL;	(*NT7000->ACC70*)
+		OM_PLC_W2_Bit_BCD_setReq		AT %MX52.1:BOOL;	(*NT7000->ACC70*)
+		OM_PLC_W2_Bit_BCD_setOK			AT %MX52.2:BOOL;	(*ACC70->NT7000*)
+		OM_PLC_W2_Bit_BCD_Init			AT %MX52.3:BOOL;	(*NT7000->ACC70*)
+		OM_PLC_W2_Bit_BCD_NoRead		AT %MX52.4:BOOL;	(*NT7000->ACC70*)
+		OM_PLC_W2_Bit_Set_Result		AT %MX52.5:BOOL;	(*ACC70->NT7000*)
+		OM_PLC_W2_Bit_Err_Comp			AT %MX52.6:BOOL;	(*ACC70->NT7000*)
+		OM_PLC_W2_Bit_Err_BCR			AT %MX52.7:BOOL;	(*ACC70->NT7000*)
+		OM_PLC_W2_Bit_SetT10Terr		AT %MX53.0:BOOL;	(*ACC70->NT7000*)
+		OM_PLC_W2_Bit_PowerOffOm		AT %MX53.1:BOOL;	(*NT7000->ACC70*)
+		OM_PLC_W2_Bit_SetCondErr		AT %MX53.2:BOOL;	(*ACC70->NT7000*)
+		OM_PLC_W2_Bit_SetT30TErr		AT %MX53.3:BOOL;	(*ACC70->NT7000*)
+		OM_PLC_W2_Bit_BB_setReq			AT %MX53.4:BOOL;	(*NT7000->ACC70*)
+		OM_PLC_W2_Bit_Set_LowTS			AT %MX53.5:BOOL;	(*NT7000->ACC70*)
+		OM_PLC_W2_Bit_SetHOErr			AT %MX53.6:BOOL;	(*ACC70->NT7000*)
+		OM_PLC_W2_Bit_16				AT %MX53.7:BOOL;
+		
+	OM_PLC_Word7 AT	%MX54.0:WORD;	(*Stop_OM*)
+		OM_PLC_W7_Bit_Area1				AT %MX54.0:BOOL;
+		OM_PLC_W7_Bit_Area2				AT %MX54.1:BOOL;
+		OM_PLC_W7_Bit_Area4				AT %MX54.2:BOOL;
+		OM_PLC_W7_Bit_Area8				AT %MX54.3:BOOL;
+		OM_PLC_W7_Bit_5					AT %MX54.4:BOOL;
+		OM_PLC_W7_Bit_6					AT %MX54.5:BOOL;
+		OM_PLC_W7_Bit_7					AT %MX54.6:BOOL;
+		OM_PLC_W7_Bit_8					AT %MX54.7:BOOL;
+		OM_PLC_W7_Bit_9					AT %MX55.0:BOOL;
+		OM_PLC_W7_Bit_10				AT %MX55.1:BOOL;
+		OM_PLC_W7_Bit_11				AT %MX55.2:BOOL;
+		OM_PLC_W7_Bit_12				AT %MX55.3:BOOL;
+		OM_PLC_W7_Bit_13				AT %MX55.4:BOOL;
+		OM_PLC_W7_Bit_14				AT %MX55.5:BOOL;
+		OM_PLC_W7_Bit_15				AT %MX55.6:BOOL;
+		OM_PLC_W7_Bit_16				AT %MX55.7:BOOL;
+		
+		
+	InProc_OperationCode AT	%MX60.0:WORD;	(*Stop_OM*)
+		IN_OPCD_Bit_LT_Right			AT %MX60.0:BOOL;
+		IN_OPCD_Bit_LT_Left				AT %MX60.1:BOOL;
+		IN_OPCD_Bit_3					AT %MX60.2:BOOL;
+		IN_OPCD_Bit_4					AT %MX60.3:BOOL;
+		IN_OPCD_Bit_LT_Ang0				AT %MX60.4:BOOL;
+		IN_OPCD_Bit_LT_Ang90			AT %MX60.5:BOOL;
+		IN_OPCD_Bit_LT_AngN90			AT %MX60.6:BOOL;
+		IN_OPCD_Bit_LT_Ang180			AT %MX60.7:BOOL;
+		IN_OPCD_Bit_Cmd_EnaEmg			AT %MX61.0:BOOL;
+		IN_OPCD_Bit_10					AT %MX61.1:BOOL;
+		IN_OPCD_Bit_11					AT %MX61.2:BOOL;
+		IN_OPCD_Bit_12					AT %MX61.3:BOOL;
+		IN_OPCD_Bit_LT_Load				AT %MX61.4:BOOL;
+		IN_OPCD_Bit_LT_Unload			AT %MX61.5:BOOL;
+		IN_OPCD_Bit_LT_PowOff			AT %MX61.6:BOOL;
+		IN_OPCD_Bit_LT_Charge			AT %MX61.7:BOOL;
+		
+		
+	
+	(* Memory area for data type conversion. Used in OPTX2 display for modbus communication. *)
+	
+	ConvDINT AT 	%MX70.0:DINT;
+	ConvUDINT AT 	%MX70.0:UDINT;
+	ConvDWORD AT 	%MX70.0:DWORD;
+	
+	ConvINT AT 		%MX70.0:INT;
+	ConvUINT AT 	%MX70.0:UINT;
+
+	ConvWord AT 	%MX70.0:WORD;
+	ConvWord2 AT 	%MX72.0:WORD;
+
+	ConvByteL AT 	%MX70.0:Byte;			(*Low byte*)
+	ConvByteH AT 	%MX71.0:Byte;			(*High byte*)
+
+	ConvBit0 		AT %MX70.0:BOOL;			(*		 1 	    *)
+	ConvBit1  		AT %MX70.1:BOOL;			(*		 2 		*)
+	ConvBit2 		AT %MX70.2:BOOL;			(*		 4 		*)
+	ConvBit3 	 	AT %MX70.3:BOOL;			(*		 8 		*)
+	ConvBit4  		AT %MX70.4:BOOL;			(*	    10 		*)
+	ConvBit5  		AT %MX70.5:BOOL;			(*	    20 		*)
+	ConvBit6  		AT %MX70.6:BOOL;			(*	    40 		*)
+	ConvBit7     	AT %MX70.7:BOOL;        	 (*	    80 		*)
+	ConvBit8 		AT %MX71.0:BOOL;			(*		100     *)
+	ConvBit9  		AT %MX71.1:BOOL;			(*		200 	*)
+	ConvBit10 		AT %MX71.2:BOOL;			(*		400  	*)
+	ConvBit11 	 	AT %MX71.3:BOOL;			(*		800 	*)
+	ConvBit12 		AT %MX71.4:BOOL;			(*	   1000 	*)
+	ConvBit13 		AT %MX71.5:BOOL;			(*	   2000 	*)
+	ConvBit14  		AT %MX71.6:BOOL;			(*	   4000 	*)
+	ConvBit15     	AT %MX71.7:BOOL;        	 (*	   8000 	*)
+	
+	
+	BMS_EnaEvent At %MX80.0 : WORD;
+		EnaBMSEv01	At	%MX80.0 : BOOL;
+		EnaBMSEv02	At	%MX80.1 : BOOL;
+		EnaBMSEv03	At	%MX80.2 : BOOL;
+		EnaBMSEv04	At	%MX80.3 : BOOL;
+		EnaBMSEv05	At	%MX80.4 : BOOL;
+		EnaBMSEv06	At	%MX80.5 : BOOL;
+		EnaBMSEv07	At	%MX80.6 : BOOL;
+		EnaBMSEv08	At	%MX80.7 : BOOL;
+		EnaBMSEv09	At	%MX81.0 : BOOL;
+		EnaBMSEv10	At	%MX81.1 : BOOL;
+		EnaBMSEv11	At	%MX81.2 : BOOL;
+		EnaBMSEv12	At	%MX81.3 : BOOL;
+		EnaBMSEv13	At	%MX81.4 : BOOL;
+		EnaBMSEv14	At	%MX81.5 : BOOL;
+		EnaBMSEv15	At	%MX81.6 : BOOL;
+		EnaBMSEv16	At	%MX81.7 : BOOL;
+		
+		
+	
+	
+END_VAR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+END_PROGRAM

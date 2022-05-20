@@ -1,0 +1,163 @@
+FUNCTION_BLOCK UNLOAD_LOADOP2_FB
+VAR_EXTERNAL   
+	(* IN *)    
+	NDC8: NDC8_T;  
+END_VAR  
+
+VAR    
+	AutoLoadFailCodes : AutoLoadFailCodes_T;
+	PositionModeProcessingDelay : TON;
+END_VAR
+
+VAR_INPUT
+	ParForkHeight,
+	ParForkDistance : dint;
+	Start,
+	ForkTarget : bool;
+	ForkMoving : bool;
+END_VAR
+
+VAR_OUTPUT
+	ForkHeight : dint ;
+	UnloadState	: dint;
+	Finished : bool;
+	FailCode : word;
+	Unloaded : bool;	(* Indicate load is delivered, but sensor might still be active. *)
+END_VAR
+(*
+------------------------------------------------------------------------------------                              
+Autoload Operation Code 0x2 or 0x12  - unload operation (Drop-off)                    
+ -----------          
+                
+
+ Description:                     
+ Handles unload sequence.
+ 
+
+-------------------------------------------------------------------------------------*)
+
+if NDC8.LoadOperation.CancelOperation then	(* If cancel when OpCode received, and last segment is allocated. *)
+	if UnLoadState = 71 then				(* Loading and driving the forks *)  
+		StopLoadOP := TRUE;					(* Set stop bit, and require manual handling *)
+	end_if;
+	UnLoadState := 999;						(* Cancel autoload*)
+	a:=trace_string('Op cancel');
+elsif not Start then 					(* If cancel when OpCode received, and last segment is NOT allocated *)
+											(* or manual mode. *)
+				UnLoadState := 0;				(* Do not send load op done OK, just quit. 
+															(If sending LoadOp done, 
+															System Event 60 "Unexpected cmd-status" is sent and the vehicle will stop.) *)
+end_if;
+
+
+Case UnloadState of 
+
+	0:	(* Wait until vehicle reached the new station. *)
+		Finished := false;
+		Unloaded := false;
+		ForkHeight := Input.ForkLiftPos;
+		if (NDC8.SegmentTrigger.AutoLoadEnabled or 
+			NDC8.SegmentTrigger.LoadOperation or
+			NDC8.LoadDocking.OnLastSegment)
+				and NDC8.Automatic.ExecDriveCommand then
+					UnloadState := 10;
+		end_if;
+	
+	10: (* Verify vehicle is already unloaded. *)
+		if not INPUT.LoadOnBoard then 
+			UnloadState := 98;
+		else
+			UnloadState := 20;
+		end_if;
+		
+	20:  (* Wait for On Target *)
+		if not INPUT.LoadOnBoard then 				(* If load is off the forks unintentionally, stop! *)
+			UnloadState := 98;
+		elsif NDC8.LoadDocking.OnTarget then
+			UnloadState := 21;
+		end_if;
+	
+	21:	(* Set fork postion and wait for Forks to adjust *)
+		ForkHeight	:= ParForkHeight + NDC8.UserDefined.ForkHeightStationLift;
+		UnloadState := 22;
+			
+	22:
+		PositionModeProcessingDelay(IN:= true, PT:=t#1s);
+		
+		if PositionModeProcessingDelay.Q then
+			UnloadState := 23;
+			PositionModeProcessingDelay(IN:= false);
+		end_if;
+		
+	23:	(* Wait for forks to reach station height *)
+		if ForkTarget and not ForkMoving then
+			UnloadState := 70;
+		end_if;
+		
+		
+	70:  (* Drop Load and check *)
+		ForkHeight	:= ParForkHeight - NDC8.UserDefined.ForkHeightStationLift;
+		UnloadState := 71;
+		
+	71:
+		PositionModeProcessingDelay(IN:= true, PT:=t#1s);
+		
+		if PositionModeProcessingDelay.Q then
+			UnloadState := 72;
+			PositionModeProcessingDelay(IN:= false);
+		end_if;
+		
+	72:	if ForkTarget and not ForkMoving then
+			Unloaded := true;   (* Indicate we have actually unloaded, 
+									but the load sensor is probably still active. *)
+			UnloadState := 100;
+		end_if;
+		
+
+	98: (* Load Operation Failed, vehicle is not loaded *)
+		StopLoadDroppedWhileUnloading := true;
+		StopReset	:= StopReset OR StopLoadDroppedWhileUnloading; 
+		FailCode  := AutoLoadFailCodes.FailCode_AGVIsNotLoaded;
+		a:=trace_string('AGV is not loaded');
+		EventQueue(EventCode:=108,
+			Par1:=NDC8.LayoutPosition.Segment,
+			Par2:=0,
+			Par3:=0,
+			Par4:=0);
+		a:=trace_dint('EventCode', EventQueue.EventCode);
+
+		if Input.Reset_PB then
+			StopLoadDroppedWhileUnloading := false;
+			if Input.LoadOnBoard then
+				UnloadState := 0;
+				Finished := true;
+			else
+				UnloadState := 999; 
+			end_if;
+		end_if;
+
+
+	99: (* Load Operation Failed, station is already full. *)
+		UnloadState := 0; 
+		Finished := true;
+		FailCode  := AutoLoadFailCodes.FailCode_STNIsFull;
+		a:=trace_string('Station is full');
+			
+	100: (* Load Operation Complete *)
+		UnloadState := 0; 
+		FailCode  := 0;
+		Finished := true;
+		
+	
+	999: (* Cancel *)
+		FailCode  := AutoLoadFailCodes.FailCode_OpCancel;
+		a:=trace_string('Op cancel');
+		UnLoadState := 0;
+		Finished := true;
+End_Case;
+
+
+
+
+
+END_FUNCTION_BLOCK

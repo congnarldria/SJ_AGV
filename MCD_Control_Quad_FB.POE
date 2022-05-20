@@ -1,0 +1,876 @@
+FUNCTION_BLOCK MCD_Control_Quad_FB
+VAR_EXTERNAL
+	NDC8:NDC8_T;
+	Output : Output_T;
+	
+END_VAR
+
+VAR_INPUT
+END_VAR
+
+VAR_OUTPUT
+END_VAR
+
+VAR
+	ManSpeed:DINT;
+	AutoInsert:BOOL;
+	SDMode:Bool :=True;
+   	DDMode:BOOL;
+	Mode:DINT :=0;
+	PlcAngle:DINT;
+	
+
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+END_VAR
+(**  **)
+(** {**************************************************************************************} **)
+(**  **)
+(** {*MCD_CONTROL_QUAD *} **)
+(** {**************************************************************************************} **)
+(**  **)
+(**  **)
+(** {* If Auto insert and outside safety and Low speed button, enable auto insert *} **)
+(** if (NDC8.VehicleControl.OperationMode=0) and NDC8.Mcd.Button5 and (NDC8.Autoinsert.StatusID=2) THEN **)
+	(* if - Cond *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 0
+	AND NDC8.Mcd.Button5
+	AND ( NDC8.Autoinsert.StatusID
+		EQ 2
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	    		{* Set autoinsert speed to 100mm/s 				*} **)
+(**         AutoInsert:=TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST Autoinsert
+
+		JMP ODK_END_IF_000000000000001
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000001_000000000000001:
+
+		(* else - Stmts *)
+
+(**     	AutoInsert:=False;				 **)
+		(* assign - Stmt *)
+		LD False
+		ST Autoinsert
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(**  **)
+(**  **)
+(** {****************** SteerMode ************************} **)
+(**  **)
+(** {* keep the same mode that was use in Auto *} **)
+(** {* Check if wheels are in DD Mode positiion *} **)
+(** IF (NDC8.VehicleControl.OperationMode=0) THEN **)
+	(* if - Cond *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 0
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
+(** 	IF ( ABS(NDC8.DCD_6.WheelAngle)>8500) and ( ABS(NDC8.DCD_8.WheelAngle)>8500) THEN **)
+		(* if - Cond *)
+		LD NDC8.DCD_6.WheelAngle
+		ABS 
+		GT 8500
+		AND ( NDC8.DCD_8.WheelAngle
+			ABS 
+			GT 8500
+		)
+		JMPCN ODK_SKIP_000000000000003_000000000000001
+
+			(* then - Stmts *)
+
+(** 	   DDMode:=TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST DDMode
+
+(** 	   SDMode:=False; **)
+			(* assign - Stmt *)
+			LD False
+			ST SDMode
+
+(** 	   Mode:=2; **)
+			(* assign - Stmt *)
+			LD 2
+			ST Mode
+
+			JMP ODK_END_IF_000000000000003
+
+(** 	Else **)
+		(* else *) 
+		ODK_SKIP_000000000000003_000000000000001:
+
+			(* else - Stmts *)
+
+(** 	   SDMode:=TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST SDMode
+
+(** 	   DDMode:=False; **)
+			(* assign - Stmt *)
+			LD False
+			ST DDMode
+
+(** 	   Mode:=0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST Mode
+
+(** 	END_IF; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000003:
+
+		JMP ODK_END_IF_000000000000002
+
+(** END_IF; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000002_000000000000001:
+	ODK_END_IF_000000000000002:
+
+(**  **)
+(** IF (NDC8.VehicleControl.OperationMode=1) THEN **)
+	(* if - Cond *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 1
+	JMPCN ODK_SKIP_000000000000004_000000000000001
+
+		(* then - Stmts *)
+
+(** 	{* select SD or Diff mode *} **)
+(** 	IF NDC8.Mcd.Button8 THEN **)
+		(* if - Cond *)
+		LD NDC8.Mcd.Button8
+		JMPCN ODK_SKIP_000000000000005_000000000000001
+
+			(* then - Stmts *)
+
+(** 	   SDMode:=TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST SDMode
+
+(** 	   DDMode:=False; **)
+			(* assign - Stmt *)
+			LD False
+			ST DDMode
+
+(** 	   Mode:=0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST Mode
+
+			JMP ODK_END_IF_000000000000005
+
+(** 	End_IF; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000005_000000000000001:
+		ODK_END_IF_000000000000005:
+
+(**  **)
+(** 	IF NDC8.Mcd.Button9 THEN **)
+		(* if - Cond *)
+		LD NDC8.Mcd.Button9
+		JMPCN ODK_SKIP_000000000000006_000000000000001
+
+			(* then - Stmts *)
+
+(** 	   DDMode:=TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST DDMode
+
+(** 	   SDMode:=False; **)
+			(* assign - Stmt *)
+			LD False
+			ST SDMode
+
+(** 	   Mode:=2; **)
+			(* assign - Stmt *)
+			LD 2
+			ST Mode
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	End_IF; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000006_000000000000001:
+		ODK_END_IF_000000000000006:
+
+(**  **)
+(** 	{* select Paralell or Anti Parallel SD mode *}    **)
+(** 	IF SDMODE and NDC8.Mcd.Button10 THEN **)
+		(* if - Cond *)
+		LD SDMode
+		AND NDC8.Mcd.Button10
+		JMPCN ODK_SKIP_000000000000007_000000000000001
+
+			(* then - Stmts *)
+
+(** 	   Mode:=0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST Mode
+
+			JMP ODK_END_IF_000000000000007
+
+(** 	END_IF;    **)
+		(* if - End *) 
+		ODK_SKIP_000000000000007_000000000000001:
+		ODK_END_IF_000000000000007:
+
+(**  **)
+(** 	IF SDMODE and NDC8.Mcd.Button11 THEN **)
+		(* if - Cond *)
+		LD SDMode
+		AND NDC8.Mcd.Button11
+		JMPCN ODK_SKIP_000000000000008_000000000000001
+
+			(* then - Stmts *)
+
+(** 	   Mode:=1; **)
+			(* assign - Stmt *)
+			LD 1
+			ST Mode
+
+			JMP ODK_END_IF_000000000000008
+
+(** 	END_IF;   **)
+		(* if - End *) 
+		ODK_SKIP_000000000000008_000000000000001:
+		ODK_END_IF_000000000000008:
+
+		JMP ODK_END_IF_000000000000004
+
+(**  **)
+(** END_IF; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000004_000000000000001:
+	ODK_END_IF_000000000000004:
+
+(**   **)
+(**    NDC8.Manual.PlcSteerMode:=Mode; **)
+	(* assign - Stmt *)
+	LD Mode
+	ST NDC8.Manual.PlcSteerMode
+
+(**  **)
+(** {*************** Select Operation Mode ********************} **)
+(**  **)
+(** {* Manual *}  **)
+(** IF NDC8.Mcd.Button3 and NDC8.Mcd.Valid THEN **)
+	(* if - Cond *)
+	LD NDC8.Mcd.Button3
+	AND NDC8.Mcd.Valid
+	JMPCN ODK_SKIP_000000000000009_000000000000001
+
+		(* then - Stmts *)
+
+(** 	 NDC8.Manual.PlcSelectMask := 23;			{*Set Select mask*} **)
+		(* assign - Stmt *)
+		LD 23
+		ST NDC8.Manual.PlcSelectMask
+
+(** 	 NDC8.Manual.PLCSelect := True;				{*Enable*} **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST NDC8.Manual.PLCSelect
+
+(** 	 NDC8.Manual.PlcSetOperationMode:=1; **)
+		(* assign - Stmt *)
+		LD 1
+		ST NDC8.Manual.PlcSetOperationMode
+
+		JMP ODK_END_IF_000000000000009
+
+(** 	  **)
+(** ELSIF AUTOInsert THEN **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000009_000000000000001:
+	LD Autoinsert
+	JMPCN ODK_SKIP_000000000000009_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	 NDC8.Manual.PlcSelectMask := 2;			{*Set Select mask*} **)
+		(* assign - Stmt *)
+		LD 2
+		ST NDC8.Manual.PlcSelectMask
+
+(** 	 NDC8.Manual.PLCSelect := True;				{*Enable*} **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST NDC8.Manual.PLCSelect
+
+(** 	 NDC8.Manual.PlcSetOperationMode:=0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST NDC8.Manual.PlcSetOperationMode
+
+		JMP ODK_END_IF_000000000000009
+
+(**  **)
+(** {*AUTO *} **)
+(** Else NDC8.Manual.PlcSetOperationMode:=0; **)
+	(* else *) 
+	ODK_SKIP_000000000000009_000000000000002:
+
+		(* else - Stmts *)
+
+		(* assign - Stmt *)
+		LD 0
+		ST NDC8.Manual.PlcSetOperationMode
+
+(**      NDC8.Manual.PlcSelectMask := 4;			{*Set Select mask*} **)
+		(* assign - Stmt *)
+		LD 4
+		ST NDC8.Manual.PlcSelectMask
+
+(** 	 NDC8.Manual.PLCSelect := True; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST NDC8.Manual.PLCSelect
+
+(** END_IF; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000009:
+
+(**  **)
+(** {************************* Manual Steer Angle ************************}  **)
+(**  **)
+(** {* Manual SD Mode Steer Angle / MDC < 5 deg gives 0 deg *} **)
+(** IF (NDC8.VehicleControl.OperationMode=1) THEN **)
+	(* if - Cond *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 1
+	JMPCN ODK_SKIP_00000000000000A_000000000000001
+
+		(* then - Stmts *)
+
+(** 	IF SDMode  Then **)
+		(* if - Cond *)
+		LD SDMode
+		JMPCN ODK_SKIP_00000000000000B_000000000000001
+
+			(* then - Stmts *)
+
+(** 		if ((ABS(NDC8.Mcd.Angle))<500)  then   **)
+			(* if - Cond *)
+			LD NDC8.Mcd.Angle
+			ABS 
+			LT 500
+			JMPCN ODK_SKIP_00000000000000C_000000000000001
+
+				(* then - Stmts *)
+
+(** 			NDC8.Manual.PLCAngle :=0;					{*Set angle to 0*} **)
+				(* assign - Stmt *)
+				LD 0
+				ST NDC8.Manual.PLCAngle
+
+				JMP ODK_END_IF_00000000000000C
+
+(** 		elsif (NDC8.VehicleControl.OperationMode=1) and (NDC8.Mcd.Angle>0) THEN **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000C_000000000000001:
+			LD NDC8.VehicleControl.OperationMode
+			EQ 1
+			AND ( NDC8.Mcd.Angle
+				GT 0
+			)
+			JMPCN ODK_SKIP_00000000000000C_000000000000002
+
+				(* elsif - Stmts *)
+
+(** 		    	NDC8.Manual.PLCAngle:=(NDC8.Mcd.Angle-500)/2; **)
+				(* assign - Stmt *)
+				LD NDC8.Mcd.Angle
+				SUB 500
+				DIV 2
+				ST NDC8.Manual.PLCAngle
+
+				JMP ODK_END_IF_00000000000000C
+
+(** 		elsif (NDC8.VehicleControl.OperationMode=1) and (NDC8.Mcd.Angle<0) THEN **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000C_000000000000002:
+			LD NDC8.VehicleControl.OperationMode
+			EQ 1
+			AND ( NDC8.Mcd.Angle
+				LT 0
+			)
+			JMPCN ODK_SKIP_00000000000000C_000000000000003
+
+				(* elsif - Stmts *)
+
+(** 		    	NDC8.Manual.PLCAngle:=(NDC8.Mcd.Angle+500)/2;		 **)
+				(* assign - Stmt *)
+				LD NDC8.Mcd.Angle
+				ADD 500
+				DIV 2
+				ST NDC8.Manual.PLCAngle
+
+				JMP ODK_END_IF_00000000000000C
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000C_000000000000003:
+			ODK_END_IF_00000000000000C:
+
+			JMP ODK_END_IF_00000000000000B
+
+(**  **)
+(** 	{* Manual DD Mode Steer Angle / MDC < 5 deg gives 0 deg *} **)
+(** 	Elsif DDMode   Then      **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000B_000000000000001:
+		LD DDMode
+		JMPCN ODK_SKIP_00000000000000B_000000000000002
+
+			(* elsif - Stmts *)
+
+(** 	    PlcAngle:=((ABS(NDC8.Mcd.Angle))-500);     {* Angle starts with 0 deg for MCD at 5 deg*}  **)
+			(* assign - Stmt *)
+			LD NDC8.Mcd.Angle
+			ABS 
+			SUB 500
+			ST PLCAngle
+
+(** 	    IF (ABS(NDC8.Mcd.Angle))<500 THEN **)
+			(* if - Cond *)
+			LD NDC8.Mcd.Angle
+			ABS 
+			LT 500
+			JMPCN ODK_SKIP_00000000000000D_000000000000001
+
+				(* then - Stmts *)
+
+(** 	   		 	NDC8.Manual.PlcAngle:=0;					{* +/- 5 deg deadzone on MCD for going straight *} **)
+				(* assign - Stmt *)
+				LD 0
+				ST NDC8.Manual.PLCAngle
+
+				JMP ODK_END_IF_00000000000000D
+
+(** 		Elsif   NDC8.Mcd.Angle>0 THEN						{*Left or Right ? *} **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000D_000000000000001:
+			LD NDC8.Mcd.Angle
+			GT 0
+			JMPCN ODK_SKIP_00000000000000D_000000000000002
+
+				(* elsif - Stmts *)
+
+(** 	    		NDC8.Manual.PlcAngle:=Min(PlcAngle,9000);  {* PLCAngle starts with 0 deg for MCD at 5 deg, and goes up to 90 deg for full turn on MCD *} **)
+				(* assign - Stmt *)
+				LD PLCAngle
+				Min 9000
+				ST NDC8.Manual.PLCAngle
+
+				JMP ODK_END_IF_00000000000000D
+
+(** 		ELSE	NDC8.Manual.PlcAngle:=-Min(PlcAngle,9000); **)
+			(* else *) 
+			ODK_SKIP_00000000000000D_000000000000002:
+
+				(* else - Stmts *)
+
+				(* assign - Stmt *)
+				LD PLCAngle
+				Min 9000
+				NEG
+				ST NDC8.Manual.PLCAngle
+
+(** 		END_IF; **)
+			(* if - End *) 
+			ODK_END_IF_00000000000000D:
+
+			JMP ODK_END_IF_00000000000000B
+
+(**  **)
+(** 	END_IF; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000B_000000000000002:
+		ODK_END_IF_00000000000000B:
+
+		JMP ODK_END_IF_00000000000000A
+
+(**  **)
+(** Else **)
+	(* else *) 
+	ODK_SKIP_00000000000000A_000000000000001:
+
+		(* else - Stmts *)
+
+(**     	NDC8.Manual.PLCAngle:=0;	 **)
+		(* assign - Stmt *)
+		LD 0
+		ST NDC8.Manual.PLCAngle
+
+(** END_IF; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000A:
+
+(**  **)
+(**  **)
+(** {************************* Manual Speed ************************} **)
+(**  **)
+(** {* Speed in SD Mode  *}   **)
+(** IF  (NDC8.VehicleControl.OperationMode=1) THEN **)
+	(* if - Cond *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 1
+	JMPCN ODK_SKIP_00000000000000E_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	IF SDMode Then **)
+		(* if - Cond *)
+		LD SDMode
+		JMPCN ODK_SKIP_00000000000000F_000000000000001
+
+			(* then - Stmts *)
+
+(** 		IF NDC8.Mcd.Button6 and (NDC8.VehicleControl.OperationMode=1)THEN **)
+			(* if - Cond *)
+			LD NDC8.Mcd.Button6
+			AND ( NDC8.VehicleControl.OperationMode
+				EQ 1
+			)
+			JMPCN ODK_SKIP_00000000000000G_000000000000001
+
+				(* then - Stmts *)
+
+(** 				  ManSpeed:=NDC8.Mcd.McdHighSpeed; **)
+				(* assign - Stmt *)
+				LD NDC8.Mcd.McdHighSpeed
+				ST ManSpeed
+
+				JMP ODK_END_IF_00000000000000G
+
+(** 		Elsif NDC8.Mcd.Button5 and (NDC8.VehicleControl.OperationMode=1)THEN **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000G_000000000000001:
+			LD NDC8.Mcd.Button5
+			AND ( NDC8.VehicleControl.OperationMode
+				EQ 1
+			)
+			JMPCN ODK_SKIP_00000000000000G_000000000000002
+
+				(* elsif - Stmts *)
+
+(** 				  ManSpeed:=NDC8.Mcd.McdLowSpeed; **)
+				(* assign - Stmt *)
+				LD NDC8.Mcd.McdLowSpeed
+				ST ManSpeed
+
+				JMP ODK_END_IF_00000000000000G
+
+(** 		ElsIf     AutoInsert THEN **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000G_000000000000002:
+			LD Autoinsert
+			JMPCN ODK_SKIP_00000000000000G_000000000000003
+
+				(* elsif - Stmts *)
+
+(** 		          ManSpeed:=100; **)
+				(* assign - Stmt *)
+				LD 100
+				ST ManSpeed
+
+				JMP ODK_END_IF_00000000000000G
+
+(** 		Else	  ManSpeed:=0;	   **)
+			(* else *) 
+			ODK_SKIP_00000000000000G_000000000000003:
+
+				(* else - Stmts *)
+
+				(* assign - Stmt *)
+				LD 0
+				ST ManSpeed
+
+(** 		end_if;  **)
+			(* if - End *) 
+			ODK_END_IF_00000000000000G:
+
+			JMP ODK_END_IF_00000000000000F
+
+(**  **)
+(** 	{* Speed in DD Mode  *} **)
+(** 	ElsIf DDMode THEN **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000F_000000000000001:
+		LD DDMode
+		JMPCN ODK_SKIP_00000000000000F_000000000000002
+
+			(* elsif - Stmts *)
+
+(** 		IF NDC8.Mcd.Button6 and ((ABS(NDC8.Manual.PlcAngle)) < 1500 )THEN **)
+			(* if - Cond *)
+			LD NDC8.Mcd.Button6
+			AND ( NDC8.Manual.PLCAngle
+				ABS 
+				LT 1500
+			)
+			JMPCN ODK_SKIP_00000000000000H_000000000000001
+
+				(* then - Stmts *)
+
+(** 		  	   ManSpeed:=500; **)
+				(* assign - Stmt *)
+				LD 500
+				ST ManSpeed
+
+				JMP ODK_END_IF_00000000000000H
+
+(** 		ElsIF  NDC8.Mcd.Button6 and ((ABS(NDC8.Manual.PlcAngle)) < 3000 )THEN **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000H_000000000000001:
+			LD NDC8.Mcd.Button6
+			AND ( NDC8.Manual.PLCAngle
+				ABS 
+				LT 3000
+			)
+			JMPCN ODK_SKIP_00000000000000H_000000000000002
+
+				(* elsif - Stmts *)
+
+(** 		  	   ManSpeed:=300; **)
+				(* assign - Stmt *)
+				LD 300
+				ST ManSpeed
+
+				JMP ODK_END_IF_00000000000000H
+
+(** 		ElsIF  (NDC8.Mcd.Button6 or NDC8.Mcd.Button5) and ((ABS(NDC8.Manual.PlcAngle)) < 6000 )THEN **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000H_000000000000002:
+			LD NDC8.Mcd.Button6
+			OR NDC8.Mcd.Button5
+			AND ( NDC8.Manual.PLCAngle
+				ABS 
+				LT 6000
+			)
+			JMPCN ODK_SKIP_00000000000000H_000000000000003
+
+				(* elsif - Stmts *)
+
+(** 		  	   ManSpeed:=200; **)
+				(* assign - Stmt *)
+				LD 200
+				ST ManSpeed
+
+				JMP ODK_END_IF_00000000000000H
+
+(** 		ElsIF  NDC8.Mcd.Button6 or NDC8.Mcd.Button5 THEN **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000H_000000000000003:
+			LD NDC8.Mcd.Button6
+			OR NDC8.Mcd.Button5
+			JMPCN ODK_SKIP_00000000000000H_000000000000004
+
+				(* elsif - Stmts *)
+
+(** 		  	   ManSpeed:=100;	    **)
+				(* assign - Stmt *)
+				LD 100
+				ST ManSpeed
+
+				JMP ODK_END_IF_00000000000000H
+
+(** 		ElsIf   AutoInsert Then **)
+			(* elseif - Cond *) 
+			ODK_SKIP_00000000000000H_000000000000004:
+			LD Autoinsert
+			JMPCN ODK_SKIP_00000000000000H_000000000000005
+
+				(* elsif - Stmts *)
+
+(** 				ManSpeed:=100; **)
+				(* assign - Stmt *)
+				LD 100
+				ST ManSpeed
+
+				JMP ODK_END_IF_00000000000000H
+
+(** 	    ELSE 	ManSpeed:=0; **)
+			(* else *) 
+			ODK_SKIP_00000000000000H_000000000000005:
+
+				(* else - Stmts *)
+
+				(* assign - Stmt *)
+				LD 0
+				ST ManSpeed
+
+(** 		END_IF; **)
+			(* if - End *) 
+			ODK_END_IF_00000000000000H:
+
+			JMP ODK_END_IF_00000000000000F
+
+(** 	END_IF; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000F_000000000000002:
+		ODK_END_IF_00000000000000F:
+
+		JMP ODK_END_IF_00000000000000E
+
+(**  **)
+(** Else	 **)
+	(* else *) 
+	ODK_SKIP_00000000000000E_000000000000001:
+
+		(* else - Stmts *)
+
+(** 			ManSpeed:=0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST ManSpeed
+
+(** END_IF;  **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000E:
+
+(**  **)
+(** 	 **)
+(** {********** Speed and Direction ***********} **)
+(** IF NDC8.Mcd.Button4 or AutoInsert THEN **)
+	(* if - Cond *)
+	LD NDC8.Mcd.Button4
+	OR Autoinsert
+	JMPCN ODK_SKIP_00000000000000I_000000000000001
+
+		(* then - Stmts *)
+
+(**    		NDC8.Manual.PlcSpeed:=ManSpeed; **)
+		(* assign - Stmt *)
+		LD ManSpeed
+		ST NDC8.Manual.PlcSpeed
+
+		JMP ODK_END_IF_00000000000000I
+
+(** ELSE    NDC8.Manual.PlcSpeed:=-ManSpeed; **)
+	(* else *) 
+	ODK_SKIP_00000000000000I_000000000000001:
+
+		(* else - Stmts *)
+
+		(* assign - Stmt *)
+		LD ManSpeed
+		NEG
+		ST NDC8.Manual.PlcSpeed
+
+(** END_IF; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000I:
+
+(**     **)
+(**   **)
+(** IF (NDC8.VehicleControl.OperationMode=0) and Not AutoInsert or	NDC8.VehicleControl.Estop THEN **)
+	(* if - Cond *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 0
+	AND ( Autoinsert
+		NOT
+	)
+	OR NDC8.VehicleControl.Estop
+	JMPCN ODK_SKIP_00000000000000J_000000000000001
+
+		(* then - Stmts *)
+
+(**     NDC8.Manual.PlcSpeed:=0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST NDC8.Manual.PlcSpeed
+
+		JMP ODK_END_IF_00000000000000J
+
+(** END_IF;	 **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000J_000000000000001:
+	ODK_END_IF_00000000000000J:
+
+(**  **)
+(**  **)
+(**  **)
+(** {****************Emergency ovveride**********************} **)
+(**  **)
+(** IF NDC8.Mcd.Button7 and (NDC8.VehicleControl.OperationMode=1) and NDC8.Mcd.Valid THEN **)
+	(* if - Cond *)
+	LD NDC8.Mcd.Button7
+	AND ( NDC8.VehicleControl.OperationMode
+		EQ 1
+	)
+	AND NDC8.Mcd.Valid
+	JMPCN ODK_SKIP_00000000000000K_000000000000001
+
+		(* then - Stmts *)
+
+(**   		 OUTPUT.MCD_EmergOveride_o:=TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST OUTPUT.MCD_EmergOveride_o
+
+		JMP ODK_END_IF_00000000000000K
+
+(** ELSE	 OUTPUT.MCD_EmergOveride_o:=FALSE;	 **)
+	(* else *) 
+	ODK_SKIP_00000000000000K_000000000000001:
+
+		(* else - Stmts *)
+
+		(* assign - Stmt *)
+		LD False
+		ST OUTPUT.MCD_EmergOveride_o
+
+(** END_IF; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000K:
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**   **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

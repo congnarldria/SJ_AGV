@@ -1,0 +1,37 @@
+FUNCTION_BLOCK BMS_CHG
+VAR_EXTERNAL
+
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+	
+END_VAR
+(* Check BMS Error Status *)
+if NDC8.PLC_Application.TxStatusBit9_EStop = TRUE or PLC_RX01_Bit_ChrgIdle = FALSE then
+	PLC_TX04_Bit_ChrgCmdL_A := FALSE;
+	StopCharge := FALSE;
+	NDC8.SDIO.DigitalOutput16_Charger := FALSE;
+end_if;
+
+	
+(* Check Manual Charge *)
+
+if PLC_RX03_Bit_ChrgReqL_A = TRUE and PLC_TX01_Bit_ManMode = TRUE then
+	NDC8.SDIO.DigitalOutput16_Charger := TRUE;
+else PLC_RX03_Bit_ChrgReqL_A = FALSE and PLC_TX01_Bit_ManMode = TRUE
+	NDC8.SDIO.DigitalOutput16_Charger := FALSE;
+
+end_if;
+
+
+
+
+END_FUNCTION_BLOCK

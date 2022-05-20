@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<Product Name="Kinco FD Servo (DSP402)" ArticleNumber="P46131V1.0.0p2" Checksum="0" TimeStamp="0" FileIntegrityVersion="1" FileIntegritySignature="" FileIntegrityChecksum="">
+	<Dictionary>
+		<Parameters>
+			<Parameter SymbolName="CoDeviceType" PublicName="Device Type" ObjectType="VAR" Index="0x1000" SubIndex="0" DataType="UNSIGNED32" AccessType="const" Default="0x?????196" Visibility="OEM" Remark="Compliant with the Device profile DS-406"/>
+			<Parameter SymbolName="CoErrorRegister" ObjectType="VAR" Index="0x1001" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal"/>
+			<Parameter SymbolName="CoSyncCobId" PublicName="COB-ID SYNC" ObjectType="VAR" Index="0x1005" SubIndex="0" DataType="UNSIGNED32" AccessType="const" Default="0x00000080" Visibility="Internal"/>
+			<Parameter SymbolName="CoDeviceName" PublicName="Manufacturer Device Name" ObjectType="VAR" Index="0x1008" SubIndex="0" DataType="VISIBLE_STRING" AccessType="const" Visibility="OEM"/>
+			<Parameter SymbolName="CoHardwareVersion" PublicName="Manufacturer Hardware Version" ObjectType="VAR" Index="0x1009" SubIndex="0" DataType="VISIBLE_STRING" AccessType="const" Visibility="Service"/>
+			<Parameter SymbolName="CoSoftwareVersion" PublicName="Manufacturer Software Version" ObjectType="VAR" Index="0x100A" SubIndex="0" DataType="VISIBLE_STRING" AccessType="const" Visibility="Service"/>
+			<Parameter SymbolName="CoGuardTime" ObjectType="VAR" Index="0x100C" SubIndex="0" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" Visibility="Internal" Remark="CANopen Life Guarding Protocol. 0=No Life Guarding."/>
+			<Parameter SymbolName="CoLifeTimeFactor" ObjectType="VAR" Index="0x100D" SubIndex="0" DataType="UNSIGNED8" AccessType="rw" Default="0" Visibility="Internal" Remark="CANopen Life Guarding Protocol. 0=No Life Guarding."/>
+			<Group SymbolName="CoStore" PublicName="Store Parameters" Remark="Write 0x65766173 to store parameters.">
+				<Parameter SymbolName="All" ObjectType="VAR" Index="0x1010" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal"/>
+				<Parameter SymbolName="Application" ObjectType="VAR" Index="0x1010" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal"/>
+			</Group>
+			<Group SymbolName="CoRestore" PublicName="Restore Parameters" Remark="Write 0x64616F6C to restore default parameters.">
+				<Parameter SymbolName="All" ObjectType="VAR" Index="0x1011" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal"/>
+				<Parameter SymbolName="Application" ObjectType="VAR" Index="0x1011" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal"/>
+			</Group>
+			<Parameter SymbolName="CoCobIdEmcy" ObjectType="VAR" Index="0x1014" SubIndex="0" DataType="UNSIGNED32" AccessType="ro" Default="80h+NodeID" Visibility="Internal"/>
+			<Group SymbolName="CoIdentity" PublicName="Vendor Identity">
+				<Parameter SymbolName="VendorId" PublicName="Vendor ID" ObjectType="VAR" Index="0x1018" SubIndex="1" DataType="UNSIGNED32" AccessType="const" Visibility="OEM" Remark="Vendor Identity"/>
+			</Group>
+			<Group SymbolName="CoRPDO_CommPars" PublicName="Receive PDO Communication parameters">
+				<Parameter SymbolName="RPDO1_CobId" PublicName="RPDO1 COB ID" ObjectType="VAR" Index="0x1400" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x200+NodeId" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO2_CobId" PublicName="RPDO2 COB ID" ObjectType="VAR" Index="0x1401" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x300+NodeId" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO3_CobId" PublicName="RPDO3 COB ID" ObjectType="VAR" Index="0x1402" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x400+NodeId" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO4_CobId" PublicName="RPDO4 COB ID" ObjectType="VAR" Index="0x1403" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x500+NodeId" Visibility="Internal"/>
+			</Group>
+			<Group SymbolName="CoRPDO_MappingPars" PublicName="Receive PDO Mapping parameters" Remark="Only static PDO mapping">
+				<Parameter SymbolName="RPDO1_NumMappedObjs" PublicName="RPDO1 Number of mapped objects" ObjectType="VAR" Index="0x1600" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO1_MappedObj1" PublicName="RPDO1 1st mapped object" ObjectType="VAR" Index="0x1600" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO1_MappedObj2" PublicName="RPDO1 2nd mapped object" ObjectType="VAR" Index="0x1600" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO1_MappedObj3" PublicName="RPDO1 3rd mapped object" ObjectType="VAR" Index="0x1600" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO1_MappedObj4" PublicName="RPDO1 4th mapped object" ObjectType="VAR" Index="0x1600" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO1_MappedObj5" PublicName="RPDO1 5th mapped object" ObjectType="VAR" Index="0x1600" SubIndex="5" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO1_MappedObj6" PublicName="RPDO1 6th mapped object" ObjectType="VAR" Index="0x1600" SubIndex="6" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO1_MappedObj7" PublicName="RPDO1 7th mapped object" ObjectType="VAR" Index="0x1600" SubIndex="7" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO1_MappedObj8" PublicName="RPDO1 8th mapped object" ObjectType="VAR" Index="0x1600" SubIndex="8" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO2_NumMappedObjs" PublicName="RPDO2 Number of mapped objects" ObjectType="VAR" Index="0x1601" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO2_MappedObj1" PublicName="RPDO2 1st mapped object" ObjectType="VAR" Index="0x1601" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO2_MappedObj2" PublicName="RPDO2 2nd mapped object" ObjectType="VAR" Index="0x1601" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO2_MappedObj3" PublicName="RPDO2 3rd mapped object" ObjectType="VAR" Index="0x1601" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO2_MappedObj4" PublicName="RPDO2 4th mapped object" ObjectType="VAR" Index="0x1601" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO3_NumMappedObjs" PublicName="RPDO3 Number of mapped objects" ObjectType="VAR" Index="0x1602" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO3_MappedObj1" PublicName="RPDO2 1st mapped object" ObjectType="VAR" Index="0x1602" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO3_MappedObj2" PublicName="RPDO2 2nd mapped object" ObjectType="VAR" Index="0x1602" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO3_MappedObj3" PublicName="RPDO2 3rd mapped object" ObjectType="VAR" Index="0x1602" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO3_MappedObj4" PublicName="RPDO2 4th mapped object" ObjectType="VAR" Index="0x1602" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO4_NumMappedObjs" PublicName="RPDO4 Number of mapped objects" ObjectType="VAR" Index="0x1603" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO4_MappedObj1" PublicName="RPDO2 1st mapped object" ObjectType="VAR" Index="0x1603" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO4_MappedObj2" PublicName="RPDO2 2nd mapped object" ObjectType="VAR" Index="0x1603" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO4_MappedObj3" PublicName="RPDO2 3rd mapped object" ObjectType="VAR" Index="0x1603" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="RPDO4_MappedObj4" PublicName="RPDO2 4th mapped object" ObjectType="VAR" Index="0x1603" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+			</Group>
+			<Group SymbolName="CoTPDO_CommPars" PublicName="Transmit PDO Communication parameters">
+				<Parameter SymbolName="TPDO1_CobId" PublicName="TPDO1 COB ID" ObjectType="VAR" Index="0x1800" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x180+NodeId" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO1_TransmissionType" PublicName="TPDO1 Transmission Type" ObjectType="VAR" Index="0x1800" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO1_InhibitTime" PublicName="TPDO1 Inhibit Time" ObjectType="VAR" Index="0x1800" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Unit="0.1 ms" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO2_CobId" PublicName="TPDO2 COB ID" ObjectType="VAR" Index="0x1801" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x280+NodeId" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO2_TransmissionType" PublicName="TPDO2 Transmission Type" ObjectType="VAR" Index="0x1801" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO2_InhibitTime" PublicName="TPDO2 Inhibit Time" ObjectType="VAR" Index="0x1801" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Unit="0.1 ms" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO3_CobId" PublicName="TPDO3 COB ID" ObjectType="VAR" Index="0x1802" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x380+NodeId" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO3_TransmissionType" PublicName="TPDO3 Transmission Type" ObjectType="VAR" Index="0x1802" SubIndex="2" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO3_InhibitTime" PublicName="TPDO3 Inhibit Time" ObjectType="VAR" Index="0x1802" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Unit="0.1 ms" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO4_CobId" PublicName="TPDO4 COB ID" ObjectType="VAR" Index="0x1803" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x480+NodeId" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO4_TransmissionType" PublicName="TPDO4 Transmission Type" ObjectType="VAR" Index="0x1803" SubIndex="2" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO4_InhibitTime" PublicName="TPDO4 Inhibit Time" ObjectType="VAR" Index="0x1803" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Unit="0.1 ms" Visibility="Internal"/>
+			</Group>
+			<Group SymbolName="CoTPDO_MappingPars" PublicName="Transmit PDO Mapping parameters" Remark="Only static PDO mapping">
+				<Parameter SymbolName="TPDO1_NumMappedObjs" PublicName="TPDO1 Number of mapped objects" ObjectType="VAR" Index="0x1A00" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO1_MappedObj1" PublicName="TPDO1 1st mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO1_MappedObj2" PublicName="TPDO1 2nd mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO1_MappedObj3" PublicName="TPDO1 3rd mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO1_MappedObj4" PublicName="TPDO1 4th mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO1_MappedObj5" PublicName="TPDO1 4th mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="5" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO1_MappedObj6" PublicName="TPDO1 4th mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="6" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO1_MappedObj7" PublicName="TPDO1 4th mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="7" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO1_MappedObj8" PublicName="TPDO1 4th mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="8" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO2_NumMappedObjs" PublicName="TPDO2 Number of mapped objects" ObjectType="VAR" Index="0x1A01" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO2_MappedObj1" PublicName="TPDO2 1st mapped object" ObjectType="VAR" Index="0x1A01" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO2_MappedObj2" PublicName="TPDO2 2nd mapped object" ObjectType="VAR" Index="0x1A01" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO2_MappedObj3" PublicName="TPDO2 3rd mapped object" ObjectType="VAR" Index="0x1A01" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO2_MappedObj4" PublicName="TPDO2 4th mapped object" ObjectType="VAR" Index="0x1A01" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO3_NumMappedObjs" PublicName="TPDO3 Number of mapped objects" ObjectType="VAR" Index="0x1A02" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal"/>
+				<Parameter SymbolName="TPDO4_NumMappedObjs" PublicName="TPDO4 Number of mapped objects" ObjectType="VAR" Index="0x1A03" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal"/>
+			</Group>
+			<Parameter SymbolName="ControlWord" PublicName="Control Word" ObjectType="VAR" Index="0x6040" SubIndex="0" DataType="UNSIGNED16" AccessType="rw"/>
+			<Parameter SymbolName="StatusWord" PublicName="Status Word" ObjectType="VAR" Index="0x6041" SubIndex="0" DataType="UNSIGNED16" AccessType="ro"/>
+			<Parameter SymbolName="OperationMode" PublicName="Operation Mode" ObjectType="VAR" Index="0x6060" SubIndex="0" DataType="INTEGER8" AccessType="rw"/>
+			<Parameter SymbolName="VelocityActualValue" PublicName="Velocity Actual Value" ObjectType="VAR" Index="0x606C" SubIndex="0" DataType="INTEGER32" AccessType="ro"/>
+			<Parameter SymbolName="TargetVelocity" PublicName="Target Velocity" ObjectType="VAR" Index="0x60FF" SubIndex="0" DataType="INTEGER32" AccessType="rw"/>
+			<Parameter SymbolName="PositionActualValue" PublicName="Position Actual Value" ObjectType="VAR" Index="0x6063" SubIndex="0" DataType="INTEGER32" AccessType="ro"/>
+			<Parameter SymbolName="TargetPosition" PublicName="Target Position" ObjectType="VAR" Index="0x607A" SubIndex="0" DataType="INTEGER32" AccessType="rw"/>
+			<Parameter SymbolName="ProfileSpeed" PublicName="Profile Speed" ObjectType="VAR" Index="0x6081" SubIndex="0" DataType="UNSIGNED32" AccessType="rw"/>
+			<Parameter SymbolName="ProfileACC" PublicName="Profile Acceleration" ObjectType="VAR" Index="0x6083" SubIndex="0" DataType="UNSIGNED32" AccessType="rw"/>
+			<Parameter SymbolName="ProfileDEC" PublicName="Profile Deacceleration" ObjectType="VAR" Index="0x6084" SubIndex="0" DataType="UNSIGNED32" AccessType="rw"/>
+		</Parameters>
+	</Dictionary>
+	<Hardware SWToHWCompatibilityNumber="0"/>
+	<Software>
+		<![CDATA[
+    ]]>
+	</Software>
+</Product>

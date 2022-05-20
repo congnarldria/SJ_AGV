@@ -1,0 +1,24 @@
+<ZipContent CompilationID="20211129_150848_4" Name="SJ_2SD">
+  <Files>
+    <File Type="dc" Filename="CAN1_2.dc" />
+    <File Type="od" Filename="CAN1_2.od" />
+    <File Type="dc" Filename="CAN1_3.dc" />
+    <File Type="od" Filename="CAN1_3.od" />
+    <File Type="dc" Filename="CAN1_5.dc" />
+    <File Type="od" Filename="CAN1_5.od" />
+    <File Type="dc" Filename="CAN1_6.dc" />
+    <File Type="od" Filename="CAN1_6.od" />
+    <File Type="dc" Filename="CAN1_7.dc" />
+    <File Type="od" Filename="CAN1_7.od" />
+    <File Type="dc" Filename="CAN1_8.dc" />
+    <File Type="od" Filename="CAN1_8.od" />
+    <File Type="prs" Filename="RESOURCE.prs" />
+    <File Type="edf" Filename="SJ_2SD.edf" />
+    <File Type="ipt" Filename="SJ_2SD.ipt" />
+    <File Type="vc" Filename="SJ_2SD.vc" />
+    <File Type="vp" Filename="SJ_2SD.vp" />
+    <File Type="epf" Filename="SJ_2SD_20211129_150848_4.epf" />
+    <File Type="zip" Filename="VMT.zip" />
+  </Files>
+  <Password RequireOnConnect="False" />
+</ZipContent>

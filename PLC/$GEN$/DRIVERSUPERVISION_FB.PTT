@@ -1,0 +1,19 @@
+FUNCTION_BLOCK DRIVERSUPERVISION_FB 
+
+
+ VAR_INPUT
+  Command : INT ;
+  FeedBack : INT ;
+  Range : INT ;
+  Timeout : TIME ;
+  Moving : BOOL ;
+  END_VAR 
+
+ VAR_OUTPUT
+  OverRangeFail : BOOL ;
+  NotMovingFail : BOOL ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

@@ -1,0 +1,177 @@
+FUNCTION_BLOCK AutoInsert_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;
+	INPUT : INPUT_T;
+	
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+		InProgress : BOOL;
+		NotInsideTargetSafety : BOOL;
+		Failed : BOOL;
+
+END_VAR
+
+VAR
+	
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+END_VAR
+(** {************************************************************************************* **)
+(**  		Automatic insert of vehicle into system  **)
+(** **************************************************************************************} **)
+(**  **)
+(**  **)
+(** {**************************************************************************************} **)
+(** {* Make readable/understandable signals  **)
+(**  **)
+(** 	OUTPUTS	*} **)
+(** InProgress				:= (NDC8.Autoinsert.Target>0) and not NDC8.LayoutPosition.InSystem; **)
+	(* assign - Stmt *)
+	LD NDC8.Autoinsert.Target
+	GT 0
+	AND ( NDC8.LayoutPosition.InSystem
+		NOT
+	)
+	ST InProgress
+
+(** NotInsideTargetSafety 	:= InProgress and not NDC8.Autoinsert.OnSegment; **)
+	(* assign - Stmt *)
+	LD InProgress
+	AND ( NDC8.Autoinsert.OnSegment
+		NOT
+	)
+	ST NotInsideTargetSafety
+
+(** Failed					:= (InProgress and NDC8.Guidance.OutsideSafetyZone) **)
+(** 														   or  **)
+	(* assign - Stmt *)
+	LD InProgress
+	AND NDC8.Guidance.OutsideSafetyZone
+	OR ( NDC8.Opt.VehicleStatusID
+(** 														   ( **)
+(** 																NDC8.Opt.VehicleStatusID = 5 **)
+		EQ 5
+(** 																or NDC8.Opt.VehicleStatusID = 11 **)
+		OR ( NDC8.Opt.VehicleStatusID
+			EQ 11
+		)
+	)
+	ST Failed
+
+(** 														   ); **)
+(** 											    **)
+(** 											    **)
+(** case NDC8.VehicleControl.OperationMode of **)
+(** 	0: 												{* In automatic mode 							*} **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000001_000000000000000:
+
+	(* case - Cond *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 0
+	JMPC ODK_CASE_000000000000001_000000000000001
+
+	JMP ODK_SKIP_000000000000001_000000000000001
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000001_000000000000001:
+
+(** 		if INPUT.Reset_PB then		{* if reset button pressed 						*} **)
+		(* if - Cond *)
+		LD INPUT.Reset_PB
+		JMPCN ODK_SKIP_000000000000002_000000000000001
+
+			(* then - Stmts *)
+
+(** 			NDC8.Manual.PlcSpeed := 100;			{* Set autoinsert speed to 100mm/s 				*} **)
+			(* assign - Stmt *)
+			LD 100
+			ST NDC8.Manual.PlcSpeed
+
+			JMP ODK_END_IF_000000000000002
+
+(** 		else **)
+		(* else *) 
+		ODK_SKIP_000000000000002_000000000000001:
+
+			(* else - Stmts *)
+
+(** 			NDC8.Manual.PlcSpeed := 0;				 **)
+			(* assign - Stmt *)
+			LD 0
+			ST NDC8.Manual.PlcSpeed
+
+(** 		end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000002:
+
+		JMP ODK_END_CASE_000000000000001
+
+(** 	 **)
+(** 	2:	 **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000001_000000000000001:
+
+	(* case - Cond *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 2
+	JMPC ODK_CASE_000000000000001_000000000000002
+
+	JMP ODK_SKIP_000000000000001_000000000000002
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000001_000000000000002:
+
+(** 		if ndc8.mcd.Button4 and ndc8.mcd.Button5 then	{* forward slow *} **)
+		(* if - Cond *)
+		LD NDC8.mcd.Button4
+		AND NDC8.mcd.Button5
+		JMPCN ODK_SKIP_000000000000003_000000000000001
+
+			(* then - Stmts *)
+
+(** 			ndc8.manual.PlcSpeed := 300 ; **)
+			(* assign - Stmt *)
+			LD 300
+			ST NDC8.Manual.PlcSpeed
+
+			JMP ODK_END_IF_000000000000003
+
+(** 		else **)
+		(* else *) 
+		ODK_SKIP_000000000000003_000000000000001:
+
+			(* else - Stmts *)
+
+(** 			ndc8.manual.PlcSpeed := 0 ; **)
+			(* assign - Stmt *)
+			LD 0
+			ST NDC8.Manual.PlcSpeed
+
+(** 		end_if;	 **)
+		(* if - End *) 
+		ODK_END_IF_000000000000003:
+
+		JMP ODK_END_CASE_000000000000001
+
+(** else  **)
+	(* else *) 
+	ODK_SKIP_000000000000001_000000000000002:
+
+		(* else - Statements *) 
+
+(** 	;												{* Don't override MCD in semi mode. 			*} **)
+(** end_case; **)
+	(* case - End *) 
+	ODK_END_CASE_000000000000001:
+
+(** 	 **)
+
+END_FUNCTION_BLOCK

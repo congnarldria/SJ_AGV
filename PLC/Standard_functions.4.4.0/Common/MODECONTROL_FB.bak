@@ -1,0 +1,239 @@
+FUNCTION_BLOCK MODECONTROL_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;
+	INPUT : INPUT_T;
+	TRUCK : TRUCK_T;
+		
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+		Auto			: bool; (* 8 *)
+		Manual			: bool; (* 1 *)
+		Semi			: bool; (* 2 *)
+		PPA				: bool; (* 4 *)
+
+END_VAR
+
+VAR
+	State			: dint;
+	SteerModeRT		: r_trig;
+	SteerModeRT2	: r_trig;
+	SteerMode	: dint;
+	
+	StepDelay : TON;
+	
+	NoMcdTimer : TON;
+
+END_VAR
+(*****************************************************************************************)
+(* Truck Modes of Operation:
+
+	Auto  					- full AGV control
+	Manual					- Vehicle driven from tiller arm or MCD.
+	PPA Tune  				- AGV drive mode, but vehicle controller set to manual mode to allow PPA Tuning 
+	
+	NDC8.Manual.PlcSelectMask	DINT 	Individually select mask: 
+		Bit0:PlcAngle 				2#00000
+		Bit1:PlcSpeed 				2#00010
+		Bit2:PlcSetOperationMode 	2#00100
+		Bit3:Reserved 				2#01000
+		Bit4:PlcSteerMethod			2#10000
+	*)
+
+NDC8.Manual.PlcSelect := true;							(* By default, allow overrides.*)
+NDC8.Manual.PlcSelectMask := 0;							(* By default, don't override anything*)
+
+(* only one mode is allowed at one time *)
+Auto 			:= word_to_bool(dint_to_word(State) and 16#8);
+Manual			:= word_to_bool(dint_to_word(State) and 16#1);
+Semi			:= word_to_bool(dint_to_word(State) and 16#2);
+PPA 			:= word_to_bool(dint_to_word(State) and 16#4);		
+
+INPUT.Auto := Auto;
+INPUT.Manual := Manual;
+INPUT.Semi := Semi;
+INPUT.PPA := PPA;
+
+
+if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then
+
+	SteerModeRT(CLK:=Input.ChangeSteerMode_PB);		(* New steer mode requested (Quad vehicle)  
+															0: 2*SD Anti-parallel
+															1: 2*SD Parallel 
+															2: DiffDrive  				*)
+	SteerModeRT2(CLK:=Input.ChangeSteerMode_PB2);
+
+	case State of	
+	(*****************************************************************************************
+				Automatic mode
+	*****************************************************************************************)
+	0: State := 8;
+
+	8:	NDC8.Manual.PlcSetOperationMode := 0;			(* Operation mode Auto *)
+		NDC8.Manual.PlcSelectMask		:= 2#00110;	(* Override Set speed, to allow autinsert from outside safety zone 
+														 Speed is set in AutoInsert FB. *)
+	
+		(**** Exit this mode? ***)	
+		if NDC8.Mcd.Button2 and NDC8.Mcd.Valid then		(* MCD semi mode *)
+			State := 2;
+		
+		elsif (NDC8.Mcd.Button3 and NDC8.Mcd.Valid)		(* MCD manual mode *)
+			or INPUT.TillerArmDown 						(* Manual arm down, switch to manual mode		*)
+			or INPUT.GateOpen
+			or INPUT.PlatformNotUpperPos then					
+				State := 1;
+									
+		elsif NDC8.Userdefined.PPAEnable = 2 then		(* Change to PPA mode if set in OPT	expert menu.*)
+				State := 4;
+		end_if;
+
+
+	(*****************************************************************************************
+				Semi mode (MCD throttle, automatic steering)
+	*****************************************************************************************)
+	2:	NDC8.Manual.PlcSetOperationMode := 2;			(* Set semi mode *)
+		NDC8.Manual.PlcSelectMask 		:= 2#10010;	(* Override operation mode and steer mode (quad) *)
+			
+			
+		if StopWord = 0 and StopWord2 = 0  then
+			NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed;
+		elsif NDC8.Mcd.Button8 = FALSE then
+			NDC8.Manual.PlcSpeed			:= 0;
+		elsif NDC8.Mcd.Button8 = TRUE then
+			NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed;
+		end_if;
+		
+		(**** Exit this mode? ***)	
+		if NDC8.Mcd.Button1 or not NDC8.Mcd.Valid then		(* If disconnect the MCD or switch modes, to auto *)
+			State := 8;
+		
+		elsif (NDC8.Mcd.Button3 and NDC8.Mcd.Valid) then	(* If disconnect the MCD or switch modes, to auto *)
+			State := 1;
+		end_if;
+
+	(*****************************************************************************************
+				Manual driving
+	*****************************************************************************************)
+	1:	NDC8.Manual.PlcSetOperationMode := 1;				(* Set Manual mode 							*)
+		StopLoadOP := False;								(* Clear load op cancel stop bit			*)
+	
+		if SteerModeRT.q then
+			SteerMode:= SteerMode + 1;          			(* Toggle steermode *)
+	        if SteerMode > 2 then                  			(* Limit *)
+	        	SteerMode:= 0;                				(* Reset *)
+			end_if;
+	        NDC8.Manual.PLCSteerMode:= SteerMode;   		(* Use steermode *)
+		end_if;
+		
+		if SteerModeRT2.q then
+			SteerMode:= SteerMode - 1;          		(* Toggle steermode *)
+	        if SteerMode < 0 then                  		(* Limit *)
+	        	SteerMode:= 2;                			(* Reset *)
+			end_if;
+	        NDC8.Manual.PLCSteerMode:= SteerMode;   	(* Use steermode *)
+		end_if;
+
+		if NDC8.Mcd.Valid then								(* If mcd connected						 	*)
+			if Input.ZeroSteerAngle_PB then					(* If "set zero angle" key					*)		
+				NDC8.Manual.PLCAngle 			:= 0;		(* Set angle to 0							*)
+				
+				if StopWord = 0 and StopWord2 = 0  then
+					NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed;
+				elsif NDC8.Mcd.Button8 = FALSE then
+					NDC8.Manual.PlcSpeed			:= 0;
+				elsif NDC8.Mcd.Button8 = TRUE then
+					NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed;
+				end_if;
+				
+				NDC8.Manual.PlcSelectMask 		:= 2#10111;(* Override operation mode, steer mode and set angle	*)
+			else
+				NDC8.Manual.PLCAngle 			:= NDC8.Mcd.Angle / 3;
+				
+				if StopWord = 0 and StopWord2 = 0  then
+					NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed;
+				elsif NDC8.Mcd.Button8 = FALSE then
+					NDC8.Manual.PlcSpeed			:= 0;
+				elsif NDC8.Mcd.Button8 = TRUE then
+					NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed;
+				end_if;
+				
+				NDC8.Manual.PlcSelectMask 		:= 2#10111;(* Override operation mode and steer mode		*)
+			end_if;
+			DisplayStopString(INStatus:=Input.ZeroSteerAngle_PB, StopString:=184, StopValue:=0);
+			StopManual := false;
+
+		else
+			NDC8.Manual.PlcSelectMask 		:= 2#10101;			(* Override operation mode, set angle and steer mode		*)
+			NDC8.Manual.PlcAngle := Input.SteerEncAngle;		(* Follow encoder angle, to start autoinsert with this set angle. *)
+
+			StopManual	:= not Input.GateOpen 					(* Set stop bit while waiting to go to auto.	*)
+						and not Input.TillerArmDown 
+						and not Input.PlatformNotUpperPos
+						and not Input.Reset_PB;
+			StopReset	:= StopReset OR StopManual; 			(* This stop signal needs to be reset			*)
+		end_if;
+	
+		(**** Exit this mode? ***)	
+		if NDC8.Mcd.Valid then									(* If MCD is connected							*)
+			if NDC8.Mcd.Button1 then							(* Auto mode on MCD? Switch to automatic mode.	*)
+				State := 8;
+			elsif NDC8.Mcd.Button2 then							(* Semi mode on mcd? Switch to semi mode		*)
+				State := 2;
+			end_if;
+		else
+			if 	not Input.TillerArmDown							(* Tiller arm up								*)
+				and not Input.GateOpen							(* and gate closed 								*)
+				and not Input.PlatformNotUpperPos				(* and platform up 								*)
+				and Input.Reset_PB then							(* and reset push button! 						*)
+					State := 8;							(* Switch to automatic mode						*)
+			end_if;				
+		end_if;
+
+
+	(*****************************************************************************************
+				Physical Parameter Adjust (PPA)
+	*****************************************************************************************)
+
+	4:	NDC8.Manual.PlcSetOperationMode  := 1;			(* Set Manual mode								*)
+		NDC8.Manual.PlcSelectMask 		 := 2#00100;	(* Override operation mode 						*)
+	
+		(**** Exit this mode? ***)	
+		if INPUT.TillerArmDown 
+			or INPUT.GateOpen
+			or INPUT.PlatformNotUpperPos then					
+				State := 1;						(* Manual arm down, switch to manual mode		*)
+			
+		elsif NDC8.Userdefined.PPAEnable <> 2 then		(* PPA symbol changed? Go back to auto.			*)
+				State := 8;
+		end_if;
+
+
+	end_case;
+
+	NoMcdTimer(IN:= FALSE);
+elsif NDC8.Mcd.Valid = FALSE and g_StartFindSync = FALSE and g_ErrorCode = 0 then
+
+	NoMcdTimer(IN:= TRUE, PT:=t#5s);
+	
+;
+end_if;
+
+
+(**************************************************************************************)
+(* Update Display *)
+
+DisplayStopString(INStatus:=StopManual, StopString:=85, StopValue:=0);
+
+
+
+
+
+
+
+
+
+END_FUNCTION_BLOCK

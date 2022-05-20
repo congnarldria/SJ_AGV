@@ -1,0 +1,41 @@
+FUNCTION_BLOCK STEERCMDSUPERVISION_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;	
+
+END_VAR
+
+VAR_INPUT
+	Command : INT;
+	FeedBack : INT;
+	Range : INT;
+	Timeout : TIME;
+	Enable : BOOL;
+	
+END_VAR
+
+VAR_OUTPUT
+	Ok : BOOL;						(* Output for taking action *)
+END_VAR
+
+VAR
+	Diff : INT;					(*Diff between to cycles*)
+	FeedBack_mem : UINT;					(*Memory of the last cycles encoder value*)
+	feedback_failure : BOOL := true;		(*Flag*)
+	
+	FailTimerTON : TON;				(*Instanciation of the failure timer*)
+	
+END_VAR
+FailTimerTON(IN:=feedback_failure, Pt:=Timeout);
+
+If Enable = TRUE then
+	Diff := FeedBack - Command;
+	
+	if abs(enc_diff) > Range then 
+		feedback_failure := true;
+	else
+		feedback_failure := true;
+	end_if;
+else
+	feedback_failure := false;
+end_if;
+END_FUNCTION_BLOCK

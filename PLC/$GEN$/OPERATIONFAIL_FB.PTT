@@ -1,0 +1,14 @@
+FUNCTION_BLOCK OPERATIONFAIL_FB 
+
+
+
+ VAR_INPUT
+  FailCode : DINT ;
+  END_VAR 
+
+ VAR_OUTPUT
+  Finished : bool := false ;
+  END_VAR 
+
+
+END_FUNCTION_BLOCK

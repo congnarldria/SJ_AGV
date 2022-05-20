@@ -1,0 +1,680 @@
+FUNCTION_BLOCK DataUpload_FB
+VAR_EXTERNAL
+ndc8 : NDC8_T;
+
+UploadData_ModBus_ValueWord:ARRAY[1..500] OF Word;
+UploadData_ModBus_ValueBOOL:ARRAY[1..400] OF BOOL;
+
+ConvWord:WORD;			(*Sum of the two first bytes*)
+
+ConvByteL:Byte;			(*Low byte*)
+ConvByteH:Byte;			(*High byte*)
+
+ConvBit0:BOOL;			(*		 1 	    *)
+ConvBit1:BOOL;			(*		 2 		*)
+ConvBit2:BOOL;			(*		 4 		*)
+ConvBit3:BOOL;			(*		 8 		*)
+ConvBit4:BOOL;			(*	    10 		*)
+ConvBit5:BOOL;			(*	    20 		*)
+ConvBit6:BOOL;			(*	    40 		*)
+ConvBit7:BOOL;          (*	    80 		*)
+ConvBit8:BOOL;			(*		100     *)
+ConvBit9:BOOL;			(*		200 	*)
+ConvBit10:BOOL;			(*		400  	*)
+ConvBit11:BOOL;			(*		800 	*)
+ConvBit12:BOOL;			(*	   1000 	*)
+ConvBit13:BOOL;			(*	   2000 	*)
+ConvBit14:BOOL;			(*	   4000 	*)
+ConvBit15:BOOL;         (*	   8000 	*)
+
+(*BeijerSetParameters:BeijerSetParameters_T;*)
+
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+
+
+
+Angle_DINT : DINT;
+Angle_REAL : REAL;
+
+
+
+DataUpload : DataUpload_ModbusTCPIP_FB;
+
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	CONVDINT : DINT;
+	INPUT : INPUT_T;
+	CONVUDINT : UDINT;
+	CONVWORD2 : WORD;
+END_VAR
+(** {****************************************************************************} **)
+(**  **)
+(** {* Update Data *} **)
+(**  **)
+(** {* Scanner_x *} **)
+(** ConvDINT := NDC8.LS2000.X; **)
+	(* assign - Stmt *)
+	LD NDC8.LS2000.X
+	ST ConvDINT
+
+(** UploadData_ModBus_ValueWord [2]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[2]
+
+(** UploadData_ModBus_ValueWord [1]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[1]
+
+(**  **)
+(** {* Scanner_y *} **)
+(** ConvDINT := NDC8.LS2000.Y; **)
+	(* assign - Stmt *)
+	LD NDC8.LS2000.Y
+	ST ConvDINT
+
+(** UploadData_ModBus_ValueWord [4]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[4]
+
+(** UploadData_ModBus_ValueWord [3]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[3]
+
+(**  **)
+(**  **)
+(** {* Scanner_t *} **)
+(** Angle_REAL := NDC8.LS2000.Angle * 100.0; **)
+	(* assign - Stmt *)
+	LD NDC8.LS2000.Angle
+	MUL 100.0
+	ST Angle_REAL
+
+(** Angle_DINT := REAL_TO_DINT(Angle_REAL); **)
+	(* assign - Stmt *)
+	LD Angle_REAL
+	REAL_TO_DINT 
+	ST Angle_DINT
+
+(**  **)
+(** ConvDINT := Angle_DINT; **)
+	(* assign - Stmt *)
+	LD Angle_DINT
+	ST ConvDINT
+
+(** UploadData_ModBus_ValueWord [6]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[6]
+
+(** UploadData_ModBus_ValueWord [5]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[5]
+
+(**  **)
+(** {* Max Speed *} **)
+(** ConvDINT := NDC8.Vehicle.MaxSpeed; **)
+	(* assign - Stmt *)
+	LD NDC8.Vehicle.MaxSpeed
+	ST ConvDINT
+
+(** UploadData_ModBus_ValueWord [8]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[8]
+
+(** UploadData_ModBus_ValueWord [7]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[7]
+
+(**  **)
+(**  **)
+(** {* Enc1Scal *} **)
+(** ConvUDINT := NDC8.DCD_6.SteerEncScale; **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_6.SteerEncScale
+	ST ConvUDINT
+
+(** UploadData_ModBus_ValueWord [10]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[10]
+
+(** UploadData_ModBus_ValueWord [9]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[9]
+
+(**  **)
+(**  **)
+(** {* Enc1Offs *} **)
+(** ConvDINT := INT_TO_DINT(NDC8.DCD_6.SteerEncOffset); **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_6.SteerEncOffset
+	INT_TO_DINT 
+	ST ConvDINT
+
+(** UploadData_ModBus_ValueWord [12]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[12]
+
+(** UploadData_ModBus_ValueWord [11]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[11]
+
+(**  **)
+(** {* Enc3Scal *} **)
+(** ConvUDINT := NDC8.DCD_8.SteerEncScale; **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_8.SteerEncScale
+	ST ConvUDINT
+
+(** UploadData_ModBus_ValueWord [14]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[14]
+
+(** UploadData_ModBus_ValueWord [13]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[13]
+
+(**  **)
+(**  **)
+(** {* Enc3Offs *} **)
+(** ConvDINT := INT_TO_DINT(NDC8.DCD_8.SteerEncOffset); **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_8.SteerEncOffset
+	INT_TO_DINT 
+	ST ConvDINT
+
+(** UploadData_ModBus_ValueWord [16]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[16]
+
+(** UploadData_ModBus_ValueWord [15]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[15]
+
+(**  **)
+(**  **)
+(** {* Enc2Scal *} **)
+(** ConvUDINT := NDC8.DCD_5.DriveEncScale; **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_5.DriveEncScale
+	ST ConvUDINT
+
+(** UploadData_ModBus_ValueWord [18]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[18]
+
+(** UploadData_ModBus_ValueWord [17]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[17]
+
+(**  **)
+(**  **)
+(** {* Enc4Scal *} **)
+(** ConvUDINT := NDC8.DCD_7.DriveEncScale; **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_7.DriveEncScale
+	ST ConvUDINT
+
+(** UploadData_ModBus_ValueWord [20]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[20]
+
+(** UploadData_ModBus_ValueWord [19]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[19]
+
+(**  **)
+(**  **)
+(** {* Batt Low Voltage *} **)
+(** ConvDINT := NDC8.UserDefined.Integer32_50_BattLowVol; **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_50_BattLowVol
+	ST ConvDINT
+
+(** UploadData_ModBus_ValueWord [22]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[22]
+
+(** UploadData_ModBus_ValueWord [21]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[21]
+
+(**  **)
+(**  **)
+(** {* TravelDistance *} **)
+(** ConvDINT := NDC8.UserDefined.Integer32_55_TravelDistance; **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_55_TravelDistance
+	ST ConvDINT
+
+(** UploadData_ModBus_ValueWord [28]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[28]
+
+(** UploadData_ModBus_ValueWord [27]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[27]
+
+(**  **)
+(**  **)
+(** {* LS2000 used Time Min *} **)
+(** ConvDINT := NDC8.UserDefined.Integer32_60_LS2000_Attached_M; **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_60_LS2000_Attached_M
+	ST ConvDINT
+
+(** UploadData_ModBus_ValueWord [30]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[30]
+
+(** UploadData_ModBus_ValueWord [29]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[29]
+
+(**  **)
+(** {* LS2000 used Time Hour *} **)
+(** ConvDINT := NDC8.UserDefined.Integer32_59_LS2000_Attached_H; **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_59_LS2000_Attached_H
+	ST ConvDINT
+
+(** UploadData_ModBus_ValueWord [32]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[32]
+
+(** UploadData_ModBus_ValueWord [31]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[31]
+
+(**  **)
+(** {* LS2000 used Time Day *} **)
+(** ConvDINT := NDC8.UserDefined.Integer32_58_LS2000_Attached_D; **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_58_LS2000_Attached_D
+	ST ConvDINT
+
+(** UploadData_ModBus_ValueWord [34]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[34]
+
+(** UploadData_ModBus_ValueWord [33]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[33]
+
+(**  **)
+(**  **)
+(** {* Navigation Level *} **)
+(** ConvDINT := NDC8.Position.NavLevel; **)
+	(* assign - Stmt *)
+	LD NDC8.Position.NavLevel
+	ST ConvDINT
+
+(** UploadData_ModBus_ValueWord [36]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST UploadData_ModBus_ValueWord[36]
+
+(** UploadData_ModBus_ValueWord [35]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST UploadData_ModBus_ValueWord[35]
+
+(** 	 **)
+(** 	 **)
+(** {* AGV Drive Mode *} **)
+(** UploadData_ModBus_ValueWord [41] := DINT_TO_WORD(Input.SteerMode); **)
+	(* assign - Stmt *)
+	LD Input.SteerMode
+	DINT_TO_WORD 
+	ST UploadData_ModBus_ValueWord[41]
+
+(**  **)
+(** {* Front Drive Current *} **)
+(** UploadData_ModBus_ValueWord [42] := INT_TO_WORD(NDC8.DCD_5.TorqueCurrentReference); **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_5.TorqueCurrentReference
+	INT_TO_WORD 
+	ST UploadData_ModBus_ValueWord[42]
+
+(**  **)
+(** {* Front Steer Current *} **)
+(** UploadData_ModBus_ValueWord [43] := INT_TO_WORD(NDC8.DCD_6.TorqueCurrentReference); **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_6.TorqueCurrentReference
+	INT_TO_WORD 
+	ST UploadData_ModBus_ValueWord[43]
+
+(**  **)
+(** {* Rear Drive Current *} **)
+(** UploadData_ModBus_ValueWord [44] := INT_TO_WORD(NDC8.DCD_7.TorqueCurrentReference); **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_7.TorqueCurrentReference
+	INT_TO_WORD 
+	ST UploadData_ModBus_ValueWord[44]
+
+(**  **)
+(** {* Rear Steer Current *} **)
+(** UploadData_ModBus_ValueWord [45] := INT_TO_WORD(NDC8.DCD_8.TorqueCurrentReference); **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_8.TorqueCurrentReference
+	INT_TO_WORD 
+	ST UploadData_ModBus_ValueWord[45]
+
+(**  **)
+(** {* Drive Current Diff*} **)
+(** UploadData_ModBus_ValueWord [46] := INT_TO_WORD(NDC8.DCD_5.TorqueCurrentReference - NDC8.DCD_7.TorqueCurrentReference); **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_5.TorqueCurrentReference
+	SUB NDC8.DCD_7.TorqueCurrentReference
+	INT_TO_WORD 
+	ST UploadData_ModBus_ValueWord[46]
+
+(**  **)
+(** {* Steer Current Diff*} **)
+(** UploadData_ModBus_ValueWord [47] := INT_TO_WORD(NDC8.DCD_6.TorqueCurrentReference - NDC8.DCD_8.TorqueCurrentReference); **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_6.TorqueCurrentReference
+	SUB NDC8.DCD_8.TorqueCurrentReference
+	INT_TO_WORD 
+	ST UploadData_ModBus_ValueWord[47]
+
+(** 	 **)
+(** 	 **)
+(** {* Set Parameters *} **)
+(** if UploadData_ModBus_ValueBOOL [1] = TRUE then **)
+	(* if - Cond *)
+	LD UploadData_ModBus_ValueBOOL[1]
+	EQ TRUE
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	{* Scanner_x *} **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [52]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[52]
+		ST ConvWord2
+
+(** 	ConvWord := UploadData_ModBus_ValueWord [51]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[51]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.LS2000.X := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.LS2000.X
+
+(** 	 **)
+(** 	{* Scanner_y *} **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [54]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[54]
+		ST ConvWord2
+
+(** 	ConvWord := UploadData_ModBus_ValueWord [53]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[53]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.LS2000.Y := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.LS2000.Y
+
+(** 	 **)
+(** 	{* Scanner_t *} **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [56]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[56]
+		ST ConvWord2
+
+(** 	ConvWord := UploadData_ModBus_ValueWord [55]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[55]
+		ST ConvWord
+
+(**  **)
+(** 	Angle_DINT := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST Angle_DINT
+
+(** 	 **)
+(** 	Angle_REAL := DINT_TO_REAL(Angle_DINT) / 100.0; **)
+		(* assign - Stmt *)
+		LD Angle_DINT
+		DINT_TO_REAL 
+		DIV 100.0
+		ST Angle_REAL
+
+(** 	 **)
+(** 	NDC8.LS2000.Angle := Angle_REAL; **)
+		(* assign - Stmt *)
+		LD Angle_REAL
+		ST NDC8.LS2000.Angle
+
+(** 	 **)
+(** 	 **)
+(** 	{* Max Speed *} **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [58]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[58]
+		ST ConvWord2
+
+(** 	ConvWord := UploadData_ModBus_ValueWord [57]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[57]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.Vehicle.MaxSpeed := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.Vehicle.MaxSpeed
+
+(** 	 **)
+(** 	 **)
+(** 	{* Enc1Scal *} **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [60]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[60]
+		ST ConvWord2
+
+(** 	ConvWord := UploadData_ModBus_ValueWord [59]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[59]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.DCD_6.SteerEncScale := ConvUDINT; **)
+		(* assign - Stmt *)
+		LD ConvUDINT
+		ST NDC8.DCD_6.SteerEncScale
+
+(** 	 **)
+(** 	{* Enc1Offs *} **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [62]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[62]
+		ST ConvWord2
+
+(** 	ConvWord := UploadData_ModBus_ValueWord [61]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[61]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.DCD_6.SteerEncOffset := DINT_TO_INT(ConvDINT); **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		DINT_TO_INT 
+		ST NDC8.DCD_6.SteerEncOffset
+
+(** 	 **)
+(** 	{* Enc3Scal *} **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [64]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[64]
+		ST ConvWord2
+
+(** 	ConvWord := UploadData_ModBus_ValueWord [63]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[63]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.DCD_8.SteerEncScale := ConvUDINT; **)
+		(* assign - Stmt *)
+		LD ConvUDINT
+		ST NDC8.DCD_8.SteerEncScale
+
+(** 	 **)
+(** 	{* Enc3Offs *} **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [66]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[66]
+		ST ConvWord2
+
+(** 	ConvWord := UploadData_ModBus_ValueWord [65]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[65]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.DCD_8.SteerEncOffset := DINT_TO_INT(ConvDINT); **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		DINT_TO_INT 
+		ST NDC8.DCD_8.SteerEncOffset
+
+(** 	 **)
+(** 	{* Enc2Scal *} **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [68]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[68]
+		ST ConvWord2
+
+(** 	ConvWord := UploadData_ModBus_ValueWord [67]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[67]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.DCD_5.DriveEncScale := ConvUDINT; **)
+		(* assign - Stmt *)
+		LD ConvUDINT
+		ST NDC8.DCD_5.DriveEncScale
+
+(** 	 **)
+(** 	{* Enc4Scal *} **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [70]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[70]
+		ST ConvWord2
+
+(** 	ConvWord := UploadData_ModBus_ValueWord [69]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[69]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.DCD_7.DriveEncScale := ConvUDINT; **)
+		(* assign - Stmt *)
+		LD ConvUDINT
+		ST NDC8.DCD_7.DriveEncScale
+
+(** 	 **)
+(** 	{* Batt Low Voltage *} **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [72]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[72]
+		ST ConvWord2
+
+(** 	ConvWord := UploadData_ModBus_ValueWord [71]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[71]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.UserDefined.Integer32_50_BattLowVol := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.UserDefined.Integer32_50_BattLowVol
+
+(** 	 **)
+(** 	UploadData_ModBus_ValueBOOL [1] := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST UploadData_ModBus_ValueBOOL[1]
+
+		JMP ODK_END_IF_000000000000001
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(** 	 **)
+(** {****************************************************************************} **)
+(** {*		Required for sending data to the display							*} **)
+(**  **)
+(** DataUpload(); **)
+	(* call - Stmt *)
+	CAL DataUpload
+
+(**  **)
+(**  **)
+(** {****************************************************************************} **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

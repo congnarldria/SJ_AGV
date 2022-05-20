@@ -1,0 +1,105 @@
+FUNCTION_BLOCK DEBUG_FB
+VAR_EXTERNAL
+
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	A : bool;
+	DEBUG : bool;
+	INPUT : INPUT_T;
+	STOPWORD : DWORD;
+	NDC8 : NDC8_T;
+END_VAR
+(** if debug then **)
+	(* if - Cond *)
+	LD debug
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	a:= TRACE_bool('ExecDrvCmd',NDC8.Automatic.ExecDriveCommand); **)
+		(* assign - Stmt *)
+		LD 'ExecDrvCmd'
+		TRACE_bool NDC8.Automatic.ExecDriveCommand
+		ST a
+
+(** 	a:= TRACE_bool('CancOp',NDC8.LoadOperation.CancelOperation); **)
+		(* assign - Stmt *)
+		LD 'CancOp'
+		TRACE_bool NDC8.LoadOperation.CancelOperation
+		ST a
+
+(** 	a:= TRACE_dint('TrvlDir',NDC8.VehicleControl.TravelDir); **)
+		(* assign - Stmt *)
+		LD 'TrvlDir'
+		TRACE_dint NDC8.VehicleControl.TravelDir
+		ST a
+
+(** 	a:= TRACE_BOOL('Loaded', input.LoadOnBoard); **)
+		(* assign - Stmt *)
+		LD 'Loaded'
+		TRACE_bool input.LoadOnBoard
+		ST a
+
+(** 	a:= TRACE_DINT('Segm', NDC8.LayoutPosition.Segment); **)
+		(* assign - Stmt *)
+		LD 'Segm'
+		TRACE_dint NDC8.LayoutPosition.Segment
+		ST a
+
+(** 	a:= TRACE_BOOL('OnLastseg', NDC8.LoadDocking.OnLastSegment); **)
+		(* assign - Stmt *)
+		LD 'OnLastseg'
+		TRACE_bool NDC8.LoadDocking.OnLastSegment
+		ST a
+
+(** 	a:= TRACE_DINT('StopWord', NDC8.UserDefined.StopWord); **)
+		(* assign - Stmt *)
+		LD 'StopWord'
+		TRACE_dint NDC8.UserDefined.StopWord
+		ST a
+
+(** 	a:= TRACE_DINT('OpCode', NDC8.LoadOperation.OperationCode); **)
+		(* assign - Stmt *)
+		LD 'OpCode'
+		TRACE_dint NDC8.LoadOperation.OperationCode
+		ST a
+
+(** 	a:= TRACE_DINT('OpPar1', NDC8.LoadOperation.OperationParam1); **)
+		(* assign - Stmt *)
+		LD 'OpPar1'
+		TRACE_dint NDC8.LoadOperation.OperationParam1
+		ST a
+
+(** 				 **)
+(** 	debug := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST debug
+
+		JMP ODK_END_IF_000000000000001
+
+(**  **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

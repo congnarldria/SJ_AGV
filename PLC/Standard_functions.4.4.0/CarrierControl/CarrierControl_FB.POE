@@ -1,0 +1,471 @@
+FUNCTION_BLOCK CARRIERCONTROL_FB
+VAR_EXTERNAL
+	(** IN **)
+	NDC8 : NDC8_T;
+	
+END_VAR
+
+VAR_INPUT
+	FlexSlowdown,
+	LS2000Slowdown	: bool;
+END_VAR
+
+VAR_OUTPUT
+	AutoInsertNotInsideTargetSafety : bool;
+	AutoinsertInProgress			: bool;
+	StartDelayStartWarning			: bool;
+END_VAR
+
+VAR
+	
+	AutoInsert : AutoInsert_FB;
+	SlowDown : Slowdown_FB;
+	StartDelay : StartDelay_FB;
+	EStopFB : EStop_FB;
+	ResetButtonFB : ResetButton_FB;
+
+	MasterLink_TOF	: TOF;
+	
+	MasterLinkUp_RT,
+	BbxDone_RT,
+	NDC8LibFail_RT,
+	StandardFBFail_RT		: R_Trig;
+	
+	MasterLink_FT		: F_Trig;
+	
+	to_bytes : NDC8_STRING_TO_BYTES; 
+	to_dec : ASCII_TO_DEC;
+	AccessPointB5,
+	AccessPointB6,
+	AccessPointB5b1A,
+	AccessPointB5b2A,
+	AccessPointB6b1A,
+	AccessPointB6b2A,
+	AccessPointB5b1,
+	AccessPointB6b1,
+	AccessPointB5b2,
+	AccessPointB6b2,
+	MasterLink		 : dint;
+	NDC8LibFail,
+	StandardFBFail : bool;
+
+	BlackboxFB : Blackbox_FB;
+
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	A : bool;
+	STOPHALT : BOOL;
+	BBXTRIG : bool;
+END_VAR
+(** {* **)
+(** ------------------------------------------------------------------------------------                               **)
+(**  CARRIER_CONTROL_FB                     **)
+(**  ------------------       **)
+(**               **)
+(**  Description:                      **)
+(**  Handles symbols essential for driving the vehicle **)
+(**  -------------------------------------------------------------------------------------*} **)
+(**  **)
+(** {**************************************************************************************} **)
+(**  **)
+(** AutoInsert();	 **)
+	(* call - Stmt *)
+	CAL AutoInsert
+
+(** Slowdown(	FlexSlowdown := FlexSlowdown, **)
+	(* call - Stmt *)
+	CAL Slowdown (
+		FlexSlowdown := FlexSlowdown,
+(** 			LS2000Slowdown := LS2000Slowdown); 			{* Slow down vehicle *} **)
+		LS2000Slowdown := LS2000Slowdown
+	)
+
+(** StartDelay();			{* Start delay after estop *} **)
+	(* call - Stmt *)
+	CAL StartDelay
+
+(** EStopFB(); **)
+	(* call - Stmt *)
+	CAL EStopFB
+
+(** ResetButtonFB(); **)
+	(* call - Stmt *)
+	CAL ResetButtonFB
+
+(**  **)
+(**  **)
+(** {**************************************************************************************} **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(** {* Version verification  *} **)
+(**  **)
+(**  **)
+(** {**************************************************************************************} **)
+(** {* ALTRENATIVE CREEP DISTANCE  *} **)
+(** if NDC8.UserDefined.NormalCreepDistance = 0 then **)
+	(* if - Cond *)
+	LD NDC8.UserDefined.NormalCreepDistance
+	EQ 0
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.UserDefined.NormalCreepDistance := NDC8.Vehicle.CreepDistance; **)
+		(* assign - Stmt *)
+		LD NDC8.Vehicle.CreepDistance
+		ST NDC8.UserDefined.NormalCreepDistance
+
+		JMP ODK_END_IF_000000000000001
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(**  **)
+(** {**************************************************************************************} **)
+(** {* Do not allow download from Application Designer while vehicle is moving *} **)
+(** NDC8.VehicleControl.PreventAppDownload := NDC8.VehicleControl.Moving; **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleControl.Moving
+	ST NDC8.VehicleControl.PreventAppDownload
+
+(**  **)
+(**  **)
+(** {**************************************************************************************} **)
+(** {* Events 		 *} **)
+(**  **)
+(** {* Convert Access points MAC adress xx.xx.xx.xx.b1.b2 from ASCII to dint *} **)
+(**  **)
+(** to_bytes(str:= NDC8.Wlan.AccessPoint);					{* Converts string to bytes *} **)
+	(* call - Stmt *)
+	CAL to_bytes (
+		str := NDC8.Wlan.AccessPoint
+	)
+
+(** AccessPointB5b1A := byte_to_dint(to_bytes.bytes[13]); **)
+	(* assign - Stmt *)
+	LD to_bytes.bytes[13]
+	byte_to_dint 
+	ST AccessPointB5b1A
+
+(** AccessPointB5b2A := byte_to_dint(to_bytes.bytes[14]); **)
+	(* assign - Stmt *)
+	LD to_bytes.bytes[14]
+	byte_to_dint 
+	ST AccessPointB5b2A
+
+(** AccessPointB6b1A := byte_to_dint(to_bytes.bytes[16]); **)
+	(* assign - Stmt *)
+	LD to_bytes.bytes[16]
+	byte_to_dint 
+	ST AccessPointB6b1A
+
+(** AccessPointB6b2A := byte_to_dint(to_bytes.bytes[17]); **)
+	(* assign - Stmt *)
+	LD to_bytes.bytes[17]
+	byte_to_dint 
+	ST AccessPointB6b2A
+
+(**  **)
+(** to_dec(ASCII:= AccessPointB5b1A);						{* Convert from ASCII to decimal *} **)
+	(* call - Stmt *)
+	CAL to_dec (
+		ASCII := AccessPointB5b1A
+	)
+
+(** AccessPointB5b1  := to_dec.dec; **)
+	(* assign - Stmt *)
+	LD to_dec.dec
+	ST AccessPointB5b1
+
+(** to_dec(ASCII:= AccessPointB5b2A); **)
+	(* call - Stmt *)
+	CAL to_dec (
+		ASCII := AccessPointB5b2A
+	)
+
+(** AccessPointB5b2  := to_dec.dec; **)
+	(* assign - Stmt *)
+	LD to_dec.dec
+	ST AccessPointB5b2
+
+(** to_dec(ASCII:= AccessPointB6b1A); **)
+	(* call - Stmt *)
+	CAL to_dec (
+		ASCII := AccessPointB6b1A
+	)
+
+(** AccessPointB6b1  := to_dec.dec; **)
+	(* assign - Stmt *)
+	LD to_dec.dec
+	ST AccessPointB6b1
+
+(** to_dec(ASCII:= AccessPointB6b2A); **)
+	(* call - Stmt *)
+	CAL to_dec (
+		ASCII := AccessPointB6b2A
+	)
+
+(** AccessPointB6b2  := to_dec.dec; **)
+	(* assign - Stmt *)
+	LD to_dec.dec
+	ST AccessPointB6b2
+
+(**  **)
+(**  **)
+(** MasterLink_TOF(IN:=NDC8.Master.MasterLinkUp, PT:=t#10s);{* Connection is down for more than 10 seconds. *}	 **)
+	(* call - Stmt *)
+	CAL MasterLink_TOF (
+		IN := NDC8.Master.MasterLinkUp,
+		PT := t#10s
+	)
+
+(** MasterLink_FT(CLK:= MasterLink_TOF.q); 					{* Only generate event when connection is lost, not during boot. *} **)
+	(* call - Stmt *)
+	CAL MasterLink_FT (
+		CLK := MasterLink_TOF.q
+	)
+
+(** Case MasterLink of  **)
+(** 	0: 	if NDC8.Master.MasterLinkUp then **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000000:
+
+	(* case - Cond *)
+	LD MasterLink
+	EQ 0
+	JMPC ODK_CASE_000000000000002_000000000000001
+
+	JMP ODK_SKIP_000000000000002_000000000000001
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000001:
+
+		(* if - Cond *)
+		LD NDC8.Master.MasterLinkUp
+		JMPCN ODK_SKIP_000000000000003_000000000000001
+
+			(* then - Stmts *)
+
+(** 		{* Found connection to system manager. *} **)
+(** 			MasterLink := 10; **)
+			(* assign - Stmt *)
+			LD 10
+			ST MasterLink
+
+			JMP ODK_END_IF_000000000000003
+
+(** 		end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000003_000000000000001:
+		ODK_END_IF_000000000000003:
+
+		JMP ODK_END_CASE_000000000000002
+
+(** 	10: if MasterLink_FT.q then									{* Lost connection to system manager. *} **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000001:
+
+	(* case - Cond *)
+	LD MasterLink
+	EQ 10
+	JMPC ODK_CASE_000000000000002_000000000000002
+
+	JMP ODK_SKIP_000000000000002_000000000000002
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000002:
+
+		(* if - Cond *)
+		LD MasterLink_FT.q
+		JMPCN ODK_SKIP_000000000000004_000000000000001
+
+			(* then - Stmts *)
+
+(** 		BbxTrig := (NDC8.VehicleControl.OperationMode=0);		{* Create blackbox if vehicle is in Automatic Mode. *} **)
+			(* assign - Stmt *)
+			LD NDC8.VehicleControl.OperationMode
+			EQ 0
+			ST BbxTrig
+
+(** 		a:=TRACE_bool('BbxTrig',BbxTrig); **)
+			(* assign - Stmt *)
+			LD 'BbxTrig'
+			TRACE_bool BbxTrig
+			ST a
+
+(** 		a:=TRACE_string('MasterLink down'); **)
+			(* assign - Stmt *)
+			LD 'MasterLink down'
+			TRACE_string 
+			ST a
+
+(** 		NDC8.Blackbox.TrigReason:='MasterLink down'; **)
+			(* assign - Stmt *)
+			LD 'MasterLink down'
+			ST NDC8.Blackbox.TrigReason
+
+(** 		MasterLink := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST MasterLink
+
+			JMP ODK_END_IF_000000000000004
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000004_000000000000001:
+		ODK_END_IF_000000000000004:
+
+		JMP ODK_END_CASE_000000000000002
+
+(** end_case; **)
+	(* case - End *) 
+	ODK_SKIP_000000000000002_000000000000002:
+	ODK_END_CASE_000000000000002:
+
+(**  **)
+(** {**************************************************************************************} **)
+(** {* Stop while master controller is minimizes the segments allocated, during detouring. TS40 in NDC demo. *} **)
+(**  **)
+(** if NDC8.VehicleControl.HaltRequest and not StopHalt then  **)
+	(* if - Cond *)
+	LD NDC8.VehicleControl.HaltRequest
+	AND ( StopHalt
+		NOT
+	)
+	JMPCN ODK_SKIP_000000000000005_000000000000001
+
+		(* then - Stmts *)
+
+(**     StopHalt:= True;  **)
+		(* assign - Stmt *)
+		LD True
+		ST StopHalt
+
+(**     NDC8.VehicleControl.HaltRequestDone:=True;  **)
+		(* assign - Stmt *)
+		LD True
+		ST NDC8.VehicleControl.HaltRequestDone
+
+		JMP ODK_END_IF_000000000000005
+
+(** elsif not NDC8.VehicleControl.HaltRequest and StopHalt then  **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000005_000000000000001:
+	LD NDC8.VehicleControl.HaltRequest
+	NOT
+	AND StopHalt
+	JMPCN ODK_SKIP_000000000000005_000000000000002
+
+		(* elsif - Stmts *)
+
+(**     NDC8.VehicleControl.HaltRequestDone:=False;  **)
+		(* assign - Stmt *)
+		LD False
+		ST NDC8.VehicleControl.HaltRequestDone
+
+(**     StopHalt:= False;  **)
+		(* assign - Stmt *)
+		LD False
+		ST StopHalt
+
+		JMP ODK_END_IF_000000000000005
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000005_000000000000002:
+	ODK_END_IF_000000000000005:
+
+(**  **)
+(**  **)
+(**  **)
+(** {**************************************************************************************} **)
+(** {* 			DEBUG handling *} **)
+(**  **)
+(** if BbxTrig then **)
+	(* if - Cond *)
+	LD BbxTrig
+	JMPCN ODK_SKIP_000000000000006_000000000000001
+
+		(* then - Stmts *)
+
+(** 	BlackboxFB(); **)
+		(* call - Stmt *)
+		CAL BlackboxFB
+
+		JMP ODK_END_IF_000000000000006
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000006_000000000000001:
+	ODK_END_IF_000000000000006:
+
+(**  **)
+(** BbxDone_RT(CLK:=BlackboxFB.finished); **)
+	(* call - Stmt *)
+	CAL BbxDone_RT (
+		CLK := BlackboxFB.finished
+	)
+
+(** if BbxDone_RT.q then **)
+	(* if - Cond *)
+	LD BbxDone_RT.q
+	JMPCN ODK_SKIP_000000000000007_000000000000001
+
+		(* then - Stmts *)
+
+(** 	BbxTrig := false; **)
+		(* assign - Stmt *)
+		LD False
+		ST BbxTrig
+
+(** 	a:=TRACE_bool('BbxTrig',BbxTrig); **)
+		(* assign - Stmt *)
+		LD 'BbxTrig'
+		TRACE_bool BbxTrig
+		ST a
+
+(** 	NDC8.Blackbox.TrigReason:='Default'; **)
+		(* assign - Stmt *)
+		LD 'Default'
+		ST NDC8.Blackbox.TrigReason
+
+		JMP ODK_END_IF_000000000000007
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000007_000000000000001:
+	ODK_END_IF_000000000000007:
+
+(**  **)
+(**  **)
+(** {**************************************************************************************} **)
+(** {* 			Outputs *} **)
+(** AutoinsertInProgress			:= Autoinsert.InProgress; **)
+	(* assign - Stmt *)
+	LD AutoInsert.InProgress
+	ST AutoinsertInProgress
+
+(** AutoInsertNotInsideTargetSafety := AutoInsert.NotInsideTargetSafety; **)
+	(* assign - Stmt *)
+	LD AutoInsert.NotInsideTargetSafety
+	ST AutoInsertNotInsideTargetSafety
+
+(** StartDelayStartWarning			:= StartDelay.StartWarning; **)
+	(* assign - Stmt *)
+	LD StartDelay.StartWarning
+	ST StartDelayStartWarning
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

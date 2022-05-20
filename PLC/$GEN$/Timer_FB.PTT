@@ -1,0 +1,13 @@
+FUNCTION_BLOCK Timer_FB 
+
+ VAR_OUTPUT
+  Error : bool ;
+  Warning : bool ;
+  Info : bool ;
+  Display : bool ;
+  SlowBeep : bool ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

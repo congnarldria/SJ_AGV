@@ -1,0 +1,238 @@
+FUNCTION_BLOCK StartDelay_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;
+END_VAR
+
+VAR_INPUT
+END_VAR
+
+VAR_OUTPUT
+	StartWarning : BOOL;
+	StartDelayState : DINT;	
+END_VAR
+
+VAR
+	StartDelayShortTOF,
+	StartDelayWarningTOF,
+	StartDelayLongTOF 		: TOF;
+	StartDelayWarningOn,
+	StartDelayInactivity,
+	StartDelayShort,
+	StartDelay,
+	StartDelayLong 			: BOOL;
+	StartDelayInactivityTON : TON;
+	
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	DISPLAYSTOPSTRING : DisplayStopString_FB;
+	INSTATUS : bool;
+	STOPSTARTDELAY : BOOL;
+END_VAR
+(** {****************************************************************************************} **)
+(** {* START DELAY  - hold the vehicle for a little while before starting to drive. 		*} **)
+(**  **)
+(** StartDelayInactivity	:= 	NDC8.VehicleControl.OperationMode = 0		{* If standing still on a home position. *} **)
+(** 							and not NDC8.Automatic.ExecDriveCommand **)
+(** 							and not NDC8.Vehicle.Blocked; **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleControl.OperationMode
+	EQ 0
+	AND ( NDC8.Automatic.ExecDriveCommand
+		NOT
+	)
+	AND ( NDC8.Vehicle.Blocked
+		NOT
+	)
+	ST StartDelayInactivity
+
+(**  **)
+(** StartDelayShortTOF(IN:=StartDelayInactivity, PT:=t#2s);							 **)
+	(* call - Stmt *)
+	CAL StartDelayShortTOF (
+		IN := StartDelayInactivity,
+		PT := t#2s
+	)
+
+(** StartDelayInactivityTON(IN:=StartDelayInactivity, PT:=t#15s);		 **)
+	(* call - Stmt *)
+	CAL StartDelayInactivityTON (
+		IN := StartDelayInactivity,
+		PT := t#15s
+	)
+
+(** 	 **)
+(** if NDC8.VehicleControl.OperationMode > 0 then							{* If not ín automatic mode, then start over. *} **)
+	(* if - Cond *)
+	LD NDC8.VehicleControl.OperationMode
+	GT 0
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	StartDelayState := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST StartDelayState
+
+		JMP ODK_END_IF_000000000000001
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(** case StartDelayState of **)
+(** 0: 	{* When stand still on the home for more than 15 seconds. *} **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000000:
+
+	(* case - Cond *)
+	LD StartDelayState
+	EQ 0
+	JMPC ODK_CASE_000000000000002_000000000000001
+
+	JMP ODK_SKIP_000000000000002_000000000000001
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000001:
+
+(** 	StopStartDelay 	:= false; **)
+		(* assign - Stmt *)
+		LD false
+		ST StopStartDelay
+
+(** 	if StartDelayInactivityTON.q then  **)
+		(* if - Cond *)
+		LD StartDelayInactivityTON.q
+		JMPCN ODK_SKIP_000000000000003_000000000000001
+
+			(* then - Stmts *)
+
+(** 		StartDelayState := 10; **)
+			(* assign - Stmt *)
+			LD 10
+			ST StartDelayState
+
+(** 		StopStartDelay 	:= true; **)
+			(* assign - Stmt *)
+			LD true
+			ST StopStartDelay
+
+			JMP ODK_END_IF_000000000000003
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000003_000000000000001:
+		ODK_END_IF_000000000000003:
+
+		JMP ODK_END_CASE_000000000000002
+
+(** 	 **)
+(** 10: if not StartDelayInactivity then		{* Wait for a new order. *} **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000001:
+
+	(* case - Cond *)
+	LD StartDelayState
+	EQ 10
+	JMPC ODK_CASE_000000000000002_000000000000002
+
+	JMP ODK_SKIP_000000000000002_000000000000002
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000002:
+
+		(* if - Cond *)
+		LD StartDelayInactivity
+		NOT
+		JMPCN ODK_SKIP_000000000000004_000000000000001
+
+			(* then - Stmts *)
+
+(** 		StartWarning 	:= true; **)
+			(* assign - Stmt *)
+			LD true
+			ST StartWarning
+
+(** 		StartDelayState := 20; **)
+			(* assign - Stmt *)
+			LD 20
+			ST StartDelayState
+
+			JMP ODK_END_IF_000000000000004
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000004_000000000000001:
+		ODK_END_IF_000000000000004:
+
+		JMP ODK_END_CASE_000000000000002
+
+(** 	 **)
+(** 20: 	{* Hold the vehicle, and beep, for two seconds before starting to drive. *} **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000002:
+
+	(* case - Cond *)
+	LD StartDelayState
+	EQ 20
+	JMPC ODK_CASE_000000000000002_000000000000003
+
+	JMP ODK_SKIP_000000000000002_000000000000003
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000003:
+
+(** 	if not StartDelayShortTOF.Q then								{* Stop bit set while on the home station and during the delay. *} **)
+		(* if - Cond *)
+		LD StartDelayShortTOF.q
+		NOT
+		JMPCN ODK_SKIP_000000000000005_000000000000001
+
+			(* then - Stmts *)
+
+(** 		StartWarning 	:= false; **)
+			(* assign - Stmt *)
+			LD false
+			ST StartWarning
+
+(** 		StopStartDelay 	:= false; **)
+			(* assign - Stmt *)
+			LD false
+			ST StopStartDelay
+
+(** 		StartDelayState := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST StartDelayState
+
+			JMP ODK_END_IF_000000000000005
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000005_000000000000001:
+		ODK_END_IF_000000000000005:
+
+		JMP ODK_END_CASE_000000000000002
+
+(** 		 **)
+(** end_case; **)
+	(* case - End *) 
+	ODK_SKIP_000000000000002_000000000000003:
+	ODK_END_CASE_000000000000002:
+
+(** 		 **)
+(** {* Indicate start delay is active when a drive command is recieved. *} **)
+(** DisplayStopString(INStatus:=StartWarning, StopString:=93, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		INStatus := StartWarning,
+		StopString := 93,
+		StopValue := 0
+	)
+
+
+END_FUNCTION_BLOCK

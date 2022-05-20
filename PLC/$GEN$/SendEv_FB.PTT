@@ -1,0 +1,20 @@
+FUNCTION_BLOCK SendEv_FB 
+
+
+ VAR_INPUT
+  EventCode : DINT ;
+  Par1 : DINT ;
+  Par2 : DINT ;
+  Par3 : DINT ;
+  Par4 : DINT ;
+  END_VAR 
+
+ VAR_OUTPUT
+  Finished : BOOL ;
+  EventState : DINT := 1 ;
+  Count : dint ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

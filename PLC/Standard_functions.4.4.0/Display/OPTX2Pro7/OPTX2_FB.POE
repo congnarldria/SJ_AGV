@@ -1,0 +1,2494 @@
+FUNCTION_BLOCK OPTX2_FB
+VAR_EXTERNAL
+ndc8 : NDC8_T;
+
+(*CVC->HMI Word 1~100, DWord 101~200*)
+(*HMI-> Word 201~300, DWord 301~400*)
+(*CVC->External Monitoring Word 401~500*)
+
+(*CVC->HMI bit 1~200*)(*IO bit 41~200*)
+(*HMI->CVC bit 201~400*)(*IO bit 301~400*)
+ModBus_ValueWord:ARRAY[1..500] OF Word;
+ModBus_ValueBOOL:ARRAY[1..400] OF BOOL;
+
+ConvWord:WORD;			(*Sum of the two first bytes*)
+
+ConvByteL:Byte;			(*Low byte*)
+ConvByteH:Byte;			(*High byte*)
+
+ConvBit0:BOOL;			(*		 1 	    *)
+ConvBit1:BOOL;			(*		 2 		*)
+ConvBit2:BOOL;			(*		 4 		*)
+ConvBit3:BOOL;			(*		 8 		*)
+ConvBit4:BOOL;			(*	    10 		*)
+ConvBit5:BOOL;			(*	    20 		*)
+ConvBit6:BOOL;			(*	    40 		*)
+ConvBit7:BOOL;          (*	    80 		*)
+ConvBit8:BOOL;			(*		100     *)
+ConvBit9:BOOL;			(*		200 	*)
+ConvBit10:BOOL;			(*		400  	*)
+ConvBit11:BOOL;			(*		800 	*)
+ConvBit12:BOOL;			(*	   1000 	*)
+ConvBit13:BOOL;			(*	   2000 	*)
+ConvBit14:BOOL;			(*	   4000 	*)
+ConvBit15:BOOL;         (*	   8000 	*)
+
+(*BeijerSetParameters:BeijerSetParameters_T;*)
+
+
+
+
+
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+(*serial_read : NDC8_SERIAL_READ;
+serial_write : NDC8_SERIAL_WRITE;
+init : BOOL := TRUE;
+
+tx_header_length : BYTE := 6;
+dummy : BOOL;
+tr_cmd : DINT;
+
+
+start_adress : INT;
+*)
+INTToDisplay,		(*55*)
+INTfromDisplay,		(*56*)
+DINTfromDisplay,	(*57*)
+DINTToDisplay,		(*58*)
+(*OPTX2,
+ReadCounter,
+DebugCounter		: DINT;
+StartDelayTOF	: TOF;
+StartDelay 		: BOOL;
+
+X: INT;
+Y: INT;
+Z: INT;
+End:INT;
+Index:DINT;
+debug1 :INT;
+debug2 :INT;
+tr_len : DINT;
+num_words : DINT;
+num_Byte : DINT;
+num_Bit : DINT;
+Extra:DINT;
+length : DINT;
+tx_length : BYTE;
+ENDBIT:DINT;
+debugByte :Byte;
+*)
+(*BlackBox : BlackBox_FB;*)
+BBxTrigg: R_trig;
+BlackBox : BlackBox_FB;
+OrderMode:OrderMode_FB;
+LowDINT:DINT;
+HighDINT:DINT;
+LocalOrder : LocalOrder_FB;
+NavInit : NavInit_FB;
+NavMethod : NavMethod_FB;
+InitMethod : DINT;
+
+OPTX2Communication : OPTX2Communication_FB;
+
+ForceOutput : bool;
+
+Temp : INT;
+
+Angle_DINT : DINT;
+Angle_REAL : REAL;
+
+
+MCD_SPD_L_IN : DINT;
+MCD_SPD_H_IN : DINT;
+
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	PLC_TX_WORD15_STR_BCD2 : WORD;
+	PLC_RX_WORD12_STW_PINT : WORD;
+	PLC_RX_WORD18_BMS_BATC : WORD;
+	PLC_RX_WORD11_INS_PNO : WORD;
+	CONVDINT : DINT;
+	STOPFINDSYNC : BOOL;
+	DISPLAYSTOPSTRING : DisplayStopString_FB;
+	PLC_TX_WORD6 : WORD;
+	PLC_TX_WORD5 : WORD;
+	PLC_TX_WORD4 : WORD;
+	PLC_TX_WORD3 : WORD;
+	PLC_TX_WORD2 : WORD;
+	PLC_TX_WORD1 : WORD;
+	PLC_RX_WORD25 : WORD;
+	PLC_TX_WORD12_STR_BATD : WORD;
+	PLC_RX_WORD24_BMS_ID4H : WORD;
+	PLC_RX_WORD9_STW_BCD1 : WORD;
+	PLC_RX_WORD8_STW_BCD2 : WORD;
+	PLC_RX_WORD7_STW_BCD3 : WORD;
+	STOPWORD2 : DWORD;
+	PLC_RX_WORD22_BMS_CHAN : WORD;
+	PLC_RX_WORD6 : WORD;
+	PLC_RX_WORD5 : WORD;
+	PLC_RX_WORD4 : WORD;
+	PLC_RX_WORD3 : WORD;
+	PLC_RX_WORD2 : WORD;
+	PLC_RX_WORD1 : WORD;
+	PLC_RX_WORD16_BMS_BATV : WORD;
+	PLC_TX_WORD13_STR_ERR : WORD;
+	PLC_TX_WORD8_STR_SEG : WORD;
+	PLC_TX_WORD7_STR_VECL : WORD;
+	PLC_RX_WORD10_STW_ILER : WORD;
+	INPUT : INPUT_T;
+	PLC_RX_WORD14_BMS_2 : WORD;
+	PLC_TX_WORD16_STR_BCD1 : WORD;
+	STOPWORD : DWORD;
+	PLC_RX_WORD19_BMS_BATA : WORD;
+	CONVUDINT : UDINT;
+	PLC_TX_WORD10_STR_BATV : WORD;
+	CONVWORD2 : WORD;
+	PLC_RX_WORD23_BMS_ID4L : WORD;
+	PLC_RX_WORD21_BMS_MAIN : WORD;
+	PLC_RX_WORD17_BMS_BATT : WORD;
+	PLC_TX_WORD14_STR_BCD3 : WORD;
+	PLC_RX_WORD15_BMS_3 : WORD;
+	PLC_RX_WORD20_PLC_ERRD : WORD;
+	PLC_TX_WORD9_STR_PNT : WORD;
+	PLC_RX_WORD13_INS_ANO : WORD;
+	PLC_TX_WORD11_STR_TEMP : WORD;
+	G_ERRORCODE : WORD;
+END_VAR
+(**  **)
+(** {* Current VehicleStatusInlineValue sent to display *} **)
+(** ConvDINT := NDC8.Opt.VehicleStatusInlineValue; **)
+	(* assign - Stmt *)
+	LD NDC8.Opt.VehicleStatusInlineValue
+	ST ConvDINT
+
+(** ModBus_ValueWord [102]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[102]
+
+(** ModBus_ValueWord [101]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[101]
+
+(**  **)
+(** {*Current VehicleStatusID sent to display*} **)
+(** ConvDINT := NDC8.Opt.VehicleStatusID; **)
+	(* assign - Stmt *)
+	LD NDC8.Opt.VehicleStatusID
+	ST ConvDINT
+
+(** ModBus_ValueWord [104]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[104]
+
+(** ModBus_ValueWord [103]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[103]
+
+(**  **)
+(**  **)
+(** {* Current stopstring sent to display *} **)
+(** ConvDINT := DisplayStopString.CurrentString; **)
+	(* assign - Stmt *)
+	LD DisplayStopString.CurrentString
+	ST ConvDINT
+
+(** ModBus_ValueWord [106]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[106]
+
+(** ModBus_ValueWord [105]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[105]
+
+(**  **)
+(**  **)
+(**  **)
+(** {* Current Stopstring value sent to display *} **)
+(** ConvDINT := DisplayStopString.CurrentValue; **)
+	(* assign - Stmt *)
+	LD DisplayStopString.CurrentValue
+	ST ConvDINT
+
+(** ModBus_ValueWord [108]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[108]
+
+(** ModBus_ValueWord [107]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[107]
+
+(**  **)
+(**  **)
+(**  **)
+(** {*Vehicle ID, sent to Display*} **)
+(** ConvDINT := NDC8.Vehicle.VehicleID; **)
+	(* assign - Stmt *)
+	LD NDC8.Vehicle.VehicleID
+	ST ConvDINT
+
+(** ModBus_ValueWord [112]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[112]
+
+(** ModBus_ValueWord [111]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[111]
+
+(**  **)
+(**  **)
+(** {*Current order mode, sent to Display*} **)
+(** ModBus_ValueWord [1]:=Dint_to_word(NDC8.Automatic.CurrentOrderMode); **)
+	(* assign - Stmt *)
+	LD NDC8.Automatic.CurrentOrderMode
+	Dint_to_word 
+	ST ModBus_ValueWord[1]
+
+(**  **)
+(** {*Current nav mode, sent to Display*} **)
+(** ModBus_ValueWord [2]:=Dint_to_word(NDC8.VehicleNavigator.NavMethod); **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleNavigator.NavMethod
+	Dint_to_word 
+	ST ModBus_ValueWord[2]
+
+(**  **)
+(**  **)
+(** {*CVC600 -> PLC HandShake Data*} **)
+(** ModBus_ValueWord [51] := PLC_TX_Word1; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word1
+	ST ModBus_ValueWord[51]
+
+(** ModBus_ValueWord [52] := PLC_TX_Word2; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word2
+	ST ModBus_ValueWord[52]
+
+(** ModBus_ValueWord [53] := PLC_TX_Word3; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word3
+	ST ModBus_ValueWord[53]
+
+(** ModBus_ValueWord [54] := PLC_TX_Word4; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word4
+	ST ModBus_ValueWord[54]
+
+(** ModBus_ValueWord [55] := PLC_TX_Word5; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word5
+	ST ModBus_ValueWord[55]
+
+(** ModBus_ValueWord [56] := PLC_TX_Word6; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word6
+	ST ModBus_ValueWord[56]
+
+(** ModBus_ValueWord [57] := PLC_TX_Word7_STr_Vecl; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word7_STr_Vecl
+	ST ModBus_ValueWord[57]
+
+(** ModBus_ValueWord [58] := PLC_TX_Word8_STr_Seg; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word8_STr_Seg
+	ST ModBus_ValueWord[58]
+
+(** ModBus_ValueWord [59] := PLC_TX_Word9_STr_Pnt; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word9_STr_Pnt
+	ST ModBus_ValueWord[59]
+
+(** ModBus_ValueWord [60] := PLC_TX_Word10_STr_BatV; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word10_STr_BatV
+	ST ModBus_ValueWord[60]
+
+(** ModBus_ValueWord [61] := PLC_TX_Word11_STr_Temp; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word11_STr_Temp
+	ST ModBus_ValueWord[61]
+
+(** ModBus_ValueWord [62] := PLC_TX_Word12_STr_BatD; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word12_STr_BatD
+	ST ModBus_ValueWord[62]
+
+(** ModBus_ValueWord [63] := PLC_TX_Word13_STr_Err; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word13_STr_Err
+	ST ModBus_ValueWord[63]
+
+(** ModBus_ValueWord [64] := PLC_TX_Word14_STr_BCD3; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word14_STr_BCD3
+	ST ModBus_ValueWord[64]
+
+(** ModBus_ValueWord [65] := PLC_TX_Word15_STr_BCD2; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word15_STr_BCD2
+	ST ModBus_ValueWord[65]
+
+(** ModBus_ValueWord [66] := PLC_TX_Word16_STr_BCD1; **)
+	(* assign - Stmt *)
+	LD PLC_TX_Word16_STr_BCD1
+	ST ModBus_ValueWord[66]
+
+(**  **)
+(**  **)
+(** {*PLC -> CVC600 HandShake Data*} **)
+(** ModBus_ValueWord [71] := PLC_RX_Word1; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word1
+	ST ModBus_ValueWord[71]
+
+(** ModBus_ValueWord [72] := PLC_RX_Word2; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word2
+	ST ModBus_ValueWord[72]
+
+(** ModBus_ValueWord [73] := PLC_RX_Word3; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word3
+	ST ModBus_ValueWord[73]
+
+(** ModBus_ValueWord [74] := PLC_RX_Word4; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word4
+	ST ModBus_ValueWord[74]
+
+(** ModBus_ValueWord [75] := PLC_RX_Word5; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word5
+	ST ModBus_ValueWord[75]
+
+(** ModBus_ValueWord [76] := PLC_RX_Word6; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word6
+	ST ModBus_ValueWord[76]
+
+(** ModBus_ValueWord [77] := PLC_RX_Word7_STw_BCD3; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word7_STw_BCD3
+	ST ModBus_ValueWord[77]
+
+(** ModBus_ValueWord [78] := PLC_RX_Word8_STw_BCD2; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word8_STw_BCD2
+	ST ModBus_ValueWord[78]
+
+(** ModBus_ValueWord [79] := PLC_RX_Word9_STw_BCD1; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word9_STw_BCD1
+	ST ModBus_ValueWord[79]
+
+(** ModBus_ValueWord [80] := PLC_RX_Word10_STw_ILEr; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word10_STw_ILEr
+	ST ModBus_ValueWord[80]
+
+(** ModBus_ValueWord [81] := PLC_RX_Word11_Ins_Pno; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word11_Ins_Pno
+	ST ModBus_ValueWord[81]
+
+(** ModBus_ValueWord [82] := PLC_RX_Word12_STw_Pint; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word12_STw_Pint
+	ST ModBus_ValueWord[82]
+
+(** ModBus_ValueWord [83] := PLC_RX_Word13_Ins_Ano; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word13_Ins_Ano
+	ST ModBus_ValueWord[83]
+
+(** ModBus_ValueWord [84] := PLC_RX_Word14_BMS_2; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word14_BMS_2
+	ST ModBus_ValueWord[84]
+
+(** ModBus_ValueWord [85] := PLC_RX_Word15_BMS_3; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word15_BMS_3
+	ST ModBus_ValueWord[85]
+
+(** ModBus_ValueWord [86] := PLC_RX_Word16_BMS_BatV; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word16_BMS_BatV
+	ST ModBus_ValueWord[86]
+
+(** ModBus_ValueWord [87] := PLC_RX_Word17_BMS_BatT; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word17_BMS_BatT
+	ST ModBus_ValueWord[87]
+
+(** ModBus_ValueWord [88] := PLC_RX_Word18_BMS_BatC; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word18_BMS_BatC
+	ST ModBus_ValueWord[88]
+
+(** ModBus_ValueWord [89] := PLC_RX_Word19_BMS_BatA; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word19_BMS_BatA
+	ST ModBus_ValueWord[89]
+
+(** ModBus_ValueWord [90] := PLC_RX_Word20_PLC_ErrD; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word20_PLC_ErrD
+	ST ModBus_ValueWord[90]
+
+(** ModBus_ValueWord [91] := PLC_RX_Word21_BMS_Main; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word21_BMS_Main
+	ST ModBus_ValueWord[91]
+
+(** ModBus_ValueWord [92] := PLC_RX_Word22_BMS_Chan; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word22_BMS_Chan
+	ST ModBus_ValueWord[92]
+
+(** ModBus_ValueWord [93] := PLC_RX_Word23_BMS_ID4L; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word23_BMS_ID4L
+	ST ModBus_ValueWord[93]
+
+(** ModBus_ValueWord [94] := PLC_RX_Word24_BMS_ID4H; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word24_BMS_ID4H
+	ST ModBus_ValueWord[94]
+
+(** ModBus_ValueWord [95] := PLC_RX_Word25; **)
+	(* assign - Stmt *)
+	LD PLC_RX_Word25
+	ST ModBus_ValueWord[95]
+
+(**  **)
+(** {*Vehicle info, sent to Display *} **)
+(** ConvDINT := NDC8.Position.X; **)
+	(* assign - Stmt *)
+	LD NDC8.Position.X
+	ST ConvDINT
+
+(** ModBus_ValueWord [114]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[114]
+
+(** ModBus_ValueWord [113]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[113]
+
+(**  **)
+(** ConvDINT := NDC8.Position.Y; **)
+	(* assign - Stmt *)
+	LD NDC8.Position.Y
+	ST ConvDINT
+
+(** ModBus_ValueWord [116]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[116]
+
+(** ModBus_ValueWord [115]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[115]
+
+(**  **)
+(** ConvDINT := NDC8.Position.Angle; **)
+	(* assign - Stmt *)
+	LD NDC8.Position.Angle
+	ST ConvDINT
+
+(** ModBus_ValueWord [118]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[118]
+
+(** ModBus_ValueWord [117]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[117]
+
+(**  **)
+(** ConvDINT := NDC8.LayoutPosition.Point; **)
+	(* assign - Stmt *)
+	LD NDC8.LayoutPosition.Point
+	ST ConvDINT
+
+(** ModBus_ValueWord [122]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[122]
+
+(** ModBus_ValueWord [121]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[121]
+
+(**  **)
+(** ConvDINT := NDC8.LayoutPosition.Segment; **)
+	(* assign - Stmt *)
+	LD NDC8.LayoutPosition.Segment
+	ST ConvDINT
+
+(** ModBus_ValueWord [124]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[124]
+
+(** ModBus_ValueWord [123]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[123]
+
+(**  **)
+(** ConvDINT := NDC8.LayoutPosition.Distance; **)
+	(* assign - Stmt *)
+	LD NDC8.LayoutPosition.Distance
+	ST ConvDINT
+
+(** ModBus_ValueWord [126]:=ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[126]
+
+(** ModBus_ValueWord [125]:=ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[125]
+
+(**  **)
+(**  **)
+(** ConvDINT := DWORD_TO_DINT(StopWord); **)
+	(* assign - Stmt *)
+	LD StopWord
+	DWORD_TO_DINT 
+	ST ConvDINT
+
+(** ModBus_ValueWord [132] := ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[132]
+
+(** ModBus_ValueWord [131] := ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[131]
+
+(**  **)
+(** ConvDINT := DWORD_TO_DINT(StopWord2); **)
+	(* assign - Stmt *)
+	LD StopWord2
+	DWORD_TO_DINT 
+	ST ConvDINT
+
+(** ModBus_ValueWord [134] := ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[134]
+
+(** ModBus_ValueWord [133] := ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[133]
+
+(**  **)
+(** ConvDINT := NDC8.UserDefined.Integer32_60_LS2000_Attached_M; **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_60_LS2000_Attached_M
+	ST ConvDINT
+
+(** ModBus_ValueWord [142] := ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[142]
+
+(** ModBus_ValueWord [141] := ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[141]
+
+(**  **)
+(** ConvDINT := NDC8.UserDefined.Integer32_59_LS2000_Attached_H; **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_59_LS2000_Attached_H
+	ST ConvDINT
+
+(** ModBus_ValueWord [144] := ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[144]
+
+(** ModBus_ValueWord [143] := ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[143]
+
+(**  **)
+(** ConvDINT := NDC8.UserDefined.Integer32_58_LS2000_Attached_D; **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_58_LS2000_Attached_D
+	ST ConvDINT
+
+(** ModBus_ValueWord [146] := ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[146]
+
+(** ModBus_ValueWord [145] := ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[145]
+
+(**  **)
+(** ConvDINT := NDC8.UserDefined.Integer32_55_TravelDistance; **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_55_TravelDistance
+	ST ConvDINT
+
+(** ModBus_ValueWord [148] := ConvWord2; **)
+	(* assign - Stmt *)
+	LD ConvWord2
+	ST ModBus_ValueWord[148]
+
+(** ModBus_ValueWord [147] := ConvWord; **)
+	(* assign - Stmt *)
+	LD ConvWord
+	ST ModBus_ValueWord[147]
+
+(**  **)
+(**  **)
+(**  **)
+(** ModBus_ValueWord [3] := Input.Display_BatteryLevel; **)
+	(* assign - Stmt *)
+	LD Input.Display_BatteryLevel
+	ST ModBus_ValueWord[3]
+
+(** ModBus_ValueWord [4] := Input.Display_Temperature; **)
+	(* assign - Stmt *)
+	LD Input.Display_Temperature
+	ST ModBus_ValueWord[4]
+
+(**  **)
+(** Temp := WORD_TO_INT(g_ErrorCode); **)
+	(* assign - Stmt *)
+	LD g_ErrorCode
+	WORD_TO_INT 
+	ST Temp
+
+(**  **)
+(** ModBus_ValueWord [5] := INT_TO_WORD(Temp); **)
+	(* assign - Stmt *)
+	LD Temp
+	INT_TO_WORD 
+	ST ModBus_ValueWord[5]
+
+(**  **)
+(** ModBus_ValueWord [6] := DINT_TO_WORD(NDC8.Manual.PlcSteerMode); **)
+	(* assign - Stmt *)
+	LD NDC8.Manual.PlcSteerMode
+	Dint_to_word 
+	ST ModBus_ValueWord[6]
+
+(**  **)
+(**  **)
+(** {*System Manager connection, sent to Display*} **)
+(** ModBus_ValueBOOL [1]:= NDC8.Master.MasterLinkUp; **)
+	(* assign - Stmt *)
+	LD NDC8.Master.MasterLinkUp
+	ST ModBus_ValueBOOL[1]
+
+(**  **)
+(** if NDC8.LayoutPosition.Point <> 0 or NDC8.LayoutPosition.Segment <> 0 then **)
+	(* if - Cond *)
+	LD NDC8.LayoutPosition.Point
+	NE 0
+	OR ( NDC8.LayoutPosition.Segment
+		NE 0
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ModBus_ValueBOOL [2] := true; **)
+		(* assign - Stmt *)
+		LD true
+		ST ModBus_ValueBOOL[2]
+
+		JMP ODK_END_IF_000000000000001
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000001_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	ModBus_ValueBOOL [2] := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST ModBus_ValueBOOL[2]
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000001:
+
+(** 	 **)
+(** if NDC8.LayoutPosition.InSystem = true then **)
+	(* if - Cond *)
+	LD NDC8.LayoutPosition.InSystem
+	EQ true
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ModBus_ValueBOOL [3] := true; **)
+		(* assign - Stmt *)
+		LD true
+		ST ModBus_ValueBOOL[3]
+
+		JMP ODK_END_IF_000000000000002
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000002_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	ModBus_ValueBOOL [3] := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST ModBus_ValueBOOL[3]
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000002:
+
+(**  **)
+(** if NDC8.Mcd.Button3 = true then **)
+	(* if - Cond *)
+	LD NDC8.Mcd.Button3
+	EQ true
+	JMPCN ODK_SKIP_000000000000003_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ModBus_ValueBOOL [4] := true; **)
+		(* assign - Stmt *)
+		LD true
+		ST ModBus_ValueBOOL[4]
+
+		JMP ODK_END_IF_000000000000003
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000003_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	ModBus_ValueBOOL [4] := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST ModBus_ValueBOOL[4]
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000003:
+
+(**  **)
+(** ModBus_ValueBOOL [5] := StopFindSync; **)
+	(* assign - Stmt *)
+	LD StopFindSync
+	ST ModBus_ValueBOOL[5]
+
+(**  **)
+(** if StopWord <> 0 or StopWord2 <> 0 then **)
+	(* if - Cond *)
+	LD StopWord
+	NE 0
+	OR ( StopWord2
+		NE 0
+	)
+	JMPCN ODK_SKIP_000000000000004_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ModBus_ValueBOOL [6] := true; **)
+		(* assign - Stmt *)
+		LD true
+		ST ModBus_ValueBOOL[6]
+
+		JMP ODK_END_IF_000000000000004
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000004_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	ModBus_ValueBOOL [6] := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST ModBus_ValueBOOL[6]
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000004:
+
+(**  **)
+(**  **)
+(** if g_ErrorCode <> 0 then **)
+	(* if - Cond *)
+	LD g_ErrorCode
+	NE 0
+	JMPCN ODK_SKIP_000000000000005_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ModBus_ValueBOOL [7] := true; **)
+		(* assign - Stmt *)
+		LD true
+		ST ModBus_ValueBOOL[7]
+
+		JMP ODK_END_IF_000000000000005
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000005_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	ModBus_ValueBOOL [7] := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST ModBus_ValueBOOL[7]
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000005:
+
+(**  **)
+(** {*Display IO*} **)
+(**  **)
+(** {*CVC600 Input*} **)
+(**  **)
+(** ModBus_ValueBOOL [101] := NDC8.SDIO.DigitalInput1_BTN_STR; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput1_BTN_STR
+	ST ModBus_ValueBOOL[101]
+
+(** ModBus_ValueBOOL [102] := NDC8.SDIO.DigitalInput2_BTN_RST; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput2_BTN_RST
+	ST ModBus_ValueBOOL[102]
+
+(** ModBus_ValueBOOL [103] := NDC8.SDIO.DigitalInput3_BMP_O1; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput3_BMP_O1
+	ST ModBus_ValueBOOL[103]
+
+(** ModBus_ValueBOOL [104] := NDC8.SDIO.DigitalInput4_BMP_O2; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput4_BMP_O2
+	ST ModBus_ValueBOOL[104]
+
+(** ModBus_ValueBOOL [105] := NDC8.SDIO.DigitalInput5_BTN_BRK; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput5_BTN_BRK
+	ST ModBus_ValueBOOL[105]
+
+(** ModBus_ValueBOOL [106] := NDC8.SDIO.DigitalInput6; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput6
+	ST ModBus_ValueBOOL[106]
+
+(** ModBus_ValueBOOL [107] := NDC8.SDIO.DigitalInput7; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput7
+	ST ModBus_ValueBOOL[107]
+
+(** ModBus_ValueBOOL [108] := NDC8.SDIO.DigitalInput8_BMP_E; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput8_BMP_E
+	ST ModBus_ValueBOOL[108]
+
+(**  **)
+(** ModBus_ValueBOOL [111] := NDC8.SDIO.DigitalInput9; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput9
+	ST ModBus_ValueBOOL[111]
+
+(** ModBus_ValueBOOL [112] := NDC8.SDIO.DigitalInput10; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput10
+	ST ModBus_ValueBOOL[112]
+
+(** ModBus_ValueBOOL [113] := NDC8.SDIO.DigitalInput11; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput11
+	ST ModBus_ValueBOOL[113]
+
+(** ModBus_ValueBOOL [114] := NDC8.SDIO.DigitalInput12_EMO; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput12_EMO
+	ST ModBus_ValueBOOL[114]
+
+(**  **)
+(** {*KL1488*} **)
+(**  **)
+(** ModBus_ValueBOOL [141] := NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L
+	ST ModBus_ValueBOOL[141]
+
+(** ModBus_ValueBOOL [142] := NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R
+	ST ModBus_ValueBOOL[142]
+
+(** ModBus_ValueBOOL [143] := NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L
+	ST ModBus_ValueBOOL[143]
+
+(** ModBus_ValueBOOL [144] := NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R
+	ST ModBus_ValueBOOL[144]
+
+(** ModBus_ValueBOOL [145] := NDC8.CAN_IO_3.DigitalInput5; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput5
+	ST ModBus_ValueBOOL[145]
+
+(** ModBus_ValueBOOL [146] := NDC8.CAN_IO_3.DigitalInput6; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput6
+	ST ModBus_ValueBOOL[146]
+
+(** ModBus_ValueBOOL [147] := NDC8.CAN_IO_3.DigitalInput7; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput7
+	ST ModBus_ValueBOOL[147]
+
+(** ModBus_ValueBOOL [148] := NDC8.CAN_IO_3.DigitalInput8; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput8
+	ST ModBus_ValueBOOL[148]
+
+(**  **)
+(** ModBus_ValueBOOL [151] := NDC8.CAN_IO_3.DigitalInput9_AreaF_IN1; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput9_AreaF_IN1
+	ST ModBus_ValueBOOL[151]
+
+(** ModBus_ValueBOOL [152] := NDC8.CAN_IO_3.DigitalInput10_AreaF_IN2; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput10_AreaF_IN2
+	ST ModBus_ValueBOOL[152]
+
+(** ModBus_ValueBOOL [153] := NDC8.CAN_IO_3.DigitalInput11; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput11
+	ST ModBus_ValueBOOL[153]
+
+(** ModBus_ValueBOOL [154] := NDC8.CAN_IO_3.DigitalInput12; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput12
+	ST ModBus_ValueBOOL[154]
+
+(** ModBus_ValueBOOL [155] := NDC8.CAN_IO_3.DigitalInput13_AreaR_IN1; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput13_AreaR_IN1
+	ST ModBus_ValueBOOL[155]
+
+(** ModBus_ValueBOOL [156] := NDC8.CAN_IO_3.DigitalInput14_AreaR_IN2; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput14_AreaR_IN2
+	ST ModBus_ValueBOOL[156]
+
+(** ModBus_ValueBOOL [157] := NDC8.CAN_IO_3.DigitalInput15; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput15
+	ST ModBus_ValueBOOL[157]
+
+(** ModBus_ValueBOOL [158] := NDC8.CAN_IO_3.DigitalInput16; **)
+	(* assign - Stmt *)
+	LD NDC8.CAN_IO_3.DigitalInput16
+	ST ModBus_ValueBOOL[158]
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(** {*CVC600 Output*} **)
+(** if 	INPUT.Auto = TRUE then **)
+	(* if - Cond *)
+	LD Input.Auto
+	EQ true
+	JMPCN ODK_SKIP_000000000000006_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ModBus_ValueBOOL [301] := NDC8.SDIO.AllOK_DigitalOutput1; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.AllOK_DigitalOutput1
+		ST ModBus_ValueBOOL[301]
+
+(** 	ModBus_ValueBOOL [302] := NDC8.SDIO.DigitalOutput2_LEDF_L; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.DigitalOutput2_LEDF_L
+		ST ModBus_ValueBOOL[302]
+
+(** 	ModBus_ValueBOOL [303] := NDC8.SDIO.DigitalOutput3_LEDF_R; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.DigitalOutput3_LEDF_R
+		ST ModBus_ValueBOOL[303]
+
+(** 	ModBus_ValueBOOL [304] := NDC8.SDIO.DigitalOutput4_LEDR_L; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.DigitalOutput4_LEDR_L
+		ST ModBus_ValueBOOL[304]
+
+(** 	ModBus_ValueBOOL [305] := NDC8.SDIO.DigitalOutput5_LEDR_R; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.DigitalOutput5_LEDR_R
+		ST ModBus_ValueBOOL[305]
+
+(** 	ModBus_ValueBOOL [306] := NDC8.SDIO.DigitalOutput6_LED_INPOS; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.DigitalOutput6_LED_INPOS
+		ST ModBus_ValueBOOL[306]
+
+(** 	ModBus_ValueBOOL [307] := NDC8.SDIO.DigitalOutput7_LED_STR; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.DigitalOutput7_LED_STR
+		ST ModBus_ValueBOOL[307]
+
+(** 	ModBus_ValueBOOL [308] := NDC8.SDIO.DigitalOutput8_LED_RST; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.DigitalOutput8_LED_RST
+		ST ModBus_ValueBOOL[308]
+
+(**  **)
+(**  **)
+(**  **)
+(** 	ModBus_ValueBOOL [314] := NDC8.SDIO.DigitalOutput12; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.DigitalOutput12
+		ST ModBus_ValueBOOL[314]
+
+(** 	ModBus_ValueBOOL [315] := NDC8.SDIO.DigitalOutput13_PWR_OFF; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.DigitalOutput13_PWR_OFF
+		ST ModBus_ValueBOOL[315]
+
+(** 	ModBus_ValueBOOL [316] := NDC8.SDIO.DigitalOutput14_LED_BRK; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.DigitalOutput14_LED_BRK
+		ST ModBus_ValueBOOL[316]
+
+(** 	ModBus_ValueBOOL [317] := NDC8.SDIO.DigitalOutput15; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.DigitalOutput15
+		ST ModBus_ValueBOOL[317]
+
+(** 	ModBus_ValueBOOL [318] := NDC8.SDIO.DigitalOutput16_Charger; **)
+		(* assign - Stmt *)
+		LD NDC8.SDIO.DigitalOutput16_Charger
+		ST ModBus_ValueBOOL[318]
+
+(**  **)
+(** 	ModBus_ValueBOOL [330] := NDC8.DCD_5.DigitalOutput2_Braker; **)
+		(* assign - Stmt *)
+		LD NDC8.DCD_5.DigitalOutput2_Braker
+		ST ModBus_ValueBOOL[330]
+
+(** 	ModBus_ValueBOOL [331] := NDC8.DCD_7.DigitalOutput2_Braker; **)
+		(* assign - Stmt *)
+		LD NDC8.DCD_7.DigitalOutput2_Braker
+		ST ModBus_ValueBOOL[331]
+
+		JMP ODK_END_IF_000000000000006
+
+(** 	 **)
+(** elsif ForceOutput = TRUE then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000006_000000000000001:
+	LD ForceOutput
+	EQ true
+	JMPCN ODK_SKIP_000000000000006_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	 NDC8.SDIO.DigitalOutput2_LEDF_L :=  ModBus_ValueBOOL [302]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[302]
+		ST NDC8.SDIO.DigitalOutput2_LEDF_L
+
+(** 	 NDC8.SDIO.DigitalOutput3_LEDF_R :=  ModBus_ValueBOOL [303]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[303]
+		ST NDC8.SDIO.DigitalOutput3_LEDF_R
+
+(** 	 NDC8.SDIO.DigitalOutput4_LEDR_L :=  ModBus_ValueBOOL [304]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[304]
+		ST NDC8.SDIO.DigitalOutput4_LEDR_L
+
+(** 	 NDC8.SDIO.DigitalOutput5_LEDR_R :=  ModBus_ValueBOOL [305]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[305]
+		ST NDC8.SDIO.DigitalOutput5_LEDR_R
+
+(** 	 NDC8.SDIO.DigitalOutput6_LED_INPOS :=  ModBus_ValueBOOL [306]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[306]
+		ST NDC8.SDIO.DigitalOutput6_LED_INPOS
+
+(** 	 NDC8.SDIO.DigitalOutput7_LED_STR :=  ModBus_ValueBOOL [307]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[307]
+		ST NDC8.SDIO.DigitalOutput7_LED_STR
+
+(** 	 NDC8.SDIO.DigitalOutput8_LED_RST :=  ModBus_ValueBOOL [308]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[308]
+		ST NDC8.SDIO.DigitalOutput8_LED_RST
+
+(**      **)
+(**      **)
+(**      **)
+(** 	 NDC8.SDIO.DigitalOutput12 :=  ModBus_ValueBOOL [314]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[314]
+		ST NDC8.SDIO.DigitalOutput12
+
+(** 	 NDC8.SDIO.DigitalOutput13_PWR_OFF :=  ModBus_ValueBOOL [315]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[315]
+		ST NDC8.SDIO.DigitalOutput13_PWR_OFF
+
+(** 	 NDC8.SDIO.DigitalOutput14_LED_BRK :=  ModBus_ValueBOOL [316]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[316]
+		ST NDC8.SDIO.DigitalOutput14_LED_BRK
+
+(** 	 NDC8.SDIO.DigitalOutput15 :=  ModBus_ValueBOOL [317]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[317]
+		ST NDC8.SDIO.DigitalOutput15
+
+(** 	 NDC8.SDIO.DigitalOutput16_Charger :=  ModBus_ValueBOOL [318]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[318]
+		ST NDC8.SDIO.DigitalOutput16_Charger
+
+(**      **)
+(** 	 NDC8.DCD_5.DigitalOutput2_Braker :=  ModBus_ValueBOOL [330]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[330]
+		ST NDC8.DCD_5.DigitalOutput2_Braker
+
+(** 	 NDC8.DCD_7.DigitalOutput2_Braker :=  ModBus_ValueBOOL [331]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[331]
+		ST NDC8.DCD_7.DigitalOutput2_Braker
+
+		JMP ODK_END_IF_000000000000006
+
+(**  **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000006_000000000000002:
+	ODK_END_IF_000000000000006:
+
+(**  **)
+(** {*KL2488 Output*} **)
+(** if 	INPUT.Auto = TRUE then **)
+	(* if - Cond *)
+	LD Input.Auto
+	EQ true
+	JMPCN ODK_SKIP_000000000000007_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ModBus_ValueBOOL [341] := NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+		ST ModBus_ValueBOOL[341]
+
+(** 	ModBus_ValueBOOL [342] := NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+		ST ModBus_ValueBOOL[342]
+
+(** 	ModBus_ValueBOOL [343] := NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+		ST ModBus_ValueBOOL[343]
+
+(** 	ModBus_ValueBOOL [344] := NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+		ST ModBus_ValueBOOL[344]
+
+(** 	ModBus_ValueBOOL [345] := NDC8.CAN_IO_3.DigitalOutput5; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput5
+		ST ModBus_ValueBOOL[345]
+
+(** 	ModBus_ValueBOOL [346] := NDC8.CAN_IO_3.DigitalOutput6; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput6
+		ST ModBus_ValueBOOL[346]
+
+(** 	ModBus_ValueBOOL [347] := NDC8.CAN_IO_3.DigitalOutput7; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput7
+		ST ModBus_ValueBOOL[347]
+
+(** 	ModBus_ValueBOOL [348] := NDC8.CAN_IO_3.DigitalOutput8; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput8
+		ST ModBus_ValueBOOL[348]
+
+(** 	 **)
+(** 	ModBus_ValueBOOL [351] := NDC8.CAN_IO_3.DigitalOutput9_AreaF_SW1; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput9_AreaF_SW1
+		ST ModBus_ValueBOOL[351]
+
+(** 	ModBus_ValueBOOL [352] := NDC8.CAN_IO_3.DigitalOutput10_AreaF_SW2; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput10_AreaF_SW2
+		ST ModBus_ValueBOOL[352]
+
+(** 	ModBus_ValueBOOL [353] := NDC8.CAN_IO_3.DigitalOutput11; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput11
+		ST ModBus_ValueBOOL[353]
+
+(** 	ModBus_ValueBOOL [354] := NDC8.CAN_IO_3.DigitalOutput12; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput12
+		ST ModBus_ValueBOOL[354]
+
+(** 	ModBus_ValueBOOL [355] := NDC8.CAN_IO_3.DigitalOutput13_AreaR_SW1; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput13_AreaR_SW1
+		ST ModBus_ValueBOOL[355]
+
+(** 	ModBus_ValueBOOL [356] := NDC8.CAN_IO_3.DigitalOutput14_AreaR_SW2; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput14_AreaR_SW2
+		ST ModBus_ValueBOOL[356]
+
+(** 	ModBus_ValueBOOL [357] := NDC8.CAN_IO_3.DigitalOutput15; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput15
+		ST ModBus_ValueBOOL[357]
+
+(** 	ModBus_ValueBOOL [358] := NDC8.CAN_IO_3.DigitalOutput16; **)
+		(* assign - Stmt *)
+		LD NDC8.CAN_IO_3.DigitalOutput16
+		ST ModBus_ValueBOOL[358]
+
+		JMP ODK_END_IF_000000000000007
+
+(** elsif ForceOutput = TRUE then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000007_000000000000001:
+	LD ForceOutput
+	EQ true
+	JMPCN ODK_SKIP_000000000000007_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := ModBus_ValueBOOL [341]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[341]
+		ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 	NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := ModBus_ValueBOOL [342]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[342]
+		ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 	NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := ModBus_ValueBOOL [343]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[343]
+		ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 	NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := ModBus_ValueBOOL [344]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[344]
+		ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+(** 	NDC8.CAN_IO_3.DigitalOutput5 := ModBus_ValueBOOL [345]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[345]
+		ST NDC8.CAN_IO_3.DigitalOutput5
+
+(** 	NDC8.CAN_IO_3.DigitalOutput6 := ModBus_ValueBOOL [346]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[346]
+		ST NDC8.CAN_IO_3.DigitalOutput6
+
+(** 	NDC8.CAN_IO_3.DigitalOutput7 := ModBus_ValueBOOL [347]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[347]
+		ST NDC8.CAN_IO_3.DigitalOutput7
+
+(** 	NDC8.CAN_IO_3.DigitalOutput8 := ModBus_ValueBOOL [348]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[348]
+		ST NDC8.CAN_IO_3.DigitalOutput8
+
+(** 	 **)
+(** 	NDC8.CAN_IO_3.DigitalOutput9_AreaF_SW1 := ModBus_ValueBOOL [351]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[351]
+		ST NDC8.CAN_IO_3.DigitalOutput9_AreaF_SW1
+
+(** 	NDC8.CAN_IO_3.DigitalOutput10_AreaF_SW2 := ModBus_ValueBOOL [352]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[352]
+		ST NDC8.CAN_IO_3.DigitalOutput10_AreaF_SW2
+
+(** 	NDC8.CAN_IO_3.DigitalOutput11 := ModBus_ValueBOOL [353]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[353]
+		ST NDC8.CAN_IO_3.DigitalOutput11
+
+(** 	NDC8.CAN_IO_3.DigitalOutput12 := ModBus_ValueBOOL [354]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[354]
+		ST NDC8.CAN_IO_3.DigitalOutput12
+
+(** 	NDC8.CAN_IO_3.DigitalOutput13_AreaR_SW1 := ModBus_ValueBOOL[355] ; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[355]
+		ST NDC8.CAN_IO_3.DigitalOutput13_AreaR_SW1
+
+(** 	NDC8.CAN_IO_3.DigitalOutput14_AreaR_SW2 := ModBus_ValueBOOL[356] ; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[356]
+		ST NDC8.CAN_IO_3.DigitalOutput14_AreaR_SW2
+
+(** 	NDC8.CAN_IO_3.DigitalOutput15 := ModBus_ValueBOOL [357]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[357]
+		ST NDC8.CAN_IO_3.DigitalOutput15
+
+(** 	NDC8.CAN_IO_3.DigitalOutput16 := ModBus_ValueBOOL [358]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[358]
+		ST NDC8.CAN_IO_3.DigitalOutput16
+
+		JMP ODK_END_IF_000000000000007
+
+(**  **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000007_000000000000002:
+	ODK_END_IF_000000000000007:
+
+(**  **)
+(**  **)
+(** {*-------------------------------------------------------------------------------------------------*} **)
+(**  **)
+(** {*Set order mode*} **)
+(** if ModBus_ValueBOOL [201] then **)
+	(* if - Cond *)
+	LD ModBus_ValueBOOL[201]
+	JMPCN ODK_SKIP_000000000000008_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.Automatic.SetOrderMode := Word_TO_DINT(ModBus_ValueWord [201]); **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[201]
+		Word_TO_DINT 
+		ST NDC8.Automatic.SetOrderMode
+
+(** 	OrderMode(); **)
+		(* call - Stmt *)
+		CAL OrderMode
+
+(** 	if OrderMode.Finished then **)
+		(* if - Cond *)
+		LD OrderMode.Finished
+		JMPCN ODK_SKIP_000000000000009_000000000000001
+
+			(* then - Stmts *)
+
+(** 		ModBus_ValueBOOL [201] := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST ModBus_ValueBOOL[201]
+
+			JMP ODK_END_IF_000000000000009
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000009_000000000000001:
+		ODK_END_IF_000000000000009:
+
+		JMP ODK_END_IF_000000000000008
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000008_000000000000001:
+	ODK_END_IF_000000000000008:
+
+(**  **)
+(** {*Set Nav method*} **)
+(** if ModBus_ValueBOOL [202] then **)
+	(* if - Cond *)
+	LD ModBus_ValueBOOL[202]
+	JMPCN ODK_SKIP_00000000000000A_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.VehicleNavigator.SetNavMethod := Word_TO_DINT(ModBus_ValueWord [202]); **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[202]
+		Word_TO_DINT 
+		ST NDC8.VehicleNavigator.SetNavMethod
+
+(** 	NavMethod(); **)
+		(* call - Stmt *)
+		CAL NavMethod
+
+(** 	if NavMethod.Finished then **)
+		(* if - Cond *)
+		LD NavMethod.Finished
+		JMPCN ODK_SKIP_00000000000000B_000000000000001
+
+			(* then - Stmts *)
+
+(** 		ModBus_ValueBOOL [202] := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST ModBus_ValueBOOL[202]
+
+			JMP ODK_END_IF_00000000000000B
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000B_000000000000001:
+		ODK_END_IF_00000000000000B:
+
+		JMP ODK_END_IF_00000000000000A
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000A_000000000000001:
+	ODK_END_IF_00000000000000A:
+
+(**  **)
+(** {*Trig Blackbox *} **)
+(** if ModBus_ValueBOOL [203] then **)
+	(* if - Cond *)
+	LD ModBus_ValueBOOL[203]
+	JMPCN ODK_SKIP_00000000000000C_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.BlackBox.TrigReason:= 'OPTX2'; **)
+		(* assign - Stmt *)
+		LD 'OPTX2'
+		ST NDC8.BlackBox.TrigReason
+
+(** 	BlackBox(); **)
+		(* call - Stmt *)
+		CAL BlackBox
+
+(** 	if BlackBox.Finished then **)
+		(* if - Cond *)
+		LD BlackBox.Finished
+		JMPCN ODK_SKIP_00000000000000D_000000000000001
+
+			(* then - Stmts *)
+
+(** 		ModBus_ValueBOOL [203] := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST ModBus_ValueBOOL[203]
+
+			JMP ODK_END_IF_00000000000000D
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000D_000000000000001:
+		ODK_END_IF_00000000000000D:
+
+		JMP ODK_END_IF_00000000000000C
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000C_000000000000001:
+	ODK_END_IF_00000000000000C:
+
+(**  **)
+(** {* Set Parameters *} **)
+(** if ModBus_ValueBOOL [209] = TRUE then **)
+	(* if - Cond *)
+	LD ModBus_ValueBOOL[209]
+	EQ true
+	JMPCN ODK_SKIP_00000000000000E_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	ModBus_ValueBOOL [210] := NDC8.UserDefined.Boolean_20_OnlineOrderMode; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Boolean_20_OnlineOrderMode
+		ST ModBus_ValueBOOL[210]
+
+(** 	 **)
+(** 	{* Scanner_x *} **)
+(** 	ConvDINT := NDC8.LS2000.X; **)
+		(* assign - Stmt *)
+		LD NDC8.LS2000.X
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [352]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[352]
+
+(** 	ModBus_ValueWord [351]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[351]
+
+(** 	 **)
+(** 	{* Scanner_y *} **)
+(** 	ConvDINT := NDC8.LS2000.Y; **)
+		(* assign - Stmt *)
+		LD NDC8.LS2000.Y
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [354]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[354]
+
+(** 	ModBus_ValueWord [353]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[353]
+
+(** 	 **)
+(** 	 **)
+(** 	{* Scanner_t *} **)
+(** 	Angle_REAL := NDC8.LS2000.Angle * 100.0; **)
+		(* assign - Stmt *)
+		LD NDC8.LS2000.Angle
+		MUL 100.0
+		ST Angle_REAL
+
+(** 	Angle_DINT := REAL_TO_DINT(Angle_REAL); **)
+		(* assign - Stmt *)
+		LD Angle_REAL
+		REAL_TO_DINT 
+		ST Angle_DINT
+
+(** 	 **)
+(** 	ConvDINT := Angle_DINT; **)
+		(* assign - Stmt *)
+		LD Angle_DINT
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [356]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[356]
+
+(** 	ModBus_ValueWord [355]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[355]
+
+(** 	 **)
+(** 	{* Max Speed *} **)
+(** 	ConvDINT := NDC8.Vehicle.MaxSpeed; **)
+		(* assign - Stmt *)
+		LD NDC8.Vehicle.MaxSpeed
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [358]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[358]
+
+(** 	ModBus_ValueWord [357]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[357]
+
+(** 	 **)
+(** 	 **)
+(** 	{* Enc1Scal *} **)
+(** 	ConvUDINT := NDC8.DCD_6.SteerEncScale; **)
+		(* assign - Stmt *)
+		LD NDC8.DCD_6.SteerEncScale
+		ST ConvUDINT
+
+(** 	ModBus_ValueWord [362]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[362]
+
+(** 	ModBus_ValueWord [361]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[361]
+
+(** 	 **)
+(** 	 **)
+(** 	{* Enc1Offs *} **)
+(** 	ConvDINT := INT_TO_DINT(NDC8.DCD_6.SteerEncOffset); **)
+		(* assign - Stmt *)
+		LD NDC8.DCD_6.SteerEncOffset
+		INT_TO_DINT 
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [364]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[364]
+
+(** 	ModBus_ValueWord [363]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[363]
+
+(** 	 **)
+(** 	{* Enc3Scal *} **)
+(** 	ConvUDINT := NDC8.DCD_8.SteerEncScale; **)
+		(* assign - Stmt *)
+		LD NDC8.DCD_8.SteerEncScale
+		ST ConvUDINT
+
+(** 	ModBus_ValueWord [366]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[366]
+
+(** 	ModBus_ValueWord [365]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[365]
+
+(** 	 **)
+(** 	 **)
+(** 	{* Enc3Offs *} **)
+(** 	ConvDINT := INT_TO_DINT(NDC8.DCD_8.SteerEncOffset); **)
+		(* assign - Stmt *)
+		LD NDC8.DCD_8.SteerEncOffset
+		INT_TO_DINT 
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [368]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[368]
+
+(** 	ModBus_ValueWord [367]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[367]
+
+(** 	 **)
+(** 	 **)
+(** 	{* Enc2Scal *} **)
+(** 	ConvUDINT := NDC8.DCD_5.DriveEncScale; **)
+		(* assign - Stmt *)
+		LD NDC8.DCD_5.DriveEncScale
+		ST ConvUDINT
+
+(** 	ModBus_ValueWord [372]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[372]
+
+(** 	ModBus_ValueWord [371]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[371]
+
+(** 	 **)
+(** 	 **)
+(** 	{* Enc4Scal *} **)
+(** 	ConvUDINT := NDC8.DCD_7.DriveEncScale; **)
+		(* assign - Stmt *)
+		LD NDC8.DCD_7.DriveEncScale
+		ST ConvUDINT
+
+(** 	ModBus_ValueWord [374]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[374]
+
+(** 	ModBus_ValueWord [373]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[373]
+
+(** 	 **)
+(** 	 **)
+(** 	{* Batt Low Voltage *} **)
+(** 	ConvDINT := NDC8.UserDefined.Integer32_50_BattLowVol; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_50_BattLowVol
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [376]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[376]
+
+(** 	ModBus_ValueWord [375]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[375]
+
+(** 	 **)
+(** 	{* Charge StopTolerance*} **)
+(** 	ConvDINT := NDC8.Vehicle.StopTolerance; **)
+		(* assign - Stmt *)
+		LD NDC8.Vehicle.StopTolerance
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [398]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[398]
+
+(** 	ModBus_ValueWord [397]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[397]
+
+(**  **)
+(** 	ModBus_ValueBOOL [209] := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST ModBus_ValueBOOL[209]
+
+		JMP ODK_END_IF_00000000000000E
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000E_000000000000001:
+	ODK_END_IF_00000000000000E:
+
+(**  **)
+(** if ModBus_ValueBOOL [208] = TRUE then **)
+	(* if - Cond *)
+	LD ModBus_ValueBOOL[208]
+	EQ true
+	JMPCN ODK_SKIP_00000000000000F_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	NDC8.UserDefined.Boolean_20_OnlineOrderMode := ModBus_ValueBOOL [210]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[210]
+		ST NDC8.UserDefined.Boolean_20_OnlineOrderMode
+
+(** 	 **)
+(** 	{* Scanner_x *} **)
+(** 	ConvWord2 := ModBus_ValueWord [352]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[352]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [351]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[351]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.LS2000.X := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.LS2000.X
+
+(** 	 **)
+(** 	{* Scanner_y *} **)
+(** 	ConvWord2 := ModBus_ValueWord [354]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[354]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [353]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[353]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.LS2000.Y := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.LS2000.Y
+
+(** 	 **)
+(** 	{* Scanner_t *} **)
+(** 	ConvWord2 := ModBus_ValueWord [356]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[356]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [355]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[355]
+		ST ConvWord
+
+(**  **)
+(** 	Angle_DINT := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST Angle_DINT
+
+(** 	 **)
+(** 	Angle_REAL := DINT_TO_REAL(Angle_DINT) / 100.0; **)
+		(* assign - Stmt *)
+		LD Angle_DINT
+		DINT_TO_REAL 
+		DIV 100.0
+		ST Angle_REAL
+
+(** 	 **)
+(** 	NDC8.LS2000.Angle := Angle_REAL; **)
+		(* assign - Stmt *)
+		LD Angle_REAL
+		ST NDC8.LS2000.Angle
+
+(** 	 **)
+(** 	 **)
+(** 	{* Max Speed *} **)
+(** 	ConvWord2 := ModBus_ValueWord [358]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[358]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [357]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[357]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.Vehicle.MaxSpeed := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.Vehicle.MaxSpeed
+
+(** 	 **)
+(** 	 **)
+(** 	{* Enc1Scal *} **)
+(** 	ConvWord2 := ModBus_ValueWord [362]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[362]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [361]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[361]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.DCD_6.SteerEncScale := ConvUDINT; **)
+		(* assign - Stmt *)
+		LD ConvUDINT
+		ST NDC8.DCD_6.SteerEncScale
+
+(** 	 **)
+(** 	{* Enc1Offs *} **)
+(** 	ConvWord2 := ModBus_ValueWord [364]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[364]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [363]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[363]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.DCD_6.SteerEncOffset := DINT_TO_INT(ConvDINT); **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		DINT_TO_INT 
+		ST NDC8.DCD_6.SteerEncOffset
+
+(** 	 **)
+(** 	{* Enc3Scal *} **)
+(** 	ConvWord2 := ModBus_ValueWord [366]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[366]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [365]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[365]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.DCD_8.SteerEncScale := ConvUDINT; **)
+		(* assign - Stmt *)
+		LD ConvUDINT
+		ST NDC8.DCD_8.SteerEncScale
+
+(** 	 **)
+(** 	{* Enc3Offs *} **)
+(** 	ConvWord2 := ModBus_ValueWord [368]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[368]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [367]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[367]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.DCD_8.SteerEncOffset := DINT_TO_INT(ConvDINT); **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		DINT_TO_INT 
+		ST NDC8.DCD_8.SteerEncOffset
+
+(** 	 **)
+(** 	{* Enc2Scal *} **)
+(** 	ConvWord2 := ModBus_ValueWord [372]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[372]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [371]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[371]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.DCD_5.DriveEncScale := ConvUDINT; **)
+		(* assign - Stmt *)
+		LD ConvUDINT
+		ST NDC8.DCD_5.DriveEncScale
+
+(** 	 **)
+(** 	{* Enc4Scal *} **)
+(** 	ConvWord2 := ModBus_ValueWord [374]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[374]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [373]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[373]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.DCD_7.DriveEncScale := ConvUDINT; **)
+		(* assign - Stmt *)
+		LD ConvUDINT
+		ST NDC8.DCD_7.DriveEncScale
+
+(** 	 **)
+(** 	{* Batt Low Voltage *} **)
+(** 	ConvWord2 := ModBus_ValueWord [376]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[376]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [375]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[375]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.UserDefined.Integer32_50_BattLowVol := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.UserDefined.Integer32_50_BattLowVol
+
+(** 	 **)
+(** 	 **)
+(** 	{* Charge StopTolerance*} **)
+(** 	ConvWord2 := ModBus_ValueWord [398]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[398]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [397]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[397]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.Vehicle.StopTolerance := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.Vehicle.StopTolerance
+
+(** 	 **)
+(** 	 **)
+(** 	ModBus_ValueBOOL [208] := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST ModBus_ValueBOOL[208]
+
+		JMP ODK_END_IF_00000000000000F
+
+(**  **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000F_000000000000001:
+	ODK_END_IF_00000000000000F:
+
+(**  **)
+(** if ModBus_ValueBOOL [211] = TRUE then **)
+	(* if - Cond *)
+	LD ModBus_ValueBOOL[211]
+	EQ true
+	JMPCN ODK_SKIP_00000000000000G_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	{* MCD Low Speed *} **)
+(** 	ConvWord2 := ModBus_ValueWord [382]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[382]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [381]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[381]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.Mcd.McdLowSpeed := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.Mcd.McdLowSpeed
+
+(** 	 **)
+(** 	{* MCD Low Speed *} **)
+(** 	ConvWord2 := ModBus_ValueWord [384]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[384]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [383]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[383]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.Mcd.McdHighSpeed := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.Mcd.McdHighSpeed
+
+(**  **)
+(** 	ModBus_ValueBOOL [211] := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST ModBus_ValueBOOL[211]
+
+		JMP ODK_END_IF_00000000000000G
+
+(** End_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000G_000000000000001:
+	ODK_END_IF_00000000000000G:
+
+(**  **)
+(** if ModBus_ValueBOOL [212] = TRUE then **)
+	(* if - Cond *)
+	LD ModBus_ValueBOOL[212]
+	EQ true
+	JMPCN ODK_SKIP_00000000000000H_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	{* MCD Low Speed *} **)
+(** 	ConvDINT := NDC8.Mcd.McdLowSpeed; **)
+		(* assign - Stmt *)
+		LD NDC8.Mcd.McdLowSpeed
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [382]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[382]
+
+(** 	ModBus_ValueWord [381]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[381]
+
+(** 	 **)
+(** 	{* MCD High Speed *} **)
+(** 	ConvDINT := NDC8.Mcd.McdHighSpeed; **)
+		(* assign - Stmt *)
+		LD NDC8.Mcd.McdHighSpeed
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [384]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[384]
+
+(** 	ModBus_ValueWord [383]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[383]
+
+(** 	 **)
+(** 	ModBus_ValueBOOL [212] := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST ModBus_ValueBOOL[212]
+
+		JMP ODK_END_IF_00000000000000H
+
+(** End_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000H_000000000000001:
+	ODK_END_IF_00000000000000H:
+
+(**  **)
+(** if ModBus_ValueBOOL [213] = TRUE then **)
+	(* if - Cond *)
+	LD ModBus_ValueBOOL[213]
+	EQ true
+	JMPCN ODK_SKIP_00000000000000I_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	NDC8.UserDefined.Integer32_55_TravelDistance := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST NDC8.UserDefined.Integer32_55_TravelDistance
+
+(** 	ModBus_ValueBOOL [213] := FALSE; **)
+		(* assign - Stmt *)
+		LD false
+		ST ModBus_ValueBOOL[213]
+
+		JMP ODK_END_IF_00000000000000I
+
+(**  **)
+(** End_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000I_000000000000001:
+	ODK_END_IF_00000000000000I:
+
+(**  **)
+(**  **)
+(**  **)
+(** {*Local Order *} **)
+(** if ModBus_ValueBOOL [204] then **)
+	(* if - Cond *)
+	LD ModBus_ValueBOOL[204]
+	JMPCN ODK_SKIP_00000000000000J_000000000000001
+
+		(* then - Stmts *)
+
+(** 	 **)
+(** 	ConvWord2 := ModBus_ValueWord [302]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[302]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [301]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[301]
+		ST ConvWord
+
+(** 	NDC8.LocalOrder.DestPoint := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.LocalOrder.DestPoint
+
+(** 	 **)
+(** 	ConvWord2 := ModBus_ValueWord [304]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[304]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [303]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[303]
+		ST ConvWord
+
+(** 	NDC8.LocalOrder.OpCode := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.LocalOrder.OpCode
+
+(** 	 **)
+(** 	ConvWord2 := ModBus_ValueWord [306]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[306]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [305]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[305]
+		ST ConvWord
+
+(** 	NDC8.LocalOrder.OpParam1 := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.LocalOrder.OpParam1
+
+(** 	 **)
+(** 	ConvWord2 := ModBus_ValueWord [308]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[308]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [307]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[307]
+		ST ConvWord
+
+(** 	NDC8.LocalOrder.OpParam2 := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.LocalOrder.OpParam2
+
+(** 	 **)
+(** 	LocalOrder(); **)
+		(* call - Stmt *)
+		CAL LocalOrder
+
+(** 	if LocalOrder.Finished then **)
+		(* if - Cond *)
+		LD LocalOrder.Finished
+		JMPCN ODK_SKIP_00000000000000K_000000000000001
+
+			(* then - Stmts *)
+
+(** 		ModBus_ValueBOOL [204] := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST ModBus_ValueBOOL[204]
+
+			JMP ODK_END_IF_00000000000000K
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000K_000000000000001:
+		ODK_END_IF_00000000000000K:
+
+		JMP ODK_END_IF_00000000000000J
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000J_000000000000001:
+	ODK_END_IF_00000000000000J:
+
+(**  **)
+(** {*Nav area init*} **)
+(** if ModBus_ValueBOOL [205] then **)
+	(* if - Cond *)
+	LD ModBus_ValueBOOL[205]
+	JMPCN ODK_SKIP_00000000000000L_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	ConvWord2 := ModBus_ValueWord [312]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[312]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [311]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[311]
+		ST ConvWord
+
+(** 	NDC8.NavInit.Target := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.NavInit.Target
+
+(** 	 **)
+(** 	InitMethod := Word_TO_DINT(ModBus_ValueWord [203]); **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[203]
+		Word_TO_DINT 
+		ST InitMethod
+
+(** 	 **)
+(** 	NavInit(Method:= InitMethod); **)
+		(* call - Stmt *)
+		CAL NavInit (
+			Method := InitMethod
+		)
+
+(** 	if NavInit.Finished then **)
+		(* if - Cond *)
+		LD NavInit.Finished
+		JMPCN ODK_SKIP_00000000000000M_000000000000001
+
+			(* then - Stmts *)
+
+(** 		ModBus_ValueBOOL [205] := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST ModBus_ValueBOOL[205]
+
+			JMP ODK_END_IF_00000000000000M
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000M_000000000000001:
+		ODK_END_IF_00000000000000M:
+
+		JMP ODK_END_IF_00000000000000L
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000L_000000000000001:
+	ODK_END_IF_00000000000000L:
+
+(**  **)
+(** {* Force Output Flag*} **)
+(** if INPUT.Auto then **)
+	(* if - Cond *)
+	LD Input.Auto
+	JMPCN ODK_SKIP_00000000000000N_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ModBus_ValueBOOL [206] := ForceOutput; **)
+		(* assign - Stmt *)
+		LD ForceOutput
+		ST ModBus_ValueBOOL[206]
+
+		JMP ODK_END_IF_00000000000000N
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000N_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	ForceOutput := ModBus_ValueBOOL [206]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueBOOL[206]
+		ST ForceOutput
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000N:
+
+(**  **)
+(** INPUT.BuzzerByPass := ModBus_ValueBOOL [207]; **)
+	(* assign - Stmt *)
+	LD ModBus_ValueBOOL[207]
+	ST Input.BuzzerByPass
+
+(**  **)
+(**  **)
+(**  **)
+(** {* external monitoring *} **)
+(** ModBus_ValueWord[401] := INT_TO_WORD(NDC8.DCD_5.TorqueCurrentReference); **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_5.TorqueCurrentReference
+	INT_TO_WORD 
+	ST ModBus_ValueWord[401]
+
+(** ModBus_ValueWord[402] := INT_TO_WORD(NDC8.DCD_7.TorqueCurrentReference); **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_7.TorqueCurrentReference
+	INT_TO_WORD 
+	ST ModBus_ValueWord[402]
+
+(**  **)
+(**  **)
+(** {****************************************************************************} **)
+(** {*		Required for sending data to the display							*} **)
+(**  **)
+(** OPTX2Communication(); **)
+	(* call - Stmt *)
+	CAL OPTX2Communication
+
+(**  **)
+(**  **)
+(** {****************************************************************************} **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

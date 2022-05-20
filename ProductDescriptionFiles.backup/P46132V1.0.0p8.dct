@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<File xmlns="urn:NDC8DeviceConfigurationTemplate" version="1.0">
+    <FileInfo FileType="dct" 
+        FileRevision="1" 
+        FileFormat="1" 
+        Description="Kinco FD Servo (DSP402)"
+        CreationDate="2017-08-29"
+        CreationTime="12:00:00"
+        CreatedBy="MBJ"
+        ModificationDate="2017-08-29"
+        ModificationTime="12:00:00"
+        ModifiedBy="MBJ"
+        ModifiedWith=""
+        ModifiedWithSerial="" />
+    <TemplateParameters>
+        <TemplateParameter SymbolName="BusID"
+            PublicName="CAN Bus Id"
+            DataType="UNSIGNED16"
+            Min="1"
+            Max="2"
+	        Default="1"
+            Remark="CAN Bus Id."/>
+
+        <TemplateParameter
+            SymbolName="NodeId"
+            DataType="UNSIGNED16"
+            Min="2"
+            Max="30"/>
+    </TemplateParameters>
+
+    <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+        <xsl:param name="BusID" />
+        <xsl:param name="NodeId"/>
+
+	    <xsl:variable name="HelpDeviceName">
+           <xsl:if test='$BusID = "1"'>
+              <xsl:value-of select="concat('Kinco_',$NodeId)"/>
+           </xsl:if>
+           <xsl:if test='$BusID = "2"'> 
+              <xsl:value-of select="concat('Kinco_',$BusID,'_',$NodeId)"/> 
+            </xsl:if>
+        </xsl:variable>
+
+        <xsl:template match="/" >
+            <File xmlns="urn:NDC8DeviceConfigurationFile" >
+                <FileInfo
+                    FileType="dc"
+                    FileRevision="1"
+                    FileFormat="40"
+                    Description="NDC8 Device Configuration File"
+                    CreationDate="2017-08-29"
+                    CreationTime="12:00:00"
+                    CreatedBy="MBJ"
+                    ModificationDate="2017-08-29"
+                    ModificationTime="12:00:00"
+                    ModifiedBy="MBJ"
+                    ModifiedWith=""
+                    ModifiedWithSerial="" />
+                <Configuration
+                    Protocol="CANopen"
+                    BusId="{$BusID}"
+                    NodeId="{$NodeId}"
+                    Optional="false"
+                    Remark="Kinco">
+
+                    <Guarding
+                        Type="NodeGuarding"
+                        Timeout="500" />
+                    <Identification
+                        DeviceType="0x0000"
+                        ArticleNumber="P46131V1.0.0p2"
+                        ArticleNumberMatch="" />
+
+                    <ReadParameters>
+                        <ReadParameter Property="DeviceType"
+                            Index="0x1000"
+                            SubIndex="0"
+                            DataType="UNSIGNED32" />
+                    </ReadParameters>
+
+                    <SetupValues>
+<!--
+    <Parameter SymbolName="ControlWord" PublicName="Control Word" ObjectType="VAR" Index="0x6040" SubIndex="0" DataType="UNSIGNED16" AccessType="rw"/>
+	<Parameter SymbolName="StatusWord" PublicName="Status Word" ObjectType="VAR" Index="0x6041" SubIndex="0" DataType="UNSIGNED16" AccessType="ro"/>
+	<Parameter SymbolName="OperationMode" PublicName="Mode" ObjectType="VAR" Index="0x6060" SubIndex="0" DataType="UNSIGNED8" AccessType="rw"/>
+	<Parameter SymbolName="VelocityActualValue" PublicName="Velocity Actual Value" ObjectType="VAR" Index="0x606C" SubIndex="0" DataType="INTEGER32" AccessType="ro"/>
+	<Parameter SymbolName="TargetVelocity" PublicName="Target Velocity" ObjectType="VAR" Index="0x60FF" SubIndex="0" DataType="INTEGER32" AccessType="rw"/>
+-->
+                        <SetupValue SymbolAddress="CoTPDO_MappingPars.TPDO1_NumMappedObjs" Value="2" />
+                        <SetupValue SymbolAddress="CoTPDO_MappingPars.TPDO1_MappedObj1" Value="0x60410010" /><!-- 0x6041 00 10 StatusWord -->
+                        <SetupValue SymbolAddress="CoTPDO_MappingPars.TPDO1_MappedObj2" Value="0x606C0020" /><!-- 0x606C 00 20 VelocityActualValue -->
+						<SetupValue SymbolAddress="CoTPDO_CommPars.TPDO1_CobId" Value="{384+$NodeId}" /><!-- 0x180 = 384 -->
+                        <SetupValue SymbolAddress="CoTPDO_CommPars.TPDO1_TransmissionType" Value="1" />
+						<SetupValue SymbolAddress="CoTPDO_MappingPars.TPDO2_NumMappedObjs" Value="1" />
+						<SetupValue SymbolAddress="CoTPDO_MappingPars.TPDO2_MappedObj1" Value="0x60630020" /><!-- 0x6063 00 20 PositionActualValue-->
+						<SetupValue SymbolAddress="CoTPDO_CommPars.TPDO2_CobId" Value="{640+$NodeId}" /><!-- 0x280 = 640 -->
+						<SetupValue SymbolAddress="CoTPDO_CommPars.TPDO2_TransmissionType" Value="1" />
+						<SetupValue SymbolAddress="CoRPDO_MappingPars.RPDO1_NumMappedObjs" Value="2" />
+                        <SetupValue SymbolAddress="CoRPDO_MappingPars.RPDO1_MappedObj1" Value="0x60400010" /><!-- 0x6040 00 10 ControlWord -->
+                        <SetupValue SymbolAddress="CoRPDO_MappingPars.RPDO1_MappedObj2" Value="0x60FF0020" /><!-- 0x60FF 00 20 TargetVelocity -->
+						<SetupValue SymbolAddress="CoRPDO_CommPars.RPDO1_CobId" Value="{512+$NodeId}" /><!-- 0x200 = 512 -->
+                        <SetupValue SymbolAddress="OperationMode" Value="-3" /><!-- -3 = Immediate Velocity (non-ramped) -->
+                    </SetupValues>
+
+                    <ConfigParameters/>
+
+                    <TxPdos>
+                        <!--0x180-->
+                        <TxPdo CobId="{384+$NodeId}" ReceiveTimeout="200" TransmissionType="1" PdoType="Background">
+                            <PdoMap>
+                                <PdoMapParameter Property="StatusWord" SymbolAddress="StatusWord" Length="16"/>
+                                <PdoMapParameter Property="VelocityActualValue" SymbolAddress="VelocityActualValue" Length="32"/>
+					        </PdoMap>
+                        </TxPdo>
+						<!--0x280-->
+                        <TxPdo CobId="{640+$NodeId}" ReceiveTimeout="200" TransmissionType="1" PdoType="Background">
+                            <PdoMap>
+                                <PdoMapParameter Property="PositionActualValue" SymbolAddress="PositionActualValue" Length="32"/>
+                            </PdoMap>
+                        </TxPdo>
+                    </TxPdos>
+
+                    <RxPdos>
+                        <!--0x200-->                    
+                        <RxPdo CobId="{512+$NodeId}" TransmissionType="1" PdoType="Background">
+                            <PdoMap>
+                                <PdoMapParameter Property="ControlWord" SymbolAddress="ControlWord" Length="16"/>
+                                <PdoMapParameter Property="TargetVelocity" SymbolAddress="TargetVelocity" Length="32"/>
+						    </PdoMap>
+                        </RxPdo>
+                    </RxPdos>
+
+                    <ComponentSubType Name="{$HelpDeviceName}"
+                        BaseType="GenericCanDevice">
+
+                        <Interfaces>
+                            <Interface Name="Kinco"/>
+                        </Interfaces>
+
+                        <Properties>
+							<!-- PDO Parameters -->
+                            <Property SymbolName="StatusWord"
+                                DataType="UNSIGNED16"
+                                ParameterClass="Runtime"
+                                AccessType="ro"
+                                Remark="" />
+
+                            <Property SymbolName="VelocityActualValue"
+                                DataType="INTEGER32"
+                                ParameterClass="Runtime"
+                                AccessType="ro"
+                                Remark="" />
+								
+							<Property SymbolName="PositionActualValue"
+                                DataType="INTEGER32"
+                                ParameterClass="Runtime"
+                                AccessType="ro"
+                                Remark="" />		
+
+                            <Property SymbolName="ControlWord"
+                                DataType="UNSIGNED16"
+                                ParameterClass="Runtime"
+                                AccessType="rw"
+                                Remark="" />
+
+                            <Property SymbolName="TargetVelocity"
+                                DataType="INTEGER32"
+                                ParameterClass="Runtime"
+                                AccessType="rw"
+                                Remark="" />
+                        </Properties>
+                    </ComponentSubType>
+                </Configuration>
+            </File>
+        </xsl:template>
+    </xsl:stylesheet>
+</File>

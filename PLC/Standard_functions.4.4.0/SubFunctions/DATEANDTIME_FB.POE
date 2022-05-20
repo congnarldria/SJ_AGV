@@ -1,0 +1,469 @@
+FUNCTION_BLOCK DateAndTime_FB
+VAR_EXTERNAL
+	NDC8:NDC8_T;
+
+END_VAR
+
+VAR_INPUT
+	UTC_Clock	:	DINT;
+END_VAR
+
+VAR_OUTPUT
+	ErrorCode	:	DINT;	(* 	0 = No errors
+								1 = No UTC time input *)
+								
+	Year,Month,Day	:	DINT;
+	Hours,Minutes,Seconds	:	DINT;
+	DayWeek			:	STRING;
+
+
+END_VAR
+
+VAR
+	Curr_Year, Temp_Days,Rem_Days	:	DINT;
+	Rem_Seconds,Temp_Seconds	:	DINT;
+	Days		:	DINT;
+	Years_Bi	:	ARRAY [1..18] of DINT := [1972,1976,1980,1984,1988,1992,1996,2000,2004,2008,2012,2016,2020,2024,2028,2032,2036,2040];
+	Months		:	ARRAY [1..12] of DINT := [31,28,31,30,31,30,31,31,30,31,30,31];
+	WeekDays	:	ARRAY [0..6] of STRING := ['Thursday','Friday','Saturday','Sunday','Monday','Tuesday','Wednesday'];
+	Start_Year 	: 	DINT := 1970;
+	j,i,k		:	DINT := 1;
+	Bissextile	:	BOOL;
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+END_VAR
+(** {* Calculate date and time from UTC Clock NDC8.Vmc.Clock **)
+(** ------------------------------------------- **)
+(** Seconds since 00:00:00 (Thursday) January 1 1970.  **)
+(** Valid after the vehicle controller has connected to System Manager **)
+(** followed by a restart of the vehicle controller. *} **)
+(**  **)
+(** If UTC_Clock < 0 then **)
+	(* if - Cond *)
+	LD UTC_Clock
+	LT 0
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ErrorCode := 1; **)
+		(* assign - Stmt *)
+		LD 1
+		ST ErrorCode
+
+(** 	Return;			{* Error, exit from FB *} **)
+		(* return - Stmt *)
+		RET 
+
+		JMP ODK_END_IF_000000000000001
+
+(** End_If; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(** {* How many days since 00:00:00 January 1 1970 *} **)
+(** Days := UTC_Clock / (60*60*24); **)
+	(* assign - Stmt *)
+	LD UTC_Clock
+	DIV ( 60
+		MUL 60
+		MUL 24
+	)
+	ST Days
+
+(**  **)
+(** {* Remaining seconds from days *} **)
+(** Rem_Seconds := UTC_Clock - (Days*60*60*24); **)
+	(* assign - Stmt *)
+	LD UTC_Clock
+	SUB ( Days
+		MUL 60
+		MUL 60
+		MUL 24
+	)
+	ST Rem_Seconds
+
+(**  **)
+(** {* Day of week *} **)
+(** k := Days mod 7; **)
+	(* assign - Stmt *)
+	LD Days
+	MOD 7
+	ST k
+
+(** k := LIMIT(0,k,6); **)
+	(* assign - Stmt *)
+	LD 0
+	LIMIT k, 6
+	ST k
+
+(** DayWeek := WeekDays[k];	{* Week day *} **)
+	(* assign - Stmt *)
+	LD WeekDays[k]
+	ST DayWeek
+
+(**  **)
+(** {* Init *} **)
+(** Curr_Year := Start_Year; **)
+	(* assign - Stmt *)
+	LD Start_Year
+	ST Curr_Year
+
+(** Temp_Days := Days; **)
+	(* assign - Stmt *)
+	LD Days
+	ST Temp_Days
+
+(** Temp_Seconds := Rem_Seconds; **)
+	(* assign - Stmt *)
+	LD Rem_Seconds
+	ST Temp_Seconds
+
+(** j := 1; **)
+	(* assign - Stmt *)
+	LD 1
+	ST j
+
+(** i := 1; **)
+	(* assign - Stmt *)
+	LD 1
+	ST i
+
+(**  **)
+(** {* Year *} **)
+(** while Temp_Days > 364 do **)
+	(* while - Cond *) 
+	ODK_WHILE_000000000000002:
+	LD Temp_Days
+	GT 364
+	JMPCN ODK_END_WHILE_000000000000002
+
+		(* while - Stmts *)
+
+(** 	if Years_Bi[j] = Curr_Year then **)
+		(* if - Cond *)
+		LD Years_Bi[j]
+		EQ Curr_Year
+		JMPCN ODK_SKIP_000000000000003_000000000000001
+
+			(* then - Stmts *)
+
+(** 		Temp_Days := Temp_Days - 366; **)
+			(* assign - Stmt *)
+			LD Temp_Days
+			SUB 366
+			ST Temp_Days
+
+(** 		j := j+1; **)
+			(* assign - Stmt *)
+			LD j
+			ADD 1
+			ST j
+
+(** 		j := LIMIT(1,j,18); **)
+			(* assign - Stmt *)
+			LD 1
+			LIMIT j, 18
+			ST j
+
+			JMP ODK_END_IF_000000000000003
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_000000000000003_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		Temp_Days := Temp_Days - 365; **)
+			(* assign - Stmt *)
+			LD Temp_Days
+			SUB 365
+			ST Temp_Days
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000003:
+
+(** 	Rem_Days := Temp_Days + 1;	{* 1 day gone means January 2th so we need to add 1 day *} **)
+		(* assign - Stmt *)
+		LD Temp_Days
+		ADD 1
+		ST Rem_Days
+
+(** 	Curr_Year := Curr_Year + 1; **)
+		(* assign - Stmt *)
+		LD Curr_Year
+		ADD 1
+		ST Curr_Year
+
+(** 	Year := Curr_Year;			{* Year *} **)
+		(* assign - Stmt *)
+		LD Curr_Year
+		ST Year
+
+(** end_while; **)
+		JMP ODK_WHILE_000000000000002
+
+	(* while - End *) 
+	ODK_END_WHILE_000000000000002:
+
+(**  **)
+(** {* Bissextile? *} **)
+(** for j := 1 to 12 do **)
+	(* for - Init *)
+	LD 1
+	ST j
+	EQ 12
+	JMPC ODK_FOR_STMTS_000000000000004
+
+	(* for - Cond *)
+	ODK_FOR_000000000000004:
+
+	LD 1
+	GT 12
+	JMPC ODK_FOR_DOWN_000000000000004
+
+	LD 0
+	GT 1
+	JMPC ODK_END_FOR_000000000000004
+
+	LD 12
+	LT j
+	JMPC ODK_END_FOR_000000000000004
+	JMP ODK_FOR_STMTS_000000000000004
+
+	ODK_FOR_DOWN_000000000000004:
+
+	LD 12
+	GT j
+	JMPC ODK_END_FOR_000000000000004
+
+	LD 0
+	LT 1
+	JMPC ODK_END_FOR_000000000000004
+
+		(* for - Stmts *)
+		ODK_FOR_STMTS_000000000000004:
+
+(** 	if Year = Years_Bi[j] then **)
+		(* if - Cond *)
+		LD Year
+		EQ Years_Bi[j]
+		JMPCN ODK_SKIP_000000000000005_000000000000001
+
+			(* then - Stmts *)
+
+(** 		Bissextile := true; **)
+			(* assign - Stmt *)
+			LD true
+			ST Bissextile
+
+(** 		exit;		{* exit if Bissextile *} **)
+			(* exit - Stmt *)
+			JMP ODK_END_FOR_000000000000004
+
+			JMP ODK_END_IF_000000000000005
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_000000000000005_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		Bissextile := false; **)
+			(* assign - Stmt *)
+			LD false
+			ST Bissextile
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000005:
+
+	(* for - By *)
+	LD 1
+	ADD j
+	ST j
+(** end_for; **)
+
+	JMP ODK_FOR_000000000000004
+
+	(* for - End *) 
+	ODK_END_FOR_000000000000004:
+
+(**  **)
+(** {* Month *} **)
+(** If 	Rem_Days < 28 then **)
+	(* if - Cond *)
+	LD Rem_Days
+	LT 28
+	JMPCN ODK_SKIP_000000000000006_000000000000001
+
+		(* then - Stmts *)
+
+(** 	Month := i;				{* Month *} **)
+		(* assign - Stmt *)
+		LD i
+		ST Month
+
+(** 	Day := Rem_Days;		{* Day *} **)
+		(* assign - Stmt *)
+		LD Rem_Days
+		ST Day
+
+		JMP ODK_END_IF_000000000000006
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000006_000000000000001:
+
+		(* else - Stmts *)
+
+(**  **)
+(** 	while Rem_Days > 27 do **)
+		(* while - Cond *) 
+		ODK_WHILE_000000000000007:
+		LD Rem_Days
+		GT 27
+		JMPCN ODK_END_WHILE_000000000000007
+
+			(* while - Stmts *)
+
+(** 		If i = 2 then	{* February? *} **)
+			(* if - Cond *)
+			LD i
+			EQ 2
+			JMPCN ODK_SKIP_000000000000008_000000000000001
+
+				(* then - Stmts *)
+
+(** 			if Bissextile then **)
+				(* if - Cond *)
+				LD Bissextile
+				JMPCN ODK_SKIP_000000000000009_000000000000001
+
+					(* then - Stmts *)
+
+(** 				Rem_Days := Rem_Days - Months[i] - 1;	{* 29 days for Bissextile year *} **)
+					(* assign - Stmt *)
+					LD Rem_Days
+					SUB Months[i]
+					SUB 1
+					ST Rem_Days
+
+					JMP ODK_END_IF_000000000000009
+
+(** 			else **)
+				(* else *) 
+				ODK_SKIP_000000000000009_000000000000001:
+
+					(* else - Stmts *)
+
+(** 				Rem_Days := Rem_Days - Months[i]; **)
+					(* assign - Stmt *)
+					LD Rem_Days
+					SUB Months[i]
+					ST Rem_Days
+
+(** 			end_if; **)
+				(* if - End *) 
+				ODK_END_IF_000000000000009:
+
+				JMP ODK_END_IF_000000000000008
+
+(** 		else **)
+			(* else *) 
+			ODK_SKIP_000000000000008_000000000000001:
+
+				(* else - Stmts *)
+
+(** 			Rem_Days := Rem_Days - Months[i]; **)
+				(* assign - Stmt *)
+				LD Rem_Days
+				SUB Months[i]
+				ST Rem_Days
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_END_IF_000000000000008:
+
+(** 		i := i + 1; **)
+			(* assign - Stmt *)
+			LD i
+			ADD 1
+			ST i
+
+(** 		i := LIMIT(1,i,12); **)
+			(* assign - Stmt *)
+			LD 1
+			LIMIT i, 12
+			ST i
+
+(** 		Month := i;				{* Month *} **)
+			(* assign - Stmt *)
+			LD i
+			ST Month
+
+(** 		Day := Rem_Days;		{* Day *} **)
+			(* assign - Stmt *)
+			LD Rem_Days
+			ST Day
+
+(** 	end_while; **)
+			JMP ODK_WHILE_000000000000007
+
+		(* while - End *) 
+		ODK_END_WHILE_000000000000007:
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000006:
+
+(**  **)
+(** {* Hours *} **)
+(** Hours := Temp_Seconds / 3600; **)
+	(* assign - Stmt *)
+	LD Temp_Seconds
+	DIV 3600
+	ST Hours
+
+(** Temp_Seconds := Rem_Seconds - (Hours*3600); **)
+	(* assign - Stmt *)
+	LD Rem_Seconds
+	SUB ( Hours
+		MUL 3600
+	)
+	ST Temp_Seconds
+
+(**  **)
+(** {* Minutes *} **)
+(** Minutes := Temp_Seconds / 60; **)
+	(* assign - Stmt *)
+	LD Temp_Seconds
+	DIV 60
+	ST Minutes
+
+(**  **)
+(** {* Seconds *} **)
+(** Seconds := Rem_Seconds - (Hours*3600) - (Minutes*60); **)
+	(* assign - Stmt *)
+	LD Rem_Seconds
+	SUB ( Hours
+		MUL 3600
+	)
+	SUB ( Minutes
+		MUL 60
+	)
+	ST Seconds
+
+(**  **)
+(** ErrorCode := 0;		{* No errors *} **)
+	(* assign - Stmt *)
+	LD 0
+	ST ErrorCode
+
+
+END_FUNCTION_BLOCK

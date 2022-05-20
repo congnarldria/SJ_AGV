@@ -1,0 +1,169 @@
+FUNCTION_BLOCK SLOWDOWN_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;
+	INPUT : INPUT_T;
+
+END_VAR
+
+VAR_INPUT
+	FlexSlowdown,
+	LS2000Slowdown	: bool;
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+	CurrentVehicleSpeed : DINT; 
+	VehicleSlowDownSpeed : DINT;
+	SlowDownTOF : TOF;
+	SlowDownKeep : BOOL;	
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	STOPRESET : BOOL;
+END_VAR
+(** {************************************************************************************* **)
+(**  		SLOW DOWN  **)
+(** **************************************************************************************} **)
+(** CurrentVehicleSpeed := abs(NDC8.VehicleControl.SetSpeed); **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleControl.SetSpeed
+	abs 
+	ST CurrentVehicleSpeed
+
+(**  **)
+(** CurrentVehicleSpeed := CurrentVehicleSpeed / 2; **)
+	(* assign - Stmt *)
+	LD CurrentVehicleSpeed
+	DIV 2
+	ST CurrentVehicleSpeed
+
+(**  **)
+(** if CurrentVehicleSpeed < 100 then **)
+	(* if - Cond *)
+	LD CurrentVehicleSpeed
+	LT 100
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	CurrentVehicleSpeed := 100; **)
+		(* assign - Stmt *)
+		LD 100
+		ST CurrentVehicleSpeed
+
+		JMP ODK_END_IF_000000000000001
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(** if FlexSlowDown then									{* Load handling, when entering a pallet *} **)
+	(* if - Cond *)
+	LD FlexSlowDown
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.VehicleControl.SlowDownSpeed	:= 150; **)
+		(* assign - Stmt *)
+		LD 150
+		ST NDC8.VehicleControl.SlowDownSpeed
+
+		JMP ODK_END_IF_000000000000002
+
+(** elsif LS2000Slowdown  then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000002_000000000000001:
+	LD LS2000Slowdown
+	JMPCN ODK_SKIP_000000000000002_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	NDC8.VehicleControl.SlowDownSpeed:= CurrentVehicleSpeed; **)
+		(* assign - Stmt *)
+		LD CurrentVehicleSpeed
+		ST NDC8.VehicleControl.SlowDownSpeed
+
+		JMP ODK_END_IF_000000000000002
+
+(** elsif INPUT.SafetyScannerSlowDown then					{* When SlowDown input is set, ramp down in steps *} **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000002_000000000000002:
+	LD INPUT.SafetyScannerSlowDown
+	JMPCN ODK_SKIP_000000000000002_000000000000003
+
+		(* elsif - Stmts *)
+
+(** 	NDC8.VehicleControl.SlowDownSpeed:= CurrentVehicleSpeed; **)
+		(* assign - Stmt *)
+		LD CurrentVehicleSpeed
+		ST NDC8.VehicleControl.SlowDownSpeed
+
+		JMP ODK_END_IF_000000000000002
+
+(** else  **)
+	(* else *) 
+	ODK_SKIP_000000000000002_000000000000003:
+
+		(* else - Stmts *)
+
+(** 	NDC8.VehicleControl.SlowDownSpeed:= CurrentVehicleSpeed;			{*  speed is 290 to give room for a little variation of current speed,  **)
+		(* assign - Stmt *)
+		LD CurrentVehicleSpeed
+		ST NDC8.VehicleControl.SlowDownSpeed
+
+(** 																		to avoid going over 300 mm/s. *} **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000002:
+
+(** 	 **)
+(**  **)
+(** {* Keep Slowdown bit a little while, after the slow down is released. *} **)
+(** SlowDownKeep := (INPUT.SafetyScannerSlowDown **)
+(** 					or FlexSlowDown 										{* Load handling, when entering a pallet *} **)
+(** 					or LS2000Slowdown **)
+(** 					or StopReset)											{* Slow start after reset stop *} **)
+(** 				and NDC8.UserDefined.SlowDownDisable <> 2;				{* And SlowDown not disabled from user terminal/display. *}	 							 **)
+	(* assign - Stmt *)
+	LD INPUT.SafetyScannerSlowDown
+	OR FlexSlowDown
+	OR LS2000Slowdown
+	OR StopReset
+	AND ( NDC8.UserDefined.SlowDownDisable
+		NE 2
+	)
+	ST SlowDownKeep
+
+(** 	 **)
+(** SlowDownTOF(IN := SlowDownKeep, Pt := t#3s); **)
+	(* call - Stmt *)
+	CAL SlowDownTOF (
+		IN := SlowDownKeep,
+		Pt := t#3s
+	)
+
+(** NDC8.VehicleControl.SlowDown := SlowDownTOF.Q; **)
+	(* assign - Stmt *)
+	LD SlowDownTOF.Q
+	ST NDC8.VehicleControl.SlowDown
+
+(**  **)
+(**  **)
+(**  **)
+(** {* Generate events here for System Statistics KPI, to find places with frequent slow downs. *} **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

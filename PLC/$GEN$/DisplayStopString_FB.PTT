@@ -1,0 +1,18 @@
+FUNCTION_BLOCK DisplayStopString_FB 
+
+
+ VAR_INPUT
+  INStatus : BOOL ;
+  StopString : DINT ;
+  StopValue : DINT := 0 ;
+  END_VAR 
+
+ VAR_OUTPUT
+  CurrentString : DINT ;
+  CurrentValue : DINT := 0 ;
+  Count : DINT := 0 ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

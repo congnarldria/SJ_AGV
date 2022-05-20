@@ -1,0 +1,187 @@
+FUNCTION_BLOCK DisplayStopString_FB
+VAR_EXTERNAL
+	NDC8: NDC8_T;
+	
+END_VAR
+
+VAR_INPUT
+	INStatus:BOOL;
+	StopString:DINT;
+	StopValue:DINT:=0;
+
+END_VAR
+
+VAR_OUTPUT
+	CurrentString : DINT;
+	CurrentValue : DINT	:= 0;
+	Count : DINT := 0;
+END_VAR
+
+VAR
+
+	DisplayStopStringIx : DINT;
+	DisplayStopStringNextIx : DINT;
+	DisplayStopStringA:ARRAY[0..300,0..1] of DINT;
+	DisplayStopStringUpdateRT : R_Trig;
+
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	TIMER : Timer_FB;
+END_VAR
+(**  **)
+(** {* update if new status *} **)
+(** if INStatus XOR (DisplayStopStringA[StopString,0]<>0) then **)
+	(* if - Cond *)
+	LD INStatus
+	XOR ( DisplayStopStringA[StopString,0]
+		NE 0
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	if INStatus then **)
+		(* if - Cond *)
+		LD INStatus
+		JMPCN ODK_SKIP_000000000000002_000000000000001
+
+			(* then - Stmts *)
+
+(** 		DisplayStopStringA[StopString,0]	:= StopString; **)
+			(* assign - Stmt *)
+			LD StopString
+			ST DisplayStopStringA[StopString,0]
+
+(** 		DisplayStopStringA[StopString,1]	:= StopValue; **)
+			(* assign - Stmt *)
+			LD StopValue
+			ST DisplayStopStringA[StopString,1]
+
+(** 		Count								:= Count+1; **)
+			(* assign - Stmt *)
+			LD Count
+			ADD 1
+			ST Count
+
+			JMP ODK_END_IF_000000000000002
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_000000000000002_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		DisplayStopStringA[StopString,0]	:= 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST DisplayStopStringA[StopString,0]
+
+(** 		DisplayStopStringA[StopString,1]	:= 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST DisplayStopStringA[StopString,1]
+
+(** 		Count								:= Count-1; **)
+			(* assign - Stmt *)
+			LD Count
+			SUB 1
+			ST Count
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000002:
+
+		JMP ODK_END_IF_000000000000001
+
+(**  **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(** {* Select Stop String *} **)
+(** DisplayStopStringUpdateRT(CLK:=Timer.Display); **)
+	(* call - Stmt *)
+	CAL DisplayStopStringUpdateRT (
+		CLK := Timer.Display
+	)
+
+(** if 	DisplayStopStringUpdateRT.Q  **)
+(** 	and DisplayStopStringA[DisplayStopStringNextIx,0] <> 0 **)
+(** then **)
+	(* if - Cond *)
+	LD DisplayStopStringUpdateRT.Q
+	AND ( DisplayStopStringA[DisplayStopStringNextIx,0]
+		NE 0
+	)
+	JMPCN ODK_SKIP_000000000000003_000000000000001
+
+		(* then - Stmts *)
+
+(** 	DisplayStopStringIx 	:= DisplayStopStringNextIx; **)
+		(* assign - Stmt *)
+		LD DisplayStopStringNextIx
+		ST DisplayStopStringIx
+
+(** 	DisplayStopStringNextIx := (DisplayStopStringIx+1) MOD 255; **)
+		(* assign - Stmt *)
+		LD DisplayStopStringIx
+		ADD 1
+		MOD 255
+		ST DisplayStopStringNextIx
+
+		JMP ODK_END_IF_000000000000003
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000003_000000000000001:
+	ODK_END_IF_000000000000003:
+
+(**  **)
+(**  **)
+(** {* preselect next value *} **)
+(** if DisplayStopStringA[DisplayStopStringNextIx,0] = 0  then **)
+	(* if - Cond *)
+	LD DisplayStopStringA[DisplayStopStringNextIx,0]
+	EQ 0
+	JMPCN ODK_SKIP_000000000000004_000000000000001
+
+		(* then - Stmts *)
+
+(** 	DisplayStopStringNextIx	:= (DisplayStopStringNextIx+1) MOD 255; **)
+		(* assign - Stmt *)
+		LD DisplayStopStringNextIx
+		ADD 1
+		MOD 255
+		ST DisplayStopStringNextIx
+
+		JMP ODK_END_IF_000000000000004
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000004_000000000000001:
+	ODK_END_IF_000000000000004:
+
+(**  **)
+(**  **)
+(** {* setup return *} **)
+(** CurrentString	:= DisplayStopStringA[DisplayStopStringIx,0]; **)
+	(* assign - Stmt *)
+	LD DisplayStopStringA[DisplayStopStringIx,0]
+	ST CurrentString
+
+(** CurrentValue	:= DisplayStopStringA[DisplayStopStringIx,1]; **)
+	(* assign - Stmt *)
+	LD DisplayStopStringA[DisplayStopStringIx,1]
+	ST CurrentValue
+
+(**  **)
+
+END_FUNCTION_BLOCK

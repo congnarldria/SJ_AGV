@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8SelectedParameterFile">
+  <FileInfo FileType="dpf" FileRevision="3" FileFormat="2" Description="NDC8 Vehicle Diagnostic File" CreationDate="2019-09-26" CreationTime="13:25:20.7997277+08:00" CreatedBy="haoin" ModificationDate="2020-06-15" ModificationTime="14:38:39.0470000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.5.0.19539" ModifiedWithSerial="" />
+  <Parameters>
+    <Parameter Group="DCD_5" Parameter="DriveEncSpeed" SymbolAddress="DCD_5.DriveEncSpeed" Visibility="OEM" DataType="INTEGER32" MinValue="-32768" MaxValue="32767" Category="Runtime" AccessType="ro" Remark="Drive Enc Speed" Device="DCD_5" />
+    <Parameter Group="DCD_5" Parameter="DriveEncScale" SymbolAddress="DCD_5.DriveEncScale" Visibility="Service" DataType="UNSIGNED32" MinValue="32" MaxValue="100000" Category="Config" AccessType="rw" Remark="The number of pulses per 1000 mm." Device="DCD_5" />
+    <Parameter Group="DCD_5" Parameter="DriveEncDist" SymbolAddress="DCD_5.DriveEncDist" Visibility="OEM" DataType="INTEGER32" MinValue="0" MaxValue="65535" Category="Runtime" AccessType="ro" Remark="Drive Encoder Distance" Device="DCD_5" />
+    <Parameter Group="DCD_7" Parameter="DriveEncSpeed" SymbolAddress="DCD_7.DriveEncSpeed" Visibility="OEM" DataType="INTEGER32" MinValue="-32768" MaxValue="32767" Category="Runtime" AccessType="ro" Remark="Drive Enc Speed" Device="DCD_7" />
+    <Parameter Group="DCD_7" Parameter="DriveEncScale" SymbolAddress="DCD_7.DriveEncScale" Visibility="Service" DataType="UNSIGNED32" MinValue="32" MaxValue="100000" Category="Config" AccessType="rw" Remark="The number of pulses per 1000 mm." Device="DCD_7" />
+    <Parameter Group="DCD_7" Parameter="DriveEncDist" SymbolAddress="DCD_7.DriveEncDist" Visibility="OEM" DataType="INTEGER32" MinValue="0" MaxValue="65535" Category="Runtime" AccessType="ro" Remark="Drive Encoder Distance" Device="DCD_7" />
+    <Parameter Group="DCD_6" Parameter="SteerEncOffset" SymbolAddress="DCD_6.SteerEncOffset" Visibility="Service" DataType="INTEGER32" MinValue="-3000" MaxValue="3000" Category="Config" AccessType="rw" Remark="Steering Encoder Offset (Position of Sync pulse)" Device="DCD_6" />
+    <Parameter Group="DCD_6" Parameter="WheelAngle" SymbolAddress="DCD_6.WheelAngle" Visibility="OEM" DataType="INTEGER32" MinValue="-32768" MaxValue="32767" Category="Runtime" AccessType="rw" Remark="Wheel Angle" Device="DCD_6" />
+    <Parameter Group="DCD_8" Parameter="SteerEncScale" SymbolAddress="DCD_8.SteerEncScale" Visibility="Service" DataType="UNSIGNED32" MinValue="32" MaxValue="100000" Category="Config" AccessType="rw" Remark="Steering Encoder Scale" Device="DCD_8" />
+    <Parameter Group="DCD_8" Parameter="WheelAngle" SymbolAddress="DCD_8.WheelAngle" Visibility="OEM" DataType="INTEGER32" MinValue="-32768" MaxValue="32767" Category="Runtime" AccessType="rw" Remark="Wheel Angle" Device="DCD_8" />
+    <Parameter Group="DCD_6" Parameter="SteerEncScale" SymbolAddress="DCD_6.SteerEncScale" Visibility="Service" DataType="UNSIGNED32" MinValue="32" MaxValue="100000" Category="Config" AccessType="rw" Remark="Steering Encoder Scale" Device="DCD_6" />
+    <Parameter Group="DCD_8" Parameter="SteerEncOffset" SymbolAddress="DCD_8.SteerEncOffset" Visibility="Service" DataType="INTEGER32" MinValue="-3000" MaxValue="3000" Category="Config" AccessType="rw" Remark="Steering Encoder Offset (Position of Sync pulse)" Device="DCD_8" />
+  </Parameters>
+</File>

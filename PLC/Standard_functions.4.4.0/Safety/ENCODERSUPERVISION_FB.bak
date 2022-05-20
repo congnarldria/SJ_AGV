@@ -1,0 +1,217 @@
+FUNCTION_BLOCK ENCODERSUPERVISION_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;	
+
+END_VAR
+
+VAR_INPUT
+	Command : DINT;					(*Value to reference to*)
+	EncoderCounter : UINT;			(*Link to encoder for the surveillance*)
+	LowLimit : DINT;				(*Threshold value, of the Command, where to start the surveillance*)
+	FailureTimeout : DINT;				(*Timeout given in ms*)
+	WarningTimeout : DINT;				(*Timeout given in ms*)
+	EncoderType : DINT;
+	Enable:BOOL;
+	FailureEventCode : DINT;			(* Failure Event Code *)
+										(*	EventCode := 661;	Steer
+											EventCode := 662;	Drive
+											EventCode := 663;	Lift
+											EventCode := 664;	Rotate
+											EventCode := 665;	Slide
+											EventCode := 666;	Tilt*)
+										
+	WarningEventCode : DINT;			(* Debug Event Code *)
+										(*	EventCode := 671; 	Steer
+											EventCode := 672;	Drive
+											EventCode := 673;	Lift
+											EventCode := 674;	Rotate
+											EventCode := 675;	Slide
+											EventCode := 676;	Tilt*)
+											
+	BBxCommentWarning		: STRING;		(* Blackbox trigger description *)
+										(*	BBxComment := 'Steer Encoder Warning'
+											BBxComment := 'Drive Encoder Warning'
+											BBxComment := 'Lift Encoder Warning'
+											BBxComment := 'Rotate Encoder Warning'
+											BBxComment := 'Slide Encoder Warning'
+											BBxComment := 'Tilt Encoder Warning' *)
+	BBxCommentFailure			: STRING;		(* Blackbox trigger description *)
+										(*	BBxComment := 'Steer Encoder Feedback Failure'
+											BBxComment := 'Drive Encoder Feedback Failure'
+											BBxComment := 'Lift Encoder Feedback Failure'
+											BBxComment := 'Rotate Encoder Feedback Failure'
+											BBxComment := 'Slide Encoder Feedback Failure'
+											BBxComment := 'Tilt Encoder Feedback Failure' *)
+END_VAR
+
+VAR_OUTPUT
+	Ok : BOOL;						(* Output for taking action *)
+	FailTime : DINT;				(* failure time *) 
+END_VAR
+
+VAR
+	enc_diff : INT;					(*Diff between to cycles*)
+	enc_mem : UINT;					(*Memory of the last cycles encoder value*)
+	et_max_mem : DINT;
+	feedback_failure : BOOL := true;		(*Flag*)
+	
+	FailTimerTON : TON;				(*Instanciation of the failure timer*)
+	EventTimerTON : TON;			(*Instanciation of the warning timer*)
+	timeout : TIME;					(*Timer value after casting*)
+	e_Timeout : TIME;				(*Timer value after casting*)
+	Enc:Enc_T; 
+	feedback_failureRT, 
+		FailTimerQRT, 
+		FirstFailRT,
+		TimeoutRT	: R_trig;
+	ShortFailFT		: F_trig;
+	BBxTrigWarning,
+	BBxTrigFailure,
+	DebugActivateIn : BOOL;
+	feedback_failure_DINT : DINT;
+	FailTimerTONDINT : DINT;
+	EncCounterDINT : DINT;
+	EncMemDINT : DINT;
+END_VAR
+(*---------------------------------------------------------------------------
+	ENCODERSUPERVISION_FB
+--------------
+	Description:
+	
+		Will detect the absence of encoder feedback when the Command value is outside the LowLimit.
+		Will detect toggling on the encoder feedback if one channel is broken on the encoder.
+
+		Timer started directly. 
+		If timer exceeds warning time, but not failure time, an event is sent.
+		If timer exceeds failure time, safe state is ordered.
+
+------------------------------------------------------------------------------*)
+
+
+Timeout := DINT_TO_TIME(FailureTimeout);
+e_Timeout := DINT_TO_TIME(WarningTimeout);
+
+(*Must be done to update the outputs of the timer*)
+(* execute timer to update outputs*)
+(*Failure timer evaluated with last cycles status of failure*)
+FailTimerTON(IN:=feedback_failure, Pt:=timeout);
+
+(*Event timer evaluated with last cycles status of failure*)
+EventTimerTON(IN:=feedback_failure, Pt:=e_timeout);
+
+(*evaluate feedback*)
+If (abs(Command) > LowLimit) and Enable then
+	enc_diff := UINT_TO_INT(EncoderCounter - enc_mem); 		(* Takes care off wrapping issue *)
+	
+	if (Command > 0) then
+					(* Only save previous if it's correct with respect to command,
+					   this is needed to catch enc with one channel broken *)
+		if enc_diff > 0 then 
+			enc_mem := EncoderCounter;
+		end_if;
+		if (enc_diff < 1) then
+			feedback_failure := true;
+		else
+			feedback_failure := false;
+		end_if;
+	else		(* command is < 0 *)
+						(* Only save previous if it's correct with respect to command,
+						   this is needed to catch enc with one channel broken *)
+		if enc_diff < 0 then 
+			enc_mem := EncoderCounter;
+		end_if;
+		if (enc_diff > -1) then
+			feedback_failure := true;
+		else
+			feedback_failure := false;
+		end_if;
+	end_if;
+else
+	feedback_failure := false;
+	enc_mem := EncoderCounter;
+end_if;
+
+(*Warning event*)
+(*Trigg only once if event timer elapsed and falling edge on failure but not failure*)
+ShortFailFT(CLK:=feedback_failure);
+if EventTimerTON.Q and not FailTimerTON.Q and ShortFailFT.Q then
+	Enc.DebugStart.WarningTime := TIME_TO_DINT(FailTimerTON.ET);
+	if Enc.DebugStart.WarningTime > Enc.DebugStart.WarningTimeMax then
+		BBxTrigWarning := true;
+	end_if;
+end_if;
+
+(*On Warning event trig a blackbox*)
+if BBxTrigWarning then
+	NDC8.BlackBox.TrigReason := BBxCommentWarning;
+	a:=TRACE_bool('BbxTrig',BbxTrig);
+	BbxTrig:=true;
+	BBxTrigWarning := false;
+end_if;
+
+(*Debug part*)
+FirstFailRT(CLK:=feedback_failure);
+if FirstFailRT.Q then
+	Enc.DebugStart.Command:= Command;
+	Enc.DebugStart.LowLimit:= LowLimit;
+	Enc.DebugStart.EncVal:= UINT_TO_DINT(EncoderCounter);
+end_if;
+
+									(*Send event when encodersurveillance trips*)
+TimeoutRT(CLK:=FailTimerTON.Q);
+if TimeoutRT.Q then
+	Enc.DebugEnd.Command:= Command;
+	Enc.DebugEnd.LowLimit:= LowLimit;
+	Enc.DebugEnd.EncVal:= UINT_TO_DINT(EncoderCounter);
+	BBxTrigFailure := true;	
+end_if;
+
+if BBxTrigFailure then
+	NDC8.BlackBox.TrigReason := BBxCommentFailure;
+	a:=TRACE_bool('BbxTrig',BbxTrig);
+	a:=TRACE_string('Bbx_enc');
+	BbxTrig := true;
+	BBxTrigFailure := false;
+end_if;
+
+(*Output*)
+Ok := not FailTimerTON.Q;
+
+
+
+
+
+(***************************************************************************************************)
+(*			PLC Debug			*) 
+(***************************************************************************************************)
+feedback_failure_DINT:= bool_to_dint(feedback_failure);
+FailTimerTONDINT:=TIME_TO_DINT(FailTimerTON.ET);
+DebugActivateIn := word_to_bool(int_to_word(ndc8.omplc.DebugLevel) and 16#0800);
+		
+(*
+if EncoderType = 2 then
+	a:=TRACE_DINT('EncoderType1', EncoderType);
+	a:=TRACE_DINT('LowLimit1', LowLimit);
+	a:=TRACE_DINT('Command1', Command);
+	a:=TRACE_DINT('EncoderCounter1', EncoderCounter);
+	a:=TRACE_DINT('enc_mem1', enc_mem);
+	a:=TRACE_DINT('enc_diff1', enc_diff);
+	a:=TRACE_DINT('feedback_failure1', feedback_failure_DINT);
+	a:=TRACE_DINT('FailTimerTON_cur_val1',FailTimerTONDINT);
+end_if;
+
+EncCounterDINT := UINT_TO_DINT(EncoderCounter);
+EncMemDINT := UINT_TO_DINT(enc_mem);
+EncDiffDINT := INT_TO_DINT(enc_diff);
+	a:=TRACE_DINT('EncoderType', EncoderType);
+	a:=TRACE_DINT('OK', OK);
+	a:=TRACE_DINT('Command', Command);
+	a:=TRACE_DINT('EncoderCounter', EncCounterDINT);
+	a:=TRACE_DINT('enc_mem', EncMemDINT);
+	a:=TRACE_DINT('enc_diff', EncDiffDINT);
+	a:=TRACE_DINT('feedback_failure', feedback_failure_DINT);
+	a:=TRACE_DINT('FailTimerTON_cur_val',FailTimerTONDINT);
+	a:=TRACE_DINT('OrderMode',NDC8.Automatic.CurrentOrderMode);*)
+
+
+END_FUNCTION_BLOCK

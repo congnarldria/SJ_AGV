@@ -1,0 +1,13 @@
+FUNCTION_BLOCK LS2000_FB 
+
+
+ VAR_INPUT
+  END_VAR 
+
+ VAR_OUTPUT
+  Slowdown : bool ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

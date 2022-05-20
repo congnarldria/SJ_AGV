@@ -1,0 +1,127 @@
+FUNCTION_BLOCK SENSORS_FB
+VAR_EXTERNAL
+	(** IN **)
+	NDC8 : NDC8_T;
+	INPUT	: INPUT_T;
+	
+END_VAR
+
+VAR_INPUT
+	
+END_VAR
+
+VAR_OUTPUT
+	TestMode		: bool;
+	BuzzerTest		: bool;
+END_VAR
+
+VAR
+	SideSensorRightBackward		: SensorHandling_FB;
+	SideSensorRightForward		: SensorHandling_FB;
+	SideSensorLeftBackward		: SensorHandling_FB;
+	SideSensorLeftForward		: SensorHandling_FB;
+
+	SideRevEnable, 
+	SideForwEnable :bool;
+	
+	StopSide_RT,
+	StopRear_RT : R_Trig;
+END_VAR
+(*
+------------------------------------------------------------------------------------                              
+ SENSORS_FB                    
+ -----------          
+                
+ Description:                     
+ 	Handles stopping of driving, using sensors.
+	Stopping for load handling on flexible segment, is handled in the FlexStop function block.
+
+-------------------------------------------------------------------------------------*)
+(*****************************************************************************************)
+(* USE SIDE SENSOR TO STOP FOR AN OBSTACLE. *)
+
+SideForwEnable := 		not NDC8.SegmentTrigger.NoSideBackwardStop
+			and not INPUT.Reset_PB;
+SideSensorRightBackward(	Input		:= INPUT.SideSensorRightBackward,
+							EventID		:= 350,
+							StopStringID:= 95,
+							Enable		:= SideForwEnable,
+							OnDelay		:= t#0ms,
+							OffDelay	:= t#1s);
+SideSensorLeftBackward(		Input		:= INPUT.SideSensorLeftBackward,
+							EventID		:= 351,
+							StopStringID:= 98,
+							Enable		:= SideForwEnable,
+							OnDelay		:= t#0ms,
+							OffDelay	:= t#1s);
+							
+SideRevEnable := 		not NDC8.SegmentTrigger.NoSideForwardStop
+			and not INPUT.Reset_PB;
+SideSensorRightForward(		Input		:= INPUT.SideSensorRightForward,
+							EventID		:= 353,
+							StopStringID:= 97,
+							Enable		:= SideRevEnable,
+							OnDelay		:= t#0ms,
+							OffDelay	:= t#1s);
+SideSensorLeftForward(		Input		:= INPUT.SideSensorLeftForward,
+							EventID		:= 352,
+							StopStringID:= 96,
+							Enable		:= SideRevEnable,
+							OnDelay		:= t#0ms,
+							OffDelay	:= t#1s);
+
+StopSide	:=		SideSensorRightBackward.Stop or 
+					SideSensorRightForward.Stop or
+		   			SideSensorLeftBackward.Stop or
+		   			SideSensorLeftForward.Stop ;
+ 
+StopSide_RT(CLK:=StopSide);
+if StopSide_RT.Q then
+	EventQueue(EventCode:=107,
+			Par1:=NDC8.LayoutPosition.Segment,
+			Par2:=0,
+			Par3:=0,
+			Par4:=0);
+	a:=TRACE_DINT('EventCode', EventQueue.EventCode);
+end_if;
+
+ 
+ 
+
+(*****************************************************************************************)
+(* Test mode, make noice when sensor is activated. Set Sensors.TestMode by adding it to the Watchlist in OpenPCS online mode. *)
+BuzzerTest :=	TestMode 
+					and (
+						Input.SideSensorRightBackward 
+						or Input.SideSensorRightForward 
+						or Input.SideSensorLeftBackward 
+						or Input.SideSensorLeftForward 
+						or Input.ForkTipSensorLeft 
+						or Input.ForkTipCentreLeft 
+						or Input.ForkTipSensorRight 
+						or Input.ForkTipCentreRight);
+			
+
+
+(*****************************************************************************************)
+(* Debug *)
+
+if word_to_bool(int_to_word(ndc8.omplc.DebugLevel) and 16#8000) then
+
+	a:=trace_bool('SideSensorRightBackward',INPUT.SideSensorRightBackward);
+	a:=trace_bool('SideSensorRightForward',INPUT.SideSensorRightForward);
+	a:=trace_bool('SideSensorLeftBackward',INPUT.SideSensorLeftBackward);
+	a:=trace_bool('SideSensorLeftForward',INPUT.SideSensorLeftForward);
+	a:=trace_bool('ForkTipSensorLeft',INPUT.ForkTipSensorLeft);
+	a:=trace_bool('ForkTipCentreLeft',INPUT.ForkTipCentreLeft);
+	a:=trace_bool('ForkTipSensorRight',INPUT.SideSensorRightBackward);
+	a:=trace_bool('ForkTipCentreRight',INPUT.ForkTipCentreRight);
+	a:=trace_bool('SafteyScannerStop2',INPUT.SafetyScannerStop2);
+	a:=trace_bool('SafteyScannerStop1',INPUT.SafetyScannerStop1);
+	a:=trace_bool('VerticalScannerStop1',INPUT.VerticalScannerStop1);
+	a:=trace_bool('VerticalScannerStop2',INPUT.VerticalScannerStop2);
+	
+end_if;
+
+
+END_FUNCTION_BLOCK

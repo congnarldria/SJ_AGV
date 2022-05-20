@@ -1,0 +1,81 @@
+FUNCTION_BLOCK DRIVERSUPERVISION_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;	
+
+END_VAR
+
+VAR_INPUT
+	Command : INT;
+	FeedBack : INT;
+	Range : INT;
+	Timeout : TIME;
+	Moving : BOOL;
+	
+END_VAR
+
+VAR_OUTPUT
+	OverRangeFail : BOOL;
+	NotMovingFail : BOOL;
+END_VAR
+
+VAR
+	iFeedBack : INT;
+	Diff : INT;
+	
+	OverRange_failure : BOOL;
+	NotMoving_failure : BOOL;
+
+	MovingR : R_Trig;
+	MovingF : F_Trig;
+	
+	OverRangeFailTimerTON : TON;
+	NotMovingFailTimerTON : TON;
+	
+END_VAR
+OverRangeFailTimerTON(IN:=OverRange_failure, Pt:=Timeout);
+NotMovingFailTimerTON(IN:=NotMoving_failure, Pt:=Timeout);
+
+MovingR(CLK:= Moving);
+MovingF(CLK:= Moving);
+
+if MovingF.Q then
+	OverRangeFailTimerTON(IN := FALSE);
+	NotMovingFailTimerTON(IN := FALSE);
+end_if;
+
+if MovingR.Q then
+	iFeedBack := FeedBack;
+end_if;
+	
+Diff := FeedBack - Command;
+
+if abs(Diff) > Range then 
+	OverRange_failure := TRUE;
+else
+	OverRange_failure := FALSE;
+end_if;
+
+if OverRangeFailTimerTON.Q = TRUE then
+	OverRangeFail := TRUE;
+else
+	OverRangeFail := FALSE;
+end_if;
+
+if Moving then 
+	if FeedBack = iFeedBack then
+		NotMoving_failure:= TRUE;
+	else 
+		NotMoving_failure := FALSE;
+	end_if;
+
+	if NotMovingFailTimerTON.Q = TRUE then
+		NotMovingFail := TRUE;
+	else
+		NotMovingFail := FALSE;
+	end_if;
+end_if;
+
+
+
+
+END_FUNCTION_BLOCK

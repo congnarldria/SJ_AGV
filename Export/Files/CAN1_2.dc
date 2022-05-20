@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="1" xmlns="urn:NDC8DeviceConfigurationFile">
+  <FileInfo FileType="dc" FileRevision="1" FileFormat="40" Description="NDC8 Device Configuration File" CreationDate="2011-04-19" CreationTime="14:00:00.0000000+08:00" CreatedBy="Ulf Larsson" ModificationDate="2021-11-29" ModificationTime="15:08:48.4075316+08:00" ModifiedBy="MBJ" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <Configuration Protocol="CANopen" BusId="1" NodeId="2" Optional="false" Remark="CVC600 as IO Controller">
+    <Guarding Type="NodeGuarding" Timeout="500" />
+    <Identification DeviceType="0x09000000" ArticleNumber="P46136V1.1.0" ArticleNumberMatch="P46136V1.1.???" />
+    <SetupValues>
+      <SetupValue SymbolAddress="IoConfig.UseAnalogOut" Value="true" />
+      <SetupValue SymbolAddress="RpdoGuardingTimeout.Rpdo1" Value="0" />
+      <SetupValue SymbolAddress="RpdoGuardingTimeout.Rpdo2" Value="0" />
+      <SetupValue SymbolAddress="RpdoGuardingTimeout.Rpdo3" Value="0" />
+      <SetupValue SymbolAddress="RpdoGuardingTimeout.Rpdo4" Value="0" />
+      <SetupValue SymbolAddress="CoTpdo1.TransmissionType" Value="1" />
+      <SetupValue SymbolAddress="CoTpdo2.TransmissionType" Value="1" />
+    </SetupValues>
+    <ConfigParameters>
+      <ConfigParameter Property="DigitalInput7_Polarity" SymbolAddress="DigInputPolarity.DigInp_1_8.DigInp7" />
+      <ConfigParameter Property="DigitalInput8_Polarity" SymbolAddress="DigInputPolarity.DigInp_1_8.DigInp8" />
+      <ConfigParameter Property="DigitalInput9_Polarity" SymbolAddress="DigInputPolarity.DigInp_9_12.DigInp9" />
+      <ConfigParameter Property="DigitalInput10_Polarity" SymbolAddress="DigInputPolarity.DigInp_9_12.DigInp10" />
+      <ConfigParameter Property="DigitalInput11_Polarity" SymbolAddress="DigInputPolarity.DigInp_9_12.DigInp11" />
+      <ConfigParameter Property="DigitalInput12_Polarity" SymbolAddress="DigInputPolarity.DigInp_9_12.DigInp12" />
+      <ConfigParameter Property="DigitalInput3_Polarity" SymbolAddress="DigInputPolarity.DigInp_1_8.DigInp3" />
+      <ConfigParameter Property="DigitalInput6_Polarity" SymbolAddress="DigInputPolarity.DigInp_1_8.DigInp6" />
+      <ConfigParameter Property="DigitalInput1_Polarity" SymbolAddress="DigInputPolarity.DigInp_1_8.DigInp1" />
+      <ConfigParameter Property="DigitalInput2_Polarity" SymbolAddress="DigInputPolarity.DigInp_1_8.DigInp2" />
+      <ConfigParameter Property="DigitalInput4_Polarity" SymbolAddress="DigInputPolarity.DigInp_1_8.DigInp4" />
+      <ConfigParameter Property="DigitalInput5_Polarity" SymbolAddress="DigInputPolarity.DigInp_1_8.DigInp5" />
+      <ConfigParameter Property="DigitalOutput13_Polarity" SymbolAddress="DigOutputPolarity.DigOut_9_16.DigOut13" />
+      <ConfigParameter Property="DigitalOutput14_Polarity" SymbolAddress="DigOutputPolarity.DigOut_9_16.DigOut14" />
+      <ConfigParameter Property="DigitalOutput15_Polarity" SymbolAddress="DigOutputPolarity.DigOut_9_16.DigOut15" />
+      <ConfigParameter Property="DigitalOutput16_Polarity" SymbolAddress="DigOutputPolarity.DigOut_9_16.DigOut16" />
+      <ConfigParameter Property="DigitalOutput7_Polarity" SymbolAddress="DigOutputPolarity.DigOut_1_8.DigOut7" />
+      <ConfigParameter Property="DigitalOutput8_Polarity" SymbolAddress="DigOutputPolarity.DigOut_1_8.DigOut8" />
+      <ConfigParameter Property="DigitalOutput2_Polarity" SymbolAddress="DigOutputPolarity.DigOut_1_8.DigOut2" />
+      <ConfigParameter Property="DigitalOutput12_Polarity" SymbolAddress="DigOutputPolarity.DigOut_9_16.DigOut12" />
+      <ConfigParameter Property="DigitalOutput3_Polarity" SymbolAddress="DigOutputPolarity.DigOut_1_8.DigOut3" />
+      <ConfigParameter Property="DigitalOutput4_Polarity" SymbolAddress="DigOutputPolarity.DigOut_1_8.DigOut4" />
+      <ConfigParameter Property="DigitalOutput5_Polarity" SymbolAddress="DigOutputPolarity.DigOut_1_8.DigOut5" />
+      <ConfigParameter Property="DigitalOutput6_Polarity" SymbolAddress="DigOutputPolarity.DigOut_1_8.DigOut6" />
+      <ConfigParameter Property="AnInp1_Scale" SymbolAddress="AnInputScale.AnInp1" />
+      <ConfigParameter Property="AnInp2_Scale" SymbolAddress="AnInputScale.AnInp2" />
+      <ConfigParameter Property="AnInp1_Delta" SymbolAddress="AnInputDelta.AnInp1" />
+      <ConfigParameter Property="AnInp2_Delta" SymbolAddress="AnInputDelta.AnInp2" />
+      <ConfigParameter Property="AnInp3_Scale" SymbolAddress="AnInputScale.AnInp3" />
+      <ConfigParameter Property="AnInp4_Scale" SymbolAddress="AnInputScale.AnInp4" />
+      <ConfigParameter Property="AnInp3_Delta" SymbolAddress="AnInputDelta.AnInp3" />
+      <ConfigParameter Property="AnInp4_Delta" SymbolAddress="AnInputDelta.AnInp4" />
+      <ConfigParameter Property="AnInp5_Scale" SymbolAddress="AnInputScale.AnInp5" />
+      <ConfigParameter Property="AnInp6_Scale" SymbolAddress="AnInputScale.AnInp6" />
+      <ConfigParameter Property="AnInp7_Scale" SymbolAddress="AnInputScale.AnInp7" />
+      <ConfigParameter Property="AnInp8_Scale" SymbolAddress="AnInputScale.AnInp8" />
+      <ConfigParameter Property="AnInp9_Scale" SymbolAddress="AnInputScale.AnInp9" />
+      <ConfigParameter Property="AnInp10_Scale" SymbolAddress="AnInputScale.AnInp10" />
+      <ConfigParameter Property="AnInp11_Scale" SymbolAddress="AnInputScale.AnInp11" />
+      <ConfigParameter Property="AnInp5_Delta" SymbolAddress="AnInputDelta.AnInp5" />
+      <ConfigParameter Property="AnInp6_Delta" SymbolAddress="AnInputDelta.AnInp6" />
+      <ConfigParameter Property="AnInp7_Delta" SymbolAddress="AnInputDelta.AnInp7" />
+      <ConfigParameter Property="AnInp8_Delta" SymbolAddress="AnInputDelta.AnInp8" />
+      <ConfigParameter Property="AnInp9_Delta" SymbolAddress="AnInputDelta.AnInp9" />
+      <ConfigParameter Property="AnInp10_Delta" SymbolAddress="AnInputDelta.AnInp10" />
+      <ConfigParameter Property="AnInp11_Delta" SymbolAddress="AnInputDelta.AnInp11" />
+      <ConfigParameter Property="AnInp1_Offset" SymbolAddress="AnInputOffset.AnInp1" />
+      <ConfigParameter Property="AnInp2_Offset" SymbolAddress="AnInputOffset.AnInp2" />
+      <ConfigParameter Property="AnInp3_Offset" SymbolAddress="AnInputOffset.AnInp3" />
+      <ConfigParameter Property="AnInp4_Offset" SymbolAddress="AnInputOffset.AnInp4" />
+      <ConfigParameter Property="AnInp5_Offset" SymbolAddress="AnInputOffset.AnInp5" />
+      <ConfigParameter Property="AnInp6_Offset" SymbolAddress="AnInputOffset.AnInp6" />
+      <ConfigParameter Property="AnInp7_Offset" SymbolAddress="AnInputOffset.AnInp7" />
+      <ConfigParameter Property="AnInp8_Offset" SymbolAddress="AnInputOffset.AnInp8" />
+      <ConfigParameter Property="AnInp9_Offset" SymbolAddress="AnInputOffset.AnInp9" />
+      <ConfigParameter Property="AnInp10_Offset" SymbolAddress="AnInputOffset.AnInp10" />
+      <ConfigParameter Property="AnInp11_Offset" SymbolAddress="AnInputOffset.AnInp11" />
+      <ConfigParameter Property="GroundFaultEvent" SymbolAddress="GroundFault.Emergency" />
+      <ConfigParameter Property="IMUGyroXScale" SymbolAddress="ImuConfig.GyroXScale" />
+      <ConfigParameter Property="IMUGyroYScale" SymbolAddress="ImuConfig.GyroYScale" />
+      <ConfigParameter Property="IMUGyroZScale" SymbolAddress="ImuConfig.GyroZScale" />
+    </ConfigParameters>
+    <TxPdos>
+      <TxPdo CobId="386" ReceiveTimeout="200" TransmissionType="1" PdoType="User">
+        <PdoMap>
+          <PdoMapParameter Property="DigitalInput1" SymbolAddress="DigInput.DigInp_1_8.DigInp1" Length="1" />
+          <PdoMapParameter Property="DigitalInput2" SymbolAddress="DigInput.DigInp_1_8.DigInp2" Length="1" />
+          <PdoMapParameter Property="DigitalInput3" SymbolAddress="DigInput.DigInp_1_8.DigInp3" Length="1" />
+          <PdoMapParameter Property="DigitalInput4" SymbolAddress="DigInput.DigInp_1_8.DigInp4" Length="1" />
+          <PdoMapParameter Property="DigitalInput5" SymbolAddress="DigInput.DigInp_1_8.DigInp5" Length="1" />
+          <PdoMapParameter Property="DigitalInput6" SymbolAddress="DigInput.DigInp_1_8.DigInp6" Length="1" />
+          <PdoMapParameter Property="DigitalInput7" SymbolAddress="DigInput.DigInp_1_8.DigInp7" Length="1" />
+          <PdoMapParameter Property="DigitalInput8" SymbolAddress="DigInput.DigInp_1_8.DigInp8" Length="1" />
+          <PdoMapParameter Property="DigitalInput9" SymbolAddress="DigInput.DigInp_9_12.DigInp9" Length="1" />
+          <PdoMapParameter Property="DigitalInput10" SymbolAddress="DigInput.DigInp_9_12.DigInp10" Length="1" />
+          <PdoMapParameter Property="DigitalInput11" SymbolAddress="DigInput.DigInp_9_12.DigInp11" Length="1" />
+          <PdoMapParameter Property="DigitalInput12" SymbolAddress="DigInput.DigInp_9_12.DigInp12" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="AnalogInput5" SymbolAddress="AnInput.AnInp5" Length="16" />
+          <PdoMapParameter Property="AnalogInput6" SymbolAddress="AnInput.AnInp6" Length="16" />
+        </PdoMap>
+      </TxPdo>
+      <TxPdo CobId="642" ReceiveTimeout="200" TransmissionType="1" PdoType="User">
+        <PdoMap>
+          <PdoMapParameter Property="AnalogInput1" SymbolAddress="AnInput.AnInp1" Length="16" />
+          <PdoMapParameter Property="AnalogInput2" SymbolAddress="AnInput.AnInp2" Length="16" />
+          <PdoMapParameter Property="AnalogInput3" SymbolAddress="AnInput.AnInp3" Length="16" />
+          <PdoMapParameter Property="AnalogInput4" SymbolAddress="AnInput.AnInp4" Length="16" />
+        </PdoMap>
+      </TxPdo>
+      <TxPdo CobId="482" ReceiveTimeout="200" TransmissionType="1" PdoType="Background">
+        <PdoMap>
+          <PdoMapParameter Property="IMUGyroX" SymbolAddress="ImuOutput.GyroX" Length="16" />
+          <PdoMapParameter Property="IMUGyroY" SymbolAddress="ImuOutput.GyroY" Length="16" />
+          <PdoMapParameter Property="IMUGyroZ" SymbolAddress="ImuOutput.GyroZ" Length="16" />
+          <PdoMapParameter Property="IMUError" SymbolAddress="ImuOutput.Error" Length="16" />
+        </PdoMap>
+      </TxPdo>
+      <TxPdo CobId="738" ReceiveTimeout="200" TransmissionType="1" PdoType="Background">
+        <PdoMap>
+          <PdoMapParameter Property="IMUAccX" SymbolAddress="ImuOutput.AccX" Length="16" />
+          <PdoMapParameter Property="IMUAccY" SymbolAddress="ImuOutput.AccY" Length="16" />
+          <PdoMapParameter Property="IMUAccZ" SymbolAddress="ImuOutput.AccZ" Length="16" />
+        </PdoMap>
+      </TxPdo>
+      <TxPdo CobId="962" ReceiveTimeout="200" TransmissionType="1" PdoType="User">
+        <PdoMap>
+          <PdoMapParameter Property="AnalogInput7" SymbolAddress="AnInput.AnInp7" Length="16" />
+          <PdoMapParameter Property="AnalogInput8" SymbolAddress="AnInput.AnInp8" Length="16" />
+          <PdoMapParameter Property="AnalogInput9" SymbolAddress="AnInput.AnInp9" Length="16" />
+          <PdoMapParameter Property="AnalogInput10" SymbolAddress="AnInput.AnInp10" Length="16" />
+        </PdoMap>
+      </TxPdo>
+      <TxPdo CobId="1218" ReceiveTimeout="200" TransmissionType="1" PdoType="User">
+        <PdoMap>
+          <PdoMapParameter Property="AnalogInput11" SymbolAddress="AnInput.AnInp11" Length="16" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="48" />
+        </PdoMap>
+      </TxPdo>
+      <TxPdo CobId="1186" TransmissionType="1" PdoType="Background">
+        <PdoMap>
+          <PdoMapParameter Property="Reg1Output" SymbolAddress="Reg1.OutValue" Length="16" />
+          <PdoMapParameter Property="Reg2Output" SymbolAddress="Reg2.OutValue" Length="16" />
+        </PdoMap>
+      </TxPdo>
+    </TxPdos>
+    <RxPdos>
+      <RxPdo CobId="514" TransmissionType="1" PdoType="User">
+        <PdoMap>
+          <PdoMapParameter Property="AllOK_DigitalOutput1" SymbolAddress="DigOutput.DigOut_1_8.DigOut1" Length="1" />
+          <PdoMapParameter Property="DigitalOutput2" SymbolAddress="DigOutput.DigOut_1_8.DigOut2" Length="1" />
+          <PdoMapParameter Property="DigitalOutput3" SymbolAddress="DigOutput.DigOut_1_8.DigOut3" Length="1" />
+          <PdoMapParameter Property="DigitalOutput4" SymbolAddress="DigOutput.DigOut_1_8.DigOut4" Length="1" />
+          <PdoMapParameter Property="DigitalOutput5" SymbolAddress="DigOutput.DigOut_1_8.DigOut5" Length="1" />
+          <PdoMapParameter Property="DigitalOutput6" SymbolAddress="DigOutput.DigOut_1_8.DigOut6" Length="1" />
+          <PdoMapParameter Property="DigitalOutput7" SymbolAddress="DigOutput.DigOut_1_8.DigOut7" Length="1" />
+          <PdoMapParameter Property="DigitalOutput8" SymbolAddress="DigOutput.DigOut_1_8.DigOut8" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="DigOutput.DigOut_9_16.DigOut9" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="DigOutput.DigOut_9_16.DigOut10" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="DigOutput.DigOut_9_16.DigOut11" Length="1" />
+          <PdoMapParameter Property="DigitalOutput12" SymbolAddress="DigOutput.DigOut_9_16.DigOut12" Length="1" />
+          <PdoMapParameter Property="DigitalOutput13" SymbolAddress="DigOutput.DigOut_9_16.DigOut13" Length="1" />
+          <PdoMapParameter Property="DigitalOutput14" SymbolAddress="DigOutput.DigOut_9_16.DigOut14" Length="1" />
+          <PdoMapParameter Property="DigitalOutput15" SymbolAddress="DigOutput.DigOut_9_16.DigOut15" Length="1" />
+          <PdoMapParameter Property="DigitalOutput16" SymbolAddress="DigOutput.DigOut_9_16.DigOut16" Length="1" />
+          <PdoMapParameter Property="PWMOutput1" SymbolAddress="AnOutput.AnOut1" Length="16" />
+          <PdoMapParameter Property="PWMOutput2" SymbolAddress="AnOutput.AnOut2" Length="16" />
+          <PdoMapParameter Property="PWMOutput3" SymbolAddress="AnOutput.AnOut3" Length="16" />
+        </PdoMap>
+      </RxPdo>
+    </RxPdos>
+    <ComponentSubType Name="SDIO" BaseType="GenericCanDevice" BaseComponentType="SDIOInertialSensor">
+      <Interfaces>
+        <Interface Name="SDIO" />
+      </Interfaces>
+      <Properties>
+        <Property SymbolName="IMUGyroX" PublicName="Gyroscope x-axis value, cdeg/s" DataType="INTEGER16" AccessType="ro" Visibility="OEM" Unit="cdeg/s" Remark="Gyroscope x-axis value, cdeg/s" ParameterClass="Runtime" />
+        <Property SymbolName="IMUGyroY" PublicName="Gyroscope y-axis value, cdeg/s" DataType="INTEGER16" AccessType="ro" Visibility="OEM" Unit="cdeg/s" Remark="Gyroscope y-axis value, cdeg/s" ParameterClass="Runtime" />
+        <Property SymbolName="IMUGyroZ" PublicName="Gyroscope x-axis value, cdeg/s" DataType="INTEGER16" AccessType="ro" Visibility="OEM" Unit="cdeg/s" Remark="Gyroscope z-axis value, cdeg/s" ParameterClass="Runtime" />
+        <Property SymbolName="IMUAccX" PublicName="Accelerometer x-axis value, mg" DataType="INTEGER16" AccessType="ro" Visibility="OEM" Unit="mg" Remark="Accelerometer x-axis value, mg" ParameterClass="Runtime" />
+        <Property SymbolName="IMUAccY" PublicName="Accelerometer x-axis value, mg" DataType="INTEGER16" AccessType="ro" Visibility="OEM" Unit="mg" Remark="Accelerometer x-axis value, mg" ParameterClass="Runtime" />
+        <Property SymbolName="IMUAccZ" PublicName="Accelerometer x-axis value, mg" DataType="INTEGER16" AccessType="ro" Visibility="OEM" Unit="mg" Remark="Accelerometer x-axis value, mg" ParameterClass="Runtime" />
+        <Property SymbolName="IMUError" PublicName="IMU Error value" DataType="UNSIGNED16" AccessType="ro" Visibility="OEM" Remark="IMU Error value" ParameterClass="Runtime" />
+        <Property SymbolName="IMUGyroXScale" PublicName="Gyroscope x-axis scale value" DataType="INTEGER16" Default="10000" AccessType="rw" Visibility="OEM" Remark="Gyroscope x-axis scale value (the value 10000 corresponds to a real scale value of 1.0)" ParameterClass="Config" />
+        <Property SymbolName="IMUGyroYScale" PublicName="Gyroscope y-axis scale value" DataType="INTEGER16" Default="10000" AccessType="rw" Visibility="OEM" Remark="Gyroscope y-axis scale value (the value 10000 corresponds to a real scale value of 1.0)" ParameterClass="Config" />
+        <Property SymbolName="IMUGyroZScale" PublicName="Gyroscope z-axis scale value" DataType="INTEGER16" Default="10000" AccessType="rw" Visibility="OEM" Remark="Gyroscope z-axis scale value (the value 10000 corresponds to a real scale value of 1.0)" ParameterClass="Config" />
+        <Property SymbolName="DigitalInput1_Polarity" PublicName="Digital Input 1 Polarity, pin #A22" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Input 1 Polarity, pin #A22" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalInput2_Polarity" PublicName="Digital Input 2 Polarity, pin #A14" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Input 2 Polarity, pin #A14" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalInput3_Polarity" PublicName="Digital Input 3 Polarity, pin #A7" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Input 3 Polarity, pin #A7" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalInput4_Polarity" PublicName="Digital Input 4 Polarity, pin #A6" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Input 4 Polarity, pin #A6" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalInput5_Polarity" PublicName="Digital Input 5 Polarity, pin #A13" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Input 5 Polarity, pin #A13" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalInput6_Polarity" PublicName="Digital Input 6 Polarity, pin #A21" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Input 6 Polarity, pin #A21" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalInput7_Polarity" PublicName="Digital Input 7 Polarity, pin #A20" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Input 7 Polarity, pin #A20" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalInput8_Polarity" PublicName="Digital Input 8 Polarity, pin #A19" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Input 8 Polarity, pin #A19" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalInput9_Polarity" PublicName="Digital Input 9 Polarity, pin #B22" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Input 9 Polarity, pin #B22" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalInput10_Polarity" PublicName="Digital Input 10 Polarity, pin #B23" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Input 10 Polarity, pin #B23" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalInput11_Polarity" PublicName="Digital Input 11 Polarity, pin #A18" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Input 11 Polarity, pin #A18" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalInput12_Polarity" PublicName="Digital Input 12 Polarity, pin #A17" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Input 12 Polarity, pin #A17" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalOutput2_Polarity" PublicName="Digital Output 2 Polarity, pin #B7" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Output 2 Polarity, pin #B7" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalOutput3_Polarity" PublicName="Digital Output 3 Polarity, pin #B6" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Output 3 Polarity, pin #B6" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalOutput4_Polarity" PublicName="Digital Output 4 Polarity, pin #B5" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Output 4 Polarity, pin #B5" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalOutput5_Polarity" PublicName="Digital Output 5 Polarity, pin #B4" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Output 5 Polarity, pin #B4" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalOutput6_Polarity" PublicName="Digital Output 6 Polarity, pin #B1" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Output 6 Polarity, pin #B1" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalOutput7_Polarity" PublicName="Digital Output 7 Polarity, pin #B3" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Output 7 Polarity, pin #B3" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalOutput8_Polarity" PublicName="Digital Output 8 Polarity, pin #B2" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Output 8 Polarity, pin #B2" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalOutput12_Polarity" PublicName="Digital Output 12 Polarity, pin #A3" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Output 12 Polarity, pin #A3" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalOutput13_Polarity" PublicName="Digital Output 13 Polarity, pin #A10" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Output 13 Polarity, pin #A10" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalOutput14_Polarity" PublicName="Digital Output 14 Polarity, pin #A2" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Output 14 Polarity, pin #A2" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalOutput15_Polarity" PublicName="Digital Output 15 Polarity, pin #A9" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Output 15 Polarity, pin #A9" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="DigitalOutput16_Polarity" PublicName="Digital Output 16 Polarity, pin #A16" DataType="BOOLEAN" Default="0" AccessType="rw" Visibility="OEM" Remark="Digital Output 16 Polarity, pin #A16" Renameable="true" ParameterClass="Config">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="AnInp1_Scale" PublicName="Analog Input 1 Scale, pin #B15" DataType="INTEGER32" Default="1000" AccessType="rw" Visibility="Service" Remark="Analog Input 1 Scale, pin #B15" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp2_Scale" PublicName="Analog Input 2 Scale, pin #B17" DataType="INTEGER32" Default="1000" AccessType="rw" Visibility="Service" Remark="Analog Input 2 Scale, pin #B17" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp3_Scale" PublicName="Analog Input 3 Scale, pin #B10" DataType="INTEGER32" Default="1000" AccessType="rw" Visibility="Service" Remark="Analog Input 3 Scale, pin #B10" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp4_Scale" PublicName="Analog Input 4 Scale, pin #B18" DataType="INTEGER32" Default="1000" AccessType="rw" Visibility="Service" Remark="Analog Input 4 Scale, pin #B18" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp5_Scale" PublicName="Analog Input 5 Scale, pin #B11" DataType="INTEGER32" Default="1000" AccessType="rw" Visibility="Service" Remark="Analog Input 5 Scale, pin #B11" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp6_Scale" PublicName="Analog Input 6 Scale, pin #B19" DataType="INTEGER32" Default="1000" AccessType="rw" Visibility="Service" Remark="Analog Input 6 Scale, pin #B19" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp7_Scale" PublicName="Analog Input 7 Scale, pin #B12" DataType="INTEGER32" Default="1000" AccessType="rw" Visibility="Service" Remark="Analog Input 7 Scale, pin #B12" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp8_Scale" PublicName="Analog Input 8 Scale, pin #B20" DataType="INTEGER32" Default="1000" AccessType="rw" Visibility="Service" Remark="Analog Input 8 Scale, pin #B20" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp9_Scale" PublicName="Analog Input 9 Scale, pin #B13" DataType="INTEGER32" Default="1000" AccessType="rw" Visibility="Service" Remark="Analog Input 9 Scale, pin #B13" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp10_Scale" PublicName="Analog Input 10 Scale, pin #B21" DataType="INTEGER32" Default="1000" AccessType="rw" Visibility="Service" Remark="Analog Input 10 Scale, pin #B21" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp11_Scale" PublicName="Analog Input 11 Scale, pin #B14" DataType="INTEGER32" Default="1000" AccessType="rw" Visibility="Service" Remark="Analog Input 11 Scale, pin #B14" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp1_Delta" PublicName="Analog Input 1 Delta" DataType="UNSIGNED32" Default="0" AccessType="rw" Visibility="Service" Remark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp2_Delta" PublicName="Analog Input 2 Delta" DataType="UNSIGNED32" Default="0" AccessType="rw" Visibility="Service" Remark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp3_Delta" PublicName="Analog Input 3 Delta" DataType="UNSIGNED32" Default="0" AccessType="rw" Visibility="Service" Remark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp4_Delta" PublicName="Analog Input 4 Delta" DataType="UNSIGNED32" Default="0" AccessType="rw" Visibility="Service" Remark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp5_Delta" PublicName="Analog Input 5 Delta" DataType="UNSIGNED32" Default="0" AccessType="rw" Visibility="Service" Remark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp6_Delta" PublicName="Analog Input 6 Delta" DataType="UNSIGNED32" Default="0" AccessType="rw" Visibility="Service" Remark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp7_Delta" PublicName="Analog Input 7 Delta" DataType="UNSIGNED32" Default="0" AccessType="rw" Visibility="Service" Remark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp8_Delta" PublicName="Analog Input 8 Delta" DataType="UNSIGNED32" Default="0" AccessType="rw" Visibility="Service" Remark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp9_Delta" PublicName="Analog Input 9 Delta" DataType="UNSIGNED32" Default="0" AccessType="rw" Visibility="Service" Remark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp10_Delta" PublicName="Analog Input 10 Delta" DataType="UNSIGNED32" Default="0" AccessType="rw" Visibility="Service" Remark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp11_Delta" PublicName="Analog Input 11 Delta" DataType="UNSIGNED32" Default="0" AccessType="rw" Visibility="Service" Remark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp1_Offset" PublicName="Analog Input 1 Offset, pin #B15" DataType="INTEGER32" Default="0" AccessType="rw" Visibility="Service" Remark="Analog Input 1 Offset, pin #B15" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp2_Offset" PublicName="Analog Input 2 Offset, pin #B17" DataType="INTEGER32" Default="0" AccessType="rw" Visibility="Service" Remark="Analog Input 2 Offset, pin #B17" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp3_Offset" PublicName="Analog Input 3 Offset, pin #B10" DataType="INTEGER32" Default="0" AccessType="rw" Visibility="Service" Remark="Analog Input 3 Offset, pin #B10" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp4_Offset" PublicName="Analog Input 4 Offset, pin #B18" DataType="INTEGER32" Default="0" AccessType="rw" Visibility="Service" Remark="Analog Input 4 Offset, pin #B18" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp5_Offset" PublicName="Analog Input 5 Offset, pin #B11" DataType="INTEGER32" Default="0" AccessType="rw" Visibility="Service" Remark="Analog Input 5 Offset, pin #B11" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp6_Offset" PublicName="Analog Input 6 Offset, pin #B19" DataType="INTEGER32" Default="0" AccessType="rw" Visibility="Service" Remark="Analog Input 6 Offset, pin #B19" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp7_Offset" PublicName="Analog Input 7 Offset, pin #B12" DataType="INTEGER32" Default="0" AccessType="rw" Visibility="Service" Remark="Analog Input 7 Offset, pin #B12" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp8_Offset" PublicName="Analog Input 8 Offset, pin #B20" DataType="INTEGER32" Default="0" AccessType="rw" Visibility="Service" Remark="Analog Input 8 Offset, pin #B20" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp9_Offset" PublicName="Analog Input 9 Offset, pin #B13" DataType="INTEGER32" Default="0" AccessType="rw" Visibility="Service" Remark="Analog Input 9 Offset, pin #B13" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp10_Offset" PublicName="Analog Input 10 Offset, pin #B21" DataType="INTEGER32" Default="0" AccessType="rw" Visibility="Service" Remark="Analog Input 10 Offset, pin #B21" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="AnInp11_Offset" PublicName="Analog Input 11 Offset, pin #B14" DataType="INTEGER32" Default="0" AccessType="rw" Visibility="Service" Remark="Analog Input 11 Offset, pin #B14" Renameable="true" ParameterClass="Config" />
+        <Property SymbolName="DigitalInput1" PublicName="Digital Input 1 value, pin #A22" DataType="BOOLEAN" IOType="Digital Input Sensor" AccessType="ro" Visibility="Operator" Remark="Digital Input 1 value, pin #A22" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalInput2" PublicName="Digital Input 2 value, pin #A14" DataType="BOOLEAN" IOType="Digital Input Sensor" AccessType="ro" Visibility="Operator" Remark="Digital Input 2 value, pin #A14" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalInput3" PublicName="Digital Input 3 value, pin #A7" DataType="BOOLEAN" IOType="Digital Input Sensor" AccessType="ro" Visibility="Operator" Remark="Digital Input 3 value, pin #A7" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalInput4" PublicName="Digital Input 4 value, pin #A6" DataType="BOOLEAN" IOType="Digital Input Sensor" AccessType="ro" Visibility="Operator" Remark="Digital Input 4 value, pin #A6" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalInput5" PublicName="Digital Input 5 value, pin #A13" DataType="BOOLEAN" IOType="Digital Input Sensor" AccessType="ro" Visibility="Operator" Remark="Digital Input 5 value, pin #A13" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalInput6" PublicName="Digital Input 6 value, pin #A21" DataType="BOOLEAN" IOType="Digital Input Sensor" AccessType="ro" Visibility="Operator" Remark="Digital Input 6 value, pin #A21" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalInput7" PublicName="Digital Input 7 value, pin #A20" DataType="BOOLEAN" IOType="Digital Input Sensor" AccessType="ro" Visibility="Operator" Remark="Digital Input 7 value, pin #A20" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalInput8" PublicName="Digital Input 8 value, pin #A19" DataType="BOOLEAN" IOType="Digital Input Sensor" AccessType="ro" Visibility="Operator" Remark="Digital Input 8 value, pin #A19" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalInput9" PublicName="Digital Input 9 value, pin #B22" DataType="BOOLEAN" IOType="Digital Input Sensor" AccessType="ro" Visibility="Operator" Remark="Digital Input 9 value, pin #B22" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalInput10" PublicName="Digital Input 10 value, pin #B23" DataType="BOOLEAN" IOType="Digital Input Sensor" AccessType="ro" Visibility="Operator" Remark="Digital Input 10 value, pin #B23" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalInput11" PublicName="Digital Input 11 value, pin #A18" DataType="BOOLEAN" IOType="Digital Input Sensor" AccessType="ro" Visibility="Operator" Remark="Digital Input 11 value, pin #A18" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalInput12" PublicName="Digital Input 12 value, pin #A17" DataType="BOOLEAN" IOType="Digital Input Sensor" AccessType="ro" Visibility="Operator" Remark="Digital Input 12 value, pin #A17" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="AllOK_DigitalOutput1" PublicName="Reserved Digital Output 1 (All-OK, pin #B8)" DataType="BOOLEAN" Default="1" AccessType="ro" Visibility="Internal" Remark="Reserved Digital Output 1 (All-OK, pin #B8)" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalOutput2" PublicName="Digital Output 2 value, pin #B7" DataType="BOOLEAN" IOType="Digital Output" AccessType="rw" Visibility="Operator" Remark="Digital Output 2 value, pin #B7" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalOutput3" PublicName="Digital Output 3 value, pin #B6" DataType="BOOLEAN" IOType="Digital Output" AccessType="rw" Visibility="Operator" Remark="Digital Output 3 value, pin #B6" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalOutput4" PublicName="Digital Output 4 value, pin #B5" DataType="BOOLEAN" IOType="Digital Output" AccessType="rw" Visibility="Operator" Remark="Digital Output 4 value, pin #B5" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalOutput5" PublicName="Digital Output 5 value, pin #B4" DataType="BOOLEAN" IOType="Digital Output" AccessType="rw" Visibility="Operator" Remark="Digital Output 5 value, pin #B4" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalOutput6" PublicName="Digital Output 6 value, pin #B1" DataType="BOOLEAN" IOType="Digital Output" AccessType="rw" Visibility="Operator" Remark="Digital Output 6 value, pin #B1" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalOutput7" PublicName="Digital Output 7 value, pin #B3" DataType="BOOLEAN" IOType="Digital Output" AccessType="rw" Visibility="Operator" Remark="Digital Output 7 value, pin #B3" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalOutput8" PublicName="Digital Output 8 value, pin #B2" DataType="BOOLEAN" IOType="Digital Output" AccessType="rw" Visibility="Operator" Remark="Digital Output 8 value, pin #B2" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalOutput12" PublicName="Digital Output 12 value, pin #A3" DataType="BOOLEAN" IOType="Digital Output" AccessType="rw" Visibility="Operator" Remark="Digital Output 12 value, pin #A3" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalOutput13" PublicName="Digital Output 13 value, pin #A10" DataType="BOOLEAN" IOType="Digital Output" AccessType="rw" Visibility="Operator" Remark="Digital Output 13 value, pin #A10" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalOutput14" PublicName="Digital Output 14 value, pin #A2" DataType="BOOLEAN" IOType="Digital Output" AccessType="rw" Visibility="Operator" Remark="Digital Output 14 value, pin #A2" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalOutput15" PublicName="Digital Output 15 value, pin #A9" DataType="BOOLEAN" IOType="Digital Output" AccessType="rw" Visibility="Operator" Remark="Digital Output 15 value, pin #A9" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="DigitalOutput16" PublicName="Digital Output 16 value, pin #A16" DataType="BOOLEAN" IOType="Digital Output" AccessType="rw" Visibility="Operator" Remark="Digital Output 16 value, pin #A16" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="AnalogInput1" PublicName="Analog Input 1 value, pin #B15" DataType="INTEGER16" IOType="Analog Input" AccessType="ro" Visibility="Operator" Remark="Analog Input 1 value, pin #B15. The value is the applied input voltage (in Volts) * Scale + Offset" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="AnalogInput2" PublicName="Analog Input 2 value, pin #B17" DataType="INTEGER16" IOType="Analog Input" AccessType="ro" Visibility="Operator" Remark="Analog Input 2 value, pin #B17. The value is the applied input voltage (in Volts) * Scale + Offset" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="AnalogInput3" PublicName="Analog Input 3 value, pin #B10" DataType="INTEGER16" IOType="Analog Input" AccessType="ro" Visibility="Operator" Remark="Analog Input 3 value, pin #B10. The value is the applied input voltage (in Volts) * Scale + Offset" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="AnalogInput4" PublicName="Analog Input 4 value, pin #B18" DataType="INTEGER16" IOType="Analog Input" AccessType="ro" Visibility="Operator" Remark="Analog Input 4 value, pin #B18. The value is the applied input voltage (in Volts) * Scale + Offset" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="AnalogInput5" PublicName="Analog Input 5 value, pin #B11" DataType="INTEGER16" IOType="Analog Input" AccessType="ro" Visibility="Operator" Remark="Analog Input 5 value, pin #B11. The value is the applied input voltage (in Volts) * Scale + Offset" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="AnalogInput6" PublicName="Analog Input 6 value, pin #B19" DataType="INTEGER16" IOType="Analog Input" AccessType="ro" Visibility="Operator" Remark="Analog Input 6 value, pin #B19. The value is the applied input voltage (in Volts) * Scale + Offset" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="AnalogInput7" PublicName="Analog Input 7 value, pin #B12" DataType="INTEGER16" IOType="Analog Input" AccessType="ro" Visibility="Operator" Remark="Analog Input 7 value, pin #B12. The value is the applied input voltage (in Volts) * Scale + Offset" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="AnalogInput8" PublicName="Analog Input 8 value, pin #B20" DataType="INTEGER16" IOType="Analog Input" AccessType="ro" Visibility="Operator" Remark="Analog Input 8 value, pin #B20. The value is the applied input voltage (in Volts) * Scale + Offset" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="AnalogInput9" PublicName="Analog Input 9 value, pin #B13" DataType="INTEGER16" IOType="Analog Input" AccessType="ro" Visibility="Operator" Remark="Analog Input 9 value, pin #B13. The value is the applied input voltage (in Volts) * Scale + Offset" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="AnalogInput10" PublicName="Analog Input 10 value, pin #B21" DataType="INTEGER16" IOType="Analog Input" AccessType="ro" Visibility="Operator" Remark="Analog Input 10 value, pin #B21. The value is the applied input voltage (in Volts) * Scale + Offset" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="AnalogInput11" PublicName="Analog Input 11 value, pin #B14" DataType="INTEGER16" IOType="Analog Input" AccessType="ro" Visibility="Operator" Remark="Analog Input 11 value, pin #B14. The value is the applied input voltage (in Volts) * Scale + Offset" Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="PWMOutput1" PublicName="PWM Output 1 value, pin #A5" DataType="INTEGER16" IOType="Analog Output" Min="0" Max="1000" Default="0" AccessType="rw" Visibility="Operator" Unit="0.1%" Remark="PWM Output 1 value, pin #A5. The value is the duty cycle of the output." Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="PWMOutput2" PublicName="PWM Output 2 value, pin #A12" DataType="INTEGER16" IOType="Analog Output" Min="0" Max="1000" Default="0" AccessType="rw" Visibility="Operator" Unit="0.1%" Remark="PWM Output 2 value, pin #A12. The value is the duty cycle of the output." Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="PWMOutput3" PublicName="PWM Output 3 value, pin #A11" DataType="INTEGER16" IOType="Analog Output" Min="0" Max="1000" Default="0" AccessType="rw" Visibility="Operator" Unit="0.1%" Remark="PWM Output 3 value, pin #A11. The value is the duty cycle of the output." Renameable="true" ParameterClass="Runtime" />
+        <Property SymbolName="Reg1Output" PublicName="Regulator 1 output value" DataType="INTEGER16" AccessType="ro" Visibility="Internal" Remark="Regulator 1 output value" ParameterClass="Runtime" />
+        <Property SymbolName="Reg2Output" PublicName="Regulator 2 output value" DataType="INTEGER16" AccessType="ro" Visibility="Internal" Remark="Regulator 2 output value" ParameterClass="Runtime" />
+        <Property SymbolName="GroundFaultEvent" PublicName="GroundFaultEvent" DataType="BOOLEAN" Default="1" AccessType="rw" Visibility="OEM" Unit="" Remark="If set to true, a ground fault will cause a system event 229." ParameterClass="Config" />
+        <MasterProperty SymbolName="GroundFaultActive" PublicName="GroundFaultActive" DataType="BOOLEAN" AccessType="ro" Visibility="OEM" Unit="" Remark="True if a ground fault is present" ParameterClass="Runtime" ReadPeriod="Periodic,2000,0x3500,2,0" />
+        <MasterProperty SymbolName="Temperature" PublicName="Temperature" DataType="INTEGER32" AccessType="ro" Visibility="OEM" Unit="decicelsius" Remark="Current temperature" ParameterClass="Runtime" ReadPeriod="Periodic,2000,0x5E0B,0,0" />
+        <MasterProperty SymbolName="XV_Out" PublicName="xv out voltage" DataType="INTEGER32" AccessType="ro" Visibility="OEM" Unit="centivolt" Remark="Current xv out voltage" ParameterClass="Runtime" ReadPeriod="Periodic,2000,0x5E0C,0,0" />
+        <MasterProperty SymbolName="B_Plus" PublicName="b plus voltage" DataType="INTEGER32" AccessType="ro" Visibility="OEM" Unit="centivolt" Remark="Current b plus voltage" ParameterClass="Runtime" ReadPeriod="Periodic,2000,0x5E0D,0,0" />
+      </Properties>
+    </ComponentSubType>
+    <ReadParameters>
+      <ReadParameter Property="DeviceType" Index="0x1000" SubIndex="0" DataType="UNSIGNED32" />
+      <ReadParameter Property="VendorID" Index="0x1018" SubIndex="1" DataType="UNSIGNED32" ValueRepresentation="Hex" />
+      <ReadParameter Property="BootSWArticleNumber" Index="0x5F01" SubIndex="1" DataType="VISIBLE_STRING" />
+      <ReadParameter Property="ApplicationSWArticleNumber" Index="0x5F01" SubIndex="4" DataType="VISIBLE_STRING" />
+      <ReadParameter Property="HardwareVersion" Index="0x5F01" SubIndex="10" DataType="VISIBLE_STRING" />
+      <ReadParameter Property="HardwareSerialNumber" Index="0x5F01" SubIndex="13" DataType="VISIBLE_STRING" />
+      <ReadParameter Property="MainCPLDVersion" Index="0x5F01" SubIndex="19" DataType="VISIBLE_STRING" />
+    </ReadParameters>
+    <Emergencies>
+      <Emergency Code="0x8120" Action="PLC" Description="Warning, Error passive." />
+      <Emergency Code="0x3000" Action="PLC" SysEvent="229" Description="Ground fault error." />
+      <Emergency Code="0x1020" Action="Background" SysEvent="237" Description="SDIO IMU exception." />
+    </Emergencies>
+  </Configuration>
+</File>

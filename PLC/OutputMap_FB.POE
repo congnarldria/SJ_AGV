@@ -1,0 +1,895 @@
+FUNCTION_BLOCK OUTPUTMAP_FB
+VAR_EXTERNAL
+NDC8:NDC8_T;
+Output : Output_T;
+g_PowerOffFlag : BOOL;
+
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+	LampBlink : BLINK;
+	
+	(* Power Off *)
+	PowerOffEvTm : TON;
+	
+	BuzzerSyncTm : TON;
+	
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	PLC_TX_WORD2 : WORD;
+	INPUT : INPUT_T;
+	G_FINDSYNCFLAG : BOOL;
+	PLC_RX_WORD20_PLC_ERRD : WORD;
+	G_ERRORCODE : WORD;
+END_VAR
+(** {* **)
+(** ------------------------------------------------------------------------------------                               **)
+(**  Output_Map_FB                     **)
+(**  -----------                   **)
+(**  **)
+(**                                **)
+(**  Description:                      **)
+(**  Used to map actual outputs to generic variables. **)
+(**  **)
+(** -------------------------------------------------------------------------------------*} **)
+(**  **)
+(** {* In the vehicle documentation, and the OUTPUTS.TYP, more examples of OutputMap_FB is found. * ) **)
+(**  **)
+(** NDC8..	:=	OUTPUT.PositionKnownLamp;	( * Green	* ) **)
+(** NDC8..	:=	OUTPUT.EmergencyStopLamp;	( * Red 	* ) **)
+(** NDC8..	:=	OUTPUT.InSystemLamp;		( * Blue	* ) **)
+(** NDC8..	:=	OUTPUT.ResetButtonLamp		( * White	* ) **)
+(** NDC8..	:=	OUTPUT.LoadOnBoardLamp; **)
+(** NDC8..	:=	OUTPUT.FrontLeftLamp; **)
+(** NDC8..	:=	OUTPUT.FrontRightLamp; **)
+(** NDC8..	:=	OUTPUT.RearLeftLamp; **)
+(** NDC8..	:=	OUTPUT.RearRightLamp; **)
+(**  **)
+(** NDC8..	:=  OUTPUT.ChargPlatesRelay; **)
+(** NDC8..	:=	OUTPUT.Buzzer; **)
+(**  **)
+(** NDC8..	:=	OUTPUT.ForkRaise; **)
+(** NDC8..	:=	OUTPUT.ForkLower; **)
+(**  **)
+(** NDC8..	:=	OUTPUT.SafetyScannerAreaControlA1; **)
+(** NDC8..	:=	OUTPUT.SafetyScannerAreaControlB1; **)
+(** NDC8..	:=	OUTPUT.SafetyScannerAreaControlA2;		 **)
+(** NDC8..	:=	OUTPUT.SafetyScannerAreaControlB2;		 **)
+(**  **)
+(** OUTPUT.SetValueTraction := NDC8.xCD_x.SetSpeed;      ( * Check FrontWheel.SetSpeedRef and enter it here * ) **)
+(** OUTPUT.SetValueSteer 	:= NDC8.xCD_x.SetAngle;      ( * Check FrontWheel.SetAngleRef and enter it here * ) **)
+(**  **)
+(** NDC8.OPT100.Buzzer	:=	OUTPUT.OPTBuzzer; **)
+(** *} **)
+(**  **)
+(** LampBlink(RUN:= TRUE,  CYCLE:= t#1s); **)
+	(* call - Stmt *)
+	CAL LampBlink (
+		RUN := TRUE,
+		CYCLE := t#1s
+	)
+
+(**  **)
+(**  **)
+(** NDC8.SDIO.DigitalOutput6_LED_INPOS := NDC8.LayoutPosition.InSystem; **)
+	(* assign - Stmt *)
+	LD NDC8.LayoutPosition.InSystem
+	ST NDC8.SDIO.DigitalOutput6_LED_INPOS
+
+(** 	 **)
+(** NDC8.SDIO.DigitalOutput2_LEDF_L	:=	OUTPUT.FrontLeftLamp; **)
+	(* assign - Stmt *)
+	LD OUTPUT.FrontLeftLamp
+	ST NDC8.SDIO.DigitalOutput2_LEDF_L
+
+(** NDC8.SDIO.DigitalOutput3_LEDF_R	:=	OUTPUT.FrontRightLamp; **)
+	(* assign - Stmt *)
+	LD OUTPUT.FrontRightLamp
+	ST NDC8.SDIO.DigitalOutput3_LEDF_R
+
+(** NDC8.SDIO.DigitalOutput4_LEDR_L	:=	OUTPUT.RearLeftLamp; **)
+	(* assign - Stmt *)
+	LD OUTPUT.RearLeftLamp
+	ST NDC8.SDIO.DigitalOutput4_LEDR_L
+
+(** NDC8.SDIO.DigitalOutput5_LEDR_R	:=	OUTPUT.RearRightLamp; **)
+	(* assign - Stmt *)
+	LD OUTPUT.RearRightLamp
+	ST NDC8.SDIO.DigitalOutput5_LEDR_R
+
+(**  **)
+(**  **)
+(** if INPUT.StartMode = TRUE then **)
+	(* if - Cond *)
+	LD INPUT.StartMode
+	EQ TRUE
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.SDIO.DigitalOutput7_LED_STR := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.SDIO.DigitalOutput7_LED_STR
+
+		JMP ODK_END_IF_000000000000001
+
+(** elsif INPUT.StartMode = FALSE and (INPUT.Manual or g_ErrorCode <> 0) then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	LD INPUT.StartMode
+	EQ FALSE
+	AND ( INPUT.Manual
+		OR ( g_ErrorCode
+			NE 0
+		)
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	NDC8.SDIO.DigitalOutput7_LED_STR := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.SDIO.DigitalOutput7_LED_STR
+
+		JMP ODK_END_IF_000000000000001
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000001_000000000000002:
+
+		(* else - Stmts *)
+
+(** 	NDC8.SDIO.DigitalOutput7_LED_STR := LampBlink.Q1; **)
+		(* assign - Stmt *)
+		LD LampBlink.Q1
+		ST NDC8.SDIO.DigitalOutput7_LED_STR
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(** if NDC8.SDIO.DigitalInput5_BTN_BRK = TRUE then **)
+	(* if - Cond *)
+	LD NDC8.SDIO.DigitalInput5_BTN_BRK
+	EQ TRUE
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.SDIO.DigitalOutput14_LED_BRK := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST NDC8.SDIO.DigitalOutput14_LED_BRK
+
+		JMP ODK_END_IF_000000000000002
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000002_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	NDC8.SDIO.DigitalOutput14_LED_BRK := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.SDIO.DigitalOutput14_LED_BRK
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000002:
+
+(**  **)
+(** if g_ErrorCode <> 0 or PLC_RX_Word20_PLC_ErrD <> 0 then **)
+	(* if - Cond *)
+	LD g_ErrorCode
+	NE 0
+	OR ( PLC_RX_Word20_PLC_ErrD
+		NE 0
+	)
+	JMPCN ODK_SKIP_000000000000003_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.SDIO.DigitalOutput8_LED_RST := LampBlink.Q1; **)
+		(* assign - Stmt *)
+		LD LampBlink.Q1
+		ST NDC8.SDIO.DigitalOutput8_LED_RST
+
+		JMP ODK_END_IF_000000000000003
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000003_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	NDC8.SDIO.DigitalOutput8_LED_RST := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.SDIO.DigitalOutput8_LED_RST
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000003:
+
+(**  **)
+(** PowerOffEvTm(IN:= g_PowerOffFlag, PT:= t#1s); **)
+	(* call - Stmt *)
+	CAL PowerOffEvTm (
+		IN := g_PowerOffFlag,
+		PT := t#1s
+	)
+
+(**  **)
+(** if PowerOffEvTm.Q then **)
+	(* if - Cond *)
+	LD PowerOffEvTm.Q
+	JMPCN ODK_SKIP_000000000000004_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.SDIO.DigitalOutput13_PWR_OFF := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST NDC8.SDIO.DigitalOutput13_PWR_OFF
+
+		JMP ODK_END_IF_000000000000004
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000004_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	NDC8.SDIO.DigitalOutput13_PWR_OFF := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.SDIO.DigitalOutput13_PWR_OFF
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000004:
+
+(**  **)
+(** BuzzerSyncTm(IN:=TRUE, PT:=t#10s); **)
+	(* call - Stmt *)
+	CAL BuzzerSyncTm (
+		IN := TRUE,
+		PT := t#10s
+	)
+
+(**  **)
+(**  **)
+(** if g_FindSyncFlag = TRUE then **)
+	(* if - Cond *)
+	LD g_FindSyncFlag
+	EQ TRUE
+	JMPCN ODK_SKIP_000000000000005_000000000000001
+
+		(* then - Stmts *)
+
+(** 	if BuzzerSyncTm.Q = TRUE then **)
+		(* if - Cond *)
+		LD BuzzerSyncTm.Q
+		EQ TRUE
+		JMPCN ODK_SKIP_000000000000006_000000000000001
+
+			(* then - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+(** 		BuzzerSyncTm(IN:= FALSE); **)
+			(* call - Stmt *)
+			CAL BuzzerSyncTm (
+				IN := FALSE
+			)
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif Input.BuzzerByPass = TRUE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_000000000000001:
+		LD INPUT.BuzzerByPass
+		EQ TRUE
+		JMPCN ODK_SKIP_000000000000006_000000000000002
+
+			(* elsif - Stmts *)
+
+(** 	 	NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif g_PowerOffFlag = TRUE then {*Ch15*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_000000000000002:
+		LD g_PowerOffFlag
+		EQ TRUE
+		JMPCN ODK_SKIP_000000000000006_000000000000003
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif NDC8.PLC_Application.TxStatusBit9_EStop = TRUE then {*Ch12*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_000000000000003:
+		LD NDC8.PLC_Application.TxStatusBit9_EStop
+		EQ TRUE
+		JMPCN ODK_SKIP_000000000000006_000000000000004
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif g_ErrorCode <> 0 then {*Ch11*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_000000000000004:
+		LD g_ErrorCode
+		NE 0
+		JMPCN ODK_SKIP_000000000000006_000000000000005
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif NDC8.PLC_Application.TxStatusBit12_LostP = TRUE then {*Ch13*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_000000000000005:
+		LD NDC8.PLC_Application.TxStatusBit12_LostP
+		EQ TRUE
+		JMPCN ODK_SKIP_000000000000006_000000000000006
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif 	NDC8.PLC_Application.TxStatusBit4_LowBatt = TRUE and NDC8.SDIO.DigitalOutput16_Charger = FALSE and  **)
+(** 		NDC8.PointTrigger.Bit9_Chrg_Right = FALSE and **)
+(** 		NDC8.PointTrigger.Bit10_Chrg_Left = FALSE and  **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_000000000000006:
+		LD NDC8.PLC_Application.TxStatusBit4_LowBatt
+		EQ TRUE
+		AND ( NDC8.SDIO.DigitalOutput16_Charger
+			EQ FALSE
+		)
+		AND ( NDC8.PointTrigger.Bit9_Chrg_Right
+			EQ FALSE
+		)
+		AND ( NDC8.PointTrigger.Bit10_Chrg_Left
+			EQ FALSE
+		)
+		AND ( NDC8.PointTrigger.Bit14_Full_Chrg
+(** 		NDC8.PointTrigger.Bit14_Full_Chrg = FALSE  then {*Ch14*} **)
+			EQ FALSE
+		)
+		JMPCN ODK_SKIP_000000000000006_000000000000007
+
+			(* elsif - Stmts *)
+
+(** 		 **)
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;		 **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif NDC8.SDIO.DigitalInput3_BMP_O1 = TRUE or NDC8.SDIO.DigitalInput4_BMP_O2 then {*Ch10*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_000000000000007:
+		LD NDC8.SDIO.DigitalInput3_BMP_O1
+		EQ TRUE
+		OR NDC8.SDIO.DigitalInput4_BMP_O2
+		JMPCN ODK_SKIP_000000000000006_000000000000008
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;	 **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif NDC8.PLC_Application.TxStatusBit11_IrStop = TRUE then {*Ch9*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_000000000000008:
+		LD NDC8.PLC_Application.TxStatusBit11_IrStop
+		EQ TRUE
+		JMPCN ODK_SKIP_000000000000006_000000000000009
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif NDC8.PLC_Application.TxStatusBit10_Blocked = TRUE then {*Ch8*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_000000000000009:
+		LD NDC8.PLC_Application.TxStatusBit10_Blocked
+		EQ TRUE
+		JMPCN ODK_SKIP_000000000000006_00000000000000A
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;	 **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif PLC_TX_Word2 <> 0 then {*Ch7*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_00000000000000A:
+		LD PLC_TX_Word2
+		NE 0
+		JMPCN ODK_SKIP_000000000000006_00000000000000B
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif Input.SafetyScannerSlowDown = TRUE then {*Ch5*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_00000000000000B:
+		LD INPUT.SafetyScannerSlowDown
+		EQ TRUE
+		JMPCN ODK_SKIP_000000000000006_00000000000000C
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif Input.SD_Right or Input.DD_Right then {*Ch4*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_00000000000000C:
+		LD INPUT.SD_Right
+		OR INPUT.DD_Right
+		JMPCN ODK_SKIP_000000000000006_00000000000000D
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif Input.SD_Left or Input.DD_Left then {*Ch3*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_00000000000000D:
+		LD INPUT.SD_Left
+		OR INPUT.DD_Left
+		JMPCN ODK_SKIP_000000000000006_00000000000000E
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif Input.SD_Backward then {*Ch2*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_00000000000000E:
+		LD INPUT.SD_Backward
+		JMPCN ODK_SKIP_000000000000006_00000000000000F
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif Input.SD_Forward then {*Ch1*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_00000000000000F:
+		LD INPUT.SD_Forward
+		JMPCN ODK_SKIP_000000000000006_00000000000000G
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	elsif NDC8.Automatic.ExecDriveCommand = TRUE then {*Ch1*} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000006_00000000000000G:
+		LD NDC8.Automatic.ExecDriveCommand
+		EQ TRUE
+		JMPCN ODK_SKIP_000000000000006_00000000000000H
+
+			(* elsif - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE;	 **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+			JMP ODK_END_IF_000000000000006
+
+(** 	 **)
+(**  **)
+(** 	 **)
+(** 	{*Ch6*} **)
+(** 	{* **)
+(** 	elsif (StopWord <> 0 and not StopStartDelay and not StopCharge and not StopLoadOP) or (StopWord2 <> 0 and not StopByBCD and not StopRobotNotIdle )then  **)
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE; **)
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE; **)
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE; **)
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE;*}	 **)
+(** 	 **)
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_000000000000006_00000000000000H:
+
+			(* else - Stmts *)
+
+(** 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1
+
+(** 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2
+
+(** 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
+
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000006:
+
+		JMP ODK_END_IF_000000000000005
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000005_000000000000001:
+	ODK_END_IF_000000000000005:
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

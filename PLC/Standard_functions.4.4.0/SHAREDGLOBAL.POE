@@ -1,0 +1,139 @@
+$BEGIN_IT_HEADER
+GLOBALDEFINITIONS = 1 
+$END_IT_HEADER
+PROGRAM SharedGlobal
+VAR_GLOBAL
+	DisplayStopString   : DisplayStopString_FB;
+	
+	(*CVC->HMI Word 1~100, DWord 101~200*)
+	(*HMI-> Word 201~300, DWord 301~400*)
+
+	(*CVC->HMI bit 1~200*)(*IO bit 41~200*)
+	(*HMI->CVC bit 201~400*)(*IO bit 301~400*)
+	ModBus_ValueWord:ARRAY[1..500] OF Word;
+	ModBus_ValueBOOL:ARRAY[1..400] OF BOOL;
+	
+	UploadData_ModBus_ValueWord:ARRAY[1..500] OF Word;
+	UploadData_ModBus_ValueBOOL:ARRAY[1..400] OF BOOL;
+
+	InStatus : bool;	(* Input for display. *)
+	Timer : Timer_FB;
+
+	EventQueue			: EventQueue_FB;
+	UserEvent:ARRAY[1..10,0..4] of DINT;
+
+	(* Symbols available from all programs. *)
+	INPUT 	: INPUT_T;
+	OUTPUT 	: OUTPUT_T;
+	TRUCK 	: TRUCK_T;
+	
+	a : bool;   		(* Dummy for sending trace to blackbox. *)
+	Bbxtrig		: bool;	(* Global memory for initiaing a blackbox trig. *)
+	debug : bool;		(* Global initiation of trace print to blackbox. *)
+
+	VersionStandardFB : dint := 430;		(* Version of the NDC8Demo Standard function blocks. 
+												Should match NDC8.UserDefined.VersionStandardFB *)
+
+	(* Power Off Flag *)
+	g_PowerOffFlag 		: BOOL;
+	g_PowerOffFlag_PLC	: BOOL;	
+	g_PowerOffFlag_OMPLC: BOOL;
+	g_PowerOffFlag_OP	: BOOL;
+	g_PowerOffFlag_Block: BOOL;
+	g_PowerOffFlag_Lost : BOOL;
+	g_PowerOffFlag_Error : BOOL;
+	
+	(* Find Sync Flag *)
+	g_StartFindSync : BOOL;
+	g_FindSyncFlag : BOOL;
+	
+	g_AGV_ErrorReset : BOOL;
+	
+	(* Charge Over Time Flag*)
+	g_ChargeOverTime : BOOL;
+	
+	(* BMS Error *)
+	g_BMS_Error : BOOL;
+	
+	
+	(* CAN Restart Flag *)
+	g_CanRestartFalg : BOOL;
+	
+	(* Power Off Setting *)
+	EnaPoweOf	: BOOL := 1;
+	EnLowBat	: BOOL := 0;
+	EnBlock		: BOOL := 1;
+	EnLost		: BOOL := 0;
+	EnSilent	: BOOL := 0;
+	
+	
+	g_BattLim_NG		: BOOL;
+	
+	g_ErrorCode : WORD;
+	
+	g_PlcComLinkUp : BOOL;
+	
+	g_RemoteReset : BOOL;
+	
+	PLC_TX_Word7_STr_Vecl		:WORD;
+	PLC_TX_Word8_STr_Seg		:WORD;
+	PLC_TX_Word9_STr_Pnt		:WORD;
+	PLC_TX_Word10_STr_BatV		:WORD;
+	PLC_TX_Word11_STr_Temp		:WORD;
+	PLC_TX_Word12_STr_BatD		:WORD;
+	PLC_TX_Word13_STr_Err		:WORD;
+	
+	
+	
+	PLC_RX_Word10_STw_ILEr		:WORD;
+	PLC_RX_Word11_Ins_Pno		:WORD;
+	PLC_RX_Word12_STw_Pint		:WORD;
+	PLC_RX_Word13_Ins_Ano		:WORD;
+	
+	PLC_RX_Word16_BMS_BatV		:WORD;
+	PLC_RX_Word17_BMS_BatT		:WORD;
+	PLC_RX_Word18_BMS_BatC		:WORD;
+	PLC_RX_Word19_BMS_BatA		:WORD;
+	PLC_RX_Word20_PLC_ErrD		:WORD;
+	PLC_RX_Word21_BMS_Main		:WORD;
+	PLC_RX_Word22_BMS_Chan		:WORD;
+	PLC_RX_Word23_BMS_ID4L		:WORD;
+	PLC_RX_Word24_BMS_ID4H		:WORD;
+	PLC_RX_Word25				:WORD;
+END_VAR
+
+VAR_GLOBAL RETAIN		(* Values kept also during power off. *)
+	Hour:Dint;
+	Milliseconds:Dint;
+	SecondLanguage:bool;
+END_VAR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+END_PROGRAM

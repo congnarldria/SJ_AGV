@@ -1,0 +1,112 @@
+FUNCTION_BLOCK BatteryChargerHandler_FB
+VAR_EXTERNAL
+	NDC8: NDC8_T;  
+END_VAR
+
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+	BatteryChargerState,
+	SSIOLLine,
+	SSIOUnit,
+	SSIOID : dint;
+
+	SSIO : SSIO_FB;
+	
+	SSIOReadDelay : TON;
+	OnChargePointRT : R_Trig;
+END_VAR
+(* Opportunity and low battery charging.
+  When reaching the charging point, close the vehicle's charge contactor. 
+  Let a position cluster, only affecting the point, start the charger by an SSIO output.
+  Alternatively, you can expand this program to start the charger, from the vehicle, in states 0-9.
+  Turn off the charger in states 21-29 *)
+
+
+(* Cancel charge plate relay if in manual mode or doing load operation (except for charging). *)
+if NDC8.VehicleControl.OperationMode > 0 or 
+	 (NDC8.LoadOperation.OperationCode > 0 and NDC8.LoadOperation.OperationCode <> 16#08) then
+		Output.ChargePlatesRelay := false;
+		StopCharge := false;
+		BatteryChargerState := 0;
+end_if;
+InStatus := NDC8.PointTrigger.Charger and not NDC8.Automatic.ExecDriveCommand;
+OnChargePointRT(CLK:=InStatus);
+
+case BatteryChargerState of
+(* TURNING ON THE CHARGER *)
+0:	if OnChargePointRT.q then
+		Output.ChargePlatesRelay := true;
+		StopCharge := true;
+		BatteryChargerState := 10;
+	end_if;
+
+10:	(* Store the 'Charger Active'-signal for the current point.*)
+	case NDC8.LayoutPosition.Point of
+											(* UPDATE HERE WITH THE REAL POINTS AND SIGNALS!  *)
+		2197:
+			SSIOLLine := 1;
+			SSIOUnit := 4;
+			SSIOID := 0;
+		4454:
+			SSIOLLine := 1;
+			SSIOUnit := 4;
+			SSIOID := 1;
+	end_case;
+	BatteryChargerState := 20;
+
+
+
+(* TURNING OFF THE CHARGER *)
+
+(* 	If doing a Low battery charge order, the Load operation ChargeBattery_FB will keep the vehicle on the station until the battery is full.
+	When the battery is full, the vehicle will remain on the station, until there is a new order.
+	The charging station should have the flag 'Stand' set to TRUE. 
+ 	
+	When a new order is received, the position cluster is false, so the charger is turned off.
+	Read the SSIO to verify the charger is turned off, before releasing the vehicle. *)
+
+20:	if NDC8.Automatic.ExecDriveCommand then 
+		BatteryChargerState := 30;
+	end_if;
+
+(* If controlling the charger from the vehicle, here is where the charger should be turned off. *)	
+	
+30: (* Verify the charger is turned off. *)
+		SSIO(	LogicalLine		:= SSIOLLine,
+				UnitNumber		:= SSIOUnit,
+				InputOutputID	:= SSIOID,
+				RequestType		:= 0    (* Read "Charger active" status *)
+			);
+		if SSIO.Finished then
+			BatteryChargerState := 31;
+		end_if;
+
+31: if SSIO.Status = 0 then			(* When the charger is turned off, open the relay and release the stop flag. *)
+		Output.ChargePlatesRelay := false;
+		StopCharge := false;
+		BatteryChargerState := 0;
+	elsif SSIO.ErrorCode > 0 then
+		BatteryChargerState := 99;
+	else
+		BatteryChargerState := 32;
+	end_if;
+
+32: SSIOReadDelay(IN:=true,PT:=t#1s);		(* Wait one second before checking the output again. *)
+	if SSIOReadDelay.q then
+		BatteryChargerState := 30;
+	end_if;
+
+												(* 'Battery charger active' signal failed. *)
+99: 	BatteryChargerState := 0;
+
+
+end_case;
+
+END_FUNCTION_BLOCK

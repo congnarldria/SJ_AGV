@@ -1,0 +1,422 @@
+FUNCTION_BLOCK NAVIGATION_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;
+END_VAR
+
+VAR_INPUT
+	AutoInsertNotInsideTargetSafety : bool;
+	ModePPA : bool;
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+	NavMethod : NavMethod_FB;
+	PreviousSegmentID,
+	NavMethodState: DINT;
+	SegmentChange,
+	WheelSpinning,
+	NavlevelTrigger : Bool;
+	NavlevelTrigger_RT,
+	PositionKnown_RT : F_trig;
+	PositionKnown_FT : F_trig;
+	
+	WheelSpinningTimer,
+	SegmentChangeTimer : TON;
+	
+	
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	DISPLAYSTOPSTRING : DisplayStopString_FB;
+	INSTATUS : bool;
+	INPUT : INPUT_T;
+	STOPSPINNINGWHEEL : BOOL;
+END_VAR
+(** {* **)
+(** if ndc8.SegmentTrigger.Value > 0 then **)
+(** 	NDC8.VehicleNavigator.SetNavMethod := ndc8.SegmentTrigger.Value; **)
+(** end_if; **)
+(**  **)
+(** Case NavMethodState of **)
+(** 0: if ndc8.SegmentTrigger.Value <> NDC8.VehicleNavigator.NavMethod then **)
+(** 		NavMethodState := 10; **)
+(** 	end_if; **)
+(** 10:	NavMethod(); **)
+(** 	if NavMethod.Finished or NavMethod.ErrorCode > 0 or NDC8.SegmentTrigger.Value = 0 then **)
+(** 		NavMethodState := 0; **)
+(** 	end_if; **)
+(** end_case; **)
+(** *} **)
+(**  **)
+(** InStatus:=NavMethod.ErrorCode > 0; **)
+	(* assign - Stmt *)
+	LD NavMethod.ErrorCode
+	GT 0
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=53, StopValue:=0);							{* Undefined mode. *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 53,
+		StopValue := 0
+	)
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(** {* NAVIGATION init.				NOTE! Error codes > 5 is not supported in VMC500. *} **)
+(**  **)
+(** InStatus	:=	AutoInsertNotInsideTargetSafety **)
+(** 				and not NDC8.VehicleControl.Moving; ; **)
+	(* assign - Stmt *)
+	LD AutoInsertNotInsideTargetSafety
+	AND ( NDC8.VehicleControl.Moving
+		NOT
+	)
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=43, StopValue:=0);							{* Autoinsert *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 43,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 1);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 1
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=53, StopValue:=0);							{* Invalid init method *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 53,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 3);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 3
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=54, StopValue:=0);							{* Target don't exist *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 54,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 4);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 4
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=166, StopValue:=0);							{* Not supported *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 166,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 5);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 5
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=66, StopValue:=0);							{* not in manual mode or semi manual *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 66,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 6);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 6
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=168, StopValue:=0);							{* too few reflector bearings *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 168,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 7);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 7
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=144, StopValue:=0);							{* bad distribution of bearings *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 144,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 8);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 8
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=145, StopValue:=0);							{* reflector init failed in current search area *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 145,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 9);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 9
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=169, StopValue:=0);							{* ambiguous position (more than one valid position in current search area) *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 169,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 10);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 10
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=170, StopValue:=0);							{* init calculation aborted *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 170,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 11);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 11
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=171, StopValue:=0);							{* agv is moving *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 171,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 12);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 12
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=172, StopValue:=0);							{* position outside search area *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 172,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 15);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 15
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=173, StopValue:=0);							{* no range measurements *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 173,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 16);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 16
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=174, StopValue:=0);							{* bad range match *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 174,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 17);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 17
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=191, StopValue:=0);							{* empty init area *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 191,
+		StopValue := 0
+	)
+
+(**  **)
+(** InStatus 	:= (NDC8.NavInit.Error = 18);  **)
+	(* assign - Stmt *)
+	LD NDC8.NavInit.Error
+	EQ 18
+	ST InStatus
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=192, StopValue:=0);							{* multi oriented point *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 192,
+		StopValue := 0
+	)
+
+(**  **)
+(**  **)
+(**  **)
+(** {* DETECT A VEHICLE WHICH IS STUCK  **)
+(** With the NDC8 2.7 release introduced new parameters, which can be used for detecting a spinning wheel from the PLC. *} **)
+(**  **)
+(** WheelSpinning := ABS(NDC8.VehicleNavigator.CorrectionX) > 100;			{* If correcting above this value, for more than 10 seconds, *}	 **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleNavigator.CorrectionX
+	ABS 
+	GT 100
+	ST WheelSpinning
+
+(** WheelSpinningTimer(IN:=WheelSpinning, PT:= t#10s); **)
+	(* call - Stmt *)
+	CAL WheelSpinningTimer (
+		IN := WheelSpinning,
+		PT := t#10s
+	)
+
+(**  **)
+(** SegmentChange := PreviousSegmentID <> NDC8.LayoutPosition.Segment;		{* ...or does not change segment ID after two minutes *} **)
+	(* assign - Stmt *)
+	LD PreviousSegmentID
+	NE NDC8.LayoutPosition.Segment
+	ST SegmentChange
+
+(** SegmentChangeTimer(IN:=SegmentChange, PT:= t#120s); **)
+	(* call - Stmt *)
+	CAL SegmentChangeTimer (
+		IN := SegmentChange,
+		PT := t#120s
+	)
+
+(** PreviousSegmentID := NDC8.LayoutPosition.Segment; **)
+	(* assign - Stmt *)
+	LD NDC8.LayoutPosition.Segment
+	ST PreviousSegmentID
+
+(**  **)
+(** if NDC8.LayoutPosition.InSystem											{* ...when driving in automatic mode. *} **)
+(** 	and NDC8.Automatic.ExecDriveCommand **)
+(** 	and NDC8.VehicleControl.OperationMode = 0 **)
+(** 	and NDC8.VehicleControl.SetSpeed <> 0 **)
+(** 	and NDC8.VehicleControl.Moving **)
+(** 	and (WheelSpinningTimer.q or SegmentChangeTimer.q) then **)
+	(* if - Cond *)
+	LD NDC8.LayoutPosition.InSystem
+	AND NDC8.Automatic.ExecDriveCommand
+	AND ( NDC8.VehicleControl.OperationMode
+		EQ 0
+	)
+	AND ( NDC8.VehicleControl.SetSpeed
+		NE 0
+	)
+	AND NDC8.VehicleControl.Moving
+	AND ( WheelSpinningTimer.q
+		OR SegmentChangeTimer.q
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(**       			StopSpinningWheel := true;								{* ...then stop the vehicle to avoid burning the motor and the wheel! *} **)
+		(* assign - Stmt *)
+		LD true
+		ST StopSpinningWheel
+
+		JMP ODK_END_IF_000000000000001
+
+(** elsif Input.Reset_PB then                    {* Reset of the stop *} **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	LD Input.Reset_PB
+	JMPCN ODK_SKIP_000000000000001_000000000000002
+
+		(* elsif - Stmts *)
+
+(**     StopSpinningWheel := false; **)
+		(* assign - Stmt *)
+		LD false
+		ST StopSpinningWheel
+
+		JMP ODK_END_IF_000000000000001
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000002:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(** {* Display update *} **)
+(** DisplayStopString(INStatus:=StopSpinningWheel, StopString:=86, StopValue:=0); **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := StopSpinningWheel,
+		StopString := 86,
+		StopValue := 0
+	)
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_FUNCTION_BLOCK

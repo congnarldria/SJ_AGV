@@ -1,0 +1,97 @@
+FUNCTION_BLOCK BytesToInt_FB
+VAR_EXTERNAL
+	NDC8:NDC8_T;
+	MegaWord:word;
+	HighByte:byte;
+	LowByte:byte;
+END_VAR
+
+VAR_INPUT
+	Byte1 : byte;
+	Byte2 : byte;
+END_VAR
+
+VAR_OUTPUT
+	IntValue : int;
+END_VAR
+	
+VAR
+	littleEndian:bool := true;
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+END_VAR
+(** {* **)
+(**  -----------------------------------------------------------------------------------                               **)
+(**  BytesToInt_FB                    **)
+(**  -----------------------------------------------------------------------------------                         **)
+(**  **)
+(**  Description:                      **)
+(**  Combines two bytes to an INT. **)
+(**  littleEndian is used to control if least or most significant byte should come first. **)
+(**   **)
+(**  Rev 	Who		Date  		Desc **)
+(**  ----------------------------------------------------------------------------------- **)
+(**  0.1  	KJN  	140206		Created **)
+(**  -----------------------------------------------------------------------------------*} **)
+(**  **)
+(**  **)
+(** if littleEndian then	{* First byte is least significant *} **)
+	(* if - Cond *)
+	LD littleEndian
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	LowByte := Byte2; **)
+		(* assign - Stmt *)
+		LD Byte2
+		ST LowByte
+
+(** 	HighByte := Byte1; **)
+		(* assign - Stmt *)
+		LD Byte1
+		ST HighByte
+
+(** 	 **)
+(** 	IntValue := word_to_int(MegaWord); **)
+		(* assign - Stmt *)
+		LD MegaWord
+		word_to_int 
+		ST IntValue
+
+		JMP ODK_END_IF_000000000000001
+
+(**  **)
+(** else					{* Second byte is least significant *} **)
+	(* else *) 
+	ODK_SKIP_000000000000001_000000000000001:
+
+		(* else - Stmts *)
+
+(**  **)
+(** 	LowByte := Byte1; **)
+		(* assign - Stmt *)
+		LD Byte1
+		ST LowByte
+
+(** 	HighByte := Byte2; **)
+		(* assign - Stmt *)
+		LD Byte2
+		ST HighByte
+
+(** 	 **)
+(** 	IntValue := word_to_int(MegaWord); **)
+		(* assign - Stmt *)
+		LD MegaWord
+		word_to_int 
+		ST IntValue
+
+(**  **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000001:
+
+END_FUNCTION_BLOCK

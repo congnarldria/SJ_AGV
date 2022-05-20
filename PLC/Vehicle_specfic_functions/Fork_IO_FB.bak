@@ -1,0 +1,49 @@
+FUNCTION_BLOCK Fork_IO_FB
+VAR_EXTERNAL
+	NDC8:NDC8_T;
+
+END_VAR
+
+VAR_INPUT
+	Lower,
+	Raise,
+	Slow : bool;
+END_VAR
+
+VAR_OUTPUT
+	ForkPWM : dint;
+END_VAR
+
+VAR
+
+END_VAR
+(* A very simple example of outputs to fork controller. *)
+
+
+OUTPUT.ForkRaise := Raise	;
+OUTPUT.ForkLower := Lower	;
+
+
+if Slow then
+	ForkPWM := 1000;
+else
+	ForkPWM := 2000;
+end_if;
+
+
+if Raise then
+	NDC8.Kinco_4.OperationMode := -3;
+	NDC8.Kinco_4.TargetVelocity := 10000;
+	NDC8.Kinco_4.ControlWord := 15;
+elsif Lower then
+	NDC8.Kinco_4.OperationMode := -3;
+	NDC8.Kinco_4.TargetVelocity := -10000;
+	NDC8.Kinco_4.ControlWord := 15;
+else
+	NDC8.Kinco_4.OperationMode := -3;
+	NDC8.Kinco_4.TargetVelocity := 0;
+	NDC8.Kinco_4.ControlWord := 6;
+end_if;
+
+
+END_FUNCTION_BLOCK

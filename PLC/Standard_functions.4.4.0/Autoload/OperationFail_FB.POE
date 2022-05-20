@@ -1,0 +1,198 @@
+FUNCTION_BLOCK OPERATIONFAIL_FB
+VAR_EXTERNAL   
+	(* IN *)    
+	NDC8: NDC8_T;  
+
+END_VAR  
+
+VAR    
+	Failstate:dINT;
+	LoadOpDone:LoadOpDone_FB;
+END_VAR
+
+VAR_INPUT
+	FailCode:DINT;
+END_VAR
+
+VAR_OUTPUT
+	Finished:bool:=false;
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+END_VAR
+(** {* **)
+(** ------------------------------------------------------------------------------------                               **)
+(**  OPERATION FAIL                     **)
+(**  -----------           **)
+(**                  **)
+(**  **)
+(**  Description:                      **)
+(**  	If load operation fails, fail code is sent to the stationary system. **)
+(**   **)
+(**  **)
+(** -------------------------------------------------------------------------------------*} **)
+(**  **)
+(** case Failstate of **)
+(** 	0:	Failstate := 1; **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000001_000000000000000:
+
+	(* case - Cond *)
+	LD Failstate
+	EQ 0
+	JMPC ODK_CASE_000000000000001_000000000000001
+
+	JMP ODK_SKIP_000000000000001_000000000000001
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000001_000000000000001:
+
+		(* assign - Stmt *)
+		LD 1
+		ST Failstate
+
+(** 		Finished:= false; **)
+		(* assign - Stmt *)
+		LD false
+		ST Finished
+
+		JMP ODK_END_CASE_000000000000001
+
+(** 		 **)
+(** 	1: 	{* Cancel and LoadOp Clean-up required *} **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000001_000000000000001:
+
+	(* case - Cond *)
+	LD Failstate
+	EQ 1
+	JMPC ODK_CASE_000000000000001_000000000000002
+
+	JMP ODK_SKIP_000000000000001_000000000000002
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000001_000000000000002:
+
+(** 		if 	NDC8.LoadDocking.OnTarget				 **)
+(** 				or NDC8.VehicleControl.OperationMode <> 0 **)
+(** 			then **)
+		(* if - Cond *)
+		LD NDC8.LoadDocking.OnTarget
+		OR ( NDC8.VehicleControl.OperationMode
+			NE 0
+		)
+		JMPCN ODK_SKIP_000000000000002_000000000000001
+
+			(* then - Stmts *)
+
+(** 				Failstate := 2;						 **)
+			(* assign - Stmt *)
+			LD 2
+			ST Failstate
+
+			JMP ODK_END_IF_000000000000002
+
+(**  **)
+(** 		elsif NDC8.LoadOperation.OperationCode = 0 	then				{* will not reach OnTarget *} **)
+		(* elseif - Cond *) 
+		ODK_SKIP_000000000000002_000000000000001:
+		LD NDC8.LoadOperation.OperationCode
+		EQ 0
+		JMPCN ODK_SKIP_000000000000002_000000000000002
+
+			(* elsif - Stmts *)
+
+(** 																{* Cancel and LoadOp clean-up NOT required *} **)
+(** 				Failstate := 3;						 **)
+			(* assign - Stmt *)
+			LD 3
+			ST Failstate
+
+			JMP ODK_END_IF_000000000000002
+
+(** 		end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000002_000000000000002:
+		ODK_END_IF_000000000000002:
+
+		JMP ODK_END_CASE_000000000000001
+
+(**  **)
+(** 	2:	{* Clean up LoadOp for cancel *} **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000001_000000000000002:
+
+	(* case - Cond *)
+	LD Failstate
+	EQ 2
+	JMPC ODK_CASE_000000000000001_000000000000003
+
+	JMP ODK_SKIP_000000000000001_000000000000003
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000001_000000000000003:
+
+(** 		LoadOpDone(ErrorCode:=FailCode, Result:=NDC8.LayoutPosition.Distance);	{* Send failcode *} **)
+		(* call - Stmt *)
+		CAL LoadOpDone (
+			ErrorCode := FailCode,
+			Result := NDC8.LayoutPosition.Distance
+		)
+
+(** 		if LoadOpDone.Finished then 										{* Move on when LoadOp Done	*} **)
+		(* if - Cond *)
+		LD LoadOpDone.Finished
+		JMPCN ODK_SKIP_000000000000003_000000000000001
+
+			(* then - Stmts *)
+
+(** 			Failstate := 3; **)
+			(* assign - Stmt *)
+			LD 3
+			ST Failstate
+
+			JMP ODK_END_IF_000000000000003
+
+(** 		end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000003_000000000000001:
+		ODK_END_IF_000000000000003:
+
+		JMP ODK_END_CASE_000000000000001
+
+(**  **)
+(** 	3:	{* Cancel Comlpete, run handshake and reset cancel state *} **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000001_000000000000003:
+
+	(* case - Cond *)
+	LD Failstate
+	EQ 3
+	JMPC ODK_CASE_000000000000001_000000000000004
+
+	JMP ODK_SKIP_000000000000001_000000000000004
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000001_000000000000004:
+
+(** 		Finished:= true; **)
+		(* assign - Stmt *)
+		LD true
+		ST Finished
+
+(** 		Failstate := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST Failstate
+
+		JMP ODK_END_CASE_000000000000001
+
+(** end_case; **)
+	(* case - End *) 
+	ODK_SKIP_000000000000001_000000000000004:
+	ODK_END_CASE_000000000000001:
+
+(**  **)
+
+END_FUNCTION_BLOCK

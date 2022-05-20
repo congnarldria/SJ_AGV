@@ -1,0 +1,9 @@
+FUNCTION TRACE_DINT : BOOL 
+
+ VAR_INPUT
+  label : STRING ;
+  value : DINT ;
+  END_VAR 
+
+
+END_FUNCTION

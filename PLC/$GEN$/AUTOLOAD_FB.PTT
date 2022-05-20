@@ -1,0 +1,18 @@
+FUNCTION_BLOCK AUTOLOAD_FB 
+
+
+ VAR_INPUT
+  ForkMoving : bool ;
+  ForkTarget : bool ;
+  END_VAR 
+
+
+ VAR_OUTPUT
+  StartLoad : bool ;
+  StartUnload : bool ;
+  StartCharge : bool ;
+  Fail : bool ;
+  END_VAR 
+
+
+END_FUNCTION_BLOCK

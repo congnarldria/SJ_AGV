@@ -1,0 +1,166 @@
+FUNCTION_BLOCK LOAD_LOADOP1_FB
+VAR_EXTERNAL   
+	(* IN *)    
+	NDC8: NDC8_T;  
+	Input:Input_T;
+END_VAR  
+
+VAR    
+	AutoLoadFailCodes : AutoLoadFailCodes_T;
+	PositionModeProcessingDelay : TON;
+END_VAR
+
+VAR_INPUT
+	ParForkHeight,
+	ParForkDistance : dint;
+	Start,
+	ForkTarget : bool;
+	ForkMoving : bool;
+END_VAR
+
+VAR_OUTPUT
+	ForkHeight : dint ;
+	Finished 	: bool;
+	Failcode	: word;
+	LoadState : dint;
+END_VAR
+(*
+------------------------------------------------------------------------------------                              
+Autoload Operation Code 0x1 and 0x11 - load operation (Pick-Up)                    
+ -----------          
+                
+
+ Description:                     
+ Handles Loading sequence.
+ 
+
+-------------------------------------------------------------------------------------*)
+
+if NDC8.LoadOperation.CancelOperation then	(* If cancel when OpCode received, and last segment is allocated. *)	
+	if LoadState = 71 then					(* Loading and driving the forks *)  
+		StopLoadOP := TRUE;					(* Set stop bit, and require manual handling *)
+	end_if;
+	LoadState := 999;						(* Cancel autoload*)
+	a:=trace_string('Op cancel');
+elsif not Start then						(* If cancel when OpCode received, and last segment is NOT allocated *)
+											(* or manual mode. *)
+				LoadState := 0;				(* Do not send load op done OK, just quit. 
+															(If sending LoadOp done, 
+															System Event 60 "Unexpected cmd-status" is sent and the vehicle will stop.) *)
+end_if;
+	
+
+Case LoadState of 
+	0:	(* Wait until vehicle reached the new station. *)
+		Finished 	:= false;
+		ForkHeight 	:= Input.ForkLiftPos;
+		if (NDC8.SegmentTrigger.AutoLoadEnabled or 
+			NDC8.SegmentTrigger.LoadOperation or 
+			NDC8.LoadDocking.OnLastSegment)
+				and NDC8.Automatic.ExecDriveCommand then
+					LoadState := 10;
+		end_if;
+
+	10:	(* Verify load status. *)
+	 	if INPUT.LoadOnBoard then 			
+			LoadState := 98;
+		else
+			LoadState := 20;
+		end_if;
+		
+	20:	(* Wait for On Target *)
+		if NDC8.LoadDocking.OnTarget then
+			LoadState := 21;
+		end_if;
+
+	21:	(* Set fork postion. *)
+		ForkHeight	:= ParForkHeight - NDC8.UserDefined.ForkHeightStationLift;
+		LoadState := 22;
+
+	22:
+		PositionModeProcessingDelay(IN:= true, PT:=t#1s);
+		
+		if PositionModeProcessingDelay.Q then
+			LoadState := 23;
+			PositionModeProcessingDelay(IN:= false);
+		end_if;
+		
+	23:	(* Wait for Forks to reach station height *)
+		if ForkTarget and not ForkMoving then
+			LoadState := 60;
+		end_if;
+
+	60:	(* Check Load *)
+		Input.LoadOnBoard := true;
+		if INPUT.LoadOnBoard then
+			LoadState := 70;
+		else 
+			LoadState := 99;
+		end_if;
+
+	70: (* Lift Load *)
+		ForkHeight	:= ParForkHeight + NDC8.UserDefined.ForkHeightStationLift + 10; 
+		LoadState := 71;
+
+	71:
+		PositionModeProcessingDelay(IN:= true, PT:=t#1s);
+		
+		if PositionModeProcessingDelay.Q then
+			LoadState := 72;
+			PositionModeProcessingDelay(IN:= false);
+		end_if;
+		
+	72:	(* Wait for forks to lift load *)
+		if ForkTarget and not ForkMoving then
+			LoadState := 80;
+		end_if;
+		
+				
+	80:	(* Check Load *)
+		if INPUT.LoadOnBoard then
+			LoadState := 100;
+		else 
+			StopLoadChange := true;
+			LoadState := 97;
+		end_if;
+		
+		
+	97: (* Load Operation Failed. *)
+		LoadState := 0;
+		Finished := true;
+		FailCode  := AutoLoadFailCodes.FailCode_AGVIsNotLoaded;
+		a:=trace_string('AGV load failed');
+				
+	98: (* Load Operation Failed, already loaded. *)
+		LoadState := 0;
+		Finished := true;
+		FailCode  := AutoLoadFailCodes.FailCode_AGVIsLoaded;
+		a:=trace_string('AGV already loaded');
+		
+	99: (* Load Operation Failed, did not find any load. *)
+		LoadState 		:= 0;
+		Finished 		:= true;
+		StopFailCode 	:= true;
+		FailCode  := AutoLoadFailCodes.FailCode_STNIsEmpty;
+		a:=trace_string('Station is empty');
+
+	100: (* Load Operation Complete *)
+		LoadState := 0;
+		FailCode  := 0;
+		Finished := true;
+
+
+	999: (* Cancel *)
+		FailCode  := AutoLoadFailCodes.FailCode_OpCancel;
+		a:=trace_string('Op cancel');
+		LoadState := 0;
+		Finished := true;
+		
+End_Case;
+
+
+
+
+
+
+END_FUNCTION_BLOCK

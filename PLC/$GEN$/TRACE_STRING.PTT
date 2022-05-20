@@ -1,0 +1,8 @@
+FUNCTION TRACE_STRING : BOOL 
+
+ VAR_INPUT
+  label : string ;
+  END_VAR 
+
+
+END_FUNCTION

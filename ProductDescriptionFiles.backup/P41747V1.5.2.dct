@@ -1,0 +1,1097 @@
+<?xml version="1.0"?>
+<File xmlns="urn:NDC8DeviceConfigurationTemplate" version="1.0">
+    <FileInfo FileType="dct" 
+        FileRevision="1" 
+        FileFormat="1" 
+        Description="CAN I/O (Beckhoff device)"
+        CreationDate="2003-06-30"
+        CreationTime="12:00:00"
+        CreatedBy="HE"
+        ModificationDate="2013-08-26"
+        ModificationTime="12:00:00"
+        ModifiedBy="MBJ"
+        ModifiedWith=""
+        ModifiedWithSerial="" >
+    </FileInfo>
+
+    <TemplateParameters>
+        <TemplateParameter SymbolName="BusID"
+            PublicName="CAN Bus Id"
+            DataType="UNSIGNED16"
+            Min="1"
+            Max="2"
+	        Default="1"
+            Remark="CAN Bus Id."/>
+
+        <TemplateParameter  SymbolName="NodeId"
+            PublicName="Node Id"
+            DataType="UNSIGNED16" Min="2" Max="31"
+            Remark="Select a unique Node Id" />
+        
+        <TemplateParameter  SymbolName="NumberOfDigitalInputs"
+            PublicName="Number of Digital Inputs"
+            DataType="UNSIGNED16" Min="0" Max="64"
+            Remark="The Number of Digital Inputs deployed on the I/O device" />
+
+        <TemplateParameter  SymbolName="NumberOfDigitalOutputs"
+            PublicName="Number of Digital Outputs"
+            DataType="UNSIGNED16" Min="0" Max="64"
+            Remark="The Number of Digital Outputs deployed on the I/O device" />
+
+        <TemplateParameter  SymbolName="NumberOfAnalogInputs"
+            PublicName="Number of Analog Inputs"
+            DataType="UNSIGNED16" Min="0" Max="4"
+            Remark="The Number of Analog Inputs deployed on the I/O device" />
+
+        <TemplateParameter  SymbolName="NumberOfAnalogOutputs"
+            PublicName="Number of Analog Outputs"
+            DataType="UNSIGNED16" Min="0" Max="4"
+            Remark="The Number of Analog Outputs deployed on the I/O device" />
+
+        <TemplateParameter  SymbolName="TransmissionType"
+            PublicName="CanOpen Transmission Type"
+            DataType="UNSIGNED16" Min="1" Max="255"
+            Default="1"
+            Remark="Synchronous communication (1) means that all PDO's will be transmitted in conjunction with CANopen SYNC. Asynchronous communication (255) means that PDO's will be sent on data change. Asynchronous communication requires definition of inhibit time." />
+
+        <TemplateParameter  SymbolName="PdoInhibitTime"
+            PublicName="Transmit PDO inhibit time"
+            DataType="UNSIGNED16" Min="1" Max="500"
+            Default="20"
+            Remark="Transmit PDO inhibit time given in units of [ms]." />
+
+        <TemplateParameter  SymbolName="Port1_Type"
+            PublicName="The type for port 1"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="Disabled" />
+            <ValueTranslation Value="1" String="RS-232 C (RTS/CTS)" />
+            <ValueTranslation Value="2" String="RS-232 C (No RTS/CTS)" />
+            <ValueTranslation Value="3" String="RS-485 (half-duplex)" />
+            <ValueTranslation Value="6" String="RS-422 (full-duplex)" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port1_TerminalNo"
+            PublicName="    Terminal number"
+            DataType="UNSIGNED16" Min="1" Max="32" Default="1"
+            Remark="Device postion after CAN-bus coupler (1 is the postion closest to the coupler)"/>
+
+        <TemplateParameter  SymbolName="Port1_Speed"
+            PublicName="    Baudrate"
+            DataType="UNSIGNED16" Unit="bps" Default="6">
+            <ValueTranslation Value="3" String="1200" />
+            <ValueTranslation Value="4" String="2400" />
+            <ValueTranslation Value="5" String="4800" />
+            <ValueTranslation Value="6" String="9600" />
+            <ValueTranslation Value="7" String="19200" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port1_DataPar"
+            PublicName="    Databits, parity"
+            DataType="UNSIGNED16" Unit="bps" Default="3">
+            <ValueTranslation Value="1" String="7 data bits, even-parity" />
+            <ValueTranslation Value="2" String="7 data bits, odd-parity" />
+            <ValueTranslation Value="3" String="8 data bits, no-parity" />
+            <ValueTranslation Value="4" String="8 data bits, even-parity" />
+            <ValueTranslation Value="5" String="8 data bits, odd-parity" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port1_StopBits"
+            PublicName="    Number of stop bits"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="1 stop bit" />
+            <ValueTranslation Value="1" String="2 stop bit" />
+        </TemplateParameter>
+        
+        <TemplateParameter  SymbolName="Port1_SendXonXoff"
+            PublicName="    Use XON/XOFF for sending"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="Disabled" />
+            <ValueTranslation Value="1" String="Enabled" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port1_RecXonXoff"
+            PublicName="    Use XON/XOFF for receiving"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="Disabled" />
+            <ValueTranslation Value="1" String="Enabled" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port2_Type"
+            PublicName="The type for port 2"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="Disabled" />
+            <ValueTranslation Value="1" String="RS-232 C (RTS/CTS)" />
+            <ValueTranslation Value="2" String="RS-232 C (No RTS/CTS)" />
+            <ValueTranslation Value="3" String="RS-485 (half-duplex)" />
+            <ValueTranslation Value="6" String="RS-422 (full-duplex)" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port2_TerminalNo"
+            PublicName="    Terminal number"
+            DataType="UNSIGNED16" Min="1" Max="32" Default="2"
+            Remark="Device postion after CAN-bus coupler (1 is the postion closest to the coupler)"/>
+
+        <TemplateParameter  SymbolName="Port2_Speed"
+            PublicName="    Baudrate"
+            DataType="UNSIGNED16" Unit="bps" Default="6">
+            <ValueTranslation Value="3" String="1200" />
+            <ValueTranslation Value="4" String="2400" />
+            <ValueTranslation Value="5" String="4800" />
+            <ValueTranslation Value="6" String="9600" />
+            <ValueTranslation Value="7" String="19200" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port2_DataPar"
+            PublicName="    Databits, parity"
+            DataType="UNSIGNED16" Unit="bps" Default="3">
+            <ValueTranslation Value="1" String="7 data bits, even-parity" />
+            <ValueTranslation Value="2" String="7 data bits, odd-parity" />
+            <ValueTranslation Value="3" String="8 data bits, no-parity" />
+            <ValueTranslation Value="4" String="8 data bits, even-parity" />
+            <ValueTranslation Value="5" String="8 data bits, odd-parity" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port2_StopBits"
+            PublicName="    Number of stop bits"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="1 stop bit" />
+            <ValueTranslation Value="1" String="2 stop bit" />
+        </TemplateParameter>
+        
+        <TemplateParameter  SymbolName="Port2_SendXonXoff"
+            PublicName="    Use XON/XOFF for sending"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="Disabled" />
+            <ValueTranslation Value="1" String="Enabled" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port2_RecXonXoff"
+            PublicName="    Use XON/XOFF for receiving"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="Disabled" />
+            <ValueTranslation Value="1" String="Enabled" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port3_Type"
+            PublicName="The type for port 3"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="Disabled" />
+            <ValueTranslation Value="1" String="RS-232 C (RTS/CTS)" />
+            <ValueTranslation Value="2" String="RS-232 C (No RTS/CTS)" />
+            <ValueTranslation Value="3" String="RS-485 (half-duplex)" />
+            <ValueTranslation Value="6" String="RS-422 (full-duplex)" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port3_TerminalNo"
+            PublicName="    Terminal number"
+            DataType="UNSIGNED16" Min="1" Max="32" Default="3"
+            Remark="Device postion after CAN-bus coupler (1 is the postion closest to the coupler)"/>
+
+        <TemplateParameter  SymbolName="Port3_Speed"
+            PublicName="    Baudrate"
+            DataType="UNSIGNED16" Unit="bps" Default="6">
+            <ValueTranslation Value="3" String="1200" />
+            <ValueTranslation Value="4" String="2400" />
+            <ValueTranslation Value="5" String="4800" />
+            <ValueTranslation Value="6" String="9600" />
+            <ValueTranslation Value="7" String="19200" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port3_DataPar"
+            PublicName="    Databits, parity"
+            DataType="UNSIGNED16" Unit="bps" Default="3">
+            <ValueTranslation Value="1" String="7 data bits, even-parity" />
+            <ValueTranslation Value="2" String="7 data bits, odd-parity" />
+            <ValueTranslation Value="3" String="8 data bits, no-parity" />
+            <ValueTranslation Value="4" String="8 data bits, even-parity" />
+            <ValueTranslation Value="5" String="8 data bits, odd-parity" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port3_StopBits"
+            PublicName="    Number of stop bits"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="1 stop bit" />
+            <ValueTranslation Value="1" String="2 stop bit" />
+        </TemplateParameter>
+        
+        <TemplateParameter  SymbolName="Port3_SendXonXoff"
+            PublicName="    Use XON/XOFF for sending"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="Disabled" />
+            <ValueTranslation Value="1" String="Enabled" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port3_RecXonXoff"
+            PublicName="    Use XON/XOFF for receiving"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="Disabled" />
+            <ValueTranslation Value="1" String="Enabled" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port4_Type"
+            PublicName="The type for port 4"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="Disabled" />
+            <ValueTranslation Value="1" String="RS-232 C (RTS/CTS)" />
+            <ValueTranslation Value="2" String="RS-232 C (No RTS/CTS)" />
+            <ValueTranslation Value="3" String="RS-485 (half-duplex)" />
+            <ValueTranslation Value="6" String="RS-422 (full-duplex)" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port4_TerminalNo"
+            PublicName="    Terminal number"
+            DataType="UNSIGNED16" Min="1" Max="32" Default="4"
+            Remark="Device postion after CAN-bus coupler (1 is the postion closest to the coupler)"/>
+
+        <TemplateParameter  SymbolName="Port4_Speed"
+            PublicName="    Baudrate"
+            DataType="UNSIGNED16" Unit="bps" Default="6">
+            <ValueTranslation Value="3" String="1200" />
+            <ValueTranslation Value="4" String="2400" />
+            <ValueTranslation Value="5" String="4800" />
+            <ValueTranslation Value="6" String="9600" />
+            <ValueTranslation Value="7" String="19200" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port4_DataPar"
+            PublicName="    Databits, parity"
+            DataType="UNSIGNED16" Unit="bps" Default="3">
+            <ValueTranslation Value="1" String="7 data bits, even-parity" />
+            <ValueTranslation Value="2" String="7 data bits, odd-parity" />
+            <ValueTranslation Value="3" String="8 data bits, no-parity" />
+            <ValueTranslation Value="4" String="8 data bits, even-parity" />
+            <ValueTranslation Value="5" String="8 data bits, odd-parity" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port4_StopBits"
+            PublicName="    Number of stop bits"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="1 stop bit" />
+            <ValueTranslation Value="1" String="2 stop bit" />
+        </TemplateParameter>
+        
+        <TemplateParameter  SymbolName="Port4_SendXonXoff"
+            PublicName="    Use XON/XOFF for sending"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="Disabled" />
+            <ValueTranslation Value="1" String="Enabled" />
+        </TemplateParameter>
+
+        <TemplateParameter  SymbolName="Port4_RecXonXoff"
+            PublicName="    Use XON/XOFF for receiving"
+            DataType="UNSIGNED16" Unit="" Default="0">
+            <ValueTranslation Value="0" String="Disabled" />
+            <ValueTranslation Value="1" String="Enabled" />
+        </TemplateParameter>
+    </TemplateParameters>
+
+    <xsl:stylesheet xmlns="urn:NDC8DeviceConfigurationFile" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+        <xsl:param name="BusID" />
+        <xsl:param name="NodeId"/>
+        <xsl:param name="NumberOfDigitalInputs"/>
+        <xsl:param name="NumberOfDigitalOutputs"/>
+        <xsl:param name="NumberOfAnalogInputs" />
+        <xsl:param name="NumberOfAnalogOutputs" />
+        <xsl:param name="TransmissionType"/>
+        <xsl:param name="PdoInhibitTime"/>
+
+        <xsl:param name="Port1_Type" />
+        <xsl:param name="Port1_TerminalNo" />
+        <xsl:param name="Port1_Speed" />
+        <xsl:param name="Port1_DataPar" />
+        <xsl:param name="Port1_StopBits" />
+        <xsl:param name="Port1_SendXonXoff" />
+        <xsl:param name="Port1_RecXonXoff" />
+
+        <xsl:param name="Port2_Type" />
+        <xsl:param name="Port2_TerminalNo" />
+        <xsl:param name="Port2_Speed" />
+        <xsl:param name="Port2_DataPar" />
+        <xsl:param name="Port2_StopBits" />
+        <xsl:param name="Port2_SendXonXoff" />
+        <xsl:param name="Port2_RecXonXoff" />
+
+        <xsl:param name="Port3_Type" />
+        <xsl:param name="Port3_TerminalNo" />
+        <xsl:param name="Port3_Speed" />
+        <xsl:param name="Port3_DataPar" />
+        <xsl:param name="Port3_StopBits" />
+        <xsl:param name="Port3_SendXonXoff" />
+        <xsl:param name="Port3_RecXonXoff" />
+
+        <xsl:param name="Port4_Type" />
+        <xsl:param name="Port4_TerminalNo" />
+        <xsl:param name="Port4_Speed" />
+        <xsl:param name="Port4_DataPar" />
+        <xsl:param name="Port4_StopBits" />
+        <xsl:param name="Port4_SendXonXoff" />
+        <xsl:param name="Port4_RecXonXoff" />
+
+	    <xsl:variable name="HelpDeviceName">
+           <xsl:if test='$BusID = "1"'>
+              <xsl:value-of select="concat('CAN_IO_',$NodeId)"/> 
+           </xsl:if>
+           <xsl:if test='$BusID = "2"'> 
+              <xsl:value-of select="concat('CAN_IO_',$BusID,'_',$NodeId)"/> 
+            </xsl:if>
+        </xsl:variable>
+
+        <xsl:variable name="Port1_Feature0">
+            <xsl:choose>
+                <xsl:when test="$Port1_Type = 1 or $Port1_Type = 3 or $Port1_Type = 5">
+                    <xsl:value-of select="1"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="0"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="Port1_Feature5">
+            <xsl:choose>
+                <xsl:when test="$Port1_Type=5 or $Port1_Type=6">
+                    <xsl:value-of select="1"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="0"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="Port2_Feature0">
+            <xsl:choose>
+                <xsl:when test="$Port2_Type = 1 or $Port2_Type = 3 or $Port2_Type = 5">
+                    <xsl:value-of select="1"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="0"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="Port2_Feature5">
+            <xsl:choose>
+                <xsl:when test="$Port2_Type=5 or $Port2_Type=6">
+                    <xsl:value-of select="1"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="0"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="Port3_Feature0">
+            <xsl:choose>
+                <xsl:when test="$Port3_Type = 1 or $Port3_Type = 3 or $Port3_Type = 5">
+                    <xsl:value-of select="1"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="0"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="Port3_Feature5">
+            <xsl:choose>
+                <xsl:when test="$Port3_Type=5 or $Port3_Type=6">
+                    <xsl:value-of select="1"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="0"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="Port4_Feature0">
+            <xsl:choose>
+                <xsl:when test="$Port4_Type = 1 or $Port4_Type = 3 or $Port4_Type = 5">
+                    <xsl:value-of select="1"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="0"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="Port4_Feature5">
+            <xsl:choose>
+                <xsl:when test="$Port4_Type=5 or $Port4_Type=6">
+                    <xsl:value-of select="1"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="0"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="BaudrateSetup1"  select="(128 * 256 + 32) * 256 * 256 + $Port1_Speed"/>
+        <xsl:variable name="DataFrameSetup1" select="(128 * 256 + 33) * 256 * 256 + $Port1_DataPar + $Port1_StopBits * 8"/>
+        <xsl:variable name="FeatureSetup1"   select="(128 * 256 + 34) * 256 * 256 + $Port1_Feature0 + 2 + $Port1_SendXonXoff * 8 + $Port1_RecXonXoff * 16 + $Port1_Feature5 * 32"/>
+
+        <xsl:variable name="BaudrateSetup2"  select="(128 * 256 + 32) * 256 * 256 + $Port2_Speed"/>
+        <xsl:variable name="DataFrameSetup2" select="(128 * 256 + 33) * 256 * 256 + $Port2_DataPar + $Port2_StopBits * 8"/>
+        <xsl:variable name="FeatureSetup2"   select="(128 * 256 + 34) * 256 * 256 + $Port2_Feature0 + 2 + $Port2_SendXonXoff * 8 + $Port2_RecXonXoff * 16 + $Port2_Feature5 * 32"/>
+
+        <xsl:variable name="BaudrateSetup3"  select="(128 * 256 + 32) * 256 * 256 + $Port3_Speed"/>
+        <xsl:variable name="DataFrameSetup3" select="(128 * 256 + 33) * 256 * 256 + $Port3_DataPar + $Port3_StopBits * 8"/>
+        <xsl:variable name="FeatureSetup3"   select="(128 * 256 + 34) * 256 * 256 + $Port3_Feature0 + 2 + $Port3_SendXonXoff * 8 + $Port3_RecXonXoff * 16 + $Port3_Feature5 * 32"/>
+
+        <xsl:variable name="BaudrateSetup4"  select="(128 * 256 + 32) * 256 * 256 + $Port4_Speed"/>
+        <xsl:variable name="DataFrameSetup4" select="(128 * 256 + 33) * 256 * 256 + $Port4_DataPar + $Port4_StopBits * 8"/>
+        <xsl:variable name="FeatureSetup4"   select="(128 * 256 + 34) * 256 * 256 + $Port4_Feature0 + 2 + $Port4_SendXonXoff * 8 + $Port4_RecXonXoff * 16 + $Port4_Feature5 * 32"/>
+
+        <xsl:template match="/">
+            <File xmlns="urn:NDC8DeviceConfigurationFile" >
+                <FileInfo FileType="dc"
+                    FileRevision="1"
+                    FileFormat="40"
+                    Description="NDC8 Device Configuration File"
+                    CreationDate="2003-06-30"
+                    CreationTime="14:00:00"
+                    CreatedBy="HE"
+                    ModificationDate="2013-08-26"
+                    ModificationTime="12:00:00"
+                    ModifiedBy="MBJ"
+                    ModifiedWith=""
+                    ModifiedWithSerial="" />
+
+                <Configuration Protocol="CANopen"
+                    BusId="{$BusID}"
+                    NodeId="{$NodeId}"
+                    Optional="false"
+                    Remark="Generic IO module">
+
+                    <Guarding
+                        Type="NodeGuarding"
+                        Timeout="500" />
+
+                    <Identification
+                        DeviceType="0x00000191"
+                        DeviceTypeMask="0x0000FFFF"
+                        ArticleNumber="P41748V111"
+                        ArticleNumberMatch="P41748V11???" />
+
+                    <ReadParameters>
+                        <ReadParameter Property="DeviceType"
+                            Index="0x1000"
+                            SubIndex="0"
+                            DataType="UNSIGNED32" />
+
+                        <ReadParameter Property="VendorID"
+                            Index="0x1018"
+                            SubIndex="1"
+                            DataType="UNSIGNED32"
+                            ValueRepresentation="Hex" />
+                    </ReadParameters>
+
+                    <SetupValues>
+                        <xsl:if test="$NumberOfDigitalInputs != 0">
+                            <SetupValue SymbolAddress="CoTPDO_CommPars.TPDO1_TransmissionType" Value="{$TransmissionType}" />
+                            <xsl:if test="$TransmissionType = 255">
+                                <SetupValue SymbolAddress="CoTPDO_CommPars.TPDO1_InhibitTime" Value="{10* $PdoInhibitTime}" />
+                            </xsl:if>
+                        </xsl:if>
+                        <xsl:if test="$NumberOfAnalogInputs != 0">
+                            <SetupValue SymbolAddress="CoTPDO_CommPars.TPDO2_TransmissionType" Value="1" />
+                        </xsl:if>
+                        <xsl:if test="$Port1_Type != 0 or $Port2_Type != 0">
+                            <SetupValue SymbolAddress="CoTPDO_CommPars.TPDO3_TransmissionType" Value="255" />
+                            <SetupValue SymbolAddress="CoTPDO_CommPars.TPDO3_InhibitTime" Value="150" />
+                        </xsl:if>
+                        <xsl:if test="$Port3_Type != 0 or $Port4_Type != 0">
+                            <SetupValue SymbolAddress="CoTPDO_CommPars.TPDO4_TransmissionType" Value="255" />
+                            <SetupValue SymbolAddress="CoTPDO_CommPars.TPDO4_InhibitTime" Value="150" />
+                        </xsl:if>                        
+                        <xsl:if test="$Port1_Type != 0">
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port1_TerminalNo}" Value="0x801f1235"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port1_TerminalNo}" Value="0x80120078"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port1_TerminalNo}" Value="{$BaudrateSetup1}"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port1_TerminalNo}" Value="{$DataFrameSetup1}"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port1_TerminalNo}" Value="{$FeatureSetup1}"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port1_TerminalNo}" Value="0x801f0000"/>
+                        </xsl:if>
+
+                        <xsl:if test="$Port2_Type != 0">
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port2_TerminalNo}" Value="0x801f1235"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port2_TerminalNo}" Value="0x80120078"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port2_TerminalNo}" Value="{$BaudrateSetup2}"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port2_TerminalNo}" Value="{$DataFrameSetup2}"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port2_TerminalNo}" Value="{$FeatureSetup2}"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port2_TerminalNo}" Value="0x801f0000"/>
+                        </xsl:if>
+
+                        <xsl:if test="$Port3_Type != 0">
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port3_TerminalNo}" Value="0x801f1235"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port3_TerminalNo}" Value="0x80120078"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port3_TerminalNo}" Value="{$BaudrateSetup3}"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port3_TerminalNo}" Value="{$DataFrameSetup3}"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port3_TerminalNo}" Value="{$FeatureSetup3}"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port3_TerminalNo}" Value="0x801f0000"/>
+                        </xsl:if>
+
+                        <xsl:if test="$Port4_Type != 0">
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port4_TerminalNo}" Value="0x801f1235"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port4_TerminalNo}" Value="0x80120078"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port4_TerminalNo}" Value="{$BaudrateSetup4}"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port4_TerminalNo}" Value="{$DataFrameSetup4}"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port4_TerminalNo}" Value="{$FeatureSetup4}"/>
+                            <SetupValueRegister SymbolAddress="BusTerminalRegister.Terminal{$Port4_TerminalNo}" Value="0x801f0000"/>
+                        </xsl:if>
+                    </SetupValues>
+
+                    <TxPdos>
+                        <xsl:if test="$NumberOfDigitalInputs != 0">
+                            <xsl:if test="$TransmissionType = 1">
+                                <TxPdo CobId="{384+$NodeId}" ReceiveTimeout="200" TransmissionType="{$TransmissionType}" PdoType="User">
+                                    <PdoMap>
+                                        <xsl:call-template name="DigitalInputsPDO">
+                                            <xsl:with-param name="n" select="$NumberOfDigitalInputs"/>
+                                        </xsl:call-template>
+                                    </PdoMap>
+                                </TxPdo>
+                            </xsl:if>
+                            <xsl:if test="$TransmissionType != 1">
+                                <TxPdo CobId="{384+$NodeId}" TransmissionType="{$TransmissionType}" PdoType="User">
+                                    <PdoMap>
+                                        <xsl:call-template name="DigitalInputsPDO">
+                                            <xsl:with-param name="n" select="$NumberOfDigitalInputs"/>
+                                        </xsl:call-template>
+                                    </PdoMap>
+                                </TxPdo>
+                            </xsl:if>
+                        </xsl:if>
+                        
+                        <xsl:if test="$NumberOfAnalogInputs != 0">
+                            <TxPdo CobId="{640+$NodeId}" ReceiveTimeout="200" TransmissionType="1" PdoType="User">
+                                <PdoMap>
+                                    <xsl:call-template name="AnalogInputsPDO">
+                                        <xsl:with-param name="n" select="$NumberOfAnalogInputs"/>
+                                    </xsl:call-template>
+                                </PdoMap>
+                            </TxPdo>
+                        </xsl:if>
+
+                        <xsl:if test="$Port1_Type != 0 or $Port2_Type != 0">
+                            <TxPdo CobId="{896+$NodeId}" ReceiveTimeout="0" TransmissionType="255">
+                                <PdoMap>
+                                    <xsl:if test="$Port1_Type != 0">
+                                        <PdoMapParameter Property="SerialInputWord_1"
+                                             SymbolAddress="Spec4ByteTerminal.InputData_1"
+                                             DataType="INTEGER32"
+                                             ParameterClass="Runtime"
+                                             AccessType="ro"
+                                             Length="32"
+                                             Visibility="Operator" />
+                                    </xsl:if>
+                                    <xsl:if test="$Port2_Type != 0">
+                                        <PdoMapParameter Property="SerialInputWord_2"
+                                             SymbolAddress="Spec4ByteTerminal.InputData_2"
+                                             DataType="INTEGER32"
+                                             ParameterClass="Runtime"
+                                             AccessType="ro"
+                                             Length="32"
+                                             Visibility="Operator" />
+                                    </xsl:if>
+                                </PdoMap>
+                            </TxPdo>
+                        </xsl:if>
+
+                        <xsl:if test="$Port3_Type != 0 or $Port4_Type != 0">
+                            <TxPdo CobId="{1152+$NodeId}" ReceiveTimeout="0" TransmissionType="255">
+                                <PdoMap>
+                                    <xsl:if test="$Port3_Type != 0">
+                                        <PdoMapParameter Property="SerialInputWord_3"
+                                             SymbolAddress="Spec4ByteTerminal.InputData_3"
+                                             DataType="INTEGER32"
+                                             ParameterClass="Runtime"
+                                             AccessType="ro"
+                                             Length="32"
+                                             Visibility="Operator" />
+                                    </xsl:if>
+                                    <xsl:if test="$Port4_Type != 0">
+                                        <PdoMapParameter Property="SerialInputWord_4"
+                                             SymbolAddress="Spec4ByteTerminal.InputData_4"
+                                             DataType="INTEGER32"
+                                             ParameterClass="Runtime"
+                                             AccessType="ro"
+                                             Length="32"
+                                             Visibility="Operator" />
+                                    </xsl:if>
+                                </PdoMap>
+                            </TxPdo>
+                        </xsl:if>                    
+                    </TxPdos>
+
+                    <RxPdos>
+                        <xsl:if test="$NumberOfDigitalOutputs != 0">
+                            <RxPdo CobId="{512+$NodeId}" TransmissionType="{$TransmissionType}" PdoType="User">
+                                <PdoMap>
+                                    <xsl:call-template name="DigitalOutputsPDO">
+                                        <xsl:with-param name="n" select="$NumberOfDigitalOutputs"/>
+                                    </xsl:call-template>
+                                </PdoMap>
+                            </RxPdo>
+                        </xsl:if>
+
+                        <xsl:if test="$NumberOfAnalogOutputs != 0">
+                            <RxPdo CobId="{768+$NodeId}" TransmissionType="{$TransmissionType}" PdoType="User">
+                                <PdoMap>
+                                    <xsl:call-template name="AnalogOutputsPDO">
+                                        <xsl:with-param name="n" select="$NumberOfAnalogOutputs"/>
+                                    </xsl:call-template>
+                                </PdoMap>
+                            </RxPdo>
+                        </xsl:if>
+
+                        <xsl:if test="$Port1_Type != 0 or $Port2_Type != 0">
+                            <RxPdo CobId="{1024+$NodeId}" TransmissionType="{$TransmissionType}">
+                                <PdoMap>
+                                    <xsl:if test="$Port1_Type != 0">
+                                        <PdoMapParameter Property="SerialOutputWord_1"                                
+                                             SymbolAddress="Spec4ByteTerminal.OutputData_1"
+                                             DataType="INTEGER32"
+                                             ParameterClass="Runtime"
+                                             AccessType="rw"                                                         
+                                             Length="32"
+                                             Visibility="Internal"/>
+                                    </xsl:if>                                                                             
+                                    <xsl:if test="$Port2_Type != 0">
+                                        <PdoMapParameter Property="SerialOutputWord_2"
+                                             SymbolAddress="Spec4ByteTerminal.OutputData_2"
+                                             DataType="INTEGER32"
+                                             ParameterClass="Runtime"
+                                             AccessType="rw"
+                                             Length="32"
+                                             Visibility="Internal"/>
+                                    </xsl:if>                        
+                                </PdoMap>
+                            </RxPdo>
+                        </xsl:if>                        
+
+                        <xsl:if test="$Port3_Type != 0 or $Port4_Type != 0">
+                            <RxPdo CobId="{1280+$NodeId}" TransmissionType="{$TransmissionType}">
+                                <PdoMap>
+                                    <xsl:if test="$Port3_Type != 0">
+                                        <PdoMapParameter Property="SerialOutputWord_3"                                
+                                             SymbolAddress="Spec4ByteTerminal.OutputData_3"
+                                             DataType="INTEGER32"
+                                             ParameterClass="Runtime"
+                                             AccessType="rw"                                                         
+                                             Length="32"
+                                             Visibility="Internal"/>
+                                    </xsl:if>                                                                             
+                                    <xsl:if test="$Port4_Type != 0">
+                                        <PdoMapParameter Property="SerialOutputWord_4"
+                                             SymbolAddress="Spec4ByteTerminal.OutputData_4"
+                                             DataType="INTEGER32"
+                                             ParameterClass="Runtime"
+                                             AccessType="rw"
+                                             Length="32"
+                                             Visibility="Internal"/>
+                                    </xsl:if>                        
+                                </PdoMap>
+                            </RxPdo>
+                        </xsl:if>  
+                       </RxPdos>
+
+                    <ComponentSubType Name="{$HelpDeviceName}"
+                        BaseType="GenericCanDevice">
+
+                        <Interfaces>
+                            <Interface Name="CAN_IO"/>
+                        </Interfaces>
+
+                        <Properties>
+                            <!-- Process Data Properties -->
+                            <xsl:call-template name="DigInpProperties">
+                                <xsl:with-param name="n" select="$NumberOfDigitalInputs"/>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="DigOutProperties">
+                                <xsl:with-param name="n" select="$NumberOfDigitalOutputs"/>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="AnInpProperties">
+                                <xsl:with-param name="n" select="$NumberOfAnalogInputs"/>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="AnInpScaleOffsetProperties">
+                                <xsl:with-param name="n" select="$NumberOfAnalogInputs"/>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="AnOutProperties">
+                                <xsl:with-param name="n" select="$NumberOfAnalogOutputs"/>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="AnOutScaleOffsetProperties">
+                                <xsl:with-param name="n" select="$NumberOfAnalogOutputs"/>
+                            </xsl:call-template>                            
+                            <xsl:if test="$Port1_Type != 0">
+                                <xsl:call-template name="SerialIOProperties">
+                                    <xsl:with-param name="port" select="1"/>
+                                    <xsl:with-param name="encoding" select="1"/>
+                                </xsl:call-template>
+                            </xsl:if>
+
+                            <xsl:if test="$Port2_Type != 0">
+                                <xsl:call-template name="SerialIOProperties">
+                                    <xsl:with-param name="port" select="2"/>
+                                    <xsl:with-param name="encoding" select="1"/>
+                                </xsl:call-template>
+                            </xsl:if>
+                            <xsl:if test="$Port3_Type != 0">
+                                <xsl:call-template name="SerialIOProperties">
+                                    <xsl:with-param name="port" select="3"/>
+                                    <xsl:with-param name="encoding" select="1"/>
+                                </xsl:call-template>
+                            </xsl:if>
+
+                            <xsl:if test="$Port4_Type != 0">
+                                <xsl:call-template name="SerialIOProperties">
+                                    <xsl:with-param name="port" select="4"/>
+                                    <xsl:with-param name="encoding" select="1"/>
+                                </xsl:call-template>
+                            </xsl:if>
+                        </Properties>
+                    </ComponentSubType>
+                </Configuration>
+                <xsl:if test="((($Port1_Type = 0 and $Port2_Type = 0 and $Port3_Type = 0 and $Port4_Type = 0) or
+                                    ($Port1_Type != 0 and $Port2_Type = 0 and $Port3_Type = 0 and $Port4_Type = 0) or
+                                    ($Port1_Type != 0 and $Port2_Type != 0 and $Port3_Type = 0 and $Port4_Type = 0) or
+                                    ($Port1_Type != 0 and $Port2_Type != 0 and $Port3_Type != 0 and $Port4_Type = 0) or
+                                    ($Port1_Type != 0 and $Port2_Type != 0 and $Port3_Type != 0 and $Port4_Type != 0)) = false)">
+                    <Result ErrorInfo="Ports have not been activated in the correct order (1-4), please reconfigure"/>
+                </xsl:if>
+                <xsl:if test="$Port1_Type = 3 and ($Port1_RecXonXoff =  1 or $Port1_SendXonXoff =  1)">
+                    <Result ErrorInfo="Port 1 has Xon/Xoff enabled but is configured in halfduplex this will not work, please reconfigure"/>
+                </xsl:if>
+                <xsl:if test="$Port2_Type = 3 and ($Port2_RecXonXoff =  1 or $Port2_SendXonXoff =  1)">
+                    <Result ErrorInfo="Port 2 has Xon/Xoff enabled but is configured in halfduplex this will not work, please reconfigure"/>
+                </xsl:if>
+                <xsl:if test="$Port3_Type = 3 and ($Port3_RecXonXoff =  1 or $Port3_SendXonXoff =  1)">
+                    <Result ErrorInfo="Port 3 has Xon/Xoff enabled but is configured in halfduplex this will not work, please reconfigure"/>
+                </xsl:if>
+                <xsl:if test="$Port4_Type = 3 and ($Port4_RecXonXoff =  1 or $Port4_SendXonXoff =  1)">
+                    <Result ErrorInfo="Port 4 has Xon/Xoff enabled but is configured in halfduplex this will not work, please reconfigure"/>
+                </xsl:if>
+                <xsl:if test="$Port1_Type != 0 and $Port2_Type != 0 and ($Port1_TerminalNo >= $Port2_TerminalNo)">
+                    <Result ErrorInfo="Terminal number for port 1 has to be less then terminal number for Port 2, please reconfigure"/>
+                </xsl:if>
+                <xsl:if test="$Port2_Type != 0 and $Port3_Type != 0 and ($Port2_TerminalNo >= $Port3_TerminalNo)">
+                    <Result ErrorInfo="Terminal number for port 2 has to be less then terminal number for Port 3, please reconfigure"/>
+                </xsl:if>
+                <xsl:if test="$Port3_Type != 0 and $Port4_Type != 0 and ($Port3_TerminalNo >= $Port4_TerminalNo)">
+                    <Result ErrorInfo="Terminal number for port 3 has to be less then terminal number for Port 4, please reconfigure"/>
+                </xsl:if>
+            </File>
+        </xsl:template>
+
+        <xsl:template name="SerialIOProperties">
+            <xsl:param name="port"/>
+            <xsl:param name="encoding"/>
+            <Property SymbolName="SerialInputWord_{$port}" 
+                PublicName="Serial Input word {$port}" 
+                DataType="UNSIGNED32" 
+                AccessType="ro" 
+                Renameable="false" 
+                Visibility="Internal" 
+                ParameterClass="Runtime" 
+                Remark="Input word mapped to the beckhoff terminal" 
+                SerialPort="SerialInput,{$NodeId},{$port},{$encoding}"/>
+            <Property SymbolName="SerialOutputWord_{$port}" 
+                PublicName="Serial Output word {$port}" 
+                DataType="UNSIGNED32" 
+                AccessType="ro" 
+                Renameable="false" 
+                Visibility="Internal" 
+                ParameterClass="Runtime" 
+                Remark="Output word mapped to the beckhoff terminal" 
+                SerialPort="SerialOutput,{$NodeId},{$port},{$encoding}" />
+            <MasterProperty SymbolName="ReadSerial_{$port}" 
+                DataType="VISIBLE_STRING" 
+                AccessType="ro" 
+                Renameable="false" 
+                Visibility="OEM" 
+                ParameterClass="Runtime"
+                Remark="Buffer where read data is returned" 
+                DataProducer="CanServer" />
+            <MasterProperty SymbolName="ReadSerial_{$port}_EN" 
+                DataType="BOOLEAN" 
+                AccessType="rw" 
+                Renameable="false" 
+                Visibility="OEM" 
+                ParameterClass="Runtime"
+                Remark="Enables new read request" 
+                DataProducer="VehicleComponentServer" />
+            <MasterProperty SymbolName="ReadSerial_{$port}_ENO" 
+                DataType="BOOLEAN" 
+                AccessType="ro" 
+                Renameable="false" 
+                Visibility="OEM" 
+                ParameterClass="Runtime"
+                Remark="Acknowledge for completion of read request" 
+                DataProducer="CanServer" />
+            <MasterProperty SymbolName="ReadSerial_{$port}_STS" 
+                DataType="INTEGER32" 
+                AccessType="ro" 
+                Renameable="false" 
+                Visibility="OEM" 
+                ParameterClass="Runtime"
+                Remark="Status for last read request" 
+                DataProducer="CanServer" />
+            <MasterProperty SymbolName="WriteSerial_{$port}" 
+                DataType="VISIBLE_STRING" 
+                AccessType="rw" 
+                Renameable="false" 
+                Visibility="OEM" 
+                ParameterClass="Runtime"
+                Remark="Buffer for data to be written" 
+                DataProducer="VehicleComponentServer" />
+            <MasterProperty SymbolName="WriteSerial_{$port}_EN" 
+                DataType="BOOLEAN" 
+                AccessType="rw" 
+                Renameable="false" 
+                Visibility="OEM" 
+                ParameterClass="Runtime"
+                Remark="Enables new write request" 
+                DataProducer="VehicleComponentServer" />
+            <MasterProperty SymbolName="WriteSerial_{$port}_ENO" 
+                DataType="BOOLEAN" 
+                AccessType="ro" 
+                Renameable="false" 
+                Visibility="OEM" 
+                ParameterClass="Runtime"
+                Remark="Acknowledge for completion of write request" 
+                DataProducer="CanServer" />
+            <MasterProperty SymbolName="WriteSerial_{$port}_STS" 
+                DataType="INTEGER32" 
+                AccessType="ro" 
+                Renameable="false" 
+                Visibility="OEM" 
+                ParameterClass="Runtime"
+                Remark="Status for last write request" 
+                DataProducer="CanServer" />
+        </xsl:template>
+
+        <xsl:template name="DigInpProperties">
+            <xsl:param name="n"/>
+            <xsl:if test="$n != 0">
+                <xsl:call-template name="DigInpProperties">
+                    <xsl:with-param name="n" select="$n - 1"/>
+                </xsl:call-template>
+
+                <Property SymbolName="DigitalInput{$n}"
+                    PublicName="Digital Input {$n} value" 
+                    DataType="BOOLEAN"
+                    IOType="Digital Input"
+                    ParameterClass="Runtime"
+                    AccessType="ro"
+                    Renameable="true"
+                    Visibility="Operator"
+                    Remark="Digital Input {$n} value" />
+            </xsl:if>
+        </xsl:template>
+
+        <xsl:template name="DigitalInputsPDO">
+            <xsl:param name="n"/>
+            <xsl:if test="$n != 0">
+                <xsl:call-template name="DigitalInputsPDO">
+                    <xsl:with-param name="n" select="$n - 1"/>
+                </xsl:call-template>
+                
+                <PdoMapParameter Property="DigitalInput{$n}"
+                    SymbolAddress="DigInput_Runtime.Value_{(floor(($n - 1) div 8) * 8) + 1}_{(floor(($n - 1) div 8) + 1) * 8}.DigInp{$n}"
+                    Length="1" />
+            </xsl:if>
+        </xsl:template>
+
+        <xsl:template name="DigOutProperties">
+            <xsl:param name="n"/>
+            <xsl:if test="$n != 0">
+                <xsl:call-template name="DigOutProperties">
+                    <xsl:with-param name="n" select="$n - 1"/>
+                </xsl:call-template>
+
+                <Property SymbolName="DigitalOutput{$n}"
+                    PublicName="Digital Output {$n} value" 
+                    DataType="BOOLEAN"
+                    IOType="Digital Output"
+                    ParameterClass="Runtime" 
+                    AccessType="rw"
+                    Renameable="true"
+                    Visibility="Operator"
+                    Remark="Digital Output {$n} value" />
+            </xsl:if>
+        </xsl:template>
+
+        <xsl:template name="DigitalOutputsPDO">
+            <xsl:param name="n"/>
+            <xsl:if test="$n != 0">
+                <xsl:call-template name="DigitalOutputsPDO">
+                    <xsl:with-param name="n" select="$n - 1"/>
+                </xsl:call-template>
+                
+                <PdoMapParameter Property="DigitalOutput{$n}"
+                    SymbolAddress="DigOutput_Runtime.Value_{(floor(($n - 1) div 8) * 8) + 1}_{(floor(($n - 1) div 8) + 1) * 8}.DigOut{$n}"
+                    Length="1" />
+            </xsl:if>
+        </xsl:template>
+
+        <xsl:template name="AnInpScaleOffsetProperties">
+            <xsl:param name="n"/>
+            <xsl:if test="$n != 0">
+                <xsl:call-template name="AnInpScaleOffsetProperties">
+                    <xsl:with-param name="n" select="$n - 1"/>
+                </xsl:call-template>
+                <MasterProperty SymbolName="AnInp{$n}_Scale" 
+                    PublicName="Analog Input {$n} Scale" 
+                    DataType="INTEGER16" 
+                    ParameterClass="Config" 
+                    AccessType="rw" 
+                    Renameable="true"
+                    Visibility="OEM"
+                    Default="3052" Min="1"
+                    Remark="Analog Input {$n} Scale"/>
+
+                <MasterProperty SymbolName="AnInp{$n}_ScaleFactor" 
+                    PublicName="Analog Input {$n} Scale Factor" 
+                    DataType="INTEGER16" 
+                    ParameterClass="Config" 
+                    AccessType="rw" 
+                    Renameable="true"
+                    Visibility="OEM"
+                    Default="10000" Min="1"
+                    Remark="Analog Input {$n} Scale Factor"/>
+                
+                <MasterProperty SymbolName="AnInp{$n}_Offset" 
+                    PublicName="Analog Input {$n} Offset" 
+                    DataType="INTEGER16" 
+                    ParameterClass="Config" 
+                    AccessType="rw" 
+                    Renameable="true"
+                    Visibility="OEM"
+                    Default="0"
+                    Remark="Analog Input {$n} Offset"/>
+                
+                <MasterProperty SymbolName="AnInp{$n}_ScaledValue" 
+                    PublicName="Analog Input {$n} Scaled Value" 
+                    DataType="INTEGER16" 
+                    ParameterClass="Runtime" 
+                    AccessType="ro" 
+                    Renameable="true"
+                    Visibility="OEM"
+                    Remark="AnalogInput{$n}_ScaledValue = (AnInp{$n}_Scale * AnalogInput{$n}) / AnInp{$n}_ScaleFactor + AnInp{$n}_Offset"/>
+            </xsl:if>
+        </xsl:template>
+
+        <xsl:template name="AnOutScaleOffsetProperties">
+            <xsl:param name="n"/>
+            <xsl:if test="$n != 0">
+                <xsl:call-template name="AnOutScaleOffsetProperties">
+                    <xsl:with-param name="n" select="$n - 1"/>
+                </xsl:call-template>
+                <MasterProperty SymbolName="AnOut{$n}_Scale" 
+                    PublicName="Analog Output {$n} Scale" 
+                    DataType="INTEGER16" 
+                    ParameterClass="Config"  
+                    AccessType="rw" 
+                    Renameable="true"
+                    Visibility="OEM"
+                    Default="3276" Min="1"
+                    Remark="Analog Output {$n} Scale"/>
+
+                <MasterProperty SymbolName="AnOut{$n}_ScaleFactor" 
+                    PublicName="Analog Output {$n} Scale Factor" 
+                    DataType="INTEGER16" 
+                    ParameterClass="Config"  
+                    AccessType="rw" 
+                    Renameable="true"
+                    Visibility="OEM"
+                    Default="1000" Min="1"
+                    Remark="Analog Output {$n} Scale Factor"/>
+                
+                <MasterProperty SymbolName="AnOut{$n}_Offset" 
+                    PublicName="Analog Output {$n} Offset" 
+                    DataType="INTEGER16" 
+                    ParameterClass="Config"                     
+                    AccessType="rw" 
+                    Renameable="true"
+                    Visibility="OEM"
+                    Default="0"
+                    Remark="Analog Output {$n} Offset"/>
+                
+                <MasterProperty SymbolName="AnOut{$n}_SetValue" 
+                    PublicName="Analog Output {$n} Set Value" 
+                    DataType="INTEGER16" 
+                    ParameterClass="Runtime"                     
+                    AccessType="rw" 
+                    Renameable="true"
+                    Visibility="OEM"
+                    Remark="Analog Output {$n} Set Value"/>
+            </xsl:if>
+        </xsl:template>
+
+        <xsl:template name="AnalogInputsPDO">
+            <xsl:param name="n"/>
+            <xsl:if test="$n != 0">
+                <xsl:call-template name="AnalogInputsPDO">
+                    <xsl:with-param name="n" select="$n - 1"/>
+                </xsl:call-template>
+                
+                <PdoMapParameter Property="AnalogInput{$n}" 
+                    SymbolAddress="AnInput_Runtime.AnInput_{$n}" 
+                    Length="16" />
+            </xsl:if>
+        </xsl:template>
+
+        <xsl:template name="AnInpProperties">
+            <xsl:param name="n"/>
+            <xsl:if test="$n != 0">
+                <xsl:call-template name="AnInpProperties">
+                    <xsl:with-param name="n" select="$n - 1"/>
+                </xsl:call-template>
+
+                <Property SymbolName="AnalogInput{$n}"     
+                    PublicName="Analog Input {$n} value" 
+                    DataType="INTEGER16" 
+                    IOType="Analog Input"
+                    ParameterClass="Runtime"
+                    AccessType="ro" 
+                    Renameable="true" 
+                    Visibility="Operator"
+                    ScaledParameter="ScaledInput, AnInp{$n}_Scale, AnInp{$n}_ScaleFactor,  AnInp{$n}_Offset, AnInp{$n}_ScaledValue"
+                    Remark="Raw value from input devic: AnalogInput{$n}"/>
+            </xsl:if>
+        </xsl:template>
+
+        <xsl:template name="AnalogOutputsPDO">
+            <xsl:param name="n"/>
+            <xsl:if test="$n != 0">
+                <xsl:call-template name="AnalogOutputsPDO">
+                    <xsl:with-param name="n" select="$n - 1"/>
+                </xsl:call-template>
+                
+                <PdoMapParameter Property="AnalogOutput{$n}" 
+                    SymbolAddress="AnOutput_Runtime.AnOutput_{$n}"
+                    Length="16" />
+            </xsl:if>
+        </xsl:template>
+
+        <xsl:template name="AnOutProperties">
+            <xsl:param name="n"/>
+            <xsl:if test="$n != 0">
+                <xsl:call-template name="AnOutProperties">
+                    <xsl:with-param name="n" select="$n - 1"/>
+                </xsl:call-template>
+
+                <Property SymbolName="AnalogOutput{$n}"     
+                    PublicName="Analog Output {$n} value" 
+                    DataType="INTEGER16" 
+                    IOType="Analog Output"
+                    ParameterClass="Runtime"
+                    AccessType="ro" 
+                    Renameable="true" 
+                    Visibility="Operator"
+                    ScaledParameter="ScaledOutput, AnOut{$n}_Scale, AnOut{$n}_ScaleFactor, AnOut{$n}_Offset, AnOut{$n}_SetValue"
+                    Remark="Raw value to output devic: AnalogOutput{$n} = (AnOut{$n}_Scale * AnOut{$n}_SetValue) / AnOut{$n}_ScaleFactor + AnOut{$n}_Offset"/>
+            </xsl:if>
+        </xsl:template>    
+    </xsl:stylesheet>
+</File>

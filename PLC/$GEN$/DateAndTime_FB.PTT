@@ -1,0 +1,17 @@
+FUNCTION_BLOCK DateAndTime_FB 
+
+
+ VAR_INPUT
+  UTC_Clock : DINT ;
+  END_VAR 
+
+ VAR_OUTPUT
+  ErrorCode : DINT ;
+  Year , Month , Day : DINT ;
+  Hours , Minutes , Seconds : DINT ;
+  DayWeek : STRING ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

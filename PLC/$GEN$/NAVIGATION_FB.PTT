@@ -1,0 +1,14 @@
+FUNCTION_BLOCK NAVIGATION_FB 
+
+
+ VAR_INPUT
+  AutoInsertNotInsideTargetSafety : bool ;
+  ModePPA : bool ;
+  END_VAR 
+
+ VAR_OUTPUT
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK

@@ -1,0 +1,3276 @@
+PROGRAM MAIN
+VAR_EXTERNAL
+	NDC8:NDC8_T;
+	
+	
+(* Function blocks available from all programs. *)
+	DisplayStopString : DisplayStopString_FB;
+	EventQueue : EventQueue_FB;
+	
+END_VAR
+
+VAR
+(* Standard functions *)
+	Indicators : Indicators_FB;
+	Mode : ModeControl_FB ;
+	Navigation : Navigation_FB;
+	StopWordFB : StopWord_FB;
+	TX_Status : TX_Status_FB;
+	EventHandler : EVENTHANDLER_FB;
+	AutoLoad : AutoLoad_FB;
+	CarrierControl:CarrierControl_FB;
+	Display : Display_FB;
+	OPTX2  : OPTX2_FB;
+	LS2000 : LS2000_FB;
+	DebugFB : Debug_FB;
+	
+	PLC_Communication : PLC_Communication_FB;
+	
+	F_SteerSupervision : DRIVERSUPERVISION_FB;
+	F_DriveSupervision : DRIVERSUPERVISION_FB;
+	R_SteerSupervision : DRIVERSUPERVISION_FB;
+	R_DriveSupervision : DRIVERSUPERVISION_FB;
+	
+	BMS_CHG : BMS_CHG_FB;
+	
+	VehicleMovingFlag : BOOL;
+
+
+(* Error Trigger BlackBox *)
+	Error_Set_Trig : BOOL;
+	Error_BB_TrigR : R_Trig;
+	Error_Trig : BOOL;
+	
+(* OM-PLC Trigger BlackBox *)
+	OMPLC_BB_TrigR : R_Trig;
+	OMPLC_Trig : BOOL;
+	
+	BlackBox : BlackBox_FB;
+(* Master Link *)
+	MasterLinkR : R_Trig;
+	
+(* Vehicle specific functions *)
+	InputMap : InputMap_fb;
+	OutputMap : OutputMap_fb;
+	
+(* PLC Communication Check *)
+	LastCommCheckFlag : BOOL;
+	
+	CommCheckTimeUp : TON;
+
+	iVar1 : INT;
+	
+	
+(* Blocking Power Off Check *)
+	BlockPowOffTm : TON;
+	BlockPowOffTmValue : TIME;
+	
+(* Lost Power Off Check *)
+	LostPosPowOffTm : TON;
+	LostPosPowOffTmValue : TIME;
+	
+(* Error Power Off Check *)
+	ErrorOccurFlag : BOOL;
+	ErrorPowOffTm : TON;
+	ErrorPowOffTmValue : TIME;
+	
+(* Battery Low OT *)
+	BatLowTm : TON;
+	
+(* Display Error String *)
+	FailCodeDint : dint;
+	
+	BbxTrig_FT : F_trig;
+	ExecDriveCommand_RT : R_Trig;
+	FailTimerTON : TON;
+	
+	PreviousMainState,
+	PreviousLoadState,
+	PreviousUnLoadState,
+	PreviousTravelDir,
+	PreviousFailCode,
+	PreviousForkHeight,
+	
+
+	PreviousExecDriveCommand,
+	PreviousCancelOperation,
+	bbxtrigger			:bool;
+	
+(* All OK Motor Find Z-phase *)
+	AllOK_R :R_Trig;
+	AllOK_Delay : TON;
+	
+	FindSyncDelay : TON;
+	
+	FindSyncStep : INT := 0;
+	
+	CurPnt : DINT := 0;
+	CurSeg : DINT := 0;
+	
+(* Navigation Down Timer Check *)
+	NavLevelDown_Start : BOOL;
+	NavLevelDown_TM : TON;
+	NavLevelDown_TmUp	 : BOOL;
+	
+
+
+(* LS2000 Attached Timer *)
+	LS2000_Attached_M : TON;
+	
+(* AGV Travel Distance Sampling Timer *)
+	LastEncoderDistance : UINT := 0;
+	CurrentEncoderDistance : UINT := 0;
+	TravelDistanceSamplingTimer : TON;
+	
+	
+(* Black Box Trigger *)
+	BootUpDelay : TON;
+	NoErrorDelay : TON;
+	
+	ErrorFlag : bool;
+	ErrorTrigFlag : bool;
+	ErrorTrigR : R_Trig;
+	
+	ErrorCodeString : string;
+	BBMessage : string;
+	
+(* Update Data *)
+	DataUpdate : DataUpload_FB;
+	
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+	PLC_RX14_BIT_BMS_CH_ERR : BOOL;
+	OM_PLC_W2_BIT_POWEROFFOM : BOOL;
+	PLC_RX14_BIT_BMS_NG : BOOL;
+	PLC_RX04_BIT_STW_LOWOT : BOOL;
+	G_PLCCOMLINKUP : BOOL;
+	OM_PLC_W7_BIT_AREA2 : BOOL;
+	PLC_RX01_BIT_CHRGEMG : BOOL;
+	STOPROBOTNOTIDLE : BOOL;
+	G_POWEROFFFLAG_OP : BOOL;
+	PLC_RX14_BIT_BMS_THERMI : BOOL;
+	STOPBYERRORCODE : BOOL;
+	PLC_RX01_BIT_ENABLELD_I : BOOL;
+	PLC_TX01_BIT_LOCALMODE : BOOL;
+	STOPFINDSYNC : BOOL;
+	G_POWEROFFFLAG_LOST : BOOL;
+	OM_PLC_WORD7 : WORD;
+	OM_PLC_WORD2 : WORD;
+	OM_PLC_WORD1 : WORD;
+	PLC_RX14_BIT_BMS_COUPLE : BOOL;
+	INSTATUS : bool;
+	STOPBATLOWOT : BOOL;
+	G_BATTLIM_NG : BOOL;
+	G_CHARGEOVERTIME : BOOL;
+	G_STARTFINDSYNC : BOOL;
+	G_POWEROFFFLAG_OMPLC : BOOL;
+	G_POWEROFFFLAG : BOOL;
+	PLC_RX03_BIT_STW_ENACHG : BOOL;
+	STOPWORD2 : DWORD;
+	OM_PLC_W7_BIT_AREA8 : BOOL;
+	OM_PLC_W2_BIT_SETEMGSTOP : BOOL;
+	PLC_RX14_BIT_BMS_OVER : BOOL;
+	PLC_RX_WORD16_BMS_BATV : WORD;
+	PLC_TX_WORD13_STR_ERR : WORD;
+	INPUT : INPUT_T;
+	PLC_RX14_BIT_BMS_SHORT : BOOL;
+	PLC_RX01_BIT_CHKCOM_RX : BOOL;
+	STOPWORD : DWORD;
+	G_AGV_ERRORRESET : BOOL;
+	G_FINDSYNCFLAG : BOOL;
+	PLC_TX01_BIT_MANMODE : BOOL;
+	STOPBYCANERR_NODE8 : BOOL;
+	STOPBYCANERR_NODE7 : BOOL;
+	STOPBYCANERR_NODE6 : BOOL;
+	STOPBYCANERR_NODE5 : BOOL;
+	STOPBYCANERR_NODE3 : BOOL;
+	STOPBYCANERR_NODE2 : BOOL;
+	STOPBYOM_PLC : BOOL;
+	OM_PLC_W7_BIT_AREA4 : BOOL;
+	PLC_RX14_BIT_BMS_BAT : BOOL;
+	STOPAUTOBRAKERELEASE : BOOL;
+	PLC_RX14_BIT_BMS_CT : BOOL;
+	PLC_RX14_BIT_BMS_TEMPER : BOOL;
+	PLC_TX01_BIT_HOSTMODE : BOOL;
+	G_POWEROFFFLAG_ERROR : BOOL;
+	G_POWEROFFFLAG_PLC : BOOL;
+	PLC_RX14_BIT_BMS_LOWV : BOOL;
+	PLC_RX_WORD20_PLC_ERRD : WORD;
+	G_POWEROFFFLAG_BLOCK : BOOL;
+	TIMER : Timer_FB;
+	OM_PLC_W7_BIT_AREA1 : BOOL;
+	OM_PLC_W2_BIT_BB_SETREQ : BOOL;
+	STOPOBSTACLE : BOOL;
+	G_ERRORCODE : WORD;
+END_VAR
+(** {* **)
+(**  **)
+(** MAIN **)
+(** -------- **)
+(**  **)
+(** These function blocks are a minimum to run a typical Steer/drive fork truck.  **)
+(**  **)
+(** *} **)
+(**  **)
+(**  **)
+(** AllOK_R(CLK:=NDC8.SDIO.AllOK_DigitalOutput1); **)
+	(* call - Stmt *)
+	CAL AllOK_R (
+		CLK := NDC8.SDIO.AllOK_DigitalOutput1
+	)
+
+(**  **)
+(** if AllOK_R.Q and NDC8.SDIO.DigitalInput2_BTN_RST = FALSE then **)
+	(* if - Cond *)
+	LD AllOK_R.Q
+	AND ( NDC8.SDIO.DigitalInput2_BTN_RST
+		EQ FALSE
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	g_StartFindSync:= TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST g_StartFindSync
+
+(** 	StopFindSync := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST StopFindSync
+
+		JMP ODK_END_IF_000000000000001
+
+(** elsif AllOK_R.Q and NDC8.SDIO.DigitalInput2_BTN_RST = TRUE then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	LD AllOK_R.Q
+	AND ( NDC8.SDIO.DigitalInput2_BTN_RST
+		EQ TRUE
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	g_StartFindSync := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST g_StartFindSync
+
+(** 	g_FindSyncFlag := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST g_FindSyncFlag
+
+(** 	StopFindSync := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST StopFindSync
+
+		JMP ODK_END_IF_000000000000001
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000002:
+	ODK_END_IF_000000000000001:
+
+(**  **)
+(** AllOK_Delay(IN:=g_StartFindSync, PT:=t#5s); **)
+	(* call - Stmt *)
+	CAL AllOK_Delay (
+		IN := g_StartFindSync,
+		PT := t#5s
+	)
+
+(**  **)
+(** if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST = FALSE then **)
+	(* if - Cond *)
+	LD AllOK_Delay.Q
+	AND ( g_FindSyncFlag
+		EQ FALSE
+	)
+	AND ( NDC8.SDIO.DigitalInput2_BTN_RST
+		EQ FALSE
+	)
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
+(** 	case FindSyncStep of **)
+(** 	0: **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000003_000000000000000:
+
+		(* case - Cond *)
+		LD FindSyncStep
+		EQ 0
+		JMPC ODK_CASE_000000000000003_000000000000001
+
+		JMP ODK_SKIP_000000000000003_000000000000001
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000003_000000000000001:
+
+(** 	{* Steer Turn to 2000 *} **)
+(** 	NDC8.Manual.PlcSelect := true; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.Manual.PlcSelect
+
+(** 	NDC8.Manual.PLCAngle := 2000; **)
+			(* assign - Stmt *)
+			LD 2000
+			ST NDC8.Manual.PLCAngle
+
+(** 	NDC8.Manual.PlcSetOperationMode := 1; **)
+			(* assign - Stmt *)
+			LD 1
+			ST NDC8.Manual.PlcSetOperationMode
+
+(** 	NDC8.Manual.PLCSteerMode := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST NDC8.Manual.PLCSteerMode
+
+(** 	NDC8.Manual.PlcSelectMask 		:= 2#10101; **)
+			(* assign - Stmt *)
+			LD 2#10101
+			ST NDC8.Manual.PlcSelectMask
+
+(** 	 **)
+(** 	FindSyncDelay(IN:=TRUE, PT:=t#2s); **)
+			(* call - Stmt *)
+			CAL FindSyncDelay (
+				IN := TRUE,
+				PT := t#2s
+			)
+
+(** 	if FindSyncDelay.Q then **)
+			(* if - Cond *)
+			LD FindSyncDelay.Q
+			JMPCN ODK_SKIP_000000000000004_000000000000001
+
+				(* then - Stmts *)
+
+(** 		FindSyncStep := 1; **)
+				(* assign - Stmt *)
+				LD 1
+				ST FindSyncStep
+
+(** 		FindSyncDelay(IN:=FALSE); **)
+				(* call - Stmt *)
+				CAL FindSyncDelay (
+					IN := FALSE
+				)
+
+				JMP ODK_END_IF_000000000000004
+
+(** 	end_if; **)
+			(* if - End *) 
+			ODK_SKIP_000000000000004_000000000000001:
+			ODK_END_IF_000000000000004:
+
+			JMP ODK_END_CASE_000000000000003
+
+(** 	 **)
+(** 	1: **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000003_000000000000001:
+
+		(* case - Cond *)
+		LD FindSyncStep
+		EQ 1
+		JMPC ODK_CASE_000000000000003_000000000000002
+
+		JMP ODK_SKIP_000000000000003_000000000000002
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000003_000000000000002:
+
+(** 	{* Steer Turn to -2000 *} **)
+(** 	NDC8.Manual.PlcSelect := true; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.Manual.PlcSelect
+
+(** 	NDC8.Manual.PLCAngle := -2000; **)
+			(* assign - Stmt *)
+			LD -2000
+			ST NDC8.Manual.PLCAngle
+
+(** 	NDC8.Manual.PlcSetOperationMode := 1; **)
+			(* assign - Stmt *)
+			LD 1
+			ST NDC8.Manual.PlcSetOperationMode
+
+(** 	NDC8.Manual.PLCSteerMode := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST NDC8.Manual.PLCSteerMode
+
+(** 	NDC8.Manual.PlcSelectMask 		:= 2#10101; **)
+			(* assign - Stmt *)
+			LD 2#10101
+			ST NDC8.Manual.PlcSelectMask
+
+(** 	 **)
+(** 	FindSyncDelay(IN:=TRUE, PT:=t#2s); **)
+			(* call - Stmt *)
+			CAL FindSyncDelay (
+				IN := TRUE,
+				PT := t#2s
+			)
+
+(** 	if FindSyncDelay.Q then **)
+			(* if - Cond *)
+			LD FindSyncDelay.Q
+			JMPCN ODK_SKIP_000000000000005_000000000000001
+
+				(* then - Stmts *)
+
+(** 		FindSyncStep := 2; **)
+				(* assign - Stmt *)
+				LD 2
+				ST FindSyncStep
+
+(** 		FindSyncDelay(IN:=FALSE); **)
+				(* call - Stmt *)
+				CAL FindSyncDelay (
+					IN := FALSE
+				)
+
+				JMP ODK_END_IF_000000000000005
+
+(** 	end_if; **)
+			(* if - End *) 
+			ODK_SKIP_000000000000005_000000000000001:
+			ODK_END_IF_000000000000005:
+
+			JMP ODK_END_CASE_000000000000003
+
+(** 	 **)
+(** 	2: **)
+		(* case - Elm *) 
+		ODK_SKIP_000000000000003_000000000000002:
+
+		(* case - Cond *)
+		LD FindSyncStep
+		EQ 2
+		JMPC ODK_CASE_000000000000003_000000000000003
+
+		JMP ODK_SKIP_000000000000003_000000000000003
+
+		(* case - Stmts *) 
+		ODK_CASE_000000000000003_000000000000003:
+
+(** 	{* Steer Turn to 0 *} **)
+(** 	NDC8.Manual.PlcSelect := true; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.Manual.PlcSelect
+
+(** 	NDC8.Manual.PLCAngle := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST NDC8.Manual.PLCAngle
+
+(** 	NDC8.Manual.PlcSetOperationMode := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST NDC8.Manual.PlcSetOperationMode
+
+(** 	NDC8.Manual.PLCSteerMode := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST NDC8.Manual.PLCSteerMode
+
+(** 	NDC8.Manual.PlcSelectMask 		:= 2#10101; **)
+			(* assign - Stmt *)
+			LD 2#10101
+			ST NDC8.Manual.PlcSelectMask
+
+(** 	 **)
+(** 	FindSyncDelay(IN:=TRUE, PT:=t#2s); **)
+			(* call - Stmt *)
+			CAL FindSyncDelay (
+				IN := TRUE,
+				PT := t#2s
+			)
+
+(** 	if FindSyncDelay.Q then **)
+			(* if - Cond *)
+			LD FindSyncDelay.Q
+			JMPCN ODK_SKIP_000000000000006_000000000000001
+
+				(* then - Stmts *)
+
+(** 		FindSyncStep := 3; **)
+				(* assign - Stmt *)
+				LD 3
+				ST FindSyncStep
+
+(** 		FindSyncDelay(IN:=FALSE); **)
+				(* call - Stmt *)
+				CAL FindSyncDelay (
+					IN := FALSE
+				)
+
+(** 		g_FindSyncFlag := TRUE; **)
+				(* assign - Stmt *)
+				LD TRUE
+				ST g_FindSyncFlag
+
+(** 		NDC8.Manual.PlcSelectMask := 0; **)
+				(* assign - Stmt *)
+				LD 0
+				ST NDC8.Manual.PlcSelectMask
+
+(** 		g_StartFindSync := FALSE; **)
+				(* assign - Stmt *)
+				LD FALSE
+				ST g_StartFindSync
+
+(** 		StopFindSync := FALSE; **)
+				(* assign - Stmt *)
+				LD FALSE
+				ST StopFindSync
+
+				JMP ODK_END_IF_000000000000006
+
+(** 	end_if; **)
+			(* if - End *) 
+			ODK_SKIP_000000000000006_000000000000001:
+			ODK_END_IF_000000000000006:
+
+			JMP ODK_END_CASE_000000000000003
+
+(** 	 **)
+(**  **)
+(** 	end_case; **)
+		(* case - End *) 
+		ODK_SKIP_000000000000003_000000000000003:
+		ODK_END_CASE_000000000000003:
+
+		JMP ODK_END_IF_000000000000002
+
+(** 	 **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000002_000000000000001:
+	ODK_END_IF_000000000000002:
+
+(**  **)
+(**  **)
+(**  **)
+(** if NDC8.CanOpenMaster.NMTState = 5 and NDC8.CanOpenMaster.State = 0 then **)
+	(* if - Cond *)
+	LD NDC8.CanOpenMaster.NMTState
+	EQ 5
+	AND ( NDC8.CanOpenMaster.State
+		EQ 0
+	)
+	JMPCN ODK_SKIP_000000000000007_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** {* INPUTS *} **)
+(** 	InputMap();					{* Mapping inputs on devices to generic names *} **)
+		(* call - Stmt *)
+		CAL InputMap
+
+(**  **)
+(** {*Decisionmaking PLC:s*} **)
+(**  **)
+(**  **)
+(** 	Autoload();	 {* Load handling 		*}		 **)
+		(* call - Stmt *)
+		CAL Autoload
+
+(** 	 **)
+(** 	LS2000(); **)
+		(* call - Stmt *)
+		CAL LS2000
+
+(** 	 **)
+(** 	CarrierControl(	LS2000Slowdown := LS2000.Slowdown);				 **)
+		(* call - Stmt *)
+		CAL CarrierControl (
+			LS2000Slowdown := LS2000.Slowdown
+		)
+
+(** 	 **)
+(** 	if g_StartFindSync = FALSE then **)
+		(* if - Cond *)
+		LD g_StartFindSync
+		EQ FALSE
+		JMPCN ODK_SKIP_000000000000008_000000000000001
+
+			(* then - Stmts *)
+
+(** 		Mode();												{* Selects vehicle mode *} **)
+			(* call - Stmt *)
+			CAL Mode
+
+			JMP ODK_END_IF_000000000000008
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000008_000000000000001:
+		ODK_END_IF_000000000000008:
+
+(**  **)
+(** {* OUTPUTS *} **)
+(** 	OutputMap();				{* Mapping outputs on devices to generic names *} **)
+		(* call - Stmt *)
+		CAL OutputMap
+
+(** 	 **)
+(** {* BMS Charger *} **)
+(** 	BMS_CHG(); **)
+		(* call - Stmt *)
+		CAL BMS_CHG
+
+(**  **)
+(** 	PLC_Communication(); **)
+		(* call - Stmt *)
+		CAL PLC_Communication
+
+		JMP ODK_END_IF_000000000000007
+
+(** 	 **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000007_000000000000001:
+	ODK_END_IF_000000000000007:
+
+(**  **)
+(** {* These FB can be run also during startup and in safe state *} **)
+(**  **)
+(** 	{* Information *} **)
+(** Timer();						{* Square wave timers 										*} **)
+	(* call - Stmt *)
+	CAL Timer
+
+(**  **)
+(** Navigation(AutoInsertNotInsideTargetSafety := CarrierControl.AutoInsertNotInsideTargetSafety);					{* Info regarding navigation 								*} **)
+	(* call - Stmt *)
+	CAL Navigation (
+		AutoInsertNotInsideTargetSafety := CarrierControl.AutoInsertNotInsideTargetSafety
+	)
+
+(**  **)
+(** StopWordFB();					{* Stop reasons 											*} **)
+	(* call - Stmt *)
+	CAL StopWordFB
+
+(**  **)
+(** DisplayStopString();			{* Displays user defined stop reasons on the display 		*} **)
+	(* call - Stmt *)
+	CAL DisplayStopString
+
+(**  **)
+(** TX_Status();					{* Sends status bits to Master Controller 					*} **)
+	(* call - Stmt *)
+	CAL TX_Status
+
+(**  **)
+(** EventHandler();					{* Transmits events from the queue							*} **)
+	(* call - Stmt *)
+	CAL EventHandler
+
+(**  **)
+(** debugFB(); **)
+	(* call - Stmt *)
+	CAL debugFB
+
+(**  **)
+(** Indicators(	AutoInsertNotInsideTargetSafety := CarrierControl.AutoInsertNotInsideTargetSafety, **)
+	(* call - Stmt *)
+	CAL Indicators (
+		AutoInsertNotInsideTargetSafety := CarrierControl.AutoInsertNotInsideTargetSafety,
+(** 			AutoinsertInProgress 	:= CarrierControl.AutoinsertInProgress, **)
+		AutoinsertInProgress := CarrierControl.AutoinsertInProgress,
+(** 			StartDelayStartWarning 	:= CarrierControl.StartDelayStartWarning, **)
+		StartDelayStartWarning := CarrierControl.StartDelayStartWarning,
+(** 			LS2000SlowDown 			:= false);						{* Controls lamps and buzzers 								*} **)
+		LS2000Slowdown := FALSE
+	)
+
+(**  **)
+(** {*System Brake Signal*} **)
+(** if NDC8.UserDefined.Braker_Signal = FALSE or (INPUT.Manual = TRUE and NDC8.SDIO.DigitalInput5_BTN_BRK = TRUE) or (INPUT.Auto = TRUE and NDC8.SDIO.DigitalInput5_BTN_BRK = TRUE) then **)
+	(* if - Cond *)
+	LD NDC8.UserDefined.Braker_Signal
+	EQ FALSE
+	OR ( INPUT.Manual
+		EQ TRUE
+		AND ( NDC8.SDIO.DigitalInput5_BTN_BRK
+			EQ TRUE
+		)
+	)
+	OR ( INPUT.Auto
+		EQ TRUE
+		AND ( NDC8.SDIO.DigitalInput5_BTN_BRK
+			EQ TRUE
+		)
+	)
+	JMPCN ODK_SKIP_000000000000009_000000000000001
+
+		(* then - Stmts *)
+
+(** 	{*Brake Release*} **)
+(** 	NDC8.DCD_5.DigitalOutput2_Braker := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST NDC8.DCD_5.DigitalOutput2_Braker
+
+(** 	NDC8.DCD_7.DigitalOutput2_Braker := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST NDC8.DCD_7.DigitalOutput2_Braker
+
+		JMP ODK_END_IF_000000000000009
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000009_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	{*Brake Lock*} **)
+(** 	NDC8.DCD_5.DigitalOutput2_Braker := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.DCD_5.DigitalOutput2_Braker
+
+(** 	NDC8.DCD_7.DigitalOutput2_Braker := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.DCD_7.DigitalOutput2_Braker
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000009:
+
+(**  **)
+(** if INPUT.Auto = TRUE and NDC8.SDIO.DigitalInput5_BTN_BRK = TRUE and NDC8.Mcd.Button8 = FALSE then **)
+	(* if - Cond *)
+	LD INPUT.Auto
+	EQ TRUE
+	AND ( NDC8.SDIO.DigitalInput5_BTN_BRK
+		EQ TRUE
+	)
+	AND ( NDC8.Mcd.Button8
+		EQ FALSE
+	)
+	JMPCN ODK_SKIP_00000000000000A_000000000000001
+
+		(* then - Stmts *)
+
+(** 	StopAutoBrakeRelease := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST StopAutoBrakeRelease
+
+		JMP ODK_END_IF_00000000000000A
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000A_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	StopAutoBrakeRelease := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST StopAutoBrakeRelease
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000A:
+
+(**  **)
+(** {* Encoder Supervision *} **)
+(** VehicleMovingFlag := NDC8.VehicleControl.Moving and not NDC8.PLC_Application.TxStatusBit9_EStop and StopWord = 0 and StopWord2 = 0; **)
+	(* assign - Stmt *)
+	LD NDC8.VehicleControl.Moving
+	AND ( NDC8.PLC_Application.TxStatusBit9_EStop
+		NOT
+	)
+	AND ( StopWord
+		EQ 0
+	)
+	AND ( StopWord2
+		EQ 0
+	)
+	ST VehicleMovingFlag
+
+(**  **)
+(** F_SteerSupervision(Command:= NDC8.DCD_6.SetAngle,FeedBack:= NDC8.DCD_6.WheelAngle,Range:= 1000,Timeout:= t#30s,Moving:= VehicleMovingFlag); **)
+	(* call - Stmt *)
+	CAL F_SteerSupervision (
+		Command := NDC8.DCD_6.SetAngle,
+		FeedBack := NDC8.DCD_6.WheelAngle,
+		Range := 1000,
+		Timeout := t#30s,
+		Moving := VehicleMovingFlag
+	)
+
+(** R_SteerSupervision(Command:= NDC8.DCD_8.SetAngle,FeedBack:= NDC8.DCD_8.WheelAngle,Range:= 1000,Timeout:= t#30s,Moving:= VehicleMovingFlag); **)
+	(* call - Stmt *)
+	CAL R_SteerSupervision (
+		Command := NDC8.DCD_8.SetAngle,
+		FeedBack := NDC8.DCD_8.WheelAngle,
+		Range := 1000,
+		Timeout := t#30s,
+		Moving := VehicleMovingFlag
+	)
+
+(**  **)
+(** F_DriveSupervision(Command:= NDC8.DCD_5.SetSpeed,FeedBack:= NDC8.DCD_5.DriveEncSpeed,Range:= 100,Timeout:= t#30s,Moving:= VehicleMovingFlag); **)
+	(* call - Stmt *)
+	CAL F_DriveSupervision (
+		Command := NDC8.DCD_5.SetSpeed,
+		FeedBack := NDC8.DCD_5.DriveEncSpeed,
+		Range := 100,
+		Timeout := t#30s,
+		Moving := VehicleMovingFlag
+	)
+
+(** R_DriveSupervision(Command:= NDC8.DCD_7.SetSpeed,FeedBack:= NDC8.DCD_7.DriveEncSpeed,Range:= 100,Timeout:= t#30s,Moving:= VehicleMovingFlag); **)
+	(* call - Stmt *)
+	CAL R_DriveSupervision (
+		Command := NDC8.DCD_7.SetSpeed,
+		FeedBack := NDC8.DCD_7.DriveEncSpeed,
+		Range := 100,
+		Timeout := t#30s,
+		Moving := VehicleMovingFlag
+	)
+
+(**  **)
+(** 	 **)
+(**  **)
+(**  **)
+(** {* OM-PLC Bit*} **)
+(**  **)
+(** 	{*OM_PLC_W1_Bit_WaitCharge		:= FALSE;*} **)
+(** 	{*OM_PLC_W1_Bit_WaitOrder			:= FALSE;*} **)
+(** 	 **)
+(** 	 **)
+(** 	OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);  **)
+	(* assign - Stmt *)
+	LD NDC8.OMPLC.ChargeOM
+	INT_TO_WORD 
+	ST OM_PLC_Word1
+
+(** 	OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM); **)
+	(* assign - Stmt *)
+	LD NDC8.OMPLC.Stop_OM
+	INT_TO_WORD 
+	ST OM_PLC_Word2
+
+(**   **)
+(** 	StopByOM_PLC := OM_PLC_W2_Bit_SetEmgStop; **)
+	(* assign - Stmt *)
+	LD OM_PLC_W2_Bit_SetEmgStop
+	ST StopByOM_PLC
+
+(** 	 **)
+(** 	{*OM_PLC_W2_Bit_BCD_setReq		:= FALSE;*} **)
+(** 	{*OM_PLC_W2_Bit_BCD_setOK			:= FALSE;*} **)
+(** 	{*OM_PLC_W2_Bit_BCD_Init			:= FALSE;*} **)
+(** 	{*OM_PLC_W2_Bit_BCD_NoRead		:= FALSE;*} **)
+(** 	{*OM_PLC_W2_Bit_Set_Result		:= FALSE;*} **)
+(** 	{*OM_PLC_W2_Bit_Err_Comp			:= FALSE;*} **)
+(** 	{*OM_PLC_W2_Bit_Err_BCR			:= FALSE;*} **)
+(** 	{*OM_PLC_W2_Bit_SetT10Terr		:= FALSE;*} **)
+(**  **)
+(** 	g_PowerOffFlag_OMPLC := OM_PLC_W2_Bit_PowerOffOm; **)
+	(* assign - Stmt *)
+	LD OM_PLC_W2_Bit_PowerOffOm
+	ST g_PowerOffFlag_OMPLC
+
+(**  **)
+(** 	{*OM_PLC_W2_Bit_SetCondErr		:= FALSE;*} **)
+(** 	{*OM_PLC_W2_Bit_SetT30TErr		:= FALSE;*} **)
+(** 	 **)
+(** 	OMPLC_BB_TrigR(CLK:= OM_PLC_W2_Bit_BB_setReq); **)
+	(* call - Stmt *)
+	CAL OMPLC_BB_TrigR (
+		CLK := OM_PLC_W2_Bit_BB_setReq
+	)
+
+(** 	 **)
+(** 	if OMPLC_BB_TrigR.Q = TRUE then **)
+	(* if - Cond *)
+	LD OMPLC_BB_TrigR.Q
+	EQ TRUE
+	JMPCN ODK_SKIP_00000000000000B_000000000000001
+
+		(* then - Stmts *)
+
+(** 		OMPLC_Trig := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST OMPLC_Trig
+
+		JMP ODK_END_IF_00000000000000B
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000B_000000000000001:
+	ODK_END_IF_00000000000000B:
+
+(** 	 **)
+(** 	 **)
+(** 	if OMPLC_Trig = TRUE then **)
+	(* if - Cond *)
+	LD OMPLC_Trig
+	EQ TRUE
+	JMPCN ODK_SKIP_00000000000000C_000000000000001
+
+		(* then - Stmts *)
+
+(** 		NDC8.BlackBox.TrigReason:= 'OM_PLC'; **)
+		(* assign - Stmt *)
+		LD 'OM_PLC'
+		ST NDC8.BlackBox.TrigReason
+
+(** 		BlackBox(); **)
+		(* call - Stmt *)
+		CAL BlackBox
+
+(** 		if BlackBox.Finished then **)
+		(* if - Cond *)
+		LD BlackBox.Finished
+		JMPCN ODK_SKIP_00000000000000D_000000000000001
+
+			(* then - Stmts *)
+
+(** 			OMPLC_Trig := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST OMPLC_Trig
+
+			JMP ODK_END_IF_00000000000000D
+
+(** 		end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000D_000000000000001:
+		ODK_END_IF_00000000000000D:
+
+		JMP ODK_END_IF_00000000000000C
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000C_000000000000001:
+	ODK_END_IF_00000000000000C:
+
+(** 	 **)
+(** 	{*OM_PLC_W2_Bit_Set_LowTS			:= FALSE;*} **)
+(** 	{*OM_PLC_W2_Bit_SetHOErr			:= FALSE;*} **)
+(**  **)
+(**  **)
+(** 	OM_PLC_W7_Bit_Area1 := NDC8.SegmentTrigger.Bit4_Area1_Seg; **)
+	(* assign - Stmt *)
+	LD NDC8.SegmentTrigger.Bit4_Area1_Seg
+	ST OM_PLC_W7_Bit_Area1
+
+(** 	OM_PLC_W7_Bit_Area2 := NDC8.SegmentTrigger.Bit5_Area2_Seg; **)
+	(* assign - Stmt *)
+	LD NDC8.SegmentTrigger.Bit5_Area2_Seg
+	ST OM_PLC_W7_Bit_Area2
+
+(** 	OM_PLC_W7_Bit_Area4 := NDC8.SegmentTrigger.Bit6_Area4_Seg; **)
+	(* assign - Stmt *)
+	LD NDC8.SegmentTrigger.Bit6_Area4_Seg
+	ST OM_PLC_W7_Bit_Area4
+
+(** 	OM_PLC_W7_Bit_Area8 := NDC8.SegmentTrigger.Bit7_Area8_Seg; **)
+	(* assign - Stmt *)
+	LD NDC8.SegmentTrigger.Bit7_Area8_Seg
+	ST OM_PLC_W7_Bit_Area8
+
+(**  **)
+(**  **)
+(** 	{* OM-PLC Word*} **)
+(** 	NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1); **)
+	(* assign - Stmt *)
+	LD OM_PLC_Word1
+	WORD_TO_INT 
+	ST NDC8.OMPLC.ChargeOM
+
+(** 	NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2); **)
+	(* assign - Stmt *)
+	LD OM_PLC_Word2
+	WORD_TO_INT 
+	ST NDC8.OMPLC.Stop_OM
+
+(**  **)
+(** 	if NDC8.LayoutPosition.Point <> 0 then **)
+	(* if - Cond *)
+	LD NDC8.LayoutPosition.Point
+	NE 0
+	JMPCN ODK_SKIP_00000000000000E_000000000000001
+
+		(* then - Stmts *)
+
+(** 		CurPnt := NDC8.LayoutPosition.Point; **)
+		(* assign - Stmt *)
+		LD NDC8.LayoutPosition.Point
+		ST CurPnt
+
+		JMP ODK_END_IF_00000000000000E
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000E_000000000000001:
+	ODK_END_IF_00000000000000E:
+
+(** 	 **)
+(** 	if NDC8.LayoutPosition.Segment <> 0 then **)
+	(* if - Cond *)
+	LD NDC8.LayoutPosition.Segment
+	NE 0
+	JMPCN ODK_SKIP_00000000000000F_000000000000001
+
+		(* then - Stmts *)
+
+(** 		CurSeg := NDC8.LayoutPosition.Segment; **)
+		(* assign - Stmt *)
+		LD NDC8.LayoutPosition.Segment
+		ST CurSeg
+
+		JMP ODK_END_IF_00000000000000F
+
+(** 	end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000F_000000000000001:
+	ODK_END_IF_00000000000000F:
+
+(** 	 **)
+(** 	NDC8.OMPLC.Cur_Pnt := DINT_TO_INT(CurPnt); **)
+	(* assign - Stmt *)
+	LD CurPnt
+	DINT_TO_INT 
+	ST NDC8.OMPLC.Cur_Pnt
+
+(** 	NDC8.OMPLC.Cur_Seg := DINT_TO_INT(CurSeg); **)
+	(* assign - Stmt *)
+	LD CurSeg
+	DINT_TO_INT 
+	ST NDC8.OMPLC.Cur_Seg
+
+(** 	 **)
+(** 	OM_PLC_Word7 := INT_TO_WORD(NDC8.OMPLC.Drv_Area); **)
+	(* assign - Stmt *)
+	LD NDC8.OMPLC.Drv_Area
+	INT_TO_WORD 
+	ST OM_PLC_Word7
+
+(** 	 **)
+(** 	OM_PLC_W7_Bit_Area1 := NDC8.SegmentTrigger.Bit4_Area1_Seg; **)
+	(* assign - Stmt *)
+	LD NDC8.SegmentTrigger.Bit4_Area1_Seg
+	ST OM_PLC_W7_Bit_Area1
+
+(** 	OM_PLC_W7_Bit_Area2 := NDC8.SegmentTrigger.Bit5_Area2_Seg; **)
+	(* assign - Stmt *)
+	LD NDC8.SegmentTrigger.Bit5_Area2_Seg
+	ST OM_PLC_W7_Bit_Area2
+
+(** 	OM_PLC_W7_Bit_Area4 := NDC8.SegmentTrigger.Bit6_Area4_Seg; **)
+	(* assign - Stmt *)
+	LD NDC8.SegmentTrigger.Bit6_Area4_Seg
+	ST OM_PLC_W7_Bit_Area4
+
+(** 	OM_PLC_W7_Bit_Area8 := NDC8.SegmentTrigger.Bit7_Area8_Seg; **)
+	(* assign - Stmt *)
+	LD NDC8.SegmentTrigger.Bit7_Area8_Seg
+	ST OM_PLC_W7_Bit_Area8
+
+(** 	 **)
+(** 	NDC8.OMPLC.Drv_Area := WORD_TO_INT(OM_PLC_Word7); **)
+	(* assign - Stmt *)
+	LD OM_PLC_Word7
+	WORD_TO_INT 
+	ST NDC8.OMPLC.Drv_Area
+
+(**  **)
+(** {* Alarm code *} **)
+(**  **)
+(** if LastCommCheckFlag = PLC_RX01_Bit_ChkCom_RX then **)
+	(* if - Cond *)
+	LD LastCommCheckFlag
+	EQ PLC_RX01_Bit_ChkCom_RX
+	JMPCN ODK_SKIP_00000000000000G_000000000000001
+
+		(* then - Stmts *)
+
+(** 	CommCheckTimeUp(IN:= TRUE, PT:= t#10s); **)
+		(* call - Stmt *)
+		CAL CommCheckTimeUp (
+			IN := TRUE,
+			PT := t#10s
+		)
+
+(** 	if CommCheckTimeUp.Q then **)
+		(* if - Cond *)
+		LD CommCheckTimeUp.Q
+		JMPCN ODK_SKIP_00000000000000H_000000000000001
+
+			(* then - Stmts *)
+
+(** 		g_PlcComLinkUp := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST g_PlcComLinkUp
+
+			JMP ODK_END_IF_00000000000000H
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000H_000000000000001:
+		ODK_END_IF_00000000000000H:
+
+		JMP ODK_END_IF_00000000000000G
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000G_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	LastCommCheckFlag := PLC_RX01_Bit_ChkCom_RX; **)
+		(* assign - Stmt *)
+		LD PLC_RX01_Bit_ChkCom_RX
+		ST LastCommCheckFlag
+
+(** 	CommCheckTimeUp(IN:= FALSE); **)
+		(* call - Stmt *)
+		CAL CommCheckTimeUp (
+			IN := FALSE
+		)
+
+(** 	g_PlcComLinkUp := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST g_PlcComLinkUp
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000G:
+
+(**  **)
+(**  **)
+(** if g_FindSyncFlag = TRUE then **)
+	(* if - Cond *)
+	LD g_FindSyncFlag
+	EQ TRUE
+	JMPCN ODK_SKIP_00000000000000I_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM); **)
+		(* assign - Stmt *)
+		LD NDC8.OMPLC.ChargeOM
+		INT_TO_WORD 
+		ST OM_PLC_Word1
+
+(** OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM); **)
+		(* assign - Stmt *)
+		LD NDC8.OMPLC.Stop_OM
+		INT_TO_WORD 
+		ST OM_PLC_Word2
+
+(**  **)
+(**  **)
+(** 	MasterLinkR(CLK:= NDC8.Master.MasterLinkUp); **)
+		(* call - Stmt *)
+		CAL MasterLinkR (
+			CLK := NDC8.Master.MasterLinkUp
+		)
+
+(** 	 **)
+(**  **)
+(** 	if MasterLinkR.Q or g_AGV_ErrorReset or (NDC8.Mcd.Button8 = TRUE and INPUT.Manual = TRUE) then {* When Master Link up, Error Status need to be update again *} **)
+		(* if - Cond *)
+		LD MasterLinkR.Q
+		OR g_AGV_ErrorReset
+		OR ( NDC8.Mcd.Button8
+			EQ TRUE
+			AND ( INPUT.Manual
+				EQ TRUE
+			)
+		)
+		JMPCN ODK_SKIP_00000000000000J_000000000000001
+
+			(* then - Stmts *)
+
+(** 		g_ErrorCode := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST g_ErrorCode
+
+(** 		PLC_TX_Word13_STr_Err := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST PLC_TX_Word13_STr_Err
+
+(** 		OM_PLC_W2_Bit_SetEmgStop := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST OM_PLC_W2_Bit_SetEmgStop
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif PLC_RX_Word20_PLC_ErrD <> 0 and g_ErrorCode = 0 then  **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_000000000000001:
+		LD PLC_RX_Word20_PLC_ErrD
+		NE 0
+		AND ( g_ErrorCode
+			EQ 0
+		)
+		JMPCN ODK_SKIP_00000000000000J_000000000000002
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := PLC_RX_Word20_PLC_ErrD; **)
+			(* assign - Stmt *)
+			LD PLC_RX_Word20_PLC_ErrD
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif PLC_RX14_Bit_BMS_Short then  **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_000000000000002:
+		LD PLC_RX14_Bit_BMS_Short
+		JMPCN ODK_SKIP_00000000000000J_000000000000003
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 101; **)
+			(* assign - Stmt *)
+			LD 101
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif PLC_RX14_Bit_BMS_Over then  **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_000000000000003:
+		LD PLC_RX14_Bit_BMS_Over
+		JMPCN ODK_SKIP_00000000000000J_000000000000004
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 102; **)
+			(* assign - Stmt *)
+			LD 102
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif PLC_RX14_Bit_BMS_TempEr then  **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_000000000000004:
+		LD PLC_RX14_Bit_BMS_TempEr
+		JMPCN ODK_SKIP_00000000000000J_000000000000005
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 103; **)
+			(* assign - Stmt *)
+			LD 103
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif PLC_RX14_Bit_BMS_LowV then  **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_000000000000005:
+		LD PLC_RX14_Bit_BMS_LowV
+		JMPCN ODK_SKIP_00000000000000J_000000000000006
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 104; **)
+			(* assign - Stmt *)
+			LD 104
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif PLC_RX14_Bit_BMS_Ch_Err and PLC_RX03_Bit_STw_EnaChg then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_000000000000006:
+		LD PLC_RX14_Bit_BMS_Ch_Err
+		AND PLC_RX03_Bit_STw_EnaChg
+		JMPCN ODK_SKIP_00000000000000J_000000000000007
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 105; **)
+			(* assign - Stmt *)
+			LD 105
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif PLC_RX14_Bit_BMS_Thermi then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_000000000000007:
+		LD PLC_RX14_Bit_BMS_Thermi
+		JMPCN ODK_SKIP_00000000000000J_000000000000008
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 106; **)
+			(* assign - Stmt *)
+			LD 106
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif PLC_RX14_Bit_BMS_CT then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_000000000000008:
+		LD PLC_RX14_Bit_BMS_CT
+		JMPCN ODK_SKIP_00000000000000J_000000000000009
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 107; **)
+			(* assign - Stmt *)
+			LD 107
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif PLC_RX14_Bit_BMS_Couple then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_000000000000009:
+		LD PLC_RX14_Bit_BMS_Couple
+		JMPCN ODK_SKIP_00000000000000J_00000000000000A
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 108; **)
+			(* assign - Stmt *)
+			LD 108
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif PLC_RX14_Bit_BMS_Bat then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000A:
+		LD PLC_RX14_Bit_BMS_Bat
+		JMPCN ODK_SKIP_00000000000000J_00000000000000B
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 109; **)
+			(* assign - Stmt *)
+			LD 109
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif PLC_RX14_Bit_BMS_NG then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000B:
+		LD PLC_RX14_Bit_BMS_NG
+		JMPCN ODK_SKIP_00000000000000J_00000000000000C
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 110; **)
+			(* assign - Stmt *)
+			LD 110
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif F_DriveSupervision.NotMovingFail = TRUE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000C:
+		LD F_DriveSupervision.NotMovingFail
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000J_00000000000000D
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 122; **)
+			(* assign - Stmt *)
+			LD 122
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif R_DriveSupervision.NotMovingFail = TRUE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000D:
+		LD R_DriveSupervision.NotMovingFail
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000J_00000000000000E
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 123; **)
+			(* assign - Stmt *)
+			LD 123
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif F_SteerSupervision.NotMovingFail = TRUE or R_SteerSupervision.NotMovingFail = TRUE or (NDC8.DCD_6.EncoderStatus = 0 or NDC8.DCD_8.EncoderStatus = 0)then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000E:
+		LD F_SteerSupervision.NotMovingFail
+		EQ TRUE
+		OR ( R_SteerSupervision.NotMovingFail
+			EQ TRUE
+		)
+		OR ( NDC8.DCD_6.EncoderStatus
+			EQ 0
+			OR ( NDC8.DCD_8.EncoderStatus
+				EQ 0
+			)
+		)
+		JMPCN ODK_SKIP_00000000000000J_00000000000000F
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 124; **)
+			(* assign - Stmt *)
+			LD 124
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif PLC_RX_Word16_BMS_BatV < 220 or g_BattLim_NG then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000F:
+		LD PLC_RX_Word16_BMS_BatV
+		LT 220
+		OR g_BattLim_NG
+		JMPCN ODK_SKIP_00000000000000J_00000000000000G
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 127; **)
+			(* assign - Stmt *)
+			LD 127
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif not NDC8.DCD_5.DigitalInput2_OverRelayFS or not NDC8.DCD_5.DigitalInput3_OverRelayFD or not NDC8.DCD_7.DigitalInput2_OverRelayRS or not NDC8.DCD_7.DigitalInput3_OverRelayRD then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000G:
+		LD NDC8.DCD_5.DigitalInput2_OverRelayFS
+		NOT
+		OR ( NDC8.DCD_5.DigitalInput3_OverRelayFD
+			NOT
+		)
+		OR ( NDC8.DCD_7.DigitalInput2_OverRelayRS
+			NOT
+		)
+		OR ( NDC8.DCD_7.DigitalInput3_OverRelayRD
+			NOT
+		)
+		JMPCN ODK_SKIP_00000000000000J_00000000000000H
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 131; **)
+			(* assign - Stmt *)
+			LD 131
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.SDIO.DigitalInput3_BMP_O1 = TRUE or NDC8.SDIO.DigitalInput4_BMP_O2 = TRUE or NDC8.SDIO.DigitalInput8_BMP_E = FALSE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000H:
+		LD NDC8.SDIO.DigitalInput3_BMP_O1
+		EQ TRUE
+		OR ( NDC8.SDIO.DigitalInput4_BMP_O2
+			EQ TRUE
+		)
+		OR ( NDC8.SDIO.DigitalInput8_BMP_E
+			EQ FALSE
+		)
+		JMPCN ODK_SKIP_00000000000000J_00000000000000I
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 132; **)
+			(* assign - Stmt *)
+			LD 132
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.SDIO.DigitalInput12_EMO = FALSE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000I:
+		LD NDC8.SDIO.DigitalInput12_EMO
+		EQ FALSE
+		JMPCN ODK_SKIP_00000000000000J_00000000000000J
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 133; **)
+			(* assign - Stmt *)
+			LD 133
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.Autoinsert.StatusID = 5 then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000J:
+		LD NDC8.Autoinsert.StatusID
+		EQ 5
+		JMPCN ODK_SKIP_00000000000000J_00000000000000K
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 136; **)
+			(* assign - Stmt *)
+			LD 136
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.LayoutPosition.InSystem = FALSE and (PLC_TX01_Bit_HostMode = TRUE or PLC_TX01_Bit_LocalMode = TRUE) and CarrierControl.AutoinsertInProgress = false then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000K:
+		LD NDC8.LayoutPosition.InSystem
+		EQ FALSE
+		AND ( PLC_TX01_Bit_HostMode
+			EQ TRUE
+			OR ( PLC_TX01_Bit_LocalMode
+				EQ TRUE
+			)
+		)
+		AND ( CarrierControl.AutoinsertInProgress
+			EQ FALSE
+		)
+		JMPCN ODK_SKIP_00000000000000J_00000000000000L
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 137; **)
+			(* assign - Stmt *)
+			LD 137
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.Guidance.OutsideSafetyZone = TRUE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000L:
+		LD NDC8.Guidance.OutsideSafetyZone
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000J_00000000000000M
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 138; **)
+			(* assign - Stmt *)
+			LD 138
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.LS2000.Connected = FALSE or NDC8.LS2000.Attached = FALSE or NDC8.LS2000.NavActive = FALSE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000M:
+		LD NDC8.LS2000.Connected
+		EQ FALSE
+		OR ( NDC8.LS2000.Attached
+			EQ FALSE
+		)
+		OR ( NDC8.LS2000.NavActive
+			EQ FALSE
+		)
+		JMPCN ODK_SKIP_00000000000000J_00000000000000N
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 139; **)
+			(* assign - Stmt *)
+			LD 139
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NavLevelDown_TmUp = TRUE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000N:
+		LD NavLevelDown_TmUp
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000J_00000000000000O
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 140; **)
+			(* assign - Stmt *)
+			LD 140
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif OM_PLC_W2_Bit_SetEmgStop = TRUE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000O:
+		LD OM_PLC_W2_Bit_SetEmgStop
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000J_00000000000000P
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 145; **)
+			(* assign - Stmt *)
+			LD 145
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L or NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R or NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L or NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000P:
+		LD NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L
+		OR NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R
+		OR NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L
+		OR NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R
+		JMPCN ODK_SKIP_00000000000000J_00000000000000Q
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 161; **)
+			(* assign - Stmt *)
+			LD 161
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif (PLC_RX01_Bit_ChrgEmg and PLC_TX01_Bit_ManMode) or (PLC_RX01_Bit_ChrgEmg and not PLC_TX01_Bit_ManMode and NDC8.PLC_Application.TxStatusBit6_Charge) then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000Q:
+		LD PLC_RX01_Bit_ChrgEmg
+		AND PLC_TX01_Bit_ManMode
+		OR ( PLC_RX01_Bit_ChrgEmg
+			AND ( PLC_TX01_Bit_ManMode
+				NOT
+			)
+			AND NDC8.PLC_Application.TxStatusBit6_Charge
+		)
+		JMPCN ODK_SKIP_00000000000000J_00000000000000R
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 174; **)
+			(* assign - Stmt *)
+			LD 174
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif F_DriveSupervision.OverRangeFail = TRUE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000R:
+		LD F_DriveSupervision.OverRangeFail
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000J_00000000000000S
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 182; **)
+			(* assign - Stmt *)
+			LD 182
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif R_DriveSupervision.OverRangeFail = TRUE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000S:
+		LD R_DriveSupervision.OverRangeFail
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000J_00000000000000T
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 183; **)
+			(* assign - Stmt *)
+			LD 183
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif g_ChargeOverTime = TRUE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000T:
+		LD g_ChargeOverTime
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000J_00000000000000U
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 185; **)
+			(* assign - Stmt *)
+			LD 185
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.Automatic.ExecDriveCommand = TRUE and PLC_RX01_Bit_EnableLD_i = FALSE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000U:
+		LD NDC8.Automatic.ExecDriveCommand
+		EQ TRUE
+		AND ( PLC_RX01_Bit_EnableLD_i
+			EQ FALSE
+		)
+		JMPCN ODK_SKIP_00000000000000J_00000000000000V
+
+			(* elsif - Stmts *)
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 		{*g_ErrorCode := 190;*} **)
+(** 		; **)
+(** 		 **)
+(** 	elsif NDC8.CanOpenMaster.State = 1 and NDC8.CanOpenMaster.EMCY_BusID = 1 and NDC8.CanOpenMaster.EMCY_NodeID = 2 then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000V:
+		LD NDC8.CanOpenMaster.State
+		EQ 1
+		AND ( NDC8.CanOpenMaster.EMCY_BusID
+			EQ 1
+		)
+		AND ( NDC8.CanOpenMaster.EMCY_NodeID
+			EQ 2
+		)
+		JMPCN ODK_SKIP_00000000000000J_00000000000000W
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 194; **)
+			(* assign - Stmt *)
+			LD 194
+			ST g_ErrorCode
+
+(** 		StopByCanErr_Node2 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST StopByCanErr_Node2
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.CanOpenMaster.State = 1 and NDC8.CanOpenMaster.EMCY_BusID = 1 and NDC8.CanOpenMaster.EMCY_NodeID = 3 then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000W:
+		LD NDC8.CanOpenMaster.State
+		EQ 1
+		AND ( NDC8.CanOpenMaster.EMCY_BusID
+			EQ 1
+		)
+		AND ( NDC8.CanOpenMaster.EMCY_NodeID
+			EQ 3
+		)
+		JMPCN ODK_SKIP_00000000000000J_00000000000000X
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 195; **)
+			(* assign - Stmt *)
+			LD 195
+			ST g_ErrorCode
+
+(** 		StopByCanErr_Node3 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST StopByCanErr_Node3
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.CanOpenMaster.State = 1 and NDC8.CanOpenMaster.EMCY_BusID = 1 and NDC8.CanOpenMaster.EMCY_NodeID = 5 then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000X:
+		LD NDC8.CanOpenMaster.State
+		EQ 1
+		AND ( NDC8.CanOpenMaster.EMCY_BusID
+			EQ 1
+		)
+		AND ( NDC8.CanOpenMaster.EMCY_NodeID
+			EQ 5
+		)
+		JMPCN ODK_SKIP_00000000000000J_00000000000000Y
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 197; **)
+			(* assign - Stmt *)
+			LD 197
+			ST g_ErrorCode
+
+(** 		StopByCanErr_Node5 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST StopByCanErr_Node5
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.CanOpenMaster.State = 1 and NDC8.CanOpenMaster.EMCY_BusID = 1 and NDC8.CanOpenMaster.EMCY_NodeID = 6 then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000Y:
+		LD NDC8.CanOpenMaster.State
+		EQ 1
+		AND ( NDC8.CanOpenMaster.EMCY_BusID
+			EQ 1
+		)
+		AND ( NDC8.CanOpenMaster.EMCY_NodeID
+			EQ 6
+		)
+		JMPCN ODK_SKIP_00000000000000J_00000000000000Z
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 198; **)
+			(* assign - Stmt *)
+			LD 198
+			ST g_ErrorCode
+
+(** 		StopByCanErr_Node6 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST StopByCanErr_Node6
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.CanOpenMaster.State = 1 and NDC8.CanOpenMaster.EMCY_BusID = 1 and NDC8.CanOpenMaster.EMCY_NodeID = 7 then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_00000000000000Z:
+		LD NDC8.CanOpenMaster.State
+		EQ 1
+		AND ( NDC8.CanOpenMaster.EMCY_BusID
+			EQ 1
+		)
+		AND ( NDC8.CanOpenMaster.EMCY_NodeID
+			EQ 7
+		)
+		JMPCN ODK_SKIP_00000000000000J_000000000000010
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 199; **)
+			(* assign - Stmt *)
+			LD 199
+			ST g_ErrorCode
+
+(** 		StopByCanErr_Node7 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST StopByCanErr_Node7
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif NDC8.CanOpenMaster.State = 1 and NDC8.CanOpenMaster.EMCY_BusID = 1 and NDC8.CanOpenMaster.EMCY_NodeID = 8 then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_000000000000010:
+		LD NDC8.CanOpenMaster.State
+		EQ 1
+		AND ( NDC8.CanOpenMaster.EMCY_BusID
+			EQ 1
+		)
+		AND ( NDC8.CanOpenMaster.EMCY_NodeID
+			EQ 8
+		)
+		JMPCN ODK_SKIP_00000000000000J_000000000000011
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 200; **)
+			(* assign - Stmt *)
+			LD 200
+			ST g_ErrorCode
+
+(** 		StopByCanErr_Node8 := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST StopByCanErr_Node8
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif CommCheckTimeUp.Q = TRUE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_000000000000011:
+		LD CommCheckTimeUp.Q
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000J_000000000000012
+
+			(* elsif - Stmts *)
+
+(** 		g_ErrorCode := 383; **)
+			(* assign - Stmt *)
+			LD 383
+			ST g_ErrorCode
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 	elsif Autoload.Fail = TRUE then **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000J_000000000000012:
+		LD Autoload.Fail
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000J_000000000000013
+
+			(* elsif - Stmts *)
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 		; **)
+(** 		{*When Autoload Fail, ErrorCode Set by AutoLoad_FB, Here do nothing *} **)
+(** 		{*After Report event code in AutoLoad, "Fail" will reset in Step 1000*} **)
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_00000000000000J_000000000000013:
+
+			(* else - Stmts *)
+
+(** 		{*_ErrorCode := 0;*} **)
+(** 		{* only use Reset PB to Clear Error Code *} **)
+(** 		; **)
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_00000000000000J:
+
+(** 	 **)
+(** 	if g_ErrorCode > 100 and g_ErrorCode < 201 then **)
+		(* if - Cond *)
+		LD g_ErrorCode
+		GT 100
+		AND ( g_ErrorCode
+			LT 201
+		)
+		JMPCN ODK_SKIP_00000000000000K_000000000000001
+
+			(* then - Stmts *)
+
+(** 		PLC_TX_Word13_STr_Err := g_ErrorCode; **)
+			(* assign - Stmt *)
+			LD g_ErrorCode
+			ST PLC_TX_Word13_STr_Err
+
+			JMP ODK_END_IF_00000000000000K
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000K_000000000000001:
+		ODK_END_IF_00000000000000K:
+
+(** 	 **)
+(** 	NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1); **)
+		(* assign - Stmt *)
+		LD OM_PLC_Word1
+		WORD_TO_INT 
+		ST NDC8.OMPLC.ChargeOM
+
+(** 	NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2); **)
+		(* assign - Stmt *)
+		LD OM_PLC_Word2
+		WORD_TO_INT 
+		ST NDC8.OMPLC.Stop_OM
+
+		JMP ODK_END_IF_00000000000000I
+
+(**  **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000I_000000000000001:
+	ODK_END_IF_00000000000000I:
+
+(**  **)
+(** {* Error Trigger Black Box *} **)
+(** if PLC_TX01_Bit_HostMode and (g_ErrorCode = 131 or g_ErrorCode = 132 or g_ErrorCode = 133 or g_ErrorCode = 138 or g_ErrorCode = 137 or g_ErrorCode = 140 or g_ErrorCode = 161) then **)
+	(* if - Cond *)
+	LD PLC_TX01_Bit_HostMode
+	AND ( g_ErrorCode
+		EQ 131
+		OR ( g_ErrorCode
+			EQ 132
+		)
+		OR ( g_ErrorCode
+			EQ 133
+		)
+		OR ( g_ErrorCode
+			EQ 138
+		)
+		OR ( g_ErrorCode
+			EQ 137
+		)
+		OR ( g_ErrorCode
+			EQ 140
+		)
+		OR ( g_ErrorCode
+			EQ 161
+		)
+	)
+	JMPCN ODK_SKIP_00000000000000L_000000000000001
+
+		(* then - Stmts *)
+
+(** 	Error_Set_Trig := true; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST Error_Set_Trig
+
+		JMP ODK_END_IF_00000000000000L
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000L_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	Error_Set_Trig := false; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST Error_Set_Trig
+
+(** end_if;	 **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000L:
+
+(**  **)
+(** Error_BB_TrigR(CLK:= Error_Set_Trig); **)
+	(* call - Stmt *)
+	CAL Error_BB_TrigR (
+		CLK := Error_Set_Trig
+	)
+
+(** 	 **)
+(** if Error_BB_TrigR.Q = TRUE then **)
+	(* if - Cond *)
+	LD Error_BB_TrigR.Q
+	EQ TRUE
+	JMPCN ODK_SKIP_00000000000000M_000000000000001
+
+		(* then - Stmts *)
+
+(** 	Error_Trig := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST Error_Trig
+
+		JMP ODK_END_IF_00000000000000M
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000M_000000000000001:
+	ODK_END_IF_00000000000000M:
+
+(**  **)
+(**  **)
+(** if Error_Trig = TRUE then **)
+	(* if - Cond *)
+	LD Error_Trig
+	EQ TRUE
+	JMPCN ODK_SKIP_00000000000000N_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ErrorCodeString := WORD_TO_STRING(g_ErrorCode); **)
+		(* assign - Stmt *)
+		LD g_ErrorCode
+		WORD_TO_STRING 
+		ST ErrorCodeString
+
+(** 	BBMessage := CONCAT('AGV_Error_', ErrorCodeString); **)
+		(* assign - Stmt *)
+		LD 'AGV_Error_'
+		CONCAT ErrorCodeString
+		ST BBMessage
+
+(** 	NDC8.BlackBox.TrigReason := BBMessage; **)
+		(* assign - Stmt *)
+		LD BBMessage
+		ST NDC8.BlackBox.TrigReason
+
+(** 	BlackBox(); **)
+		(* call - Stmt *)
+		CAL BlackBox
+
+(** 	if BlackBox.Finished then **)
+		(* if - Cond *)
+		LD BlackBox.Finished
+		JMPCN ODK_SKIP_00000000000000O_000000000000001
+
+			(* then - Stmts *)
+
+(** 		Error_Trig := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST Error_Trig
+
+			JMP ODK_END_IF_00000000000000O
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000O_000000000000001:
+		ODK_END_IF_00000000000000O:
+
+		JMP ODK_END_IF_00000000000000N
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000N_000000000000001:
+	ODK_END_IF_00000000000000N:
+
+(**  **)
+(**  **)
+(** if g_ErrorCode <> 0 then **)
+	(* if - Cond *)
+	LD g_ErrorCode
+	NE 0
+	JMPCN ODK_SKIP_00000000000000P_000000000000001
+
+		(* then - Stmts *)
+
+(** 	StopByErrorCode := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST StopByErrorCode
+
+		JMP ODK_END_IF_00000000000000P
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000P_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	StopByErrorCode := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST StopByErrorCode
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000P:
+
+(**  **)
+(** if (PLC_RX01_Bit_EnableLD_i = FALSE or Input.StartMode = FALSE) and Input.Auto then **)
+	(* if - Cond *)
+	LD PLC_RX01_Bit_EnableLD_i
+	EQ FALSE
+	OR ( INPUT.StartMode
+		EQ FALSE
+	)
+	AND INPUT.Auto
+	JMPCN ODK_SKIP_00000000000000Q_000000000000001
+
+		(* then - Stmts *)
+
+(** 	StopRobotNotIdle := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST StopRobotNotIdle
+
+		JMP ODK_END_IF_00000000000000Q
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000Q_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	StopRobotNotIdle := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST StopRobotNotIdle
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000Q:
+
+(**  **)
+(** {* Blocking Power Off Check *} **)
+(** BlockPowOffTmValue := DINT_TO_TIME(NDC8.UserDefined.Integer32_52_PowOffTm); **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_52_PowOffTm
+	DINT_TO_TIME 
+	ST BlockPowOffTmValue
+
+(** LostPosPowOffTmValue := DINT_TO_TIME(NDC8.UserDefined.Integer32_52_PowOffTm); **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_52_PowOffTm
+	DINT_TO_TIME 
+	ST LostPosPowOffTmValue
+
+(**  **)
+(** BlockPowOffTm(IN := NDC8.PLC_Application.TxStatusBit10_Blocked, PT := BlockPowOffTmValue); **)
+	(* call - Stmt *)
+	CAL BlockPowOffTm (
+		IN := NDC8.PLC_Application.TxStatusBit10_Blocked,
+		PT := BlockPowOffTmValue
+	)
+
+(** if NDC8.UserDefined.Boolean_10_BlockPowOffEn = TRUE and PLC_TX01_Bit_HostMode = TRUE then **)
+	(* if - Cond *)
+	LD NDC8.UserDefined.Boolean_10_BlockPowOffEn
+	EQ TRUE
+	AND ( PLC_TX01_Bit_HostMode
+		EQ TRUE
+	)
+	JMPCN ODK_SKIP_00000000000000R_000000000000001
+
+		(* then - Stmts *)
+
+(** 	if BlockPowOffTm.Q = TRUE then **)
+		(* if - Cond *)
+		LD BlockPowOffTm.Q
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000S_000000000000001
+
+			(* then - Stmts *)
+
+(** 		g_PowerOffFlag_Block := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST g_PowerOffFlag_Block
+
+			JMP ODK_END_IF_00000000000000S
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_00000000000000S_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		g_PowerOffFlag_Block := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST g_PowerOffFlag_Block
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_00000000000000S:
+
+		JMP ODK_END_IF_00000000000000R
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000R_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	g_PowerOffFlag_Block := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST g_PowerOffFlag_Block
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000R:
+
+(**  **)
+(** {* Navigation Level Down Check *} **)
+(** if NDC8.Position.NavLevel < 45 and INPUT.Auto = TRUE then **)
+	(* if - Cond *)
+	LD NDC8.Position.NavLevel
+	LT 45
+	AND ( INPUT.Auto
+		EQ TRUE
+	)
+	JMPCN ODK_SKIP_00000000000000T_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NavLevelDown_Start := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST NavLevelDown_Start
+
+		JMP ODK_END_IF_00000000000000T
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000T_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	NavLevelDown_Start := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NavLevelDown_Start
+
+(** 	NavLevelDown_TmUp := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NavLevelDown_TmUp
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000T:
+
+(**  **)
+(** NavLevelDown_TM(IN := NavLevelDown_Start, PT := t#60s); **)
+	(* call - Stmt *)
+	CAL NavLevelDown_TM (
+		IN := NavLevelDown_Start,
+		PT := t#60s
+	)
+
+(**  **)
+(** if NavLevelDown_TM.Q = TRUE then **)
+	(* if - Cond *)
+	LD NavLevelDown_TM.Q
+	EQ TRUE
+	JMPCN ODK_SKIP_00000000000000U_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NavLevelDown_TmUp := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST NavLevelDown_TmUp
+
+		JMP ODK_END_IF_00000000000000U
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000U_000000000000001:
+	ODK_END_IF_00000000000000U:
+
+(**   **)
+(**  **)
+(** {* Lost Power Off Check *} **)
+(** LostPosPowOffTm(IN := NDC8.PLC_Application.TxStatusBit12_LostP, PT := LostPosPowOffTmValue); **)
+	(* call - Stmt *)
+	CAL LostPosPowOffTm (
+		IN := NDC8.PLC_Application.TxStatusBit12_LostP,
+		PT := LostPosPowOffTmValue
+	)
+
+(** if NDC8.UserDefined.Boolean_11_LostPosPowOffEn = TRUE and PLC_TX01_Bit_HostMode = TRUE then **)
+	(* if - Cond *)
+	LD NDC8.UserDefined.Boolean_11_LostPosPowOffEn
+	EQ TRUE
+	AND ( PLC_TX01_Bit_HostMode
+		EQ TRUE
+	)
+	JMPCN ODK_SKIP_00000000000000V_000000000000001
+
+		(* then - Stmts *)
+
+(** 	if LostPosPowOffTm.Q = TRUE then **)
+		(* if - Cond *)
+		LD LostPosPowOffTm.Q
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000W_000000000000001
+
+			(* then - Stmts *)
+
+(** 		g_PowerOffFlag_Lost := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST g_PowerOffFlag_Lost
+
+			JMP ODK_END_IF_00000000000000W
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_00000000000000W_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		g_PowerOffFlag_Lost := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST g_PowerOffFlag_Lost
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_00000000000000W:
+
+		JMP ODK_END_IF_00000000000000V
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000V_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	g_PowerOffFlag_Lost := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST g_PowerOffFlag_Lost
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000V:
+
+(**  **)
+(** {* Error Power Off Check *} **)
+(** if g_ErrorCode <> 0 then **)
+	(* if - Cond *)
+	LD g_ErrorCode
+	NE 0
+	JMPCN ODK_SKIP_00000000000000X_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ErrorOccurFlag := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST ErrorOccurFlag
+
+		JMP ODK_END_IF_00000000000000X
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000X_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	ErrorOccurFlag := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST ErrorOccurFlag
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000X:
+
+(**  **)
+(** ErrorPowOffTm(IN := ErrorOccurFlag, PT := t#600s); **)
+	(* call - Stmt *)
+	CAL ErrorPowOffTm (
+		IN := ErrorOccurFlag,
+		PT := t#600s
+	)
+
+(** if PLC_TX01_Bit_HostMode = TRUE then **)
+	(* if - Cond *)
+	LD PLC_TX01_Bit_HostMode
+	EQ TRUE
+	JMPCN ODK_SKIP_00000000000000Y_000000000000001
+
+		(* then - Stmts *)
+
+(** 	if ErrorPowOffTm.Q = TRUE then **)
+		(* if - Cond *)
+		LD ErrorPowOffTm.Q
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000Z_000000000000001
+
+			(* then - Stmts *)
+
+(** 		g_PowerOffFlag_Error := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST g_PowerOffFlag_Error
+
+			JMP ODK_END_IF_00000000000000Z
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_00000000000000Z_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		g_PowerOffFlag_Error := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST g_PowerOffFlag_Error
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_00000000000000Z:
+
+		JMP ODK_END_IF_00000000000000Y
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_00000000000000Y_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	g_PowerOffFlag_Error := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST g_PowerOffFlag_Error
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_00000000000000Y:
+
+(**  **)
+(** {* Battery Low OT *} **)
+(** if PLC_RX04_Bit_STw_LowOT then **)
+	(* if - Cond *)
+	LD PLC_RX04_Bit_STw_LowOT
+	JMPCN ODK_SKIP_000000000000010_000000000000001
+
+		(* then - Stmts *)
+
+(** 	StopBatLowOT := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST StopBatLowOT
+
+(** 	if VehicleMovingFlag = FALSE  **)
+(** 		and  NDC8.LoadDocking.OnTarget = FALSE  **)
+(** 		and PLC_TX01_Bit_ManMode = FALSE  **)
+(** 		and NDC8.SDIO.DigitalOutput16_Charger = FALSE then **)
+		(* if - Cond *)
+		LD VehicleMovingFlag
+		EQ FALSE
+		AND ( NDC8.LoadDocking.OnTarget
+			EQ FALSE
+		)
+		AND ( PLC_TX01_Bit_ManMode
+			EQ FALSE
+		)
+		AND ( NDC8.SDIO.DigitalOutput16_Charger
+			EQ FALSE
+		)
+		JMPCN ODK_SKIP_000000000000011_000000000000001
+
+			(* then - Stmts *)
+
+(** 		 **)
+(** 		g_BattLim_NG := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST g_BattLim_NG
+
+(** 		BatLowTm(IN := TRUE, PT := t#10s); **)
+			(* call - Stmt *)
+			CAL BatLowTm (
+				IN := TRUE,
+				PT := t#10s
+			)
+
+(** 		if BatLowTm.Q then **)
+			(* if - Cond *)
+			LD BatLowTm.Q
+			JMPCN ODK_SKIP_000000000000012_000000000000001
+
+				(* then - Stmts *)
+
+(** 			g_PowerOffFlag_PLC := TRUE; **)
+				(* assign - Stmt *)
+				LD TRUE
+				ST g_PowerOffFlag_PLC
+
+				JMP ODK_END_IF_000000000000012
+
+(** 		end_if; **)
+			(* if - End *) 
+			ODK_SKIP_000000000000012_000000000000001:
+			ODK_END_IF_000000000000012:
+
+			JMP ODK_END_IF_000000000000011
+
+(** 	else  **)
+		(* else *) 
+		ODK_SKIP_000000000000011_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		BatLowTm(IN := FALSE); **)
+			(* call - Stmt *)
+			CAL BatLowTm (
+				IN := FALSE
+			)
+
+(** 		g_PowerOffFlag_PLC := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST g_PowerOffFlag_PLC
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000011:
+
+		JMP ODK_END_IF_000000000000010
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000010_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	BatLowTm(IN := FALSE); **)
+		(* call - Stmt *)
+		CAL BatLowTm (
+			IN := FALSE
+		)
+
+(** 	g_PowerOffFlag_PLC := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST g_PowerOffFlag_PLC
+
+(** 	StopBatLowOT := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST StopBatLowOT
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000010:
+
+(**  **)
+(** g_PowerOffFlag := g_PowerOffFlag_Error or g_PowerOffFlag_Block or g_PowerOffFlag_Lost or g_PowerOffFlag_PLC or g_PowerOffFlag_OMPLC or g_PowerOffFlag_OP; **)
+	(* assign - Stmt *)
+	LD g_PowerOffFlag_Error
+	OR g_PowerOffFlag_Block
+	OR g_PowerOffFlag_Lost
+	OR g_PowerOffFlag_PLC
+	OR g_PowerOffFlag_OMPLC
+	OR g_PowerOffFlag_OP
+	ST g_PowerOffFlag
+
+(**  **)
+(** {* Display Stop String update *} **)
+(** InStatus 			:= g_ErrorCode<>0; **)
+	(* assign - Stmt *)
+	LD g_ErrorCode
+	NE 0
+	ST InStatus
+
+(** FailCodeDint		:= WORD_TO_DINT(g_ErrorCode); **)
+	(* assign - Stmt *)
+	LD g_ErrorCode
+	WORD_TO_DINT 
+	ST FailCodeDint
+
+(** DisplayStopString(INStatus:=InStatus, StopString:=49, StopValue:=FailCodeDint);		{* Failcode *} **)
+	(* call - Stmt *)
+	CAL DisplayStopString (
+		InStatus := InStatus,
+		StopString := 49,
+		StopValue := FailCodeDint
+	)
+
+(**  **)
+(** {* IR Sensor switch always on *} **)
+(** NDC8.CAN_IO_3.DigitalOutput9_AreaF_SW1 := TRUE; **)
+	(* assign - Stmt *)
+	LD TRUE
+	ST NDC8.CAN_IO_3.DigitalOutput9_AreaF_SW1
+
+(** NDC8.CAN_IO_3.DigitalOutput10_AreaF_SW2 := TRUE; **)
+	(* assign - Stmt *)
+	LD TRUE
+	ST NDC8.CAN_IO_3.DigitalOutput10_AreaF_SW2
+
+(** NDC8.CAN_IO_3.DigitalOutput13_AreaR_SW1 := TRUE; **)
+	(* assign - Stmt *)
+	LD TRUE
+	ST NDC8.CAN_IO_3.DigitalOutput13_AreaR_SW1
+
+(** NDC8.CAN_IO_3.DigitalOutput14_AreaR_SW2 := TRUE; **)
+	(* assign - Stmt *)
+	LD TRUE
+	ST NDC8.CAN_IO_3.DigitalOutput14_AreaR_SW2
+
+(**  **)
+(** {* IR Speed Control *} **)
+(**  **)
+(** if NDC8.SegmentTrigger.Bit15_DisIrStop = FALSE and (NDC8.SegmentTrigger.Bit14_DisIrSlow = FALSE and PLC_TX01_Bit_ManMode = FALSE) then **)
+	(* if - Cond *)
+	LD NDC8.SegmentTrigger.Bit15_DisIrStop
+	EQ FALSE
+	AND ( NDC8.SegmentTrigger.Bit14_DisIrSlow
+		EQ FALSE
+		AND ( PLC_TX01_Bit_ManMode
+			EQ FALSE
+		)
+	)
+	JMPCN ODK_SKIP_000000000000013_000000000000001
+
+		(* then - Stmts *)
+
+(**  **)
+(** 	if ((NDC8.CAN_IO_3.DigitalInput9_AreaF_IN1 = FALSE and NDC8.VehicleControl.TravelDir = 1) **)
+(** 		or (NDC8.CAN_IO_3.DigitalInput13_AreaR_IN1 = FALSE and NDC8.VehicleControl.TravelDir = 0) ) **)
+(** 		and NDC8.Automatic.ExecDriveCommand and StopAutoBrakeRelease = FALSE then **)
+		(* if - Cond *)
+		LD NDC8.CAN_IO_3.DigitalInput9_AreaF_IN1
+		EQ FALSE
+		AND ( NDC8.VehicleControl.TravelDir
+			EQ 1
+		)
+		OR ( NDC8.CAN_IO_3.DigitalInput13_AreaR_IN1
+			EQ FALSE
+			AND ( NDC8.VehicleControl.TravelDir
+				EQ 0
+			)
+		)
+		AND NDC8.Automatic.ExecDriveCommand
+		AND ( StopAutoBrakeRelease
+			EQ FALSE
+		)
+		JMPCN ODK_SKIP_000000000000014_000000000000001
+
+			(* then - Stmts *)
+
+(** 		Input.SafetyScannerSlowDown := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST INPUT.SafetyScannerSlowDown
+
+			JMP ODK_END_IF_000000000000014
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_000000000000014_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		Input.SafetyScannerSlowDown := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST INPUT.SafetyScannerSlowDown
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000014:
+
+		JMP ODK_END_IF_000000000000013
+
+(** 	 **)
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000013_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	Input.SafetyScannerSlowDown := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST INPUT.SafetyScannerSlowDown
+
+(** 	 **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000013:
+
+(**  **)
+(** if NDC8.SegmentTrigger.Bit15_DisIrStop = FALSE and PLC_TX01_Bit_ManMode = FALSE then **)
+	(* if - Cond *)
+	LD NDC8.SegmentTrigger.Bit15_DisIrStop
+	EQ FALSE
+	AND ( PLC_TX01_Bit_ManMode
+		EQ FALSE
+	)
+	JMPCN ODK_SKIP_000000000000015_000000000000001
+
+		(* then - Stmts *)
+
+(** 	 **)
+(** 	if ((NDC8.CAN_IO_3.DigitalInput10_AreaF_IN2 = FALSE and NDC8.VehicleControl.TravelDir = 1) **)
+(** 		or (NDC8.CAN_IO_3.DigitalInput14_AreaR_IN2 = FALSE and NDC8.VehicleControl.TravelDir = 0)) **)
+(** 		and NDC8.Automatic.ExecDriveCommand and StopAutoBrakeRelease = FALSE then **)
+		(* if - Cond *)
+		LD NDC8.CAN_IO_3.DigitalInput10_AreaF_IN2
+		EQ FALSE
+		AND ( NDC8.VehicleControl.TravelDir
+			EQ 1
+		)
+		OR ( NDC8.CAN_IO_3.DigitalInput14_AreaR_IN2
+			EQ FALSE
+			AND ( NDC8.VehicleControl.TravelDir
+				EQ 0
+			)
+		)
+		AND NDC8.Automatic.ExecDriveCommand
+		AND ( StopAutoBrakeRelease
+			EQ FALSE
+		)
+		JMPCN ODK_SKIP_000000000000016_000000000000001
+
+			(* then - Stmts *)
+
+(** 		StopObstacle := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST StopObstacle
+
+			JMP ODK_END_IF_000000000000016
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_000000000000016_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		StopObstacle := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST StopObstacle
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000016:
+
+(** 	 **)
+(** 	if StopObstacle = TRUE and NDC8.Mcd.Button7 = TRUE then **)
+		(* if - Cond *)
+		LD StopObstacle
+		EQ TRUE
+		AND ( NDC8.Mcd.Button7
+			EQ TRUE
+		)
+		JMPCN ODK_SKIP_000000000000017_000000000000001
+
+			(* then - Stmts *)
+
+(** 		StopObstacle := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST StopObstacle
+
+			JMP ODK_END_IF_000000000000017
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_000000000000017_000000000000001:
+		ODK_END_IF_000000000000017:
+
+		JMP ODK_END_IF_000000000000015
+
+(** 	 **)
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000015_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	StopObstacle := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST StopObstacle
+
+(**  **)
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000015:
+
+(**  **)
+(**  **)
+(** 	 **)
+(** if NDC8.LS2000.Attached = true then **)
+	(* if - Cond *)
+	LD NDC8.LS2000.Attached
+	EQ TRUE
+	JMPCN ODK_SKIP_000000000000018_000000000000001
+
+		(* then - Stmts *)
+
+(** 	LS2000_Attached_M(IN:=TRUE, PT:=t#60s); **)
+		(* call - Stmt *)
+		CAL LS2000_Attached_M (
+			IN := TRUE,
+			PT := t#60s
+		)
+
+		JMP ODK_END_IF_000000000000018
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000018_000000000000001:
+
+		(* else - Stmts *)
+
+(** 	LS2000_Attached_M(IN:=FALSE);	 **)
+		(* call - Stmt *)
+		CAL LS2000_Attached_M (
+			IN := FALSE
+		)
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000018:
+
+(**  **)
+(** if LS2000_Attached_M.Q = TRUE then **)
+	(* if - Cond *)
+	LD LS2000_Attached_M.Q
+	EQ TRUE
+	JMPCN ODK_SKIP_000000000000019_000000000000001
+
+		(* then - Stmts *)
+
+(** 	LS2000_Attached_M(IN:=FALSE);	 **)
+		(* call - Stmt *)
+		CAL LS2000_Attached_M (
+			IN := FALSE
+		)
+
+(** 	NDC8.UserDefined.Integer32_60_LS2000_Attached_M := NDC8.UserDefined.Integer32_60_LS2000_Attached_M + 1; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_60_LS2000_Attached_M
+		ADD 1
+		ST NDC8.UserDefined.Integer32_60_LS2000_Attached_M
+
+		JMP ODK_END_IF_000000000000019
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000019_000000000000001:
+	ODK_END_IF_000000000000019:
+
+(**  **)
+(**  **)
+(** if NDC8.UserDefined.Integer32_60_LS2000_Attached_M > 60 then **)
+	(* if - Cond *)
+	LD NDC8.UserDefined.Integer32_60_LS2000_Attached_M
+	GT 60
+	JMPCN ODK_SKIP_00000000000001A_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.UserDefined.Integer32_59_LS2000_Attached_H := NDC8.UserDefined.Integer32_59_LS2000_Attached_H + 1; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_59_LS2000_Attached_H
+		ADD 1
+		ST NDC8.UserDefined.Integer32_59_LS2000_Attached_H
+
+(** 	NDC8.UserDefined.Integer32_60_LS2000_Attached_M := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST NDC8.UserDefined.Integer32_60_LS2000_Attached_M
+
+		JMP ODK_END_IF_00000000000001A
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001A_000000000000001:
+	ODK_END_IF_00000000000001A:
+
+(**  **)
+(** if NDC8.UserDefined.Integer32_59_LS2000_Attached_H > 24 then **)
+	(* if - Cond *)
+	LD NDC8.UserDefined.Integer32_59_LS2000_Attached_H
+	GT 24
+	JMPCN ODK_SKIP_00000000000001B_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.UserDefined.Integer32_58_LS2000_Attached_D := NDC8.UserDefined.Integer32_58_LS2000_Attached_D + 1; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_58_LS2000_Attached_D
+		ADD 1
+		ST NDC8.UserDefined.Integer32_58_LS2000_Attached_D
+
+(** 	NDC8.UserDefined.Integer32_59_LS2000_Attached_H := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST NDC8.UserDefined.Integer32_59_LS2000_Attached_H
+
+		JMP ODK_END_IF_00000000000001B
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001B_000000000000001:
+	ODK_END_IF_00000000000001B:
+
+(**  **)
+(** TravelDistanceSamplingTimer(IN:= TRUE, PT:=t#5s); **)
+	(* call - Stmt *)
+	CAL TravelDistanceSamplingTimer (
+		IN := TRUE,
+		PT := t#5s
+	)
+
+(**  **)
+(** if TravelDistanceSamplingTimer.Q then **)
+	(* if - Cond *)
+	LD TravelDistanceSamplingTimer.Q
+	JMPCN ODK_SKIP_00000000000001C_000000000000001
+
+		(* then - Stmts *)
+
+(** 	if abs(NDC8.DCD_5.DriveEncDist - LastEncoderDistance) > 60000 then **)
+		(* if - Cond *)
+		LD NDC8.DCD_5.DriveEncDist
+		SUB LastEncoderDistance
+		abs 
+		GT 60000
+		JMPCN ODK_SKIP_00000000000001D_000000000000001
+
+			(* then - Stmts *)
+
+(** 		CurrentEncoderDistance := 65530 - abs(NDC8.DCD_5.DriveEncDist - LastEncoderDistance); **)
+			(* assign - Stmt *)
+			LD 65530
+			SUB ( NDC8.DCD_5.DriveEncDist
+				SUB LastEncoderDistance
+				abs 
+			)
+			ST CurrentEncoderDistance
+
+			JMP ODK_END_IF_00000000000001D
+
+(** 	else **)
+		(* else *) 
+		ODK_SKIP_00000000000001D_000000000000001:
+
+			(* else - Stmts *)
+
+(** 		CurrentEncoderDistance := abs(NDC8.DCD_5.DriveEncDist - LastEncoderDistance); **)
+			(* assign - Stmt *)
+			LD NDC8.DCD_5.DriveEncDist
+			SUB LastEncoderDistance
+			abs 
+			ST CurrentEncoderDistance
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_00000000000001D:
+
+(** 	 **)
+(** 	CurrentEncoderDistance := CurrentEncoderDistance / 10; **)
+		(* assign - Stmt *)
+		LD CurrentEncoderDistance
+		DIV 10
+		ST CurrentEncoderDistance
+
+(** 	 **)
+(** 	 **)
+(** 	NDC8.UserDefined.Integer32_55_TravelDistance := NDC8.UserDefined.Integer32_55_TravelDistance + UINT_TO_DINT(CurrentEncoderDistance); **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_55_TravelDistance
+		ADD ( CurrentEncoderDistance
+			UINT_TO_DINT 
+		)
+		ST NDC8.UserDefined.Integer32_55_TravelDistance
+
+(** 	 **)
+(** 	if NDC8.UserDefined.Integer32_55_TravelDistance > 2100000000 then **)
+		(* if - Cond *)
+		LD NDC8.UserDefined.Integer32_55_TravelDistance
+		GT 2100000000
+		JMPCN ODK_SKIP_00000000000001E_000000000000001
+
+			(* then - Stmts *)
+
+(** 		NDC8.UserDefined.Integer32_55_TravelDistance := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST NDC8.UserDefined.Integer32_55_TravelDistance
+
+			JMP ODK_END_IF_00000000000001E
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000001E_000000000000001:
+		ODK_END_IF_00000000000001E:
+
+(** 	 **)
+(** 	LastEncoderDistance := NDC8.DCD_5.DriveEncDist; **)
+		(* assign - Stmt *)
+		LD NDC8.DCD_5.DriveEncDist
+		ST LastEncoderDistance
+
+(** 	TravelDistanceSamplingTimer(IN:= FALSE); **)
+		(* call - Stmt *)
+		CAL TravelDistanceSamplingTimer (
+			IN := FALSE
+		)
+
+		JMP ODK_END_IF_00000000000001C
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000001C_000000000000001:
+	ODK_END_IF_00000000000001C:
+
+(**  **)
+(**  **)
+(** {* Black Box Trigger **)
+(** if g_FindSyncFlag = TRUE Then **)
+(** 	BootUpDelay(IN:= TRUE, PT:=t#180s); **)
+(** End_if; **)
+(**  **)
+(** if g_ErrorCode <> 0 and NoErrorDelay.Q = TRUE then **)
+(** 	ErrorFlag := TRUE; **)
+(** end_if; **)
+(**  **)
+(** ErrorTrigR(CLK:= ErrorFlag); **)
+(**  **)
+(** if ErrorTrigR.Q = TRUE then **)
+(** 	ErrorTrigFlag := TRUE; **)
+(** end_if; **)
+(**  **)
+(** if BootUpDelay.Q = TRUE then **)
+(** 	if ErrorTrigFlag then **)
+(** 		NDC8.BlackBox.TrigReason:= 'Error Trigger'; **)
+(** 		BlackBox(); **)
+(** 		if BlackBox.Finished then **)
+(** 			ErrorTrigFlag := FALSE; **)
+(** 		end_if; **)
+(** 	end_if; **)
+(** End_if; **)
+(**  **)
+(**  **)
+(** if g_ErrorCode = 0 then **)
+(** 	NoErrorDelay(IN:= TRUE, PT:=t#60s); **)
+(** else **)
+(** 	NoErrorDelay(IN:= FALSE); **)
+(** end_if; **)
+(**  *} **)
+(**   **)
+(** Display(); **)
+	(* call - Stmt *)
+	CAL Display
+
+(**  **)
+(** {*if HMI Set "Force Output" signal will overwrite in OPTX2*} **)
+(** OPTX2(); **)
+	(* call - Stmt *)
+	CAL OPTX2
+
+(**  **)
+(** DataUpdate(); **)
+	(* call - Stmt *)
+	CAL DataUpdate
+
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+
+END_PROGRAM

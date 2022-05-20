@@ -1,0 +1,110 @@
+FUNCTION_BLOCK LoadStatus_FB
+VAR_EXTERNAL
+	NDC8 : NDC8_T;
+	INPUT : INPUT_T;
+
+END_VAR
+
+VAR_INPUT
+	failcode : word;
+END_VAR
+
+VAR_OUTPUT
+	LoadStatusState : dint;
+END_VAR
+
+VAR
+	LoadOnBoardMem : bool;
+	LoadOnBoardMemDist : int;
+	NewLoadStatus : bool;
+	StopDropRT : R_Trig;
+
+END_VAR
+(**************************************************************************************)
+(* MONITOR LOAD STATUS *)
+(**************************************************************************************)
+
+case LoadStatusState of
+
+0: 	(* Wait for load operation. *)
+	if word_to_bool(dint_to_word(NDC8.LoadOperation.OperationCode) and 16#01) 
+		and NDC8.LoadDocking.OnLastSegment then 
+			LoadStatusState := 10;
+	end_if;
+	
+10:	(* Wait until load operation done, then store current traction distance. *)
+	if NDC8.LoadOperation.OperationCode = 0 then
+		LoadOnBoardMemDist := INPUT.TractionDistance;	
+		LoadStatusState := 20;
+	end_if;		
+
+20: (*  Wait until 400 mm after load operation. *)
+	if (abs(LoadOnBoardMemDist-INPUT.TractionDistance) > 400) then 	
+		LoadStatusState := 30;
+	end_if;
+	
+30: (* If load is not onboard, set stop flag. Check this until the unload operation. *)
+	if not Input.LoadOnBoard then
+		StopLoadChange := true;
+		LoadStatusState := 99;
+		EventQueue(EventCode:=108,
+			Par1:=NDC8.LayoutPosition.Segment,
+			Par2:=0,
+			Par3:=0,
+			Par4:=0);
+		a:=TRACE_DINT('EventCode', EventQueue.EventCode);
+	elsif word_to_bool(dint_to_word(NDC8.LoadOperation.OperationCode) and 16#02) 
+		and NDC8.LoadDocking.OnLastSegment then 
+			LoadStatusState := 40;
+	end_if;
+	
+40: (* After unload is done, store the current traction distance. *)
+	if NDC8.LoadOperation.OperationCode = 0 then
+		LoadOnBoardMemDist := INPUT.TractionDistance;	
+		LoadStatusState := 50;
+	end_if;		
+
+50: (*  Wait until 400 mm after load operation. *)
+	if (abs(LoadOnBoardMemDist-INPUT.TractionDistance) > 400) then 	
+		LoadStatusState := 60;
+	end_if;
+
+60: (* If load status has not changed, trigger stop. *)
+	if Input.LoadOnBoard then
+		StopLoadChange := true;
+		LoadStatusState := 99;
+		EventQueue(EventCode:=108,
+			Par1:=NDC8.LayoutPosition.Segment,
+			Par2:=0,
+			Par3:=0,
+			Par4:=0);
+		a:=TRACE_DINT('EventCode', EventQueue.EventCode);
+	else
+		LoadStatusState := 0;
+	end_if;
+
+99: (* Reset stop bit by manual mode or reset button. *)
+	if NDC8.VehicleControl.OperationMode > 0 
+		or FailCode > 0 then
+			StopLoadChange := false;
+			StopLoadDroppedWhileUnloading := false;
+			LoadStatusState := 0;
+	
+	elsif INPUT.Reset_PB then
+		StopLoadChange := false;
+		StopLoadDroppedWhileUnloading := false;
+		if Input.LoadOnBoard then 		(* If still loaded, then redo the transport *)
+			LoadStatusState := 30;
+		else 
+			LoadStatusState := 0;
+		end_if;
+	end_if;
+	
+end_case;
+
+StopReset := StopReset or StopLoadChange;		(* This stop signal needs to be reset	*)
+	
+InStatus := StopLoadDroppedWhileUnloading or StopLoadChange;
+DisplayStopString(INStatus:=InStatus, StopString:=81, StopValue:=0);
+
+END_FUNCTION_BLOCK

@@ -1,0 +1,19 @@
+FUNCTION_BLOCK SENSORHANDLING_FB 
+
+
+ VAR_INPUT
+  Input : bool ;
+  EventID : dint ;
+  StopStringID : dint ;
+  Enable : bool ;
+  OnDelay : time ;
+  OffDelay : time ;
+  END_VAR 
+
+ VAR_OUTPUT
+  Stop : bool ;
+  END_VAR 
+
+
+
+END_FUNCTION_BLOCK
