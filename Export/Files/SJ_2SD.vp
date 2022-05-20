@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8VehicleParameterFile">
-  <FileInfo FileType="vp" FileRevision="1" Description="NDC8 Vehicle Parameter File" CreationDate="2021-11-29" CreationTime="15:08:48.4075316+08:00" CreatedBy="user" ModificationDate="2021-11-29" ModificationTime="15:08:48.4075316+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vp" FileRevision="1" Description="NDC8 Vehicle Parameter File" CreationDate="2022-03-09" CreationTime="17:17:49.6850000+08:00" CreatedBy="user" ModificationDate="2022-03-09" ModificationTime="17:17:49.6850000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Vehicles>
     <Vehicle VehicleId="4">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4458" />
@@ -64,7 +64,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="105">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4548" />
@@ -76,8 +76,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -99,8 +99,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -122,6 +122,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -145,7 +146,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="110">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4463" />
@@ -157,8 +158,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -180,8 +181,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -203,6 +204,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="250" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -226,7 +228,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="73">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4467" />
@@ -238,8 +240,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -261,8 +263,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -284,6 +286,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -307,7 +310,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="90">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4455" />
@@ -319,8 +322,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -342,8 +345,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -365,6 +368,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -388,7 +392,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="86">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4454" />
@@ -400,8 +404,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -423,8 +427,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -446,6 +450,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -469,7 +474,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="103">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4462" />
@@ -481,8 +486,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -504,8 +509,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -527,6 +532,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -550,7 +556,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="104">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4462" />
@@ -562,8 +568,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -585,8 +591,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -608,6 +614,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -631,7 +638,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="79">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4456" />
@@ -643,8 +650,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -666,8 +673,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -689,6 +696,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -712,7 +720,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="80">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4459" />
@@ -724,8 +732,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -747,8 +755,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -770,6 +778,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -793,7 +802,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="83">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4458" />
@@ -805,8 +814,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -828,8 +837,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -851,6 +860,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -874,7 +884,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="85">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4454" />
@@ -886,8 +896,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -909,8 +919,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -932,6 +942,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="240" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -955,7 +966,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="102">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4449" />
@@ -967,8 +978,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -990,8 +1001,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1013,6 +1024,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -1036,7 +1048,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="106">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4550" />
@@ -1048,8 +1060,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -1071,8 +1083,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1094,6 +1106,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -1117,7 +1130,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="107">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4451" />
@@ -1129,8 +1142,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -1152,8 +1165,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1175,6 +1188,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="260" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -1198,7 +1212,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="109">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4461" />
@@ -1210,8 +1224,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -1233,8 +1247,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1256,6 +1270,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -1279,7 +1294,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="71">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4480" />
@@ -1291,8 +1306,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -1314,8 +1329,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1337,6 +1352,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="240" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -1360,7 +1376,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="72">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4460" />
@@ -1372,8 +1388,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -1395,8 +1411,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1418,6 +1434,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -1441,7 +1458,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="75">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4487" />
@@ -1453,8 +1470,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -1476,8 +1493,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1499,6 +1516,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -1522,7 +1540,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="77">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4446" />
@@ -1534,8 +1552,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -1557,8 +1575,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1580,6 +1598,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -1603,7 +1622,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="87">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4540" />
@@ -1615,8 +1634,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -1638,8 +1657,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="1" />
-            <Property SymbolName="SpeedRegP" Value="120" />
             <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1661,6 +1680,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -1684,7 +1704,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="88">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4425" />
@@ -1696,8 +1716,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="0" />
-            <Property SymbolName="SpeedRegP" Value="240" />
             <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -1719,8 +1739,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="0" />
-            <Property SymbolName="SpeedRegP" Value="240" />
             <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1742,6 +1762,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -1765,7 +1786,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="151">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4460" />
@@ -1777,8 +1798,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="0" />
-            <Property SymbolName="SpeedRegP" Value="240" />
             <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -1800,8 +1821,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="0" />
-            <Property SymbolName="SpeedRegP" Value="240" />
             <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1823,6 +1844,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -1846,7 +1868,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="152">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4457" />
@@ -1858,8 +1880,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="0" />
-            <Property SymbolName="SpeedRegP" Value="240" />
             <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -1881,8 +1903,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="0" />
-            <Property SymbolName="SpeedRegP" Value="240" />
             <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1904,6 +1926,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -1927,7 +1950,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="155">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4460" />
@@ -1939,8 +1962,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="0" />
-            <Property SymbolName="SpeedRegP" Value="240" />
             <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -1962,8 +1985,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="0" />
-            <Property SymbolName="SpeedRegP" Value="240" />
             <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -1985,6 +2008,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />
@@ -2008,7 +2032,7 @@
       </ComponentList>
     </Vehicle>
     <Vehicle VehicleId="154">
-      <ComponentList Name="P46164" TimeStamp="1638198544">
+      <ComponentList Name="P46164" TimeStamp="1646846289">
         <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
           <Properties>
             <Property SymbolName="DriveEncScale" Value="4458" />
@@ -2020,8 +2044,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="0" />
-            <Property SymbolName="SpeedRegP" Value="240" />
             <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
@@ -2043,8 +2067,8 @@
             <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
             <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
             <Property SymbolName="SpeedRegI" Value="0" />
-            <Property SymbolName="SpeedRegP" Value="240" />
             <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
           </Properties>
         </Component>
         <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
@@ -2066,6 +2090,7 @@
           <Properties>
             <Property SymbolName="Boolean_10" Value="1" />
             <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
             <Property SymbolName="Integer32_50" Value="245" />
             <Property SymbolName="Integer32_51" Value="1" />
             <Property SymbolName="Integer32_52" Value="600000" />

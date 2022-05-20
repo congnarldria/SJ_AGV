@@ -320,8 +320,8 @@ ModBus_ValueBOOL [141] := NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L;
 ModBus_ValueBOOL [142] := NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R;
 ModBus_ValueBOOL [143] := NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L;
 ModBus_ValueBOOL [144] := NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R;
-ModBus_ValueBOOL [145] := NDC8.CAN_IO_3.DigitalInput5;
-ModBus_ValueBOOL [146] := NDC8.CAN_IO_3.DigitalInput6;
+ModBus_ValueBOOL [145] := NDC8.CAN_IO_3.DigitalInput5_LIMF_O;
+ModBus_ValueBOOL [146] := NDC8.CAN_IO_3.DigitalInput6_LIMR_O;
 ModBus_ValueBOOL [147] := NDC8.CAN_IO_3.DigitalInput7;
 ModBus_ValueBOOL [148] := NDC8.CAN_IO_3.DigitalInput8;
 
@@ -721,6 +721,7 @@ OPTX2Communication();
 
 
 (****************************************************************************)
+
 
 
 

@@ -159,6 +159,19 @@ elsif AllOK_R.Q and NDC8.SDIO.DigitalInput2_BTN_RST = TRUE then
 	StopFindSync := FALSE;
 end_if;
 
+if NDC8.CAN_IO_3.DigitalInput5_LIMF_O = TRUE then
+	NDC8.DCD_6.SyncGate := TRUE;
+else
+	NDC8.DCD_6.SyncGate := FALSE;
+end_if;
+
+
+if NDC8.CAN_IO_3.DigitalInput6_LIMR_O = TRUE then
+	NDC8.DCD_8.SyncGate := TRUE;
+else
+	NDC8.DCD_8.SyncGate := FALSE;
+end_if;
+
 AllOK_Delay(IN:=g_StartFindSync, PT:=t#5s);
 
 if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST = FALSE then
@@ -752,6 +765,7 @@ Display();
 OPTX2();
 
 DataUpdate();
+
 
 
 

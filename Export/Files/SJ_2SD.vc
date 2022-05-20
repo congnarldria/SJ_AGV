@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2021-11-29" CreationTime="15:08:48.4075316+08:00" CreatedBy="user" ModificationDate="2021-11-29" ModificationTime="15:08:48.4075316+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2022-03-09" CreationTime="17:17:49.6850000+08:00" CreatedBy="user" ModificationDate="2022-03-09" ModificationTime="17:17:49.6850000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
-  <ComponentList Name="P46164" TimeStamp="1638198544">
+  <ComponentList Name="P46164" TimeStamp="1646846289">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
       <Properties>
         <Property SymbolName="Method" Value="2" Remark="Navigation init methods:&#xD;&#xA;0. NavAreaInit. The vehicle controller will search for a&#xD;&#xA;   position within the given navigation area. If navigation area is&#xD;&#xA;   set to 0 the vehicle controller will search the whole layout. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;1. PointInit. The vehicle controller will search for a position in an&#xD;&#xA;   area around the given NDC point. The size of the search area is&#xD;&#xA;   defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;2. SetPosition. The vehicle controller will set its position to that&#xD;&#xA;   of the given NDC point. The vehicle must be in manual or semi manual&#xD;&#xA;   mode and standing still.&#xD;&#xA;&#xD;&#xA;3. CoordinatesInit. The vehicle controller will search for a position&#xD;&#xA;   in an area around the given coordinates. The size of the search&#xD;&#xA;   area is defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;4. SetCoordinates. The vehicle controller will set its position to&#xD;&#xA;   that of the given given coordinates. The vehicle must be in manual&#xD;&#xA;   or semi manual mode and standing still." ParentName="NavInit" />
@@ -515,7 +515,7 @@
         <Property SymbolName="Boolean_17" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_18" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_19" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_20" Value="0" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_20" Value="0" Remark="1 = Local Mode; 0 = Host Mode" AliasName="Boolean_20_OnlineOrderMode" ParentName="UserDefined" />
         <Property SymbolName="Boolean_21" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_22" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_23" Value="0" Remark="" ParentName="UserDefined" />
@@ -1035,6 +1035,8 @@
         <Property SymbolName="DigitalInput2" Value="" Remark="Digital Input 2 value" AliasName="DigitalInput2_SteerLimitF_R" ParentName="CAN_IO_3" />
         <Property SymbolName="DigitalInput3" Value="" Remark="Digital Input 3 value" AliasName="DigitalInput3_SteerLimitR_L" ParentName="CAN_IO_3" />
         <Property SymbolName="DigitalInput4" Value="" Remark="Digital Input 4 value" AliasName="DigitalInput4_SteerLimitR_R" ParentName="CAN_IO_3" />
+        <Property SymbolName="DigitalInput5" Value="" Remark="Digital Input 5 value" AliasName="DigitalInput5_LIMF_O" ParentName="CAN_IO_3" />
+        <Property SymbolName="DigitalInput6" Value="" Remark="Digital Input 6 value" AliasName="DigitalInput6_LIMR_O" ParentName="CAN_IO_3" />
         <Property SymbolName="DigitalInput9" Value="" Remark="Digital Input 9 value" AliasName="DigitalInput9_AreaF_IN1" ParentName="CAN_IO_3" />
         <Property SymbolName="DigitalInput10" Value="" Remark="Digital Input 10 value" AliasName="DigitalInput10_AreaF_IN2" ParentName="CAN_IO_3" />
         <Property SymbolName="DigitalInput13" Value="" Remark="Digital Input 13 value" AliasName="DigitalInput13_AreaR_IN1" ParentName="CAN_IO_3" />
