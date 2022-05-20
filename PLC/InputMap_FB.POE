@@ -282,48 +282,13 @@ END_VAR
 	ODK_END_IF_000000000000005:
 
 (**  **)
-(** if NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L = TRUE or NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R = TRUE then **)
-	(* if - Cond *)
-	LD NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L
-	EQ TRUE
-	OR ( NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R
-		EQ TRUE
-	)
-	JMPCN ODK_SKIP_000000000000006_000000000000001
-
-		(* then - Stmts *)
-
-(** 	NDC8.DCD_8.EndLimitSwitchPolarity := 1; **)
-		(* assign - Stmt *)
-		LD 1
-		ST NDC8.DCD_8.EndLimitSwitchPolarity
-
-		JMP ODK_END_IF_000000000000006
-
-(** else **)
-	(* else *) 
-	ODK_SKIP_000000000000006_000000000000001:
-
-		(* else - Stmts *)
-
-(** 	NDC8.DCD_8.EndLimitSwitchPolarity := 0; **)
-		(* assign - Stmt *)
-		LD 0
-		ST NDC8.DCD_8.EndLimitSwitchPolarity
-
-(** end_if; **)
-	(* if - End *) 
-	ODK_END_IF_000000000000006:
-
 (**  **)
-(** if NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L = TRUE or NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R = TRUE then **)
+(** if NDC8.DCD_6.SetAngle > 0 and NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L then  **)
 	(* if - Cond *)
-	LD NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L
-	EQ TRUE
-	OR ( NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R
-		EQ TRUE
-	)
-	JMPCN ODK_SKIP_000000000000007_000000000000001
+	LD NDC8.DCD_6.SetAngle
+	GT 0
+	AND NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L
+	JMPCN ODK_SKIP_000000000000006_000000000000001
 
 		(* then - Stmts *)
 
@@ -332,11 +297,28 @@ END_VAR
 		LD 1
 		ST NDC8.DCD_6.EndLimitSwitchPolarity
 
-		JMP ODK_END_IF_000000000000007
+		JMP ODK_END_IF_000000000000006
+
+(** elsif NDC8.DCD_6.SetAngle < 0 and NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000006_000000000000001:
+	LD NDC8.DCD_6.SetAngle
+	LT 0
+	AND NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R
+	JMPCN ODK_SKIP_000000000000006_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	NDC8.DCD_6.EndLimitSwitchPolarity := 1; **)
+		(* assign - Stmt *)
+		LD 1
+		ST NDC8.DCD_6.EndLimitSwitchPolarity
+
+		JMP ODK_END_IF_000000000000006
 
 (** else **)
 	(* else *) 
-	ODK_SKIP_000000000000007_000000000000001:
+	ODK_SKIP_000000000000006_000000000000002:
 
 		(* else - Stmts *)
 
@@ -347,9 +329,58 @@ END_VAR
 
 (** end_if; **)
 	(* if - End *) 
+	ODK_END_IF_000000000000006:
+
+(**  **)
+(** if NDC8.DCD_8.SetAngle > 0 and NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L then  **)
+	(* if - Cond *)
+	LD NDC8.DCD_8.SetAngle
+	GT 0
+	AND NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L
+	JMPCN ODK_SKIP_000000000000007_000000000000001
+
+		(* then - Stmts *)
+
+(** 	NDC8.DCD_8.EndLimitSwitchPolarity := 1; **)
+		(* assign - Stmt *)
+		LD 1
+		ST NDC8.DCD_8.EndLimitSwitchPolarity
+
+		JMP ODK_END_IF_000000000000007
+
+(** elsif NDC8.DCD_8.SetAngle < 0 and NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000007_000000000000001:
+	LD NDC8.DCD_8.SetAngle
+	LT 0
+	AND NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R
+	JMPCN ODK_SKIP_000000000000007_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	NDC8.DCD_8.EndLimitSwitchPolarity := 1; **)
+		(* assign - Stmt *)
+		LD 1
+		ST NDC8.DCD_8.EndLimitSwitchPolarity
+
+		JMP ODK_END_IF_000000000000007
+
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000007_000000000000002:
+
+		(* else - Stmts *)
+
+(** 	NDC8.DCD_8.EndLimitSwitchPolarity := 0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST NDC8.DCD_8.EndLimitSwitchPolarity
+
+(** end_if; **)
+	(* if - End *) 
 	ODK_END_IF_000000000000007:
 
-(** 	 **)
+(**  **)
 (**  **)
 (** Input.CreepOn := abs(NDC8.VehicleControl.SetSpeed) = NDC8.Vehicle.CreepSpeed; **)
 	(* assign - Stmt *)
@@ -649,6 +680,14 @@ END_VAR
 	LD NDC8.SDIO.DigitalInput12_EMO
 	ST StopEstopButton
 
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

@@ -88,7 +88,7 @@ else
 	NDC8.SDIO.DigitalOutput14_LED_BRK := FALSE;
 end_if;
 
-if g_ErrorCode <> 0 or PLC_RX_Word20_PLC_ErrD <> 0 then
+if g_ErrorCode <> 0 or PLC_RX_Word4_PLC_ErrD <> 0 then
 	NDC8.SDIO.DigitalOutput8_LED_RST := LampBlink.Q1;
 else
 	NDC8.SDIO.DigitalOutput8_LED_RST := FALSE;
@@ -214,6 +214,7 @@ if g_FindSyncFlag = TRUE then
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE;
 	end_if;
 end_if;
+
 
 
 

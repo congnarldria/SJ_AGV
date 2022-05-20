@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2021-11-29" CreationTime="15:08:48.4075316+08:00" CreatedBy="user" ModificationDate="2021-11-29" ModificationTime="15:08:48.4075316+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
-  <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
-  <ComponentList Name="P46164" TimeStamp="1638198544">
+  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2020-08-01" CreationTime="17:47:50.6220000+08:00" CreatedBy="user" ModificationDate="2020-08-01" ModificationTime="17:47:50.6220000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <Identification ArticleNumber="P46164V1.0.5" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.5 (HW 18456-01)" />
+  <ComponentList Name="P46164" TimeStamp="1596304088">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
       <Properties>
         <Property SymbolName="Method" Value="2" Remark="Navigation init methods:&#xD;&#xA;0. NavAreaInit. The vehicle controller will search for a&#xD;&#xA;   position within the given navigation area. If navigation area is&#xD;&#xA;   set to 0 the vehicle controller will search the whole layout. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;1. PointInit. The vehicle controller will search for a position in an&#xD;&#xA;   area around the given NDC point. The size of the search area is&#xD;&#xA;   defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;2. SetPosition. The vehicle controller will set its position to that&#xD;&#xA;   of the given NDC point. The vehicle must be in manual or semi manual&#xD;&#xA;   mode and standing still.&#xD;&#xA;&#xD;&#xA;3. CoordinatesInit. The vehicle controller will search for a position&#xD;&#xA;   in an area around the given coordinates. The size of the search&#xD;&#xA;   area is defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;4. SetCoordinates. The vehicle controller will set its position to&#xD;&#xA;   that of the given given coordinates. The vehicle must be in manual&#xD;&#xA;   or semi manual mode and standing still." ParentName="NavInit" />
@@ -161,12 +161,6 @@
     <Component SymbolName="SegmentTrigger" DataType="SegmentTrigger" Index="0x2017" FixedIndex="0">
       <Properties>
         <Property SymbolName="Bit0" Value="" Remark="Segment attribute bit" AliasName="Bit0_StartDDAtt" ParentName="SegmentTrigger" />
-        <Property SymbolName="Bit4" Value="" Remark="Segment attribute bit" AliasName="Bit4_Area1_Seg" ParentName="SegmentTrigger" />
-        <Property SymbolName="Bit5" Value="" Remark="Segment attribute bit" AliasName="Bit5_Area2_Seg" ParentName="SegmentTrigger" />
-        <Property SymbolName="Bit6" Value="" Remark="Segment attribute bit" AliasName="Bit6_Area4_Seg" ParentName="SegmentTrigger" />
-        <Property SymbolName="Bit7" Value="" Remark="Segment attribute bit" AliasName="Bit7_Area8_Seg" ParentName="SegmentTrigger" />
-        <Property SymbolName="Bit10" Value="" Remark="Segment attribute bit" AliasName="Bit10_DDLeft_A" ParentName="SegmentTrigger" />
-        <Property SymbolName="Bit11" Value="" Remark="Segment attribute bit" AliasName="Bit11_DDRight_A" ParentName="SegmentTrigger" />
         <Property SymbolName="Bit12" Value="" Remark="Segment attribute bit" AliasName="Bit12_TurnLeft_A" ParentName="SegmentTrigger" />
         <Property SymbolName="Bit13" Value="" Remark="Segment attribute bit" AliasName="Bit13_TurnRght_A" ParentName="SegmentTrigger" />
         <Property SymbolName="Bit14" Value="" Remark="Segment attribute bit" AliasName="Bit14_DisIrSlow" ParentName="SegmentTrigger" />
@@ -176,12 +170,6 @@
     <Component SymbolName="PointTrigger" DataType="PointTrigger" Index="0x2018" FixedIndex="0">
       <Properties>
         <Property SymbolName="Bit0" Value="" Remark="Point attribute bit" AliasName="Bit0_DepoST_Att" ParentName="PointTrigger" />
-        <Property SymbolName="Bit1" Value="" Remark="Point attribute bit" AliasName="Bit1_ShutEQ_Att" ParentName="PointTrigger" />
-        <Property SymbolName="Bit4" Value="" Remark="Point attribute bit" AliasName="Bit4_Area1_Pnt" ParentName="PointTrigger" />
-        <Property SymbolName="Bit5" Value="" Remark="Point attribute bit" AliasName="Bit5_Area2_Pnt" ParentName="PointTrigger" />
-        <Property SymbolName="Bit6" Value="" Remark="Point attribute bit" AliasName="Bit6_Area4_Pnt" ParentName="PointTrigger" />
-        <Property SymbolName="Bit7" Value="" Remark="Point attribute bit" AliasName="Bit7_Area8_Pnt" ParentName="PointTrigger" />
-        <Property SymbolName="Bit8" Value="" Remark="Point attribute bit" AliasName="Bit8_HP_Pnt" ParentName="PointTrigger" />
         <Property SymbolName="Bit9" Value="" Remark="Point attribute bit" AliasName="Bit9_Chrg_Right" ParentName="PointTrigger" />
         <Property SymbolName="Bit10" Value="" Remark="Point attribute bit" AliasName="Bit10_Chrg_Left" ParentName="PointTrigger" />
         <Property SymbolName="Bit14" Value="" Remark="Point attribute bit" AliasName="Bit14_Full_Chrg" ParentName="PointTrigger" />
@@ -318,6 +306,7 @@
         <Property SymbolName="TxStatusBit10" Value="" Remark="Application status bit to Master" AliasName="TxStatusBit10_Blocked" ParentName="PLC_Application" />
         <Property SymbolName="TxStatusBit11" Value="" Remark="Application status bit to Master" AliasName="TxStatusBit11_IrStop" ParentName="PLC_Application" />
         <Property SymbolName="TxStatusBit12" Value="" Remark="Application status bit to Master" AliasName="TxStatusBit12_LostP" ParentName="PLC_Application" />
+        <Property SymbolName="TxStatusBit15" Value="" Remark="Application status bit to Master" AliasName="TxStatusBit15_ON_OFF" ParentName="PLC_Application" />
         <Property SymbolName="UserEventEN" Value="0" Remark="Set this flag to send a User Event. Clear when ENO is set" ParentName="PLC_Application" />
         <Property SymbolName="UserEventENO" Value="0" Remark="Response to PLC User Event is executed. Clear when EN is cleared" ParentName="PLC_Application" />
         <Property SymbolName="UserEventCode" Value="0" Remark="User Event code" ParentName="PLC_Application" />
@@ -414,8 +403,8 @@
         <Property SymbolName="Data4" Value="" Remark="" AliasName="R_BCD2" ParentName="OMPLC" />
         <Property SymbolName="Data5" Value="" Remark="" AliasName="R_BCD3" ParentName="OMPLC" />
         <Property SymbolName="Data6" Value="" Remark="" AliasName="Cur_Pnt" ParentName="OMPLC" />
-        <Property SymbolName="Data7" Value="" Remark="" AliasName="Drv_Area" ParentName="OMPLC" />
         <Property SymbolName="Data8" Value="" Remark="" AliasName="Cur_Seg" ParentName="OMPLC" />
+        <Property SymbolName="Data9" Value="" Remark="" AliasName="Round_om" ParentName="OMPLC" />
         <Property SymbolName="Data10" Value="" Remark="Data10" AliasName="IKEY" ParentName="OMPLC" />
         <Property SymbolName="Data11" Value="" Remark="Data11" AliasName="Phase" ParentName="OMPLC" />
         <Property SymbolName="Data12" Value="" Remark="Data12" AliasName="Fetch" ParentName="OMPLC" />
@@ -515,7 +504,7 @@
         <Property SymbolName="Boolean_17" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_18" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_19" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_20" Value="0" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_20" Value="0" Remark="0: Host Mode 1: LocalMode" AliasName="Boolean_20_OnlineOrderMode" ParentName="UserDefined" />
         <Property SymbolName="Boolean_21" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_22" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_23" Value="0" Remark="" ParentName="UserDefined" />
@@ -560,25 +549,25 @@
         <Property SymbolName="Integer32_32" Value="0" Remark="Integer32_32" ParentName="UserDefined" />
         <Property SymbolName="Integer32_33" Value="0" Remark="Integer32_33" ParentName="UserDefined" />
         <Property SymbolName="Integer32_34" Value="0" Remark="Integer32_34" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_35" Value="0" Remark="Integer32_35" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_36" Value="0" Remark="Integer32_36" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_37" Value="0" Remark="Integer32_37" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_38" Value="0" Remark="Integer32_38" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_39" Value="0" Remark="Integer32_39" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_40" Value="0" Remark="Integer32_40" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_41" Value="0" Remark="Integer32_41" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_42" Value="0" Remark="Integer32_42" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_43" Value="0" Remark="Integer32_43" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_44" Value="0" Remark="Integer32_44" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_45" Value="0" Remark="Integer32_45" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_46" Value="0" Remark="Integer32_46" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_35" Value="90" Remark="Integer32_35" AliasName="Integer32_35_Battery_Cap" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_36" Value="800" Remark="Integer32_36" AliasName="Integer32_36_Battery_IniCap" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_37" Value="650" Remark="Integer32_37" AliasName="Integer32_37_Battery_AlarmCap" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_38" Value="10" Remark="Integer32_38" AliasName="Integer32_38_Rapit_ChargeAdd" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_39" Value="0" Remark="Integer32_39" AliasName="Integer32_39_CurrentBatCap" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_40" Value="320" Remark="Integer32_40, BatTmp25 = FALSE, BatTmp40 = FALSE, BatTmp55= FALSE" AliasName="Integer32_40_ChgComV1" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_41" Value="312" Remark="Integer32_41, BatTmp25 =TRUE, BatTmp40 = FALSE, BatTmp55= FALSE" AliasName="Integer32_41_ChgComV2" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_42" Value="304" Remark="Integer32_42, BatTmp25 = TRUE, BatTmp40 = TRUE, BatTmp55= FALSE" AliasName="Integer32_42_ChgComV3" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_43" Value="28" Remark="Integer32_43" AliasName="Integer32_43_Current_Moving" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_44" Value="16" Remark="Integer32_44" AliasName="Integer32_44_Current_Transfer" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_45" Value="14" Remark="Integer32_45" AliasName="Integer32_45_Current_Idel" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_46" Value="150" Remark="Integer32_46" AliasName="Integer32_46_Current_Charge" ParentName="UserDefined" />
         <Property SymbolName="Integer32_47" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_48" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_49" Value="0" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_48" Value="3" Remark="" AliasName="Integer32_48_BatLimTm" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_49" Value="3" Remark="" AliasName="Integer32_49_BatLowTm" ParentName="UserDefined" />
         <Property SymbolName="Integer32_50" Value="245" Remark="" AliasName="Integer32_50_BattLowVol" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_51" Value="1" Remark="1=L or M or H, 2=M or H, 3=H" AliasName="Integer32_51_BattLowSel" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_51" Value="220" Remark="Integer32_51" AliasName="Integer32_51_BattNgVol" ParentName="UserDefined" />
         <Property SymbolName="Integer32_52" Value="600000" Remark="ms" AliasName="Integer32_52_PowOffTm" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_53" Value="0" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_53" Value="0" Remark="" AliasName="Integer32_53_BattChg" ParentName="UserDefined" />
         <Property SymbolName="Integer32_54" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Integer32_55" Value="104809768" Remark="" AliasName="Integer32_55_TravelDistance" ParentName="UserDefined" />
         <Property SymbolName="Integer32_56" Value="0" Remark="" ParentName="UserDefined" />
@@ -619,8 +608,8 @@
         <Property SymbolName="MaxAngularSpeed" Value="120" Remark="Max steer angular speed allowed" ParentName="FrontWheel" />
         <Property SymbolName="MinSteerAngle" Value="-105" Remark="Min steer angle allowed" ParentName="FrontWheel" />
         <Property SymbolName="MaxSteerAngle" Value="105" Remark="Max steer angle allowed" ParentName="FrontWheel" />
-        <Property SymbolName="X" Value="628" Remark="Wheel position X (lengthwise along the symmetry axis). Positive in the forwards direction." ParentName="FrontWheel" />
-        <Property SymbolName="Y" Value="0" Remark="Wheel position Y (perpendicular to the symmetry axis). Positive to the left." ParentName="FrontWheel" />
+        <Property SymbolName="X" Value="660" Remark="Wheel position X (lengthwise along the symmetry axis). Positive in the forwards direction." ParentName="FrontWheel" />
+        <Property SymbolName="Y" Value="60" Remark="Wheel position Y (perpendicular to the symmetry axis). Positive to the left." ParentName="FrontWheel" />
         <Property SymbolName="SetSpeedRef" Value="DCD_5.SetSpeed" Remark="Symbolic name for wheel set speed" ParentName="FrontWheel" IsSymbol="1" />
         <Property SymbolName="SetAngleRef" Value="DCD_6.SetAngle" Remark="Symbolic name for wheel set angle" ParentName="FrontWheel" IsSymbol="1" />
         <Property SymbolName="SetSpeedEnableRef" Value="DCD_5.EnablePowerStage" Remark="Symbolic name for wheel speed regulator enable" ParentName="FrontWheel" IsSymbol="1" />
@@ -640,8 +629,8 @@
         <Property SymbolName="MaxAngularSpeed" Value="120" Remark="Max steer angular speed allowed" ParentName="RearWheel" />
         <Property SymbolName="MinSteerAngle" Value="-105" Remark="Min steer angle allowed" ParentName="RearWheel" />
         <Property SymbolName="MaxSteerAngle" Value="105" Remark="Max steer angle allowed" ParentName="RearWheel" />
-        <Property SymbolName="X" Value="-628" Remark="Wheel position X (lengthwise along the symmetry axis). Positive in the forwards direction." ParentName="RearWheel" />
-        <Property SymbolName="Y" Value="0" Remark="Wheel position Y (perpendicular to the symmetry axis). Positive to the left." ParentName="RearWheel" />
+        <Property SymbolName="X" Value="-660" Remark="Wheel position X (lengthwise along the symmetry axis). Positive in the forwards direction." ParentName="RearWheel" />
+        <Property SymbolName="Y" Value="-60" Remark="Wheel position Y (perpendicular to the symmetry axis). Positive to the left." ParentName="RearWheel" />
         <Property SymbolName="SetSpeedRef" Value="DCD_7.SetSpeed" Remark="Symbolic name for wheel set speed" ParentName="RearWheel" IsSymbol="1" />
         <Property SymbolName="SetAngleRef" Value="DCD_8.SetAngle" Remark="Symbolic name for wheel set angle" ParentName="RearWheel" IsSymbol="1" />
         <Property SymbolName="SetSpeedEnableRef" Value="DCD_7.EnablePowerStage" Remark="Symbolic name for wheel speed regulator enable" ParentName="RearWheel" IsSymbol="1" />
@@ -669,21 +658,21 @@
         <Property SymbolName="DetectDistance" Value="25" Remark="Sight distance for laser scanner" ParentName="LS2000" />
         <Property SymbolName="Sensitivity" Value="40" Remark="Detection sensitivity level. High sensitivity give more detections but also potentially increases number of false.&#xD;&#xA;Low sensitivity eliminates a lot of false detecions but also removes potentially real (good) detections." ParentName="LS2000" />
         <Property SymbolName="ReflectorShadow" Value="1000" Remark="Defines the length (in mm) of a reflector shadow - the area&#xD;&#xA;immediately following a detected reflector where the LS2000&#xD;&#xA;ignores any new reflectors.  The recommended value for this&#xD;&#xA;parameter is 0.&#xD;&#xA;&#xD;&#xA;Note: This parameter is incompatible with the UpsideDown&#xD;&#xA;parameter." ParentName="LS2000" />
-        <Property SymbolName="X" Value="-770" Remark="Laser Scanner position X" ParentName="LS2000" />
+        <Property SymbolName="X" Value="-725" Remark="Laser Scanner position X" ParentName="LS2000" />
         <Property SymbolName="Y" Value="0" Remark="Laser Scanner position Y" ParentName="LS2000" />
         <Property SymbolName="Angle" Value="0" Remark="Laser Scanner position Angle" ParentName="LS2000" />
         <Property SymbolName="UpsideDown" Value="0" Remark="Indicates if the range sensor is mounted upside down.&#xD;&#xA;&#xD;&#xA;Set to False if the range sensor is mounted right side up.&#xD;&#xA;Set to True if the range sensor is mounted upside down." ParentName="LS2000" />
         <Property SymbolName="IP" Value="192.168.100.9" Remark="The IP address used to connect to the scanner." ParentName="LS2000" />
-        <Property SymbolName="Field1_X1" Value="-865" Remark="Bottom X position in vehicle coordinate where the field starts. This value should be less than Field1_X2 to define a valid field." ParentName="LS2000" />
-        <Property SymbolName="Field1_X2" Value="-665" Remark="Top X position in vehicle coordinate where the field ends. This value should be greater than Field1_X1 to define a valid field." ParentName="LS2000" />
-        <Property SymbolName="Field1_Y1" Value="-100" Remark="Right Y position in vehicle coordinate where the field starts. This value should be less than Field1_Y2 to define a valid field." ParentName="LS2000" />
-        <Property SymbolName="Field1_Y2" Value="100" Remark="Left Y position in vehicle coordinate where the field ends. This value should be greater than Field1_Y1 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field1_X1" Value="-732" Remark="Bottom X position in vehicle coordinate where the field starts. This value should be less than Field1_X2 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field1_X2" Value="-732" Remark="Top X position in vehicle coordinate where the field ends. This value should be greater than Field1_X1 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field1_Y1" Value="0" Remark="Right Y position in vehicle coordinate where the field starts. This value should be less than Field1_Y2 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field1_Y2" Value="0" Remark="Left Y position in vehicle coordinate where the field ends. This value should be greater than Field1_Y1 to define a valid field." ParentName="LS2000" />
         <Property SymbolName="Field1_Triggered" Value="0" Remark="True if something is inside field" ParentName="LS2000" />
         <Property SymbolName="Field1_Dist" Value="0" Remark="Distance from sensor to nearest object inside field. Valid only if Field1_Triggered is true." ParentName="LS2000" />
-        <Property SymbolName="Field2_X1" Value="-865" Remark="Bottom X position in vehicle coordinate where the field starts. This value should be less than Field2_X2 to define a valid field." ParentName="LS2000" />
-        <Property SymbolName="Field2_X2" Value="-665" Remark="Top X position in vehicle coordinate where the field ends. This value should be greater than Field2_X1 to define a valid field." ParentName="LS2000" />
-        <Property SymbolName="Field2_Y1" Value="-100" Remark="Right Y position in vehicle coordinate where the field starts. This value should be less than Field2_Y2 to define a valid field." ParentName="LS2000" />
-        <Property SymbolName="Field2_Y2" Value="100" Remark="Left Y position in vehicle coordinate where the field ends. This value should be greater than Field1_Y1 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field2_X1" Value="-732" Remark="Bottom X position in vehicle coordinate where the field starts. This value should be less than Field2_X2 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field2_X2" Value="-732" Remark="Top X position in vehicle coordinate where the field ends. This value should be greater than Field2_X1 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field2_Y1" Value="0" Remark="Right Y position in vehicle coordinate where the field starts. This value should be less than Field2_Y2 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field2_Y2" Value="0" Remark="Left Y position in vehicle coordinate where the field ends. This value should be greater than Field1_Y1 to define a valid field." ParentName="LS2000" />
         <Property SymbolName="Field2_Triggered" Value="0" Remark="True if something is inside field" ParentName="LS2000" />
         <Property SymbolName="Field2_Dist" Value="0" Remark="Distance from sensor to nearest object inside field. Valid only if Field2_Triggered is true." ParentName="LS2000" />
         <Property SymbolName="Sector1_Ignore" Value="0" Remark="If enabled bearings within sector will be ignored." ParentName="LS2000" />
@@ -710,6 +699,14 @@
         <Property SymbolName="VarBearing" Value="0.000001" Remark="Models uncertainty in reflector bearing measurement." ParentName="LS2000" />
         <Property SymbolName="VarDistance" Value="0.001" Remark="Models uncertainty in reflector distance measurement." ParentName="LS2000" />
         <Property SymbolName="Temperature" Value="0" Remark="The temperature reported by the LS2000, updated every 2 seconds when LS2000 is used. This value is only valid when Connected=1." ParentName="LS2000" />
+      </Properties>
+    </Component>
+    <Component SymbolName="COM6" DataType="LanSerialPort" Index="0x2007" FixedIndex="0">
+      <Properties>
+        <Property SymbolName="Protocol" Value="1" Remark="Protocol used for IP communication." ParentName="COM6" />
+        <Property SymbolName="IP" Value="ANY" Remark="In case of Protocol set to UDP client or TCP client this should be set&#xD;&#xA;to the IP address of the UDP/TCP server that the PLC connects to. With&#xD;&#xA;Protocol set to UDP server or TCP server this specify the IP address of&#xD;&#xA;the vehicle controller which clients should use.&#xD;&#xA;&#xD;&#xA;In the case of Protocol set to UDP server or TCP server, the special&#xD;&#xA;value &quot;LAN&quot; means that connections are only allowed on the&#xD;&#xA;LAN interface and the special value &quot;ANY&quot; allows connections&#xD;&#xA;on both the LAN interface and the WLAN interface.&#xD;&#xA;&#xD;&#xA;Changing the address from the PLC will result in the connection being&#xD;&#xA;closed. The new IP address will be used in the next PLC loop serial&#xD;&#xA;read/write.  Note! It is not possible to change the address for a&#xD;&#xA;range sensor connected using a LAN-serial-adapter." ParentName="COM6" />
+        <Property SymbolName="Port" Value="503" Remark="In case of Protocol set to UDP client or TCP client this should be set&#xD;&#xA;to the port of the UDP/TCP server that the PLC connects to. With&#xD;&#xA;Protocol set to UDP server or TCP server this specify the port on the&#xD;&#xA;vehicle controller that the PLC opens for connections.&#xD;&#xA;&#xD;&#xA;Changing the port from the PLC will result in the connection being&#xD;&#xA;closed. The new port will be used in the next PLC loop serial&#xD;&#xA;read/write.  Note! It is not possible to change the port for a range&#xD;&#xA;sensor connected using a LAN-serial-adapter." ParentName="COM6" />
+        <Property SymbolName="SendBuffer" Value="1" Remark="With SendBuffer set, outgoing data is sent over IP when the PLC&#xD;&#xA;function block NDC_SERIAL_WRITE is called with argument&#xD;&#xA;LENGTH=0. Without SendBuffer set, data is sent immediately but each IP&#xD;&#xA;packet will contain at most 32 bytes data with more IP traffic as a&#xD;&#xA;result." ParentName="COM6" />
       </Properties>
     </Component>
     <Component SymbolName="Vehicle" DataType="Vehicle" Index="0x2000" FixedIndex="0">
@@ -794,7 +791,7 @@
     <Component SymbolName="ReflectorNavigator" DataType="ReflectorNavigator" Index="0x2035" FixedIndex="0">
       <Properties>
         <Property SymbolName="NumberOfAssociatedReflectors" Value="0" Remark="Number of associated reflectors detected by the vehicle. Updated every 500 milliseconds." ParentName="ReflectorNavigator" />
-        <Property SymbolName="SelectReflectorType" Value="0" Remark="Decides the reflector type to be used for navigation.&#xD;&#xA;0 = Automatic, based on the reflectors in the layout.&#xD;&#xA;1 = Flat reflector, measuring center of reflector.&#xD;&#xA;2 = Flat reflector, measuring right edge of reflector.&#xD;&#xA;3 = Cylindrical reflector." ParentName="ReflectorNavigator" />
+        <Property SymbolName="SelectReflectorType" Value="2" Remark="Decides the reflector type to be used for navigation.&#xD;&#xA;0 = Automatic, based on the reflectors in the layout.&#xD;&#xA;1 = Flat reflector, measuring center of reflector.&#xD;&#xA;2 = Flat reflector, measuring right edge of reflector.&#xD;&#xA;3 = Cylindrical reflector." ParentName="ReflectorNavigator" />
       </Properties>
       <References>
         <Reference SymbolName="Scanner">
@@ -802,22 +799,14 @@
         </Reference>
       </References>
     </Component>
-    <Component SymbolName="COM6" DataType="LanSerialPort" Index="0x2007" FixedIndex="0">
-      <Properties>
-        <Property SymbolName="Protocol" Value="1" Remark="Protocol used for IP communication." ParentName="COM6" />
-        <Property SymbolName="IP" Value="ANY" Remark="In case of Protocol set to UDP client or TCP client this should be set&#xD;&#xA;to the IP address of the UDP/TCP server that the PLC connects to. With&#xD;&#xA;Protocol set to UDP server or TCP server this specify the IP address of&#xD;&#xA;the vehicle controller which clients should use.&#xD;&#xA;&#xD;&#xA;In the case of Protocol set to UDP server or TCP server, the special&#xD;&#xA;value &quot;LAN&quot; means that connections are only allowed on the&#xD;&#xA;LAN interface and the special value &quot;ANY&quot; allows connections&#xD;&#xA;on both the LAN interface and the WLAN interface.&#xD;&#xA;&#xD;&#xA;Changing the address from the PLC will result in the connection being&#xD;&#xA;closed. The new IP address will be used in the next PLC loop serial&#xD;&#xA;read/write.  Note! It is not possible to change the address for a&#xD;&#xA;range sensor connected using a LAN-serial-adapter." ParentName="COM6" />
-        <Property SymbolName="Port" Value="503" Remark="In case of Protocol set to UDP client or TCP client this should be set&#xD;&#xA;to the port of the UDP/TCP server that the PLC connects to. With&#xD;&#xA;Protocol set to UDP server or TCP server this specify the port on the&#xD;&#xA;vehicle controller that the PLC opens for connections.&#xD;&#xA;&#xD;&#xA;Changing the port from the PLC will result in the connection being&#xD;&#xA;closed. The new port will be used in the next PLC loop serial&#xD;&#xA;read/write.  Note! It is not possible to change the port for a range&#xD;&#xA;sensor connected using a LAN-serial-adapter." ParentName="COM6" />
-        <Property SymbolName="SendBuffer" Value="1" Remark="With SendBuffer set, outgoing data is sent over IP when the PLC&#xD;&#xA;function block NDC_SERIAL_WRITE is called with argument&#xD;&#xA;LENGTH=0. Without SendBuffer set, data is sent immediately but each IP&#xD;&#xA;packet will contain at most 32 bytes data with more IP traffic as a&#xD;&#xA;result." ParentName="COM6" />
-      </Properties>
-    </Component>
     <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice" Index="0x2002" FixedIndex="0">
       <Properties>
         <Property SymbolName="BusID" Value="1" Remark="CAN bus ID" ParentName="DCD_5" />
         <Property SymbolName="NodeID" Value="5" Remark="CAN node ID" ParentName="DCD_5" />
         <Property SymbolName="FailureAction" Value="0" Remark="0 = Background, the background programs takes action when an error occur in the device. 1 = PLC, no action from background program. The error should be handled by the PLC application." ParentName="DCD_5" />
         <Property SymbolName="ActiveInSafeState" Value="0" Remark="Decides if the device will start up in safe state." ParentName="DCD_5" />
-        <Property SymbolName="MotorCurrentRegP" Value="800" Remark="Motor Parameter: Proportional gain in the PI-parts of the current controller." ParentName="DCD_5" />
-        <Property SymbolName="MotorCurrentRegI" Value="300" Remark="Motor Parameter: Integral gain in the PI-parts of the current controller." ParentName="DCD_5" />
+        <Property SymbolName="MotorCurrentRegP" Value="160" Remark="Motor Parameter: Proportional gain in the PI-parts of the current controller." ParentName="DCD_5" />
+        <Property SymbolName="MotorCurrentRegI" Value="60" Remark="Motor Parameter: Integral gain in the PI-parts of the current controller." ParentName="DCD_5" />
         <Property SymbolName="MaxCommandSpeed" Value="2000" Remark="Max command speed" ParentName="DCD_5" />
         <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_5" />
         <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_5" />
@@ -878,8 +867,8 @@
         <Property SymbolName="NodeID" Value="7" Remark="CAN node ID" ParentName="DCD_7" />
         <Property SymbolName="FailureAction" Value="0" Remark="0 = Background, the background programs takes action when an error occur in the device. 1 = PLC, no action from background program. The error should be handled by the PLC application." ParentName="DCD_7" />
         <Property SymbolName="ActiveInSafeState" Value="0" Remark="Decides if the device will start up in safe state." ParentName="DCD_7" />
-        <Property SymbolName="MotorCurrentRegP" Value="800" Remark="Motor Parameter: Proportional gain in the PI-parts of the current controller." ParentName="DCD_7" />
-        <Property SymbolName="MotorCurrentRegI" Value="300" Remark="Motor Parameter: Integral gain in the PI-parts of the current controller." ParentName="DCD_7" />
+        <Property SymbolName="MotorCurrentRegP" Value="160" Remark="Motor Parameter: Proportional gain in the PI-parts of the current controller." ParentName="DCD_7" />
+        <Property SymbolName="MotorCurrentRegI" Value="60" Remark="Motor Parameter: Integral gain in the PI-parts of the current controller." ParentName="DCD_7" />
         <Property SymbolName="MaxCommandSpeed" Value="2000" Remark="Max command speed" ParentName="DCD_7" />
         <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_7" />
         <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_7" />
@@ -939,7 +928,7 @@
         <Property SymbolName="NodeID" Value="2" Remark="CAN node ID" ParentName="SDIO" />
         <Property SymbolName="FailureAction" Value="0" Remark="0 = Background, the background programs takes action when an error occur in the device. 1 = PLC, no action from background program. The error should be handled by the PLC application." ParentName="SDIO" />
         <Property SymbolName="ActiveInSafeState" Value="0" Remark="Decides if the device will start up in safe state." ParentName="SDIO" />
-        <Property SymbolName="IMUAxis" Value="IMUGyroY" Remark="The axis in the IMU that gives the angular rate for vehicle." ParentName="SDIO" />
+        <Property SymbolName="IMUAxis" Value="IMUGyroX" Remark="The axis in the IMU that gives the angular rate for vehicle." ParentName="SDIO" />
         <Property SymbolName="IMUNavActive" Value="0" Remark="Use the angular rate from the IMU when calculating the position of the vehicle." ParentName="SDIO" />
         <Property SymbolName="IMUGyroXScale" Value="10000" Remark="Gyroscope x-axis scale value (the value 10000 corresponds to a real scale value of 1.0)" ParentName="SDIO" />
         <Property SymbolName="IMUGyroYScale" Value="10000" Remark="Gyroscope y-axis scale value (the value 10000 corresponds to a real scale value of 1.0)" ParentName="SDIO" />
@@ -1035,6 +1024,9 @@
         <Property SymbolName="DigitalInput2" Value="" Remark="Digital Input 2 value" AliasName="DigitalInput2_SteerLimitF_R" ParentName="CAN_IO_3" />
         <Property SymbolName="DigitalInput3" Value="" Remark="Digital Input 3 value" AliasName="DigitalInput3_SteerLimitR_L" ParentName="CAN_IO_3" />
         <Property SymbolName="DigitalInput4" Value="" Remark="Digital Input 4 value" AliasName="DigitalInput4_SteerLimitR_R" ParentName="CAN_IO_3" />
+        <Property SymbolName="DigitalInput5" Value="" Remark="Digital Input 5 value" AliasName="DigitalInput5_BatTmp25_i" ParentName="CAN_IO_3" />
+        <Property SymbolName="DigitalInput6" Value="" Remark="Digital Input 6 value" AliasName="DigitalInput6_BatTmp40_i" ParentName="CAN_IO_3" />
+        <Property SymbolName="DigitalInput7" Value="" Remark="Digital Input 7 value" AliasName="DigitalInput7_BatTmp55_i" ParentName="CAN_IO_3" />
         <Property SymbolName="DigitalInput9" Value="" Remark="Digital Input 9 value" AliasName="DigitalInput9_AreaF_IN1" ParentName="CAN_IO_3" />
         <Property SymbolName="DigitalInput10" Value="" Remark="Digital Input 10 value" AliasName="DigitalInput10_AreaF_IN2" ParentName="CAN_IO_3" />
         <Property SymbolName="DigitalInput13" Value="" Remark="Digital Input 13 value" AliasName="DigitalInput13_AreaR_IN1" ParentName="CAN_IO_3" />
@@ -1728,6 +1720,10 @@
     <CAN_Parameter PropertyName="LS2000.NavActive" Index="0x203B" SubIndex="37" DataType="BOOLEAN" AccessType="rw" />
     <CAN_Parameter PropertyName="LS2000.Attached" Index="0x203B" SubIndex="38" DataType="BOOLEAN" AccessType="ro" />
     <CAN_Parameter PropertyName="LS2000.Temperature" Index="0x203B" SubIndex="39" DataType="INTEGER32" AccessType="ro" Unit="degrees Celsius" />
+    <CAN_Parameter PropertyName="COM6.Protocol" Index="0x2007" SubIndex="1" DataType="INTEGER32" AccessType="ro" Min="0" Max="3" />
+    <CAN_Parameter PropertyName="COM6.IP" Index="0x2007" SubIndex="2" DataType="VISIBLE_STRING" AccessType="rw" />
+    <CAN_Parameter PropertyName="COM6.Port" Index="0x2007" SubIndex="3" DataType="INTEGER32" AccessType="rw" Min="0" Max="65535" />
+    <CAN_Parameter PropertyName="COM6.SendBuffer" Index="0x2007" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
     <CAN_Parameter PropertyName="Vehicle.VehicleType" Index="0x2000" SubIndex="1" DataType="VISIBLE_STRING" AccessType="ro" />
     <CAN_Parameter PropertyName="Vehicle.VehicleID" Index="0x2000" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
     <CAN_Parameter PropertyName="Vehicle.IndividualName" Index="0x2000" SubIndex="3" DataType="VISIBLE_STRING" AccessType="ro" />
@@ -1778,10 +1774,6 @@
     <CAN_Parameter PropertyName="ReflectorNavigator.RefStatValid" Index="0x2035" SubIndex="1" DataType="BOOLEAN" AccessType="ro" />
     <CAN_Parameter PropertyName="ReflectorNavigator.NumberOfAssociatedReflectors" Index="0x2035" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
     <CAN_Parameter PropertyName="ReflectorNavigator.SelectReflectorType" Index="0x2035" SubIndex="3" DataType="INTEGER32" AccessType="rw" Min="0" Max="3" />
-    <CAN_Parameter PropertyName="COM6.Protocol" Index="0x2007" SubIndex="1" DataType="INTEGER32" AccessType="ro" Min="0" Max="3" />
-    <CAN_Parameter PropertyName="COM6.IP" Index="0x2007" SubIndex="2" DataType="VISIBLE_STRING" AccessType="rw" />
-    <CAN_Parameter PropertyName="COM6.Port" Index="0x2007" SubIndex="3" DataType="INTEGER32" AccessType="rw" Min="0" Max="65535" />
-    <CAN_Parameter PropertyName="COM6.SendBuffer" Index="0x2007" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
     <CAN_Parameter PropertyName="DCD_5.BusID" Index="0x2002" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
     <CAN_Parameter PropertyName="DCD_5.NodeID" Index="0x2002" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
     <CAN_Parameter PropertyName="DCD_5.FailureAction" Index="0x2002" SubIndex="3" DataType="INTEGER32" AccessType="ro" Min="0" Max="1" />
@@ -1791,11 +1783,11 @@
     <CAN_Parameter PropertyName="DCD_5.MotorCurrentRegP" Index="0x2002" SubIndex="7" DataType="INTEGER16" AccessType="rw" />
     <CAN_Parameter PropertyName="DCD_5.MotorCurrentRegI" Index="0x2002" SubIndex="8" DataType="INTEGER16" AccessType="rw" />
     <CAN_Parameter PropertyName="DCD_5.MaxCommandSpeed" Index="0x2002" SubIndex="9" DataType="UNSIGNED16" AccessType="rw" Unit="mm/s" />
-    <CAN_Parameter PropertyName="DCD_5.ForwardMaxAccTorqueCurrent" Index="0x2002" SubIndex="10" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="1250" />
-    <CAN_Parameter PropertyName="DCD_5.ReverseMaxAccTorqueCurrent" Index="0x2002" SubIndex="11" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="1250" />
+    <CAN_Parameter PropertyName="DCD_5.ForwardMaxAccTorqueCurrent" Index="0x2002" SubIndex="10" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="500" />
+    <CAN_Parameter PropertyName="DCD_5.ReverseMaxAccTorqueCurrent" Index="0x2002" SubIndex="11" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="500" />
     <CAN_Parameter PropertyName="DCD_5.MaxTorqueCurrentChange" Index="0x2002" SubIndex="12" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere/ms" />
-    <CAN_Parameter PropertyName="DCD_5.ForwardMaxBrakeTorqueCurrent" Index="0x2002" SubIndex="13" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="1250" />
-    <CAN_Parameter PropertyName="DCD_5.ReverseMaxBrakeTorqueCurrent" Index="0x2002" SubIndex="14" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="1250" />
+    <CAN_Parameter PropertyName="DCD_5.ForwardMaxBrakeTorqueCurrent" Index="0x2002" SubIndex="13" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="500" />
+    <CAN_Parameter PropertyName="DCD_5.ReverseMaxBrakeTorqueCurrent" Index="0x2002" SubIndex="14" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="500" />
     <CAN_Parameter PropertyName="DCD_5.SpeedRegP" Index="0x2002" SubIndex="15" DataType="UNSIGNED16" AccessType="rw" />
     <CAN_Parameter PropertyName="DCD_5.SpeedRegI" Index="0x2002" SubIndex="16" DataType="UNSIGNED16" AccessType="rw" />
     <CAN_Parameter PropertyName="DCD_5.RegSupervisionCheckOutHysteresis" Index="0x2002" SubIndex="17" DataType="UNSIGNED16" AccessType="rw" Unit="deciAmpere" />
@@ -1898,11 +1890,11 @@
     <CAN_Parameter PropertyName="DCD_7.MotorCurrentRegP" Index="0x2004" SubIndex="7" DataType="INTEGER16" AccessType="rw" />
     <CAN_Parameter PropertyName="DCD_7.MotorCurrentRegI" Index="0x2004" SubIndex="8" DataType="INTEGER16" AccessType="rw" />
     <CAN_Parameter PropertyName="DCD_7.MaxCommandSpeed" Index="0x2004" SubIndex="9" DataType="UNSIGNED16" AccessType="rw" Unit="mm/s" />
-    <CAN_Parameter PropertyName="DCD_7.ForwardMaxAccTorqueCurrent" Index="0x2004" SubIndex="10" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="1250" />
-    <CAN_Parameter PropertyName="DCD_7.ReverseMaxAccTorqueCurrent" Index="0x2004" SubIndex="11" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="1250" />
+    <CAN_Parameter PropertyName="DCD_7.ForwardMaxAccTorqueCurrent" Index="0x2004" SubIndex="10" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="500" />
+    <CAN_Parameter PropertyName="DCD_7.ReverseMaxAccTorqueCurrent" Index="0x2004" SubIndex="11" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="500" />
     <CAN_Parameter PropertyName="DCD_7.MaxTorqueCurrentChange" Index="0x2004" SubIndex="12" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere/ms" />
-    <CAN_Parameter PropertyName="DCD_7.ForwardMaxBrakeTorqueCurrent" Index="0x2004" SubIndex="13" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="1250" />
-    <CAN_Parameter PropertyName="DCD_7.ReverseMaxBrakeTorqueCurrent" Index="0x2004" SubIndex="14" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="1250" />
+    <CAN_Parameter PropertyName="DCD_7.ForwardMaxBrakeTorqueCurrent" Index="0x2004" SubIndex="13" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="500" />
+    <CAN_Parameter PropertyName="DCD_7.ReverseMaxBrakeTorqueCurrent" Index="0x2004" SubIndex="14" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" Max="500" />
     <CAN_Parameter PropertyName="DCD_7.SpeedRegP" Index="0x2004" SubIndex="15" DataType="UNSIGNED16" AccessType="rw" />
     <CAN_Parameter PropertyName="DCD_7.SpeedRegI" Index="0x2004" SubIndex="16" DataType="UNSIGNED16" AccessType="rw" />
     <CAN_Parameter PropertyName="DCD_7.RegSupervisionCheckOutHysteresis" Index="0x2004" SubIndex="17" DataType="UNSIGNED16" AccessType="rw" Unit="deciAmpere" />

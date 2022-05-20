@@ -148,7 +148,7 @@ case OPTX2 of
 			(* Start adress to read *)
 			ConvByteH:= OPTX2_message[9]; 
 			ConvByteL:= OPTX2_message[10]; 
-			start_adress  := Word_TO_INT(ConvWord);
+			start_adress  := Word_TO_INT(ConvWord) + 1;
 			
 			OPTX2:=3;
 

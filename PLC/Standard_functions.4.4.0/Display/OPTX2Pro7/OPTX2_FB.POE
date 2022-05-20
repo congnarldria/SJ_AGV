@@ -117,11 +117,16 @@ END_VAR
 (*Automatically declared*)
 VAR_EXTERNAL
 	PLC_TX_WORD15_STR_BCD2 : WORD;
+	PLC_RX_WORD18 : WORD;
+	PLC_RX_WORD19 : WORD;
+	PLC_RX_WORD16 : WORD;
 	PLC_RX_WORD12_STW_PINT : WORD;
-	PLC_RX_WORD18_BMS_BATC : WORD;
+	PLC_RX_WORD17 : WORD;
 	PLC_RX_WORD11_INS_PNO : WORD;
 	CONVDINT : DINT;
 	STOPFINDSYNC : BOOL;
+	PLC_RX_WORD24 : WORD;
+	PLC_RX_WORD14 : WORD;
 	DISPLAYSTOPSTRING : DisplayStopString_FB;
 	PLC_TX_WORD6 : WORD;
 	PLC_TX_WORD5 : WORD;
@@ -130,41 +135,36 @@ VAR_EXTERNAL
 	PLC_TX_WORD2 : WORD;
 	PLC_TX_WORD1 : WORD;
 	PLC_RX_WORD25 : WORD;
+	PLC_RX_WORD15 : WORD;
 	PLC_TX_WORD12_STR_BATD : WORD;
-	PLC_RX_WORD24_BMS_ID4H : WORD;
+	PLC_RX_WORD22 : WORD;
 	PLC_RX_WORD9_STW_BCD1 : WORD;
 	PLC_RX_WORD8_STW_BCD2 : WORD;
 	PLC_RX_WORD7_STW_BCD3 : WORD;
 	STOPWORD2 : DWORD;
-	PLC_RX_WORD22_BMS_CHAN : WORD;
+	PLC_RX_WORD23 : WORD;
 	PLC_RX_WORD6 : WORD;
 	PLC_RX_WORD5 : WORD;
-	PLC_RX_WORD4 : WORD;
 	PLC_RX_WORD3 : WORD;
 	PLC_RX_WORD2 : WORD;
 	PLC_RX_WORD1 : WORD;
-	PLC_RX_WORD16_BMS_BATV : WORD;
+	PLC_RX_WORD20 : WORD;
 	PLC_TX_WORD13_STR_ERR : WORD;
 	PLC_TX_WORD8_STR_SEG : WORD;
 	PLC_TX_WORD7_STR_VECL : WORD;
-	PLC_RX_WORD10_STW_ILER : WORD;
+	PLC_RX_WORD10_ROUND : WORD;
+	PLC_RX_WORD21 : WORD;
 	INPUT : INPUT_T;
-	PLC_RX_WORD14_BMS_2 : WORD;
 	PLC_TX_WORD16_STR_BCD1 : WORD;
 	STOPWORD : DWORD;
-	PLC_RX_WORD19_BMS_BATA : WORD;
 	CONVUDINT : UDINT;
 	PLC_TX_WORD10_STR_BATV : WORD;
 	CONVWORD2 : WORD;
-	PLC_RX_WORD23_BMS_ID4L : WORD;
-	PLC_RX_WORD21_BMS_MAIN : WORD;
-	PLC_RX_WORD17_BMS_BATT : WORD;
+	PLC_RX_WORD4_PLC_ERRD : WORD;
 	PLC_TX_WORD14_STR_BCD3 : WORD;
-	PLC_RX_WORD15_BMS_3 : WORD;
-	PLC_RX_WORD20_PLC_ERRD : WORD;
 	PLC_TX_WORD9_STR_PNT : WORD;
-	PLC_RX_WORD13_INS_ANO : WORD;
 	PLC_TX_WORD11_STR_TEMP : WORD;
+	PLC_RX_WORD13_INS_ANO : WORD;
 	G_ERRORCODE : WORD;
 END_VAR
 (**  **)
@@ -375,9 +375,9 @@ END_VAR
 	LD PLC_RX_Word3
 	ST ModBus_ValueWord[73]
 
-(** ModBus_ValueWord [74] := PLC_RX_Word4; **)
+(** ModBus_ValueWord [74] := PLC_RX_Word4_PLC_ErrD; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word4
+	LD PLC_RX_Word4_PLC_ErrD
 	ST ModBus_ValueWord[74]
 
 (** ModBus_ValueWord [75] := PLC_RX_Word5; **)
@@ -405,9 +405,9 @@ END_VAR
 	LD PLC_RX_Word9_STw_BCD1
 	ST ModBus_ValueWord[79]
 
-(** ModBus_ValueWord [80] := PLC_RX_Word10_STw_ILEr; **)
+(** ModBus_ValueWord [80] := PLC_RX_Word10_Round; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word10_STw_ILEr
+	LD PLC_RX_Word10_Round
 	ST ModBus_ValueWord[80]
 
 (** ModBus_ValueWord [81] := PLC_RX_Word11_Ins_Pno; **)
@@ -425,59 +425,59 @@ END_VAR
 	LD PLC_RX_Word13_Ins_Ano
 	ST ModBus_ValueWord[83]
 
-(** ModBus_ValueWord [84] := PLC_RX_Word14_BMS_2; **)
+(** ModBus_ValueWord [84] := PLC_RX_Word14; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word14_BMS_2
+	LD PLC_RX_Word14
 	ST ModBus_ValueWord[84]
 
-(** ModBus_ValueWord [85] := PLC_RX_Word15_BMS_3; **)
+(** ModBus_ValueWord [85] := PLC_RX_Word15; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word15_BMS_3
+	LD PLC_RX_Word15
 	ST ModBus_ValueWord[85]
 
-(** ModBus_ValueWord [86] := PLC_RX_Word16_BMS_BatV; **)
+(** ModBus_ValueWord [86] := PLC_RX_Word16; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word16_BMS_BatV
+	LD PLC_RX_Word16
 	ST ModBus_ValueWord[86]
 
-(** ModBus_ValueWord [87] := PLC_RX_Word17_BMS_BatT; **)
+(** ModBus_ValueWord [87] := PLC_RX_Word17; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word17_BMS_BatT
+	LD PLC_RX_Word17
 	ST ModBus_ValueWord[87]
 
-(** ModBus_ValueWord [88] := PLC_RX_Word18_BMS_BatC; **)
+(** ModBus_ValueWord [88] := PLC_RX_Word18; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word18_BMS_BatC
+	LD PLC_RX_Word18
 	ST ModBus_ValueWord[88]
 
-(** ModBus_ValueWord [89] := PLC_RX_Word19_BMS_BatA; **)
+(** ModBus_ValueWord [89] := PLC_RX_Word19; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word19_BMS_BatA
+	LD PLC_RX_Word19
 	ST ModBus_ValueWord[89]
 
-(** ModBus_ValueWord [90] := PLC_RX_Word20_PLC_ErrD; **)
+(** ModBus_ValueWord [90] := PLC_RX_Word20; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word20_PLC_ErrD
+	LD PLC_RX_Word20
 	ST ModBus_ValueWord[90]
 
-(** ModBus_ValueWord [91] := PLC_RX_Word21_BMS_Main; **)
+(** ModBus_ValueWord [91] := PLC_RX_Word21; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word21_BMS_Main
+	LD PLC_RX_Word21
 	ST ModBus_ValueWord[91]
 
-(** ModBus_ValueWord [92] := PLC_RX_Word22_BMS_Chan; **)
+(** ModBus_ValueWord [92] := PLC_RX_Word22; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word22_BMS_Chan
+	LD PLC_RX_Word22
 	ST ModBus_ValueWord[92]
 
-(** ModBus_ValueWord [93] := PLC_RX_Word23_BMS_ID4L; **)
+(** ModBus_ValueWord [93] := PLC_RX_Word23; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word23_BMS_ID4L
+	LD PLC_RX_Word23
 	ST ModBus_ValueWord[93]
 
-(** ModBus_ValueWord [94] := PLC_RX_Word24_BMS_ID4H; **)
+(** ModBus_ValueWord [94] := PLC_RX_Word24; **)
 	(* assign - Stmt *)
-	LD PLC_RX_Word24_BMS_ID4H
+	LD PLC_RX_Word24
 	ST ModBus_ValueWord[94]
 
 (** ModBus_ValueWord [95] := PLC_RX_Word25; **)
@@ -980,19 +980,19 @@ END_VAR
 	LD NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R
 	ST ModBus_ValueBOOL[144]
 
-(** ModBus_ValueBOOL [145] := NDC8.CAN_IO_3.DigitalInput5; **)
+(** ModBus_ValueBOOL [145] := NDC8.CAN_IO_3.DigitalInput5_BatTmp25_i; **)
 	(* assign - Stmt *)
-	LD NDC8.CAN_IO_3.DigitalInput5
+	LD NDC8.CAN_IO_3.DigitalInput5_BatTmp25_i
 	ST ModBus_ValueBOOL[145]
 
-(** ModBus_ValueBOOL [146] := NDC8.CAN_IO_3.DigitalInput6; **)
+(** ModBus_ValueBOOL [146] := NDC8.CAN_IO_3.DigitalInput6_BatTmp40_i; **)
 	(* assign - Stmt *)
-	LD NDC8.CAN_IO_3.DigitalInput6
+	LD NDC8.CAN_IO_3.DigitalInput6_BatTmp40_i
 	ST ModBus_ValueBOOL[146]
 
-(** ModBus_ValueBOOL [147] := NDC8.CAN_IO_3.DigitalInput7; **)
+(** ModBus_ValueBOOL [147] := NDC8.CAN_IO_3.DigitalInput7_BatTmp55_i; **)
 	(* assign - Stmt *)
-	LD NDC8.CAN_IO_3.DigitalInput7
+	LD NDC8.CAN_IO_3.DigitalInput7_BatTmp55_i
 	ST ModBus_ValueBOOL[147]
 
 (** ModBus_ValueBOOL [148] := NDC8.CAN_IO_3.DigitalInput8; **)
@@ -1763,7 +1763,8 @@ END_VAR
 		ST ModBus_ValueWord[373]
 
 (** 	 **)
-(** 	 **)
+(** {*-------------------------------------------------------------------------*} **)
+(**  **)
 (** 	{* Batt Low Voltage *} **)
 (** 	ConvDINT := NDC8.UserDefined.Integer32_50_BattLowVol; **)
 		(* assign - Stmt *)
@@ -1779,6 +1780,144 @@ END_VAR
 		(* assign - Stmt *)
 		LD ConvWord
 		ST ModBus_ValueWord[375]
+
+(** 	 **)
+(** 	 **)
+(** 	{* Batt NG Voltage *} **)
+(** 	ConvDINT := NDC8.UserDefined.Integer32_51_BattNgVol; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_51_BattNgVol
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [378]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[378]
+
+(** 	ModBus_ValueWord [377]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[377]
+
+(**  **)
+(** 	 **)
+(** 	{* Batt Cap *} **)
+(** 	ConvDINT := NDC8.UserDefined.Integer32_35_Battery_Cap; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_35_Battery_Cap
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [382]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[382]
+
+(** 	ModBus_ValueWord [381]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[381]
+
+(** 	 **)
+(** 	{* Charge Voltage V1*} **)
+(** 	ConvDINT := NDC8.UserDefined.Integer32_40_ChgComV1; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_40_ChgComV1
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [384]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[384]
+
+(** 	ModBus_ValueWord [383]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[383]
+
+(** 	 **)
+(** 	{* Charge Voltage V2*} **)
+(** 	ConvDINT := NDC8.UserDefined.Integer32_41_ChgComV2; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_41_ChgComV2
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [386]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[386]
+
+(** 	ModBus_ValueWord [385]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[385]
+
+(** 	 **)
+(** 	{* Charge Voltage V3*} **)
+(** 	ConvDINT := NDC8.UserDefined.Integer32_42_ChgComV3; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_42_ChgComV3
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [388]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[388]
+
+(** 	ModBus_ValueWord [387]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[387]
+
+(** 	 **)
+(** 	{* Charge BattChg*} **)
+(** 	ConvDINT := NDC8.UserDefined.Integer32_53_BattChg; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_53_BattChg
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [392]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[392]
+
+(** 	ModBus_ValueWord [391]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[391]
+
+(** 	 **)
+(** 	{* Charge Battery_IniCap*} **)
+(** 	ConvDINT := NDC8.UserDefined.Integer32_36_Battery_IniCap; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_36_Battery_IniCap
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [394]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[394]
+
+(** 	ModBus_ValueWord [393]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[393]
+
+(** 	 **)
+(** 	{* Charge Battery_AlarmCap*} **)
+(** 	ConvDINT := NDC8.UserDefined.Integer32_37_Battery_AlarmCap; **)
+		(* assign - Stmt *)
+		LD NDC8.UserDefined.Integer32_37_Battery_AlarmCap
+		ST ConvDINT
+
+(** 	ModBus_ValueWord [396]:=ConvWord2; **)
+		(* assign - Stmt *)
+		LD ConvWord2
+		ST ModBus_ValueWord[396]
+
+(** 	ModBus_ValueWord [395]:=ConvWord; **)
+		(* assign - Stmt *)
+		LD ConvWord
+		ST ModBus_ValueWord[395]
 
 (** 	 **)
 (** 	{* Charge StopTolerance*} **)
@@ -1797,6 +1936,8 @@ END_VAR
 		LD ConvWord
 		ST ModBus_ValueWord[397]
 
+(**  **)
+(** {*----------------------------------------------------------------------------*} **)
 (**  **)
 (** 	ModBus_ValueBOOL [209] := FALSE; **)
 		(* assign - Stmt *)
@@ -1825,7 +1966,7 @@ END_VAR
 		LD ModBus_ValueBOOL[210]
 		ST NDC8.UserDefined.Boolean_20_OnlineOrderMode
 
-(** 	 **)
+(**  **)
 (** 	{* Scanner_x *} **)
 (** 	ConvWord2 := ModBus_ValueWord [352]; **)
 		(* assign - Stmt *)
@@ -2042,6 +2183,150 @@ END_VAR
 		ST NDC8.UserDefined.Integer32_50_BattLowVol
 
 (** 	 **)
+(** 	{* Batt NG Voltage *} **)
+(** 	ConvWord2 := ModBus_ValueWord [378]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[378]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [377]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[377]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.UserDefined.Integer32_51_BattNgVol := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.UserDefined.Integer32_51_BattNgVol
+
+(** 	 **)
+(** 	{* Batt Cap *} **)
+(** 	ConvWord2 := ModBus_ValueWord [382]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[382]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [381]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[381]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.UserDefined.Integer32_35_Battery_Cap := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.UserDefined.Integer32_35_Battery_Cap
+
+(** 	 **)
+(** 	{* Charge Voltage V1*} **)
+(** 	ConvWord2 := ModBus_ValueWord [384]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[384]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [383]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[383]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.UserDefined.Integer32_40_ChgComV1 := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.UserDefined.Integer32_40_ChgComV1
+
+(** 	 **)
+(** 	{* Charge Voltage V2*} **)
+(** 	ConvWord2 := ModBus_ValueWord [386]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[386]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [385]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[385]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.UserDefined.Integer32_41_ChgComV2 := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.UserDefined.Integer32_41_ChgComV2
+
+(** 	 **)
+(** 	{* Charge Voltage V3*} **)
+(** 	ConvWord2 := ModBus_ValueWord [388]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[388]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [387]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[387]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.UserDefined.Integer32_42_ChgComV3 := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.UserDefined.Integer32_42_ChgComV3
+
+(** 	 **)
+(** 	 **)
+(** 	{* Charge Voltage BattChg*} **)
+(** 	ConvWord2 := ModBus_ValueWord [392]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[392]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [391]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[391]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.UserDefined.Integer32_53_BattChg := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.UserDefined.Integer32_53_BattChg
+
+(** 	 **)
+(** 	{* Charge Voltage V3*} **)
+(** 	ConvWord2 := ModBus_ValueWord [394]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[394]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [393]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[393]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.UserDefined.Integer32_36_Battery_IniCap := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.UserDefined.Integer32_36_Battery_IniCap
+
+(** 	 **)
+(** 	{* Charge Voltage V3*} **)
+(** 	ConvWord2 := ModBus_ValueWord [396]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[396]
+		ST ConvWord2
+
+(** 	ConvWord := ModBus_ValueWord [395]; **)
+		(* assign - Stmt *)
+		LD ModBus_ValueWord[395]
+		ST ConvWord
+
+(**  **)
+(** 	NDC8.UserDefined.Integer32_37_Battery_AlarmCap := ConvDINT; **)
+		(* assign - Stmt *)
+		LD ConvDINT
+		ST NDC8.UserDefined.Integer32_37_Battery_AlarmCap
+
 (** 	 **)
 (** 	{* Charge StopTolerance*} **)
 (** 	ConvWord2 := ModBus_ValueWord [398]; **)
@@ -2442,6 +2727,18 @@ END_VAR
 	ST ModBus_ValueWord[402]
 
 (**  **)
+(** ModBus_ValueWord[403] := INT_TO_WORD(NDC8.DCD_5.DriveEncSpeed); **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_5.DriveEncSpeed
+	INT_TO_WORD 
+	ST ModBus_ValueWord[403]
+
+(** ModBus_ValueWord[404] := INT_TO_WORD(NDC8.DCD_7.DriveEncSpeed); **)
+	(* assign - Stmt *)
+	LD NDC8.DCD_7.DriveEncSpeed
+	INT_TO_WORD 
+	ST ModBus_ValueWord[404]
+
 (**  **)
 (** {****************************************************************************} **)
 (** {*		Required for sending data to the display							*} **)
@@ -2453,6 +2750,9 @@ END_VAR
 (**  **)
 (**  **)
 (** {****************************************************************************} **)
+(**  **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

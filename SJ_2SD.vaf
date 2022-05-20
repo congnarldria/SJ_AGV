@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="71" xmlns="urn:NDC8VehicleApplicationFile">
-  <FileInfo FileType="vaf" FileRevision="453" FileFormat="71" Description="NDC8 Vehicle Application File" CreationDate="2019-09-24" CreationTime="23:15:58.2383554+08:00" CreatedBy="haoin" ModificationDate="2020-08-01" ModificationTime="22:10:38.8783004+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vaf" FileRevision="512" FileFormat="71" Description="NDC8 Vehicle Application File" CreationDate="2019-09-24" CreationTime="23:15:58.2383554+08:00" CreatedBy="haoin" ModificationDate="2021-12-30" ModificationTime="13:52:25.7539969+08:00" ModifiedBy="NDC" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <VehicleApplication Type="AGV" Password="" />
   <Links>
     <Link Type="vpf" FileName="SJ_2SD" FilePath="" />
     <Link Type="edf" FileName="SJ_2SD" FilePath="" />
+    <Link Type="dpf" FileName="Auto" FilePath="Diagnostic" />
     <Link Type="dpf" FileName="BECKOFF_IO" FilePath="Diagnostic" />
     <Link Type="dpf" FileName="DCD_ALL" FilePath="Diagnostic" />
     <Link Type="dpf" FileName="Kinco" FilePath="Diagnostic" />
@@ -16,37 +17,33 @@
     <Link Type="dpf" FileName="OMPLC" FilePath="Diagnostic" />
     <Link Type="dpf" FileName="SDIO_" FilePath="Diagnostic" />
     <Link Type="dpf" FileName="Sick" FilePath="Diagnostic" />
+    <Link Type="dpf" FileName="Tuning" FilePath="Diagnostic" />
     <Link Type="dpf" FileName="user" FilePath="Diagnostic" />
     <Link Type="dpf" FileName="Vehicle" FilePath="Diagnostic" />
-    <Link Type="dpf" FileName="Auto" FilePath="Diagnostic" />
-    <Link Type="dpf" FileName="Tuning" FilePath="Diagnostic" />
     <Link Type="ipt" FileName="SJ_2SD" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="1" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="2" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="3" FilePath="IndividualParameters" />
     <Link Type="ip" FileName="4" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="105" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="110" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="73" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="90" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="86" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="103" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="104" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="79" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="80" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="83" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="85" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="102" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="106" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="107" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="109" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="71" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="72" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="75" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="77" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="87" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="88" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="151" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="152" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="155" FilePath="IndividualParameters" />
-    <Link Type="ip" FileName="154" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="5" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="6" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="7" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="8" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="9" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="10" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="11" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="12" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="13" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="14" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="15" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="16" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="17" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="18" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="19" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="20" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="21" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="22" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="23" FilePath="IndividualParameters" />
     <Link Type="var" FileName="SJ_2SD" FilePath="PLC" />
     <Link Type="ett" FileName="SJ_2SD" FilePath="" />
   </Links>
@@ -65,7 +62,7 @@
       <Wheel Type="WheelSD" Name="RearWheel" />
     </Wheels>
     <Devices>
-      <Device Type="CVC700" DeviceName="CVC700" VehicleComponentTemplate="P46164V1.0.0" ComponentTypeFile="P46164V1.0.0" Mandatory="true">
+      <Device Type="CVC700" DeviceName="CVC700" VehicleComponentTemplate="P46164V1.0.5" ComponentTypeFile="P46164V1.0.5" Mandatory="true">
         <IsMasterDevice>true</IsMasterDevice>
         <ConnectionPoints>
           <ConnectionPoint Name="CANBus1" Type="CANBus" />
@@ -76,7 +73,7 @@
           <ConnectionPoint Name="LAN" Type="LAN" />
         </ConnectionPoints>
       </Device>
-      <Device Type="DCD_5" DeviceName="DCD_5" DeviceConfigurationTemplate="P46009V1.0.4" ProductFile="69A21051C03" Mandatory="true">
+      <Device Type="DCD_5" DeviceName="DCD_5" DeviceConfigurationTemplate="P46007V1.0.4" ProductFile="69A21050C03" Mandatory="true">
         <IsMasterDevice>false</IsMasterDevice>
         <Connection Name="CVC700.CANBus1" />
         <Parameters>
@@ -98,7 +95,7 @@
           <Parameter Name="RegulationMode" Value="4" />
         </Parameters>
       </Device>
-      <Device Type="DCD_7" DeviceName="DCD_7" DeviceConfigurationTemplate="P46009V1.0.4" ProductFile="69A21051C03" Mandatory="true">
+      <Device Type="DCD_7" DeviceName="DCD_7" DeviceConfigurationTemplate="P46007V1.0.4" ProductFile="69A21050C03" Mandatory="true">
         <IsMasterDevice>false</IsMasterDevice>
         <Connection Name="CVC700.CANBus1" />
         <Parameters>
@@ -150,9 +147,8 @@
           <Parameter Name="Port3_TerminalNo" Value="3" />
           <Parameter Name="Port2_TerminalNo" Value="2" />
           <Parameter Name="Port1_Speed" Value="6" />
-          <Parameter Name="TransmissionType" Value="1" />
+          <Parameter Name="Port3_Type" Value="0" />
           <Parameter Name="Port3_StopBits" Value="0" />
-          <Parameter Name="NumberOfDigitalOutputs" Value="16" />
           <Parameter Name="Port2_Speed" Value="6" />
           <Parameter Name="Port4_Type" Value="0" />
           <Parameter Name="PdoInhibitTime" Value="20" />
@@ -163,19 +159,20 @@
           <Parameter Name="Port1_RecXonXoff" Value="0" />
           <Parameter Name="Port1_Type" Value="0" />
           <Parameter Name="Port1_DataPar" Value="3" />
+          <Parameter Name="NumberOfDigitalOutputs" Value="16" />
           <Parameter Name="Port2_Type" Value="0" />
           <Parameter Name="Port3_DataPar" Value="3" />
           <Parameter Name="Port4_DataPar" Value="3" />
-          <Parameter Name="Port3_Type" Value="0" />
           <Parameter Name="Port1_TerminalNo" Value="1" />
-          <Parameter Name="Port2_RecXonXoff" Value="0" />
+          <Parameter Name="TransmissionType" Value="1" />
           <Parameter Name="Port2_DataPar" Value="3" />
           <Parameter Name="NumberOfDigitalInputs" Value="16" />
           <Parameter Name="Port2_SendXonXoff" Value="0" />
           <Parameter Name="Port4_StopBits" Value="0" />
+          <Parameter Name="Port4_TerminalNo" Value="4" />
           <Parameter Name="Port3_RecXonXoff" Value="0" />
           <Parameter Name="Port1_StopBits" Value="0" />
-          <Parameter Name="Port4_TerminalNo" Value="4" />
+          <Parameter Name="Port2_RecXonXoff" Value="0" />
           <Parameter Name="Port3_Speed" Value="6" />
           <Parameter Name="Port2_StopBits" Value="0" />
           <Parameter Name="Port4_RecXonXoff" Value="0" />

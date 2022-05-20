@@ -15,6 +15,7 @@ VAR_OUTPUT
 END_VAR
 
 VAR
+	SlowDownSpeed : DINT;
 	CurrentVehicleSpeed : DINT; 
 	VehicleSlowDownSpeed : DINT;
 	SlowDownTOF : TOF;
@@ -28,32 +29,28 @@ END_VAR
 (** {************************************************************************************* **)
 (**  		SLOW DOWN  **)
 (** **************************************************************************************} **)
-(** CurrentVehicleSpeed := abs(NDC8.VehicleControl.SetSpeed); **)
+(** SlowDownSpeed := NDC8.Vehicle.MaxSpeed / 2; **)
 	(* assign - Stmt *)
+	LD NDC8.Vehicle.MaxSpeed
+	DIV 2
+	ST SlowDownSpeed
+
+(**  **)
+(**  **)
+(** if abs(NDC8.VehicleControl.SetSpeed) < SlowDownSpeed then **)
+	(* if - Cond *)
 	LD NDC8.VehicleControl.SetSpeed
 	abs 
-	ST CurrentVehicleSpeed
-
-(**  **)
-(** CurrentVehicleSpeed := CurrentVehicleSpeed / 2; **)
-	(* assign - Stmt *)
-	LD CurrentVehicleSpeed
-	DIV 2
-	ST CurrentVehicleSpeed
-
-(**  **)
-(** if CurrentVehicleSpeed < 100 then **)
-	(* if - Cond *)
-	LD CurrentVehicleSpeed
-	LT 100
+	LT SlowDownSpeed
 	JMPCN ODK_SKIP_000000000000001_000000000000001
 
 		(* then - Stmts *)
 
-(** 	CurrentVehicleSpeed := 100; **)
+(** 	SlowDownSpeed := abs(NDC8.VehicleControl.SetSpeed); **)
 		(* assign - Stmt *)
-		LD 100
-		ST CurrentVehicleSpeed
+		LD NDC8.VehicleControl.SetSpeed
+		abs 
+		ST SlowDownSpeed
 
 		JMP ODK_END_IF_000000000000001
 
@@ -63,10 +60,37 @@ END_VAR
 	ODK_END_IF_000000000000001:
 
 (**  **)
+(** CurrentVehicleSpeed := SlowDownSpeed; **)
+	(* assign - Stmt *)
+	LD SlowDownSpeed
+	ST CurrentVehicleSpeed
+
+(**  **)
+(** if CurrentVehicleSpeed < 100 then **)
+	(* if - Cond *)
+	LD CurrentVehicleSpeed
+	LT 100
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
+(** 	CurrentVehicleSpeed := 100; **)
+		(* assign - Stmt *)
+		LD 100
+		ST CurrentVehicleSpeed
+
+		JMP ODK_END_IF_000000000000002
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000002_000000000000001:
+	ODK_END_IF_000000000000002:
+
+(**  **)
 (** if FlexSlowDown then									{* Load handling, when entering a pallet *} **)
 	(* if - Cond *)
 	LD FlexSlowDown
-	JMPCN ODK_SKIP_000000000000002_000000000000001
+	JMPCN ODK_SKIP_000000000000003_000000000000001
 
 		(* then - Stmts *)
 
@@ -75,13 +99,13 @@ END_VAR
 		LD 150
 		ST NDC8.VehicleControl.SlowDownSpeed
 
-		JMP ODK_END_IF_000000000000002
+		JMP ODK_END_IF_000000000000003
 
 (** elsif LS2000Slowdown  then **)
 	(* elseif - Cond *) 
-	ODK_SKIP_000000000000002_000000000000001:
+	ODK_SKIP_000000000000003_000000000000001:
 	LD LS2000Slowdown
-	JMPCN ODK_SKIP_000000000000002_000000000000002
+	JMPCN ODK_SKIP_000000000000003_000000000000002
 
 		(* elsif - Stmts *)
 
@@ -90,13 +114,13 @@ END_VAR
 		LD CurrentVehicleSpeed
 		ST NDC8.VehicleControl.SlowDownSpeed
 
-		JMP ODK_END_IF_000000000000002
+		JMP ODK_END_IF_000000000000003
 
 (** elsif INPUT.SafetyScannerSlowDown then					{* When SlowDown input is set, ramp down in steps *} **)
 	(* elseif - Cond *) 
-	ODK_SKIP_000000000000002_000000000000002:
+	ODK_SKIP_000000000000003_000000000000002:
 	LD INPUT.SafetyScannerSlowDown
-	JMPCN ODK_SKIP_000000000000002_000000000000003
+	JMPCN ODK_SKIP_000000000000003_000000000000003
 
 		(* elsif - Stmts *)
 
@@ -105,11 +129,11 @@ END_VAR
 		LD CurrentVehicleSpeed
 		ST NDC8.VehicleControl.SlowDownSpeed
 
-		JMP ODK_END_IF_000000000000002
+		JMP ODK_END_IF_000000000000003
 
 (** else  **)
 	(* else *) 
-	ODK_SKIP_000000000000002_000000000000003:
+	ODK_SKIP_000000000000003_000000000000003:
 
 		(* else - Stmts *)
 
@@ -121,7 +145,7 @@ END_VAR
 (** 																		to avoid going over 300 mm/s. *} **)
 (** end_if; **)
 	(* if - End *) 
-	ODK_END_IF_000000000000002:
+	ODK_END_IF_000000000000003:
 
 (** 	 **)
 (**  **)
@@ -158,6 +182,7 @@ END_VAR
 (**  **)
 (**  **)
 (** {* Generate events here for System Statistics KPI, to find places with frequent slow downs. *} **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

@@ -151,6 +151,10 @@ case OPTX2 of
 			start_adress  := Word_TO_INT(ConvWord) + 1;
 			
 			OPTX2:=3;
+			
+			if start_adress < 1 then 
+				OPTX2:=999;
+			end_if;
 
 (****************************************************************************)			
 3:
@@ -432,6 +436,7 @@ case OPTX2 of
 			End_IF;
 
 end_case;
+
 
 
 

@@ -10,7 +10,9 @@ VAR_INPUT
 END_VAR
 
 VAR    
-
+	(* ADJ ERR Code *)
+	ADJ_ErrCode : DINT;
+	
 	(* BCD Process *)
 	BCDProcState : dint;
 	BCDRetryTimes : int := 5;
@@ -64,8 +66,10 @@ VAR
 	Debug_1000_B : BOOL:= FALSE;
 	Debug_2000_F : BOOL:= FALSE;
 	Debug_2000_B : BOOL:= FALSE;
+		
+	CancelFlag : BOOL;
 	
-	LrErrCode : DINT;
+	ChargeDelay : TON;
 END_VAR
 
 
@@ -129,13 +133,6 @@ elsif NDC8.Automatic.CurrentOrderMode = 1 and AutoloadMainState <> 2000 then (*i
 else
 		OperationCode := 0;
 		InProc_OperationCode := 0;
-end_if;
-
-(*Check Str_EnaPB *)
-if NDC8.OMPLC.Phase - 4 >= 0 then
-	PLC_TX01_Bit_STr_EnaPB := TRUE;
-else
-	PLC_TX01_Bit_STr_EnaPB := FALSE;
 end_if;
 
 (* BCD Process *)
@@ -222,14 +219,14 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 	
 	
 	3: (*BCD Compare*)
-		TempBCD1_Int := WORD_TO_INT(PLC_RX_Word9_STw_BCD1) - 16#D00;
-		TempBCD1 := INT_TO_WORD(TempBCD1_Int);
-		
 		BCDCompTimes := BCDCompTimes + 1;
 		
 		if 	PLC_TX_Word14_STr_BCD3 = PLC_RX_Word7_STw_BCD3
 			and PLC_TX_Word15_STr_BCD2 = PLC_RX_Word8_STw_BCD2
-			and PLC_TX_Word16_STr_BCD1 = TempBCD1 then
+			and PLC_TX_Word16_STr_BCD1 = PLC_RX_Word9_STw_BCD1 then
+			BCDProcState := 4; (* Compare Complete *)
+			BCDCompTimes := 0;
+		elsif PLC_RX06_Bit_CompDisabl = true then
 			BCDProcState := 4; (* Compare Complete *)
 			BCDCompTimes := 0;
 		else
@@ -285,12 +282,13 @@ Case AutoloadMainState of
 	0: 
 	
 		OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
-		
+		OM_PLC_Word9 := INT_TO_WORD(NDC8.OMPLC.Round_om);
+
 		PLC_TX_Word2 := 0;
 		
 		PLC_TX02_Bit_STr_DepoST := FALSE;
-		PLC_TX02_Bit_STr_ShutEQ := FALSE;
 		PLC_TX04_Bit_Cancel_ST := FALSE;
+		PLC_TX01_Bit_Cancel_ST2 := FALSE;
 		StepDelay(IN := FALSE);
 		if g_ErrorCode = 0 and PLC_RX01_Bit_EnableLD_i = TRUE then
 			if OperationCode > 0 then
@@ -299,6 +297,8 @@ Case AutoloadMainState of
 				AutoloadMainState := 10;
 			end_if;
 		end_if;
+		
+		NDC8.OMPLC.Round_om := WORD_TO_INT(OM_PLC_Word9);
 
 (**** Load operations ****)
 	10: 
@@ -319,15 +319,24 @@ Case AutoloadMainState of
 
 (* Pick up load *)
 	20:	(*Check Vehicle on Target Station*)
+			
+		ADJ_ErrCode := 0;
 		
 		OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 			
-			OM_PLC_W2_Bit_SetT10Terr := FALSE;
+			OM_PLC_W2_Bit_SetOpCanc := FALSE;
 			OM_PLC_W2_Bit_SetCondErr := FALSE;
-			OM_PLC_W2_Bit_SetT30TErr := FALSE;
-			OM_PLC_W2_Bit_SetHOErr := FALSE;
+			
 					
 		NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
+		
+		OM_PLC_Word9 := INT_TO_WORD(NDC8.OMPLC.Round_om);
+
+			OM_PLC_W9_Bit_Adj_Err := FALSE;
+			OM_PLC_W9_Bit_ChgP_Err := FALSE;
+			OM_PLC_W9_Bit_Enable_Err := FALSE;
+
+		NDC8.OMPLC.Round_om := WORD_TO_INT(OM_PLC_Word9);
 					
 					
 		if g_ErrorCode <> 0 then
@@ -337,6 +346,8 @@ Case AutoloadMainState of
 			if NDC8.LoadDocking.OnTarget = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE then
 				AutoloadMainState := 21;
 			elsif NDC8.LoadDocking.OnTarget = TRUE and PLC_RX01_Bit_EnableLD_i = FALSE then
+				AutoloadMainState := 148;
+			elsif PLC_RX01_Bit_Load_i = true then
 				AutoloadMainState := 148;
 			elsif InProc_OperationCode = 0 then
 				AutoloadMainState := 145;
@@ -359,8 +370,12 @@ Case AutoloadMainState of
 		
 	22:(*Set OpCode to PLC*)
 	
+		OM_PLC_Word9 := INT_TO_WORD(NDC8.OMPLC.Round_om);
+		
 		if g_ErrorCode <> 0 then
 			AutoloadMainState := 999;
+		elsif PLC_RX01_Bit_Load_i = true then
+				AutoloadMainState := 148;
 		else
 			PLC_TX02_Bit_STr_Ang0	:= IN_OPCD_Bit_LT_Ang0;
 			PLC_TX02_Bit_STr_Ang90	:= IN_OPCD_Bit_LT_Ang90;
@@ -374,8 +389,8 @@ Case AutoloadMainState of
 			PLC_TX02_Bit_STr_Unload	:= IN_OPCD_Bit_LT_Unload;
 		
 			PLC_TX02_Bit_STr_DepoST := NDC8.PointTrigger.Bit0_DepoST_Att;
-			PLC_TX02_Bit_STr_ShutEQ := NDC8.PointTrigger.Bit1_ShutEQ_Att;
 			PLC_TX04_Bit_Cancel_ST := not IN_OPCD_Bit_Cmd_EnaEmg;
+			PLC_TX01_Bit_Cancel_ST2 := not OM_PLC_W9_Bit_Enable_Err;
 		
 			if (PLC_TX02_Bit_STr_Ang0 = TRUE and PLC_TX02_Bit_STr_Ang90 = TRUE)
 				or (PLC_TX02_Bit_STr_Ang0 = TRUE and PLC_TX02_Bit_STr_Ang180 = TRUE) 
@@ -405,14 +420,17 @@ Case AutoloadMainState of
 			elsif	PLC_TX02_Bit_STr_Load = FALSE 
 					and PLC_TX02_Bit_STr_Unload = FALSE then
 					AutoloadMainState := 145;
-				
+			
 			else
 				AutoloadMainState := 23;
 			end_if;
 		end_if;
 		
+		NDC8.OMPLC.Round_om := WORD_TO_INT(OM_PLC_Word9);
 		
 	23:(*Wait PLC Processing*)
+	
+		OM_PLC_Word9 := INT_TO_WORD(NDC8.OMPLC.Round_om);
 		if g_ErrorCode <> 0 then
 			AutoloadMainState := 999;
 		else
@@ -422,56 +440,98 @@ Case AutoloadMainState of
 				AutoloadMainState := 133;
 			elsif PLC_RX01_Bit_LDErr_i then 
 				AutoloadMainState := 148;
-			elsif PLC_RX_Word10_STw_ILEr <> 0 then (* Interlock (8I/8O) Proc *)
+			elsif PLC_RX01_Bit_LD_Canc_i = TRUE then
+				
+				OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
+			
+				OM_PLC_W2_Bit_SetOpCanc := TRUE;
+				AutoloadMainState := 930;
+			
+				NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
+				
+			elsif PLC_RX01_Bit_LD_Cond_i = true then (* Interlock (8I/8O) Proc *)
 			
 				OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 			
-				case PLC_RX_Word10_STw_ILEr of
-				1:
-					OM_PLC_W2_Bit_SetT10Terr := TRUE;
-					AutoloadMainState := 900;
-				2:
-					OM_PLC_W2_Bit_SetCondErr := TRUE;
-					AutoloadMainState := 900;
-				3:
-					OM_PLC_W2_Bit_SetT30TErr := TRUE;
-					AutoloadMainState := 900;
-				4:
-					OM_PLC_W2_Bit_SetHOErr := TRUE;
-					AutoloadMainState := 900;
-				5:
-					OM_PLC_W2_Bit_SetHOErr := TRUE;
-					AutoloadMainState := 900;
-				
-				end_case;
+				OM_PLC_W2_Bit_SetCondErr := TRUE;
+				AutoloadMainState := 900;
 			
 				NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
+				
+			elsif PLC_RX_Word10_Round <> 0 then
+			
+				OM_PLC_Word9 := INT_TO_WORD(NDC8.OMPLC.Round_om);
+			
+				OM_PLC_W9_Bit_Adj_Err := TRUE;
+				
+				if PLC_RX10_Bit_Round_Y1 = TRUE then
+					ADJ_ErrCode := 251;
+				elsif PLC_RX10_Bit_Round_Y2 = TRUE then
+					ADJ_ErrCode := 252;
+				elsif PLC_RX10_Bit_Round_X = TRUE then
+					ADJ_ErrCode := 253;
+				elsif PLC_RX10_Bit_Round_RT = TRUE then
+					ADJ_ErrCode := 254;
+				elsif PLC_RX10_Bit_Round_FK = TRUE then
+					ADJ_ErrCode := 255;
+				elsif PLC_RX10_Bit_Round_Y = TRUE then
+					ADJ_ErrCode := 256;
+				elsif PLC_RX10_Bit_Round_RT2 = TRUE then
+					ADJ_ErrCode := 221;
+				end_if;
+				
+				AutoloadMainState := 910;
+			
+			NDC8.OMPLC.Round_om := WORD_TO_INT(OM_PLC_Word9);
+			
+			elsif PLC_RX03_Bit_Round_ChgP = true then
+			
+				OM_PLC_Word9 := INT_TO_WORD(NDC8.OMPLC.Round_om);
+			
+				OM_PLC_W9_Bit_ChgP_Err := TRUE;
+				AutoloadMainState := 920;
+			
+				NDC8.OMPLC.Round_om := WORD_TO_INT(OM_PLC_Word9);
 			
 			elsif PLC_RX01_Bit_LDDone_i then 
-				PLC_TX_Word2 := 0;
-				PLC_TX02_Bit_STr_DepoST := FALSE;
-				PLC_TX02_Bit_STr_ShutEQ := FALSE;
-				PLC_TX04_Bit_Cancel_ST := FALSE;
+			
+				if PLC_RX01_Bit_Load_i = TRUE then
+					PLC_TX_Word2 := 0;
+					PLC_TX02_Bit_STr_DepoST := FALSE;
+					PLC_TX04_Bit_Cancel_ST := FALSE;
+					PLC_TX01_Bit_Cancel_ST2 := FALSE;
+					StopByBCD := TRUE;
+					BCD_ReadReq := TRUE;
 				
-				StopByBCD := TRUE;
-				BCD_ReadReq := TRUE;
-				
-				AutoloadMainState := 1000;
+					AutoloadMainState := 1000;
+				else
+					AutoloadMainState := 147;
+				end_if;
 			end_if;
 		end_if;
+		
+		NDC8.OMPLC.Round_om := WORD_TO_INT(OM_PLC_Word9);
 		
 (* Drop off load *)
 	30:	(*Check Vehicle on Target Station*)
 	
+		ADJ_ErrCode := 0;
+		
 		OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 			
-			OM_PLC_W2_Bit_SetT10Terr := FALSE;
+			OM_PLC_W2_Bit_SetOpCanc := FALSE;
 			OM_PLC_W2_Bit_SetCondErr := FALSE;
-			OM_PLC_W2_Bit_SetT30TErr := FALSE;
-			OM_PLC_W2_Bit_SetHOErr := FALSE;
+			
 					
 		NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
 					
+		OM_PLC_Word9 := INT_TO_WORD(NDC8.OMPLC.Round_om);
+
+			OM_PLC_W9_Bit_Adj_Err := FALSE;
+			OM_PLC_W9_Bit_ChgP_Err := FALSE;
+			OM_PLC_W9_Bit_Enable_Err := FALSE;
+
+		NDC8.OMPLC.Round_om := WORD_TO_INT(OM_PLC_Word9);
 					
 		if g_ErrorCode <> 0 then
 			AutoloadMainState := 999;
@@ -482,6 +542,10 @@ Case AutoloadMainState of
 				AutoloadMainState := 31;
 			elsif NDC8.LoadDocking.OnTarget = TRUE and PLC_RX01_Bit_EnableLD_i = FALSE then
 				AutoloadMainState := 149;
+			elsif PLC_RX01_Bit_Load_i = false then
+				AutoloadMainState := 149;
+			elsif InProc_OperationCode = 0 then
+				AutoloadMainState := 145;
 			end_if;
 		end_if;
 		
@@ -495,6 +559,8 @@ Case AutoloadMainState of
 				AutoloadMainState := 149;
 			elsif NDC8.SDIO.DigitalInput12_EMO = FALSE then
 				AutoloadMainState := 133;
+			elsif PLC_RX01_Bit_Load_i = false then
+				AutoloadMainState := 149;
 			else
 				AutoloadMainState := 32;
 			end_if;
@@ -502,8 +568,12 @@ Case AutoloadMainState of
 		
 	32: (*Set OpCode to PLC*)
 		
+		OM_PLC_Word9 := INT_TO_WORD(NDC8.OMPLC.Round_om);
+		
 		if g_ErrorCode <> 0 then
 			AutoloadMainState := 999;
+		elsif PLC_RX01_Bit_Load_i = false then
+				AutoloadMainState := 149;
 		else
 			PLC_TX02_Bit_STr_Ang0	:= IN_OPCD_Bit_LT_Ang0;
 			PLC_TX02_Bit_STr_Ang90	:= IN_OPCD_Bit_LT_Ang90;
@@ -517,9 +587,10 @@ Case AutoloadMainState of
 			PLC_TX02_Bit_STr_Unload	:= IN_OPCD_Bit_LT_Unload;
 		
 			PLC_TX02_Bit_STr_DepoST := NDC8.PointTrigger.Bit0_DepoST_Att;
-			PLC_TX02_Bit_STr_ShutEQ := NDC8.PointTrigger.Bit1_ShutEQ_Att;
 		
 			PLC_TX04_Bit_Cancel_ST := not IN_OPCD_Bit_Cmd_EnaEmg;
+			
+			PLC_TX01_Bit_Cancel_ST2 := not OM_PLC_W9_Bit_Enable_Err ;
 		
 			if (PLC_TX02_Bit_STr_Ang0 = TRUE and PLC_TX02_Bit_STr_Ang90 = TRUE)
 				or (PLC_TX02_Bit_STr_Ang0 = TRUE and PLC_TX02_Bit_STr_Ang180 = TRUE) 
@@ -555,8 +626,12 @@ Case AutoloadMainState of
 			end_if;	
 		end_if;
 			
+		NDC8.OMPLC.Round_om := WORD_TO_INT(OM_PLC_Word9);
 		
 	33: (*Wait PLC Processing*)
+	
+		OM_PLC_Word9 := INT_TO_WORD(NDC8.OMPLC.Round_om);
+	
 		if g_ErrorCode <> 0 then
 				AutoloadMainState := 999;
 		else
@@ -566,40 +641,76 @@ Case AutoloadMainState of
 				AutoloadMainState := 133;
 			elsif PLC_RX01_Bit_LDErr_i then 
 				AutoloadMainState := 149;
-			elsif PLC_RX_Word10_STw_ILEr <> 0 then (* Interlock (8I/8O) Proc *)
-			
+			elsif PLC_RX01_Bit_LD_Canc_i = TRUE then
+				
 				OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 			
-				case PLC_RX_Word10_STw_ILEr of
-				1:
-					OM_PLC_W2_Bit_SetT10Terr := TRUE;
-					AutoloadMainState := 900;
-				2:
-					OM_PLC_W2_Bit_SetCondErr := TRUE;
-					AutoloadMainState := 900;
-				3:
-					OM_PLC_W2_Bit_SetT30TErr := TRUE;
-					AutoloadMainState := 900;
-				4:
-					OM_PLC_W2_Bit_SetHOErr := TRUE;
-					AutoloadMainState := 900;
-				5:
-					OM_PLC_W2_Bit_SetHOErr := TRUE;
-					AutoloadMainState := 900;
-				
-				end_case;
+				OM_PLC_W2_Bit_SetOpCanc := TRUE;
+				AutoloadMainState := 930;
 			
 				NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
 				
+			elsif PLC_RX01_Bit_LD_Cond_i = true then (* Interlock (8I/8O) Proc *)
+			
+				OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
+			
+				OM_PLC_W2_Bit_SetCondErr := TRUE;
+				AutoloadMainState := 900;
+			
+				NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
+				
+			elsif PLC_RX_Word10_Round <> 0 then
+			
+				OM_PLC_Word9 := INT_TO_WORD(NDC8.OMPLC.Round_om);
+			
+				OM_PLC_W9_Bit_Adj_Err := TRUE;
+				
+				if PLC_RX10_Bit_Round_Y1 = TRUE then
+					ADJ_ErrCode := 251;
+				elsif PLC_RX10_Bit_Round_Y2 = TRUE then
+					ADJ_ErrCode := 252;
+				elsif PLC_RX10_Bit_Round_X = TRUE then
+					ADJ_ErrCode := 253;
+				elsif PLC_RX10_Bit_Round_RT = TRUE then
+					ADJ_ErrCode := 254;
+				elsif PLC_RX10_Bit_Round_FK = TRUE then
+					ADJ_ErrCode := 255;
+				elsif PLC_RX10_Bit_Round_Y = TRUE then
+					ADJ_ErrCode := 256;
+				elsif PLC_RX10_Bit_Round_RT2 = TRUE then
+					ADJ_ErrCode := 221;
+				end_if;
+				
+				AutoloadMainState := 910;
+			
+				NDC8.OMPLC.Round_om := WORD_TO_INT(OM_PLC_Word9);
+				
+			elsif PLC_RX03_Bit_Round_ChgP = true then
+			
+				OM_PLC_Word9 := INT_TO_WORD(NDC8.OMPLC.Round_om);
+			
+				OM_PLC_W9_Bit_ChgP_Err := TRUE;
+				AutoloadMainState := 920;
+			
+				NDC8.OMPLC.Round_om := WORD_TO_INT(OM_PLC_Word9);
+			
 			elsif PLC_RX01_Bit_LDDone_i then 
-				PLC_TX_Word2 := 0;
-				PLC_TX02_Bit_STr_DepoST := FALSE;
-				PLC_TX02_Bit_STr_ShutEQ := FALSE;
-				PLC_TX04_Bit_Cancel_ST := FALSE;
-				AutoloadMainState := 1000;
+			
+				if PLC_RX01_Bit_Load_i = false then
+					AutoloadMainState := 149;
+					PLC_TX_Word2 := 0;
+					PLC_TX02_Bit_STr_DepoST := FALSE;
+					PLC_TX04_Bit_Cancel_ST := FALSE;
+					PLC_TX01_Bit_Cancel_ST2 := FALSE;
+					AutoloadMainState := 1000;
+				else
+					AutoloadMainState := 147;
+				end_if;
+				
 			end_if;
 		end_if;
 
+		NDC8.OMPLC.Round_om := WORD_TO_INT(OM_PLC_Word9);
 	
 (* Charge the battery Local Order *)
 	40:	
@@ -608,17 +719,12 @@ Case AutoloadMainState of
 		else
 			if NDC8.LoadDocking.OnTarget = TRUE then
 				(* Wait Charger InPosition *)
-			
-				(* Check Charge Idle*)
-				if PLC_RX01_Bit_ChrgIdle then 
 					AutoloadMainState := 41;
-				end_if;
-			
 			end_if;
 		end_if;
 		
 		
-	41:(* Check OpCode and wait 10sec*)
+	41:(*  Wait 10sec *)
 	
 		if g_ErrorCode <> 0 then
 			AutoloadMainState := 49;
@@ -627,20 +733,16 @@ Case AutoloadMainState of
 				AutoloadMainState := 49;
 			end_if;
 		
-			if NDC8.PointTrigger.Bit9_Chrg_Right = TRUE and NDC8.PointTrigger.Bit10_Chrg_Left = FALSE  then
-				StopCharge := TRUE;
+			ChargeDelay( IN:= TRUE, PT := t#10s);
 			
-				OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
-			
-				if (NDC8.Automatic.CurrentOrderMode = 1 and OM_PLC_W2_Bit_Set_LowTS) or NDC8.Automatic.CurrentOrderMode <> 1 then
-					AutoloadMainState := 42;
-				end_if;
-			else
-				;(*OP Error*)
+			if ChargeDelay.Q then
+				ChargeDelay( IN:= FALSE);
+				AutoloadMainState := 42;
 			end_if;
+					
 		end_if;
 		
-	42:
+	42: (* Wait Charge Done or any Error *)
 	
 		if g_ErrorCode <> 0 then
 			AutoloadMainState := 49;
@@ -649,64 +751,23 @@ Case AutoloadMainState of
 				AutoloadMainState := 49;
 			end_if;
 		
-			PLC_TX04_Bit_ChrgCmdL_A := TRUE;
-			NDC8.SDIO.DigitalOutput16_Charger := TRUE;
-		
-			OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
-	
-			if (NDC8.Automatic.CurrentOrderMode = 1 and OM_PLC_W2_Bit_Set_LowTS = false) or (g_ErrorCode <> 0 or PLC_RX15_Bit_BMS_ChgCmp or PLC_RX01_Bit_ChrgEmg) then
-				AutoloadMainState := 43;
-			end_if;
-		end_if;
-		
-	43:
-	
-		if g_ErrorCode <> 0 then
-			AutoloadMainState := 49;
-		else
-			if INPUT.Auto = FALSE then
-				AutoloadMainState := 49;
-			end_if;
+			if g_ChargeDone = TRUE then 
+				ChargeDelay( IN:= TRUE, PT := t#1s);
 			
-			PLC_TX04_Bit_ChrgCmdL_A := FALSE;
-		
-			NDC8.SDIO.DigitalOutput16_Charger := FALSE;
-	
-			OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
-
-			OM_PLC_W1_Bit_SetLowBatt := FALSE;
-
-			NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);
-			
-			if PLC_RX01_Bit_ChrgIdle then 
-				StepDelay(IN:=TRUE, PT:=t#1s);
-				if StepDelay.Q then
-					StepDelay(IN:=FALSE);
-					AutoloadMainState := 1000;
-					StopCharge := FALSE;
+				if ChargeDelay.Q then
+					ChargeDelay( IN:= FALSE);
+					AutoloadMainState := 49;
 				end_if;
-			end_if;
-		
+			end_if; 
 		end_if;
 		
 	49:
 	
 		
-		PLC_TX04_Bit_ChrgCmdL_A := FALSE;
-		
-		NDC8.SDIO.DigitalOutput16_Charger := FALSE;
-
-		OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
-
-		OM_PLC_W1_Bit_SetLowBatt := FALSE;
-
-		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);
-		
-		if PLC_RX01_Bit_ChrgIdle then 
+		if PLC_RX03_Bit_CP_HP then 
 			StepDelay(IN:=TRUE, PT:=t#1s);
 			if StepDelay.Q then
 				StepDelay(IN:=FALSE);
-				StopCharge := FALSE;
 			
 				if g_ErrorCode <> 0 then
 					AutoloadMainState := 999;
@@ -842,30 +903,61 @@ Case AutoloadMainState of
 (* Ir Error Need to Error Stop Order  *)
 	900:
 		Fail := TRUE;
-		
-		if OM_PLC_W2_Bit_SetT10Terr = TRUE then
-			LrErrCode := 243;
-		elsif OM_PLC_W2_Bit_SetCondErr = TRUE then
-			LrErrCode := 242;
-		elsif OM_PLC_W2_Bit_SetT30TErr = TRUE then
-			LrErrCode := 245;
-		elsif OM_PLC_W2_Bit_SetHOErr = TRUE then
-			LrErrCode := 259;
-		elsif OM_PLC_W2_Bit_SetHOErr = TRUE then
-			LrErrCode := 260;
-		end_if;
 					
 		StepDelay(IN := TRUE, PT := t#1s);
 		
 		if StepDelay.Q then
-			LoadOpDone(ErrorCode:=LrErrCode, Result:=NDC8.LayoutPosition.Distance);	(* Operation Fail Error=149 *)
+			LoadOpDone(ErrorCode:=242, Result:=NDC8.LayoutPosition.Distance);
 			if LoadOpDone.Finished then
 				INPUT.AutoLoadDone := TRUE;
 				StopLoadOP := FALSE;
 				AutoloadMainState:= 2000;	(* End autoload *)
 			end_if;
 		end_if;
+(* Round Try Don't Stop Order *)
+	910:
+		Fail := TRUE;
+					
+		StepDelay(IN := TRUE, PT := t#1s);
 		
+		if StepDelay.Q then
+			LoadOpDone(ErrorCode:=ADJ_ErrCode, Result:=NDC8.LayoutPosition.Distance);
+			if LoadOpDone.Finished then
+				INPUT.AutoLoadDone := TRUE;
+				StopLoadOP := FALSE;
+				AutoloadMainState:= 2000;	(* End autoload *)
+			end_if;
+		end_if;	
+		
+(* Charge Position Error Don't Stop Order *)
+	920:
+		Fail := TRUE;
+					
+		StepDelay(IN := TRUE, PT := t#1s);
+		
+		if StepDelay.Q then
+			LoadOpDone(ErrorCode:=265, Result:=NDC8.LayoutPosition.Distance);
+			if LoadOpDone.Finished then
+				INPUT.AutoLoadDone := TRUE;
+				StopLoadOP := FALSE;
+				AutoloadMainState:= 2000;	(* End autoload *)
+			end_if;
+		end_if;	
+
+(* Op Cancel Stop Order *)
+	930:
+		Fail := TRUE;
+					
+		StepDelay(IN := TRUE, PT := t#1s);
+		
+		if StepDelay.Q then
+			LoadOpDone(ErrorCode:=243, Result:=NDC8.LayoutPosition.Distance);
+			if LoadOpDone.Finished then
+				INPUT.AutoLoadDone := TRUE;
+				StopLoadOP := FALSE;
+				AutoloadMainState:= 2000;	(* End autoload *)
+			end_if;
+		end_if;	
 (* Change Mode to Manual don't stop Order *)
 	998:
 		Fail := TRUE;
@@ -976,9 +1068,19 @@ if BbxTrig_FT.q then
 end_if;
 
 
+(* Cancel Check *)
 
 
 (* OUTPUT *)
+
+
+
+
+
+
+
+
+
 
 
 

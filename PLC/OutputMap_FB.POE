@@ -29,7 +29,7 @@ VAR_EXTERNAL
 	PLC_TX_WORD2 : WORD;
 	INPUT : INPUT_T;
 	G_FINDSYNCFLAG : BOOL;
-	PLC_RX_WORD20_PLC_ERRD : WORD;
+	PLC_RX_WORD4_PLC_ERRD : WORD;
 	G_ERRORCODE : WORD;
 END_VAR
 (** {* **)
@@ -192,11 +192,11 @@ END_VAR
 	ODK_END_IF_000000000000002:
 
 (**  **)
-(** if g_ErrorCode <> 0 or PLC_RX_Word20_PLC_ErrD <> 0 then **)
+(** if g_ErrorCode <> 0 or PLC_RX_Word4_PLC_ErrD <> 0 then **)
 	(* if - Cond *)
 	LD g_ErrorCode
 	NE 0
-	OR ( PLC_RX_Word20_PLC_ErrD
+	OR ( PLC_RX_Word4_PLC_ErrD
 		NE 0
 	)
 	JMPCN ODK_SKIP_000000000000003_000000000000001
@@ -876,6 +876,7 @@ END_VAR
 	ODK_SKIP_000000000000005_000000000000001:
 	ODK_END_IF_000000000000005:
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

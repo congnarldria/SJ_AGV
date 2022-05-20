@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Product Name="" ArticleNumber="69A21051C03" Checksum="0x8CA6" TimeStamp="1425045610" FileIntegrityVersion="1" FileIntegritySignature="DANAHER" FileIntegrityChecksum="0x88839acd">
+<Product Name="" ArticleNumber="69A21050C03" Checksum="0xE98B" TimeStamp="1425045465" FileIntegrityVersion="1" FileIntegritySignature="DANAHER" FileIntegrityChecksum="0x15951523">
   <Dictionary>
     <Parameters>
       <Group SymbolName="DeviceType">
