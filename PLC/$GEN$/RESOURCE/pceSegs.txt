@@ -125,9 +125,9 @@
 1/133	Datasegment	1/70	20	MAIN.TX_STATUS.TX_CHGCOMP_R
 1/134	Datasegment	1/70	20	MAIN.TX_STATUS.CHRG_RIGHT_LEFT_R
 1/135	Datasegment	1/70	20	MAIN.TX_STATUS.TX_LOAD_R
-1/136	Datasegment	1/137	48	MAIN.EVENTHANDLER
-1/137	Codesegment	1/138	903
-1/138	Initialsegment	1/362	44
+1/136	Datasegment	1/137	52	MAIN.EVENTHANDLER
+1/137	Codesegment	1/138	915
+1/138	Initialsegment	1/362	48
 1/139	Datasegment	1/140	44	MAIN.EVENTHANDLER.SENDEV
 1/140	Codesegment	1/141	222
 1/141	Initialsegment	1/363	48
@@ -141,7 +141,7 @@
 1/149	Codesegment	1/150	7
 1/150	Initialsegment	1/366	56
 1/151	Datasegment	1/152	32	MAIN.AUTOLOAD.LOADOPDONE
-1/152	Codesegment	1/153	285
+1/152	Codesegment	1/153	257
 1/153	Initialsegment	1/367	36
 1/154	Datasegment	1/155	28	MAIN.AUTOLOAD.OPERATIONFAIL
 1/155	Codesegment	1/156	209
@@ -351,12 +351,12 @@
 1/359	NativeCodeSegment	1/360	64012
 1/360	NativeCodeSegment2	1/95	11816
 1/361	NativeCodeSegment	1/98	36
-1/362	NativeCodeSegment	1/137	10472
+1/362	NativeCodeSegment	1/137	10500
 1/363	NativeCodeSegment	1/140	948
 1/364	NativeCodeSegment	1/143	47220
 1/365	NativeCodeSegment	1/146	36
 1/366	NativeCodeSegment	1/149	36
-1/367	NativeCodeSegment	1/152	1548
+1/367	NativeCodeSegment	1/152	1336
 1/368	NativeCodeSegment	1/155	808
 1/369	NativeCodeSegment	1/164	7184
 1/370	NativeCodeSegment	1/167	1216

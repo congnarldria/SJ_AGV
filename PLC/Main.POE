@@ -286,9 +286,9 @@ END_VAR
 
 		(* then - Stmts *)
 
-(** 	NDC8.DCD_6.SyncGate := TRUE; **)
+(** 	NDC8.DCD_6.SyncGate := FALSE; **)
 		(* assign - Stmt *)
-		LD TRUE
+		LD FALSE
 		ST NDC8.DCD_6.SyncGate
 
 		JMP ODK_END_IF_000000000000002
@@ -299,9 +299,9 @@ END_VAR
 
 		(* else - Stmts *)
 
-(** 	NDC8.DCD_6.SyncGate := FALSE; **)
+(** 	NDC8.DCD_6.SyncGate := TRUE; **)
 		(* assign - Stmt *)
-		LD FALSE
+		LD TRUE
 		ST NDC8.DCD_6.SyncGate
 
 (** end_if; **)
@@ -318,9 +318,9 @@ END_VAR
 
 		(* then - Stmts *)
 
-(** 	NDC8.DCD_8.SyncGate := TRUE; **)
+(** 	NDC8.DCD_8.SyncGate := FALSE; **)
 		(* assign - Stmt *)
-		LD TRUE
+		LD FALSE
 		ST NDC8.DCD_8.SyncGate
 
 		JMP ODK_END_IF_000000000000003
@@ -331,9 +331,9 @@ END_VAR
 
 		(* else - Stmts *)
 
-(** 	NDC8.DCD_8.SyncGate := FALSE; **)
+(** 	NDC8.DCD_8.SyncGate := TRUE; **)
 		(* assign - Stmt *)
-		LD FALSE
+		LD TRUE
 		ST NDC8.DCD_8.SyncGate
 
 (** end_if; **)
@@ -383,9 +383,9 @@ END_VAR
 			LD TRUE
 			ST NDC8.Manual.PlcSelect
 
-(** 	NDC8.Manual.PLCAngle := 2000; **)
+(** 	NDC8.Manual.PLCAngle := 9000; **)
 			(* assign - Stmt *)
-			LD 2000
+			LD 9000
 			ST NDC8.Manual.PLCAngle
 
 (** 	NDC8.Manual.PlcSetOperationMode := 1; **)
@@ -459,9 +459,9 @@ END_VAR
 			LD TRUE
 			ST NDC8.Manual.PlcSelect
 
-(** 	NDC8.Manual.PLCAngle := -2000; **)
+(** 	NDC8.Manual.PLCAngle := -9000; **)
 			(* assign - Stmt *)
-			LD -2000
+			LD -9000
 			ST NDC8.Manual.PLCAngle
 
 (** 	NDC8.Manual.PlcSetOperationMode := 1; **)
@@ -3216,6 +3216,8 @@ END_VAR
 	(* call - Stmt *)
 	CAL DataUpdate
 
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

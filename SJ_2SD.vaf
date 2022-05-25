@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="71" xmlns="urn:NDC8VehicleApplicationFile">
-  <FileInfo FileType="vaf" FileRevision="454" FileFormat="71" Description="NDC8 Vehicle Application File" CreationDate="2019-09-24" CreationTime="23:15:58.2383554+08:00" CreatedBy="haoin" ModificationDate="2020-08-01" ModificationTime="16:46:09.2310000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vaf" FileRevision="457" FileFormat="71" Description="NDC8 Vehicle Application File" CreationDate="2019-09-24" CreationTime="23:15:58.2383554+08:00" CreatedBy="haoin" ModificationDate="2020-05-05" ModificationTime="15:45:17.5072000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <VehicleApplication Type="AGV" Password="" />
   <Links>
     <Link Type="vpf" FileName="SJ_2SD" FilePath="" />
@@ -47,6 +47,7 @@
     <Link Type="ip" FileName="152" FilePath="IndividualParameters" />
     <Link Type="ip" FileName="155" FilePath="IndividualParameters" />
     <Link Type="ip" FileName="154" FilePath="IndividualParameters" />
+    <Link Type="ip" FileName="153" FilePath="IndividualParameters" />
     <Link Type="var" FileName="SJ_2SD" FilePath="PLC" />
     <Link Type="ett" FileName="SJ_2SD" FilePath="" />
   </Links>
@@ -149,9 +150,8 @@
           <Parameter Name="Port4_Speed" Value="6" />
           <Parameter Name="Port3_TerminalNo" Value="3" />
           <Parameter Name="Port2_TerminalNo" Value="2" />
-          <Parameter Name="Port1_DataPar" Value="3" />
-          <Parameter Name="Port3_Type" Value="0" />
           <Parameter Name="Port1_Speed" Value="6" />
+          <Parameter Name="Port3_Type" Value="0" />
           <Parameter Name="Port3_StopBits" Value="0" />
           <Parameter Name="Port2_Speed" Value="6" />
           <Parameter Name="Port4_Type" Value="0" />
@@ -162,6 +162,7 @@
           <Parameter Name="NumberOfAnalogInputs" Value="0" />
           <Parameter Name="Port1_RecXonXoff" Value="0" />
           <Parameter Name="Port1_Type" Value="0" />
+          <Parameter Name="Port1_DataPar" Value="3" />
           <Parameter Name="NumberOfDigitalOutputs" Value="16" />
           <Parameter Name="Port2_Type" Value="0" />
           <Parameter Name="Port3_DataPar" Value="3" />

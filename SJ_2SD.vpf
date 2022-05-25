@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vpf" FileRevision="454" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-08-01" ModificationTime="16:46:09.2690000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vpf" FileRevision="457" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-05-05" ModificationTime="15:45:17.5172000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
   <ComponentList Name="P46164" TimeStamp="0">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
@@ -703,7 +703,7 @@
         <Property SymbolName="Boolean_28" Value="0" PublicName="Boolean_28" Remark="" />
         <Property SymbolName="Boolean_29" Value="0" PublicName="Boolean_29" Remark="" />
         <Property SymbolName="Boolean_30" Value="0" PublicName="Boolean_30" Remark="" />
-        <Property SymbolName="Integer32_1" Value="0" PublicName="StopWord" Remark="Integer32_1" AliasName="StopWord" />
+        <Property SymbolName="Integer32_1" Value="1040" PublicName="StopWord" Remark="Integer32_1" AliasName="StopWord" />
         <Property SymbolName="Integer32_2" Value="0" PublicName="Integer32_2" Remark="Integer32_2" />
         <Property SymbolName="Integer32_3" Value="0" PublicName="Integer32_3" Remark="Integer32_3" />
         <Property SymbolName="Integer32_4" Value="0" PublicName="Integer32_4" Remark="Integer32_4" />
@@ -851,14 +851,14 @@
         <Property SymbolName="Angle" Value="0" />
         <Property SymbolName="UpsideDown" Value="0" />
         <Property SymbolName="IP" Value="192.168.100.9" />
-        <Property SymbolName="Field1_X1" Value="-865" />
-        <Property SymbolName="Field1_X2" Value="-665" />
+        <Property SymbolName="Field1_X1" Value="-870" />
+        <Property SymbolName="Field1_X2" Value="-670" />
         <Property SymbolName="Field1_Y1" Value="-100" />
         <Property SymbolName="Field1_Y2" Value="100" />
         <Property SymbolName="Field1_Triggered" Value="0" />
         <Property SymbolName="Field1_Dist" Value="0" />
-        <Property SymbolName="Field2_X1" Value="-865" />
-        <Property SymbolName="Field2_X2" Value="-665" />
+        <Property SymbolName="Field2_X1" Value="-870" />
+        <Property SymbolName="Field2_X2" Value="-670" />
         <Property SymbolName="Field2_Y1" Value="-100" />
         <Property SymbolName="Field2_Y2" Value="100" />
         <Property SymbolName="Field2_Triggered" Value="0" />
@@ -1069,9 +1069,9 @@
         <Property SymbolName="MaxWheelAngle" Value="0" />
         <Property SymbolName="SlowDownZone" Value="0" />
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" />
-        <Property SymbolName="EndLimitSwitchPolarity" Value="0" />
+        <Property SymbolName="EndLimitSwitchPolarity" Value="1" />
         <Property SymbolName="SyncGate" Value="1" />
-        <Property SymbolName="SyncFilter" Value="5" />
+        <Property SymbolName="SyncFilter" Value="50" />
         <Property SymbolName="SyncEmergency" Value="1" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" />
         <Property SymbolName="VoltageFeedback" Value="1" />
@@ -1184,9 +1184,9 @@
         <Property SymbolName="MaxWheelAngle" Value="0" />
         <Property SymbolName="SlowDownZone" Value="0" />
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" />
-        <Property SymbolName="EndLimitSwitchPolarity" Value="0" />
+        <Property SymbolName="EndLimitSwitchPolarity" Value="1" />
         <Property SymbolName="SyncGate" Value="1" />
-        <Property SymbolName="SyncFilter" Value="5" />
+        <Property SymbolName="SyncFilter" Value="50" />
         <Property SymbolName="SyncEmergency" Value="1" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" />
         <Property SymbolName="VoltageFeedback" Value="1" />
