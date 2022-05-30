@@ -723,7 +723,7 @@ END_VAR
 	LD NDC8.Master.MasterLinkUp
 	ST ModBus_ValueBOOL[1]
 
-(**  **)
+(**            **)
 (** if NDC8.LayoutPosition.Point <> 0 or NDC8.LayoutPosition.Segment <> 0 then **)
 	(* if - Cond *)
 	LD NDC8.LayoutPosition.Point
@@ -2453,6 +2453,7 @@ END_VAR
 (**  **)
 (**  **)
 (** {****************************************************************************} **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

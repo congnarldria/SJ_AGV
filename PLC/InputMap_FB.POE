@@ -282,11 +282,13 @@ END_VAR
 	ODK_END_IF_000000000000005:
 
 (**  **)
-(** if NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L = TRUE or NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R = TRUE then **)
+(** if NOT NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L = TRUE or NOT NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R = TRUE then **)
 	(* if - Cond *)
 	LD NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L
+	NOT
 	EQ TRUE
 	OR ( NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R
+		NOT
 		EQ TRUE
 	)
 	JMPCN ODK_SKIP_000000000000006_000000000000001
@@ -316,11 +318,13 @@ END_VAR
 	ODK_END_IF_000000000000006:
 
 (**  **)
-(** if NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L = TRUE or NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R = TRUE then **)
+(** if NOT NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L = TRUE or NOT NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R = TRUE then **)
 	(* if - Cond *)
 	LD NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L
+	NOT
 	EQ TRUE
 	OR ( NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R
+		NOT
 		EQ TRUE
 	)
 	JMPCN ODK_SKIP_000000000000007_000000000000001
@@ -649,6 +653,7 @@ END_VAR
 	LD NDC8.SDIO.DigitalInput12_EMO
 	ST StopEstopButton
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

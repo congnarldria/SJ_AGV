@@ -383,9 +383,9 @@ END_VAR
 			LD TRUE
 			ST NDC8.Manual.PlcSelect
 
-(** 	NDC8.Manual.PLCAngle := 9000; **)
+(** 	NDC8.Manual.PLCAngle := 2000; **)
 			(* assign - Stmt *)
-			LD 9000
+			LD 2000
 			ST NDC8.Manual.PLCAngle
 
 (** 	NDC8.Manual.PlcSetOperationMode := 1; **)
@@ -439,6 +439,7 @@ END_VAR
 			JMP ODK_END_CASE_000000000000005
 
 (** 	 **)
+(** 	 **)
 (** 	1: **)
 		(* case - Elm *) 
 		ODK_SKIP_000000000000005_000000000000001:
@@ -459,9 +460,9 @@ END_VAR
 			LD TRUE
 			ST NDC8.Manual.PlcSelect
 
-(** 	NDC8.Manual.PLCAngle := -9000; **)
+(** 	NDC8.Manual.PLCAngle := -2000; **)
 			(* assign - Stmt *)
-			LD -9000
+			LD -2000
 			ST NDC8.Manual.PLCAngle
 
 (** 	NDC8.Manual.PlcSetOperationMode := 1; **)
@@ -914,7 +915,6 @@ END_VAR
 		Moving := VehicleMovingFlag
 	)
 
-(**  **)
 (** 	 **)
 (**  **)
 (**  **)
@@ -1710,13 +1710,20 @@ END_VAR
 
 			JMP ODK_END_IF_00000000000000L
 
-(** 	elsif NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L or NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R or NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L or NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R then **)
+(** 	elsif NOT NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L or NOT NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R or NOT NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L or NOT NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R then **)
 		(* elseif - Cond *) 
 		ODK_SKIP_00000000000000L_00000000000000P:
 		LD NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L
-		OR NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R
-		OR NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L
-		OR NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R
+		NOT
+		OR ( NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R
+			NOT
+		)
+		OR ( NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L
+			NOT
+		)
+		OR ( NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R
+			NOT
+		)
 		JMPCN ODK_SKIP_00000000000000L_00000000000000Q
 
 			(* elsif - Stmts *)
@@ -3216,6 +3223,12 @@ END_VAR
 	(* call - Stmt *)
 	CAL DataUpdate
 
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

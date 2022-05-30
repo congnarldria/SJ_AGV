@@ -1,0 +1,242 @@
+<top xmlns:dc="urn:NDC8DeviceConfigurationFile" xmlns:vc="urn:NDC8ComponentTemplateFile" xmlns="urn:NDC8AllComponentTypes">
+  <comptypes FileFormat="40" BaseType="GenericCanDevice_T" BaseComponentType="SDIOInertialSensor_T">
+    <comptype compname="SDIO_T" remark="CVC600 as IO Controller">
+      <properties>
+        <property propname="IMUGyroX" propremark="Gyroscope x-axis value, cdeg/s" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="IMUGyroY" propremark="Gyroscope y-axis value, cdeg/s" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="IMUGyroZ" propremark="Gyroscope z-axis value, cdeg/s" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="IMUAccX" propremark="Accelerometer x-axis value, mg" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="IMUAccY" propremark="Accelerometer x-axis value, mg" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="IMUAccZ" propremark="Accelerometer x-axis value, mg" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="IMUError" propremark="IMU Error value" datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="IMUGyroXScale" propremark="Gyroscope x-axis scale value (the value 10000 corresponds to a real scale value of 1.0)" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="IMUGyroYScale" propremark="Gyroscope y-axis scale value (the value 10000 corresponds to a real scale value of 1.0)" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="IMUGyroZScale" propremark="Gyroscope z-axis scale value (the value 10000 corresponds to a real scale value of 1.0)" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="DigitalInput1_Polarity" propremark="Digital Input 1 Polarity, pin #A22" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput2_Polarity" propremark="Digital Input 2 Polarity, pin #A14" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput3_Polarity" propremark="Digital Input 3 Polarity, pin #A7" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput4_Polarity" propremark="Digital Input 4 Polarity, pin #A6" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput5_Polarity" propremark="Digital Input 5 Polarity, pin #A13" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput6_Polarity" propremark="Digital Input 6 Polarity, pin #A21" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput7_Polarity" propremark="Digital Input 7 Polarity, pin #A20" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput8_Polarity" propremark="Digital Input 8 Polarity, pin #A19" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput9_Polarity" propremark="Digital Input 9 Polarity, pin #B22" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput10_Polarity" propremark="Digital Input 10 Polarity, pin #B23" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput11_Polarity" propremark="Digital Input 11 Polarity, pin #A18" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput12_Polarity" propremark="Digital Input 12 Polarity, pin #A17" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput2_Polarity" propremark="Digital Output 2 Polarity, pin #B7" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput3_Polarity" propremark="Digital Output 3 Polarity, pin #B6" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput4_Polarity" propremark="Digital Output 4 Polarity, pin #B5" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput5_Polarity" propremark="Digital Output 5 Polarity, pin #B4" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput6_Polarity" propremark="Digital Output 6 Polarity, pin #B1" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput7_Polarity" propremark="Digital Output 7 Polarity, pin #B3" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput8_Polarity" propremark="Digital Output 8 Polarity, pin #B2" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput12_Polarity" propremark="Digital Output 12 Polarity, pin #A3" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput13_Polarity" propremark="Digital Output 13 Polarity, pin #A10" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput14_Polarity" propremark="Digital Output 14 Polarity, pin #A2" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput15_Polarity" propremark="Digital Output 15 Polarity, pin #A9" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput16_Polarity" propremark="Digital Output 16 Polarity, pin #A16" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="AnInp1_Scale" propremark="Analog Input 1 Scale, pin #B15" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp2_Scale" propremark="Analog Input 2 Scale, pin #B17" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp3_Scale" propremark="Analog Input 3 Scale, pin #B10" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp4_Scale" propremark="Analog Input 4 Scale, pin #B18" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp5_Scale" propremark="Analog Input 5 Scale, pin #B11" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp6_Scale" propremark="Analog Input 6 Scale, pin #B19" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp7_Scale" propremark="Analog Input 7 Scale, pin #B12" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp8_Scale" propremark="Analog Input 8 Scale, pin #B20" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp9_Scale" propremark="Analog Input 9 Scale, pin #B13" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp10_Scale" propremark="Analog Input 10 Scale, pin #B21" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp11_Scale" propremark="Analog Input 11 Scale, pin #B14" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp1_Delta" propremark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="AnInp2_Delta" propremark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="AnInp3_Delta" propremark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="AnInp4_Delta" propremark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="AnInp5_Delta" propremark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="AnInp6_Delta" propremark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="AnInp7_Delta" propremark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="AnInp8_Delta" propremark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="AnInp9_Delta" propremark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="AnInp10_Delta" propremark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="AnInp11_Delta" propremark="Asynchroneous transmission will be triggered if input has changed more than this value since last transmission." datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="AnInp1_Offset" propremark="Analog Input 1 Offset, pin #B15" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp2_Offset" propremark="Analog Input 2 Offset, pin #B17" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp3_Offset" propremark="Analog Input 3 Offset, pin #B10" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp4_Offset" propremark="Analog Input 4 Offset, pin #B18" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp5_Offset" propremark="Analog Input 5 Offset, pin #B11" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp6_Offset" propremark="Analog Input 6 Offset, pin #B19" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp7_Offset" propremark="Analog Input 7 Offset, pin #B12" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp8_Offset" propremark="Analog Input 8 Offset, pin #B20" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp9_Offset" propremark="Analog Input 9 Offset, pin #B13" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp10_Offset" propremark="Analog Input 10 Offset, pin #B21" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="AnInp11_Offset" propremark="Analog Input 11 Offset, pin #B14" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="DigitalInput1_BTN_STR" propremark="Digital Input 1 value, pin #A22" datatype="BOOLEAN" symboladdress="DigitalInput1">
+        </property>
+        <property propname="DigitalInput2_BTN_RST" propremark="Digital Input 2 value, pin #A14" datatype="BOOLEAN" symboladdress="DigitalInput2">
+        </property>
+        <property propname="DigitalInput3_BMP_O1" propremark="Digital Input 3 value, pin #A7" datatype="BOOLEAN" symboladdress="DigitalInput3">
+        </property>
+        <property propname="DigitalInput4_BMP_O2" propremark="Digital Input 4 value, pin #A6" datatype="BOOLEAN" symboladdress="DigitalInput4">
+        </property>
+        <property propname="DigitalInput5_BTN_BRK" propremark="Digital Input 5 value, pin #A13" datatype="BOOLEAN" symboladdress="DigitalInput5">
+        </property>
+        <property propname="DigitalInput6" propremark="Digital Input 6 value, pin #A21" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput7" propremark="Digital Input 7 value, pin #A20" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput8_BMP_E" propremark="Digital Input 8 value, pin #A19" datatype="BOOLEAN" symboladdress="DigitalInput8">
+        </property>
+        <property propname="DigitalInput9" propremark="Digital Input 9 value, pin #B22" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput10" propremark="Digital Input 10 value, pin #B23" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput11" propremark="Digital Input 11 value, pin #A18" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput12_EMO" propremark="Digital Input 12 value, pin #A17" datatype="BOOLEAN" symboladdress="DigitalInput12">
+        </property>
+        <property propname="AllOK_DigitalOutput1" propremark="Reserved Digital Output 1 (All-OK, pin #B8)" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput2_LEDF_L" propremark="Digital Output 2 value, pin #B7" datatype="BOOLEAN" symboladdress="DigitalOutput2">
+        </property>
+        <property propname="DigitalOutput3_LEDF_R" propremark="Digital Output 3 value, pin #B6" datatype="BOOLEAN" symboladdress="DigitalOutput3">
+        </property>
+        <property propname="DigitalOutput4_LEDR_L" propremark="Digital Output 4 value, pin #B5" datatype="BOOLEAN" symboladdress="DigitalOutput4">
+        </property>
+        <property propname="DigitalOutput5_LEDR_R" propremark="Digital Output 5 value, pin #B4" datatype="BOOLEAN" symboladdress="DigitalOutput5">
+        </property>
+        <property propname="DigitalOutput6_LED_INPOS" propremark="Digital Output 6 value, pin #B1" datatype="BOOLEAN" symboladdress="DigitalOutput6">
+        </property>
+        <property propname="DigitalOutput7_LED_STR" propremark="Digital Output 7 value, pin #B3" datatype="BOOLEAN" symboladdress="DigitalOutput7">
+        </property>
+        <property propname="DigitalOutput8_LED_RST" propremark="Digital Output 8 value, pin #B2" datatype="BOOLEAN" symboladdress="DigitalOutput8">
+        </property>
+        <property propname="DigitalOutput12" propremark="Digital Output 12 value, pin #A3" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput13_PWR_OFF" propremark="Digital Output 13 value, pin #A10" datatype="BOOLEAN" symboladdress="DigitalOutput13">
+        </property>
+        <property propname="DigitalOutput14_LED_BRK" propremark="Digital Output 14 value, pin #A2" datatype="BOOLEAN" symboladdress="DigitalOutput14">
+        </property>
+        <property propname="DigitalOutput15" propremark="Digital Output 15 value, pin #A9" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput16_Charger" propremark="Digital Output 16 value, pin #A16" datatype="BOOLEAN" symboladdress="DigitalOutput16">
+        </property>
+        <property propname="AnalogInput1" propremark="Analog Input 1 value, pin #B15. The value is the applied input voltage (in Volts) * Scale + Offset" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="AnalogInput2" propremark="Analog Input 2 value, pin #B17. The value is the applied input voltage (in Volts) * Scale + Offset" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="AnalogInput3" propremark="Analog Input 3 value, pin #B10. The value is the applied input voltage (in Volts) * Scale + Offset" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="AnalogInput4" propremark="Analog Input 4 value, pin #B18. The value is the applied input voltage (in Volts) * Scale + Offset" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="AnalogInput5" propremark="Analog Input 5 value, pin #B11. The value is the applied input voltage (in Volts) * Scale + Offset" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="AnalogInput6" propremark="Analog Input 6 value, pin #B19. The value is the applied input voltage (in Volts) * Scale + Offset" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="AnalogInput7" propremark="Analog Input 7 value, pin #B12. The value is the applied input voltage (in Volts) * Scale + Offset" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="AnalogInput8" propremark="Analog Input 8 value, pin #B20. The value is the applied input voltage (in Volts) * Scale + Offset" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="AnalogInput9" propremark="Analog Input 9 value, pin #B13. The value is the applied input voltage (in Volts) * Scale + Offset" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="AnalogInput10" propremark="Analog Input 10 value, pin #B21. The value is the applied input voltage (in Volts) * Scale + Offset" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="AnalogInput11" propremark="Analog Input 11 value, pin #B14. The value is the applied input voltage (in Volts) * Scale + Offset" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="PWMOutput1" propremark="PWM Output 1 value, pin #A5. The value is the duty cycle of the output." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="PWMOutput2" propremark="PWM Output 2 value, pin #A12. The value is the duty cycle of the output." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="PWMOutput3" propremark="PWM Output 3 value, pin #A11. The value is the duty cycle of the output." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="Reg1Output" propremark="Regulator 1 output value" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="Reg2Output" propremark="Regulator 2 output value" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="GroundFaultEvent" propremark="If set to true, a ground fault will cause a system event 229." datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="GroundFaultActive" propremark="True if a ground fault is present" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="Temperature" propremark="Current temperature" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="XV_Out" propremark="Current xv out voltage" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="B_Plus" propremark="Current b plus voltage" datatype="INTEGER32" symboladdress="">
+        </property>
+        <property propname="BusID" propremark="CAN bus ID" datatype="INTEGER32" symboladdress="" />
+        <property propname="NodeID" propremark="CAN node ID" datatype="INTEGER32" symboladdress="" />
+        <property propname="FailureAction" propremark="0 = Background, the background programs takes action when an error occur in the device. 1 = PLC, no action from background program. The error should be handled by the PLC application." datatype="INTEGER32" symboladdress="" />
+        <property propname="ActiveInSafeState" propremark="Decides if the device will start up in safe state." datatype="BOOLEAN" symboladdress="" />
+        <property propname="NMTState" propremark="The current CANopen state of the device." datatype="UNSIGNED32" symboladdress="" />
+        <property propname="SdoBufferSize" propremark="The current size of the client SDO buffer (read/write SDO's from the vehicle controller to this device)." datatype="INTEGER32" symboladdress="" />
+        <property propname="IMUAxis" propremark="The axis in the IMU that gives the angular rate for vehicle." datatype="VISIBLE_STRING" symboladdress="" />
+        <property propname="IMUNavActive" propremark="Use the angular rate from the IMU when calculating the position of the vehicle." datatype="BOOLEAN" symboladdress="" />
+      </properties>
+    </comptype>
+  </comptypes>
+</top>

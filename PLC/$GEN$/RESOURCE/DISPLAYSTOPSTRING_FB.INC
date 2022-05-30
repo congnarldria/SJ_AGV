@@ -737,7 +737,7 @@ TYPE UserDefined_T :
         Integer32_54 : DINT ;   (*   *)
         Integer32_55_TravelDistance : DINT ;   (*   *)
         Integer32_56 : DINT ;   (*   *)
-        Integer32_57 : DINT ;   (*   *)
+        StopWord2 : DINT ;   (*   *)
         Integer32_58_LS2000_Attached_D : DINT ;   (*   *)
         Integer32_59_LS2000_Attached_H : DINT ;   (*   *)
         Integer32_60_LS2000_Attached_M : DINT ;   (*   *)
@@ -1590,7 +1590,7 @@ END_TYPE
 
 (* PROJEKT PROTOTYPEN *)
 
-$INCLUDE "D:\SJ_2SD_G45_CVC700_FULLMOD_20220309\PLC\$GEN$\TIMER_FB.PTT"
+$INCLUDE "D:\SJ_2SD_G45_CVC700_FULLMOD_20220525\PLC\$GEN$\TIMER_FB.PTT"
 
 
 (* EXTERNE POEs *)

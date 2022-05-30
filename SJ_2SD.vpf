@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vpf" FileRevision="457" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-05-05" ModificationTime="15:45:17.5172000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vpf" FileRevision="467" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-05-30" ModificationTime="14:47:50.1370000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
   <ComponentList Name="P46164" TimeStamp="0">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
@@ -703,7 +703,7 @@
         <Property SymbolName="Boolean_28" Value="0" PublicName="Boolean_28" Remark="" />
         <Property SymbolName="Boolean_29" Value="0" PublicName="Boolean_29" Remark="" />
         <Property SymbolName="Boolean_30" Value="0" PublicName="Boolean_30" Remark="" />
-        <Property SymbolName="Integer32_1" Value="1040" PublicName="StopWord" Remark="Integer32_1" AliasName="StopWord" />
+        <Property SymbolName="Integer32_1" Value="0" PublicName="StopWord" Remark="Integer32_1" AliasName="StopWord" />
         <Property SymbolName="Integer32_2" Value="0" PublicName="Integer32_2" Remark="Integer32_2" />
         <Property SymbolName="Integer32_3" Value="0" PublicName="Integer32_3" Remark="Integer32_3" />
         <Property SymbolName="Integer32_4" Value="0" PublicName="Integer32_4" Remark="Integer32_4" />
@@ -759,7 +759,7 @@
         <Property SymbolName="Integer32_54" Value="0" PublicName="Integer32_54" Remark="" />
         <Property SymbolName="Integer32_55" Value="104809768" PublicName="Integer32_55_TravelDistance" Remark="" AliasName="Integer32_55_TravelDistance" />
         <Property SymbolName="Integer32_56" Value="0" PublicName="Integer32_56" Remark="" />
-        <Property SymbolName="Integer32_57" Value="0" PublicName="Integer32_57" Remark="" />
+        <Property SymbolName="Integer32_57" Value="0" PublicName="StopWord2" Remark="" AliasName="StopWord2" />
         <Property SymbolName="Integer32_58" Value="3" PublicName="Integer32_58_LS2000_Attached_D" Remark="" AliasName="Integer32_58_LS2000_Attached_D" />
         <Property SymbolName="Integer32_59" Value="21" PublicName="Integer32_59_LS2000_Attached_H" Remark="" AliasName="Integer32_59_LS2000_Attached_H" />
         <Property SymbolName="Integer32_60" Value="14" PublicName="Integer32_60_LS2000_Attached_M" Remark="" AliasName="Integer32_60_LS2000_Attached_M" />
@@ -851,16 +851,16 @@
         <Property SymbolName="Angle" Value="0" />
         <Property SymbolName="UpsideDown" Value="0" />
         <Property SymbolName="IP" Value="192.168.100.9" />
-        <Property SymbolName="Field1_X1" Value="-870" />
-        <Property SymbolName="Field1_X2" Value="-670" />
-        <Property SymbolName="Field1_Y1" Value="-100" />
-        <Property SymbolName="Field1_Y2" Value="100" />
+        <Property SymbolName="Field1_X1" Value="-770" />
+        <Property SymbolName="Field1_X2" Value="-770" />
+        <Property SymbolName="Field1_Y1" Value="0" />
+        <Property SymbolName="Field1_Y2" Value="0" />
         <Property SymbolName="Field1_Triggered" Value="0" />
         <Property SymbolName="Field1_Dist" Value="0" />
-        <Property SymbolName="Field2_X1" Value="-870" />
-        <Property SymbolName="Field2_X2" Value="-670" />
-        <Property SymbolName="Field2_Y1" Value="-100" />
-        <Property SymbolName="Field2_Y2" Value="100" />
+        <Property SymbolName="Field2_X1" Value="-770" />
+        <Property SymbolName="Field2_X2" Value="-770" />
+        <Property SymbolName="Field2_Y1" Value="0" />
+        <Property SymbolName="Field2_Y2" Value="0" />
         <Property SymbolName="Field2_Triggered" Value="0" />
         <Property SymbolName="Field2_Dist" Value="0" />
         <Property SymbolName="Sector1_Ignore" Value="0" />
@@ -957,7 +957,7 @@
         <Property SymbolName="IgnoreAbnormalEncVal" Value="0" />
         <Property SymbolName="RangeLogInhibit" Value="500" />
         <Property SymbolName="NavigationMethods" Value="65" />
-        <Property SymbolName="NavLevelEventLimit" Value="50" />
+        <Property SymbolName="NavLevelEventLimit" Value="0" />
         <Property SymbolName="SleepTime" Value="-1" />
         <Property SymbolName="CorrectionX" Value="0" />
         <Property SymbolName="CorrectionY" Value="0" />
@@ -1061,16 +1061,16 @@
         <Property SymbolName="SpeedRegI" Value="65" />
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="125" />
         <Property SymbolName="RegSupervisionFailureDelay" Value="1000" />
-        <Property SymbolName="SteerEncScale" Value="1980" />
-        <Property SymbolName="SteerEncOffset" Value="-350" />
+        <Property SymbolName="SteerEncScale" Value="2052" />
+        <Property SymbolName="SteerEncOffset" Value="0" />
         <Property SymbolName="PosRegP" Value="80" />
         <Property SymbolName="PosRegI" Value="0" />
         <Property SymbolName="LimOutMax" Value="512" />
         <Property SymbolName="MaxWheelAngle" Value="0" />
         <Property SymbolName="SlowDownZone" Value="0" />
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" />
-        <Property SymbolName="EndLimitSwitchPolarity" Value="1" />
-        <Property SymbolName="SyncGate" Value="1" />
+        <Property SymbolName="EndLimitSwitchPolarity" Value="0" />
+        <Property SymbolName="SyncGate" Value="0" />
         <Property SymbolName="SyncFilter" Value="50" />
         <Property SymbolName="SyncEmergency" Value="1" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" />
@@ -1176,16 +1176,16 @@
         <Property SymbolName="SpeedRegI" Value="65" />
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="125" />
         <Property SymbolName="RegSupervisionFailureDelay" Value="1000" />
-        <Property SymbolName="SteerEncScale" Value="1980" />
-        <Property SymbolName="SteerEncOffset" Value="550" />
+        <Property SymbolName="SteerEncScale" Value="2052" />
+        <Property SymbolName="SteerEncOffset" Value="0" />
         <Property SymbolName="PosRegP" Value="80" />
         <Property SymbolName="PosRegI" Value="0" />
         <Property SymbolName="LimOutMax" Value="512" />
         <Property SymbolName="MaxWheelAngle" Value="0" />
         <Property SymbolName="SlowDownZone" Value="0" />
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" />
-        <Property SymbolName="EndLimitSwitchPolarity" Value="1" />
-        <Property SymbolName="SyncGate" Value="1" />
+        <Property SymbolName="EndLimitSwitchPolarity" Value="0" />
+        <Property SymbolName="SyncGate" Value="0" />
         <Property SymbolName="SyncFilter" Value="50" />
         <Property SymbolName="SyncEmergency" Value="1" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" />

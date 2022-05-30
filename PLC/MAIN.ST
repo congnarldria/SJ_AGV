@@ -179,7 +179,7 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	0:
 	(* Steer Turn to 2000 *)
 	NDC8.Manual.PlcSelect := true;
-	NDC8.Manual.PLCAngle := 9000;
+	NDC8.Manual.PLCAngle := 2000;
 	NDC8.Manual.PlcSetOperationMode := 1;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
@@ -190,10 +190,11 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 		FindSyncDelay(IN:=FALSE);
 	end_if;
 	
+	
 	1:
 	(* Steer Turn to -2000 *)
 	NDC8.Manual.PlcSelect := true;
-	NDC8.Manual.PLCAngle := -9000;
+	NDC8.Manual.PLCAngle := -2000;
 	NDC8.Manual.PlcSetOperationMode := 1;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
@@ -304,7 +305,6 @@ R_SteerSupervision(Command:= NDC8.DCD_8.SetAngle,FeedBack:= NDC8.DCD_8.WheelAngl
 
 F_DriveSupervision(Command:= NDC8.DCD_5.SetSpeed,FeedBack:= NDC8.DCD_5.DriveEncSpeed,Range:= 100,Timeout:= t#30s,Moving:= VehicleMovingFlag);
 R_DriveSupervision(Command:= NDC8.DCD_7.SetSpeed,FeedBack:= NDC8.DCD_7.DriveEncSpeed,Range:= 100,Timeout:= t#30s,Moving:= VehicleMovingFlag);
-
 	
 
 
@@ -457,7 +457,7 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 140;
 	elsif OM_PLC_W2_Bit_SetEmgStop = TRUE then
 		g_ErrorCode := 145;
-	elsif NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L or NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R or NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L or NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R then
+	elsif NOT NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L or NOT NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R or NOT NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L or NOT NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R then
 		g_ErrorCode := 161;
 	elsif (PLC_RX01_Bit_ChrgEmg and PLC_TX01_Bit_ManMode) or (PLC_RX01_Bit_ChrgEmg and not PLC_TX01_Bit_ManMode and NDC8.PLC_Application.TxStatusBit6_Charge) then
 		g_ErrorCode := 174;
@@ -765,6 +765,12 @@ Display();
 OPTX2();
 
 DataUpdate();
+
+
+
+
+
+
 
 
 

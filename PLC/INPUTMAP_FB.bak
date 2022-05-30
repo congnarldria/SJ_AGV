@@ -159,12 +159,12 @@ Input.SD_Left :=  ((NDC8.SegmentTrigger.Bit12_TurnLeft_A and NDC8.VehicleControl
 					and NDC8.VehicleControl.Moving;
 
 
-Input.DD_Right := ((Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.DCD_6.SetAngle < 0) (* Diff Parallel Mode and Right, Just Check Front Wheel  *)
-					or (Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.DCD_6.SetAngle > 0)); (* Diff Parallel Mode and Right, Just Check Front Wheel  *)
+Input.DD_Right := ((Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.DCD_6.SetAngle < 0) (* Diff Parallel Mode and Right, Just Check Front Wheel  *)
+					or (Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.DCD_6.SetAngle > 0)); (* Diff Parallel Mode and Right, Just Check Front Wheel  *)
 				
 				
-Input.DD_Left :=  ((Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.DCD_6.SetAngle > 0) (* Diff Parallel Mode and Right, Just Check Front Wheel  *)
-					or (Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.DCD_6.SetAngle < 0)); (* Diff Parallel Mode and Right, Just Check Front Wheel  *)
+Input.DD_Left :=  ((Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.DCD_6.SetAngle > 0) (* Diff Parallel Mode and Right, Just Check Front Wheel  *)
+					or (Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.DCD_6.SetAngle < 0)); (* Diff Parallel Mode and Right, Just Check Front Wheel  *)
 		
 		
 Input.SD_Forward := ((Input.SteerMode = 0 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.VehicleControl.Moving = TRUE)
@@ -181,6 +181,7 @@ INPUT.LoadOnBoard := PLC_RX01_Bit_Load_i;
 
 
 StopEstopButton := NDC8.SDIO.DigitalInput12_EMO;
+
 
 
 

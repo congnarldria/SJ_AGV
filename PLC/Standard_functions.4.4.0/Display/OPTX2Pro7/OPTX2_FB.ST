@@ -262,7 +262,7 @@ ModBus_ValueWord [6] := DINT_TO_WORD(NDC8.Manual.PlcSteerMode);
 
 (*System Manager connection, sent to Display*)
 ModBus_ValueBOOL [1]:= NDC8.Master.MasterLinkUp;
-
+          
 if NDC8.LayoutPosition.Point <> 0 or NDC8.LayoutPosition.Segment <> 0 then
 	ModBus_ValueBOOL [2] := true;
 else
@@ -721,6 +721,7 @@ OPTX2Communication();
 
 
 (****************************************************************************)
+
 
 
 
