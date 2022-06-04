@@ -100,6 +100,7 @@ VAR_GLOBAL
 	PLC_RX_Word23_BMS_ID4L		:WORD;
 	PLC_RX_Word24_BMS_ID4H		:WORD;
 	PLC_RX_Word25				:WORD;
+	g_Receive :string(200);
 END_VAR
 
 VAR_GLOBAL RETAIN		(* Values kept also during power off. *)
@@ -107,6 +108,7 @@ VAR_GLOBAL RETAIN		(* Values kept also during power off. *)
 	Milliseconds:Dint;
 	SecondLanguage:bool;
 END_VAR
+
 
 
 

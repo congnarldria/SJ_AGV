@@ -151,6 +151,7 @@ VAR_EXTERNAL
 	PLC_TX04_BIT_STR_INS_DN : BOOL;
 	PLC_RX04_BIT_STW_CANCEL : BOOL;
 	PLC_TX03_BIT_STR_BLOCK : BOOL;
+	G_RECEIVE : string (200);
 	PLC_RX_WORD12_STW_PINT : WORD;
 	PLC_RX04_BIT_STW_CHANGE : BOOL;
 	PLC_RX03_BIT_STW_MOD_HT : BOOL;
@@ -2824,6 +2825,11 @@ END_VAR
 							CONCAT TempString
 							ST DecodeString
 
+(** 						g_Receive := DecodeString; **)
+							(* assign - Stmt *)
+							LD DecodeString
+							ST g_Receive
+
 							JMP ODK_END_IF_00000000000001W
 
 (** 					end_if; **)
@@ -2903,7 +2909,6 @@ END_VAR
 							left 7
 							ST HeaderString
 
-(** 					 **)
 (** 						if HeaderString = '00F0XRS' then **)
 							(* if - Cond *)
 							LD HeaderString
@@ -4202,6 +4207,8 @@ END_VAR
 	ODK_SKIP_00000000000001Q_000000000000001:
 	ODK_END_IF_00000000000001Q:
 
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

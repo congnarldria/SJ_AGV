@@ -174,15 +174,29 @@ if SwitchHostFlag then
 		Host_R_Flag := TRUE;
 	end_if;
 	
-	if NDC8.Automatic.CurrentOrderMode = 1 then
-		Host_R_Flag := FALSE;
-	end_if;
+	if NDC8.UserDefined.Boolean_20_OnlineOrderMode = FALSE  then
 	
-	if NDC8.Automatic.CurrentOrderMode <> 1 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q then
-		NDC8.Automatic.SetOrderMode := 1;
-		OrderMode();
-	elsif NDC8.Automatic.CurrentOrderMode <> 1 and Host_R_Flag = FALSE then
-		;
+		if NDC8.Automatic.CurrentOrderMode = 1 then
+			Host_R_Flag := FALSE;
+		end_if;
+	
+		if NDC8.Automatic.CurrentOrderMode <> 1 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q then
+			NDC8.Automatic.SetOrderMode := 1;
+			OrderMode();
+		elsif NDC8.Automatic.CurrentOrderMode <> 1 and Host_R_Flag = FALSE then
+			;
+		end_if;
+	else
+		if NDC8.Automatic.CurrentOrderMode = 3 then
+			Host_R_Flag := FALSE;
+		end_if;
+	
+		if NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q then
+			NDC8.Automatic.SetOrderMode := 3;
+			OrderMode();
+		elsif NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = FALSE then
+			;
+		end_if;
 	end_if;
 	
 else
@@ -708,6 +722,7 @@ if ComStart = true then
 						TempString := to_string.str;
 			
 						DecodeString := CONCAT(DecodeString, TempString);
+						g_Receive = DecodeString;
 					end_if;
 				
 					StartOffset := StartOffset + 1;
@@ -721,7 +736,6 @@ if ComStart = true then
 					if ReceiveData_Status[DataIndex1] = 16#02 and ReceiveData_Status[DataIndex2] = 16#0D and ReceiveData_Status[DataIndex3] = 16#0A then
 					
 						HeaderString := left(DecodeString, 7);
-					
 						if HeaderString = '00F0XRS' then
 							DecodeString_RS := DecodeString;
 							DecodeString := '';
@@ -982,6 +996,9 @@ if ComStart = true then
 	
 	
 end_if;
+
+
+
 
 
 

@@ -1,0 +1,81 @@
+FUNCTION_BLOCK ASCII_TO_DEC
+VAR_EXTERNAL
+
+END_VAR
+
+VAR_INPUT
+	ASCII : dint;
+END_VAR
+
+VAR CONSTANT
+	ASCII_a61 	: DINT := 16#61; 	(* Chr "a" *)
+	ASCII_A41 	: DINT := 16#41; 	(* Chr "A" *)
+	ASCII_0 	: DINT := 16#30;	(* Number "0" *)
+END_VAR
+
+VAR_OUTPUT
+	dec	: dint;
+END_VAR
+
+VAR
+	CODE : DINT;
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+END_VAR
+(** IF 		ASCII >= ASCII_a61 THEN		{* Character a *} **)
+	(* if - Cond *)
+	LD ASCII
+	GE ASCII_a61
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
+(** 	dec := ASCII - ASCII_a61 + 10;  **)
+		(* assign - Stmt *)
+		LD ASCII
+		SUB ASCII_a61
+		ADD 10
+		ST dec
+
+		JMP ODK_END_IF_000000000000001
+
+(**  **)
+(** elsif 	ASCII >= ASCII_A41 THEN	{* Character A *} **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	LD ASCII
+	GE ASCII_A41
+	JMPCN ODK_SKIP_000000000000001_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	dec := ASCII - ASCII_A41 + 10; 	 **)
+		(* assign - Stmt *)
+		LD ASCII
+		SUB ASCII_A41
+		ADD 10
+		ST dec
+
+		JMP ODK_END_IF_000000000000001
+
+(**  **)
+(** else **)
+	(* else *) 
+	ODK_SKIP_000000000000001_000000000000002:
+
+		(* else - Stmts *)
+
+(** 	dec := ASCII - ASCII_0;			{* Number *} **)
+		(* assign - Stmt *)
+		LD ASCII
+		SUB ASCII_0
+		ST dec
+
+(** END_IF; **)
+	(* if - End *) 
+	ODK_END_IF_000000000000001:
+
+
+END_FUNCTION_BLOCK

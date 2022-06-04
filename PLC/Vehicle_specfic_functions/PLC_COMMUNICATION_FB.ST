@@ -722,6 +722,7 @@ if ComStart = true then
 						TempString := to_string.str;
 			
 						DecodeString := CONCAT(DecodeString, TempString);
+						g_Receive := DecodeString;
 					end_if;
 				
 					StartOffset := StartOffset + 1;
@@ -735,7 +736,6 @@ if ComStart = true then
 					if ReceiveData_Status[DataIndex1] = 16#02 and ReceiveData_Status[DataIndex2] = 16#0D and ReceiveData_Status[DataIndex3] = 16#0A then
 					
 						HeaderString := left(DecodeString, 7);
-					
 						if HeaderString = '00F0XRS' then
 							DecodeString_RS := DecodeString;
 							DecodeString := '';
@@ -996,6 +996,8 @@ if ComStart = true then
 	
 	
 end_if;
+
+
 
 
 

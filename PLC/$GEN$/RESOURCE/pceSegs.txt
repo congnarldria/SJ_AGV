@@ -1,7 +1,7 @@
 0/9	SegHardwareConfig	--	20
-0/10	Datasegment	0/11	3320	SHAREDGLOBAL
+0/10	Datasegment	0/11	3524	SHAREDGLOBAL
 0/11	Codesegment	0/12	7
-0/12	Initialsegment	0/44	3316
+0/12	Initialsegment	0/44	3520
 0/13	Datasegment	0/14	5372	GLOBAL
 0/14	Codesegment	0/15	7
 0/15	Initialsegment	0/45	5380
@@ -239,8 +239,8 @@
 1/247	Datasegment	1/248	36	MAIN.DEBUGFB
 1/248	Codesegment	1/249	397
 1/249	Initialsegment	1/389	16
-1/250	Datasegment	1/251	2988	MAIN.PLC_COMMUNICATION
-1/251	Codesegment	1/252	5728
+1/250	Datasegment	1/251	2992	MAIN.PLC_COMMUNICATION
+1/251	Codesegment	1/252	5734
 1/252	Initialsegment	1/390	2528
 1/253	Datasegment	1/64	36	MAIN.PLC_COMMUNICATION.TP_PB_NOSELTIMER
 1/254	Datasegment	1/70	20	MAIN.PLC_COMMUNICATION.RST_R
@@ -379,8 +379,8 @@
 1/387	NativeCodeSegment	1/239	36
 1/388	NativeCodeSegment	1/243	2524
 1/389	NativeCodeSegment	1/248	6020
-1/390	NativeCodeSegment	1/391	64008
-1/391	NativeCodeSegment2	1/251	9156
+1/390	NativeCodeSegment	1/391	64116
+1/391	NativeCodeSegment2	1/251	9288
 1/392	NativeCodeSegment	1/262	36
 1/393	NativeCodeSegment	1/272	1784
 1/394	NativeCodeSegment	1/294	9864
