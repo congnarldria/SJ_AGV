@@ -1,5 +1,3 @@
-LAMP (修改左右轉判斷並手動也需點亮)
+G5 Version
 
-OP Code (Order Mode in 1時 Op Code 180度與-90度需對換)
-for Branch G45
-
+  
