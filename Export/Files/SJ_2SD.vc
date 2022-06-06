@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2020-06-02" CreationTime="15:47:09.1840000+08:00" CreatedBy="user" ModificationDate="2020-06-02" ModificationTime="15:47:09.1840000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2020-06-06" CreationTime="11:11:24.1767000+08:00" CreatedBy="user" ModificationDate="2020-06-06" ModificationTime="11:11:24.1767000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
-  <ComponentList Name="P46164" TimeStamp="1591112845">
+  <ComponentList Name="P46164" TimeStamp="1591441900">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
       <Properties>
         <Property SymbolName="Method" Value="2" Remark="Navigation init methods:&#xD;&#xA;0. NavAreaInit. The vehicle controller will search for a&#xD;&#xA;   position within the given navigation area. If navigation area is&#xD;&#xA;   set to 0 the vehicle controller will search the whole layout. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;1. PointInit. The vehicle controller will search for a position in an&#xD;&#xA;   area around the given NDC point. The size of the search area is&#xD;&#xA;   defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;2. SetPosition. The vehicle controller will set its position to that&#xD;&#xA;   of the given NDC point. The vehicle must be in manual or semi manual&#xD;&#xA;   mode and standing still.&#xD;&#xA;&#xD;&#xA;3. CoordinatesInit. The vehicle controller will search for a position&#xD;&#xA;   in an area around the given coordinates. The size of the search&#xD;&#xA;   area is defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;4. SetCoordinates. The vehicle controller will set its position to&#xD;&#xA;   that of the given given coordinates. The vehicle must be in manual&#xD;&#xA;   or semi manual mode and standing still." ParentName="NavInit" />
@@ -31,7 +31,7 @@
         <Property SymbolName="Button9" Value="0" Remark="Load1 down button" ParentName="Mcd" />
         <Property SymbolName="Button10" Value="0" Remark="Load2 left button" ParentName="Mcd" />
         <Property SymbolName="Button11" Value="0" Remark="Load2 right button" ParentName="Mcd" />
-        <Property SymbolName="McdHighSpeed" Value="150" Remark="Mcd high or max speed" ParentName="Mcd" />
+        <Property SymbolName="McdHighSpeed" Value="500" Remark="Mcd high or max speed" ParentName="Mcd" />
         <Property SymbolName="McdLowSpeed" Value="100" Remark="Mcd low speed" ParentName="Mcd" />
         <Property SymbolName="Valid" Value="0" Remark="Set when an MCD device is up and running" ParentName="Mcd" />
       </Properties>
@@ -259,7 +259,7 @@
         <Property SymbolName="SensorStopEnable" Value="0" Remark="Enable / Disable of SensorStopInput 0=disable, 1=enable. The intention is to use this to stop the vehicle on a sensor, at an operation point on a flexible segment and in conjunction with the LoadDocking.Arrived function. Though, there are no limits to use it in other situations too. When enabled, the vehicle will stop and stand still, as long as the selected sensor, SensorStopInputSignal, is active, due to its polarity, SensorStopInputPolarity. When the signal is not active, the vehicle goes on driving (if commanded of course)" ParentName="VehicleControl" />
         <Property SymbolName="BrakeOutputSignal" Value="UserDefined.Braker_Signal" Remark="Symbolic name for digital output where brake is connected, to disable type NotUsed" ParentName="VehicleControl" IsSymbol="1" />
         <Property SymbolName="BrakeOutputPolarity" Value="0" Remark="Polarity setting for brake digital output" ParentName="VehicleControl" />
-        <Property SymbolName="BrakeOnDelay" Value="250" Remark="Delay before the brakes are applied" ParentName="VehicleControl" />
+        <Property SymbolName="BrakeOnDelay" Value="2000" Remark="Delay before the brakes are applied" ParentName="VehicleControl" />
         <Property SymbolName="BrakeOffDelay" Value="250" Remark="Delay before trying to move the vehicle after the brakes have been released. To allow for the brakes to mechanically release." ParentName="VehicleControl" />
         <Property SymbolName="EstopInputSignal" Value="SDIO.DigitalInput12_EMO" Remark="Symbolic name for digital input where Estop is connected, to disable type NotUsed. If you have not set this correct you can get emcy on the Can-Bus. This happens when the regulators try to move the wheels and there's no power on the servos." ParentName="VehicleControl" IsSymbol="1" />
         <Property SymbolName="EstopInputPolarity" Value="1" Remark="Polarity setting for estop digital input" ParentName="VehicleControl" />
@@ -526,7 +526,7 @@
         <Property SymbolName="Boolean_28" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_29" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_30" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_1" Value="1024" Remark="Integer32_1" AliasName="StopWord" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_1" Value="0" Remark="Integer32_1" AliasName="StopWord" ParentName="UserDefined" />
         <Property SymbolName="Integer32_2" Value="0" Remark="Integer32_2" ParentName="UserDefined" />
         <Property SymbolName="Integer32_3" Value="0" Remark="Integer32_3" ParentName="UserDefined" />
         <Property SymbolName="Integer32_4" Value="0" Remark="Integer32_4" ParentName="UserDefined" />
