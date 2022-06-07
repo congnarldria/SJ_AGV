@@ -239,8 +239,8 @@
 1/247	Datasegment	1/248	36	MAIN.DEBUGFB
 1/248	Codesegment	1/249	397
 1/249	Initialsegment	1/390	16
-1/250	Datasegment	1/251	3460	MAIN.PLC_COMMUNICATION
-1/251	Codesegment	1/252	5448
+1/250	Datasegment	1/251	3456	MAIN.PLC_COMMUNICATION
+1/251	Codesegment	1/252	5458
 1/252	Initialsegment	1/391	2976
 1/253	Datasegment	1/64	36	MAIN.PLC_COMMUNICATION.TP_PB_NOSELTIMER
 1/254	Datasegment	1/70	20	MAIN.PLC_COMMUNICATION.RST_R
@@ -380,8 +380,8 @@
 1/388	NativeCodeSegment	1/239	36
 1/389	NativeCodeSegment	1/243	2524
 1/390	NativeCodeSegment	1/248	6020
-1/391	NativeCodeSegment	1/392	64188
-1/392	NativeCodeSegment2	1/251	896
+1/391	NativeCodeSegment	1/392	64212
+1/392	NativeCodeSegment2	1/251	768
 1/393	NativeCodeSegment	1/262	36
 1/394	NativeCodeSegment	1/273	1784
 1/395	NativeCodeSegment	1/295	9864

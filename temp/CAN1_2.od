@@ -1,0 +1,877 @@
+<?xml version="1.0"?>
+<Product Name="P46136V1.1.0" ArticleNumber="P46136V1.1.0" Checksum="0x8cde" TimeStamp="1515415048">
+  <Dictionary>
+    <Parameters>
+      <!--      DS301 part of dictionary    -->
+      <Parameter SymbolName="CoDeviceType" PublicName="Device Type" ObjectType="VAR" Index="0x1000" SubIndex="0" DataType="UNSIGNED32" AccessType="const" Default="0x09000000" Visibility="OEM" />
+      <Parameter SymbolName="CoErrorRegister" ObjectType="VAR" Index="0x1001" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Default="0" Visibility="Internal" />
+      <Parameter SymbolName="CoClearErrorLog" ObjectType="VAR" Index="0x1003" SubIndex="0" DataType="UNSIGNED8" AccessType="rw" Remark="Write 0 to clear" />
+      <Parameter SymbolName="CoErrorLogEntries" ObjectType="ARRAY" Index="0x1003" DataType="UNSIGNED32" AccessType="ro" />
+      <Parameter SymbolName="CoSyncCobId" PublicName="COB-ID SYNC" ObjectType="VAR" Index="0x1005" SubIndex="0" DataType="UNSIGNED32" AccessType="const" Default="0x00000080" Visibility="Internal" />
+      <Parameter SymbolName="CoDeviceName" ObjectType="VAR" Index="0x1008" SubIndex="0" DataType="VISIBLE_STRING" AccessType="const" Default="VMC20" Visibility="OEM" />
+      <Parameter SymbolName="CoSoftwareVersion" ObjectType="VAR" Index="0x100A" SubIndex="0" DataType="VISIBLE_STRING" AccessType="const" Visibility="OEM" />
+      <Parameter SymbolName="CoGuardTime" ObjectType="VAR" Index="0x100C" SubIndex="0" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" Visibility="Internal" Remark="CANopen Life Guarding Protocol. 0=No Life Guarding." />
+      <Parameter SymbolName="CoLifeTimeFactor" ObjectType="VAR" Index="0x100D" SubIndex="0" DataType="UNSIGNED8" AccessType="rw" Default="0" Visibility="Internal" Remark="CANopen Life Guarding Protocol. 0=No Life Guarding." />
+      <Group SymbolName="CoStore" PublicName="Store Parameters" Remark="Write 0x65766173 to store parameters.">
+        <Parameter SymbolName="All" ObjectType="VAR" Index="0x1010" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="Communication" ObjectType="VAR" Index="0x1010" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="Application" ObjectType="VAR" Index="0x1010" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" />
+      </Group>
+      <Group SymbolName="CoRestore" PublicName="Restore Parameters" Remark="Write 0x64616F6C to restore default parameters.">
+        <Parameter SymbolName="All" ObjectType="VAR" Index="0x1011" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="Communication" ObjectType="VAR" Index="0x1011" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="Application" ObjectType="VAR" Index="0x1011" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" />
+      </Group>
+      <Parameter SymbolName="CoCobIdEmcy" ObjectType="VAR" Index="0x1014" SubIndex="0" DataType="UNSIGNED32" AccessType="ro" Default="80h+NodeID" Visibility="Internal" />
+      <Group SymbolName="CoIdentity" PublicName="Identity">
+        <Parameter SymbolName="VendorId" PublicName="Vendor ID" ObjectType="VAR" Index="0x1018" SubIndex="1" DataType="UNSIGNED32" AccessType="const" Default="0x99" Visibility="OEM" Remark="Vendor ID" />
+      </Group>
+      <Parameter SymbolName="CoConsumerHeartbeatTime" ObjectType="VAR" Index="0x1016" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Default="0" Visibility="Internal" Remark="Bitfield, 0=Disabled">
+        <BitField SymbolName="HeartbeatTime" PublicName="Heartbeat Time" Start="0" Length="16" />
+        <BitField SymbolName="NodeId" PublicName="Node ID" Start="16" Length="8" />
+        <BitField SymbolName="Reserved" PublicName="Reserved" Start="24" Length="8" />
+      </Parameter>
+      <Parameter SymbolName="CoProducerHeartbeatTime" ObjectType="VAR" Index="0x1017" SubIndex="0" DataType="UNSIGNED16" AccessType="rw" Default="0" Visibility="Internal" Unit="ms" Remark="0=Disabled" />
+      <Group SymbolName="CoVerifyConfiguration" PublicName="Verify Configuration">
+        <Parameter SymbolName="Date" PublicName="Date" ObjectType="VAR" Index="0x1020" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Visibility="OEM" Unit="days" Remark="since 1984-01-01" />
+        <Parameter SymbolName="Time" PublicName="Time" ObjectType="VAR" Index="0x1020" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Visibility="OEM" Unit="ms" Remark="after midnight" />
+      </Group>
+      <Group SymbolName="CoRpdo1" PublicName="Receive PDO 1">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1400" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1400" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1600" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoRpdo2" PublicName="Receive PDO 2">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1401" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1401" SubIndex="2" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1601" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoRpdo3" PublicName="Receive PDO 3">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1402" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1402" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1602" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoRpdo4" PublicName="Receive PDO 4">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1403" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1403" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1603" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoTpdo1" PublicName="Transmit PDO 1">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1800" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1800" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="InhibitTime" PublicName="Inhibit Time" ObjectType="VAR" Index="0x1800" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.1" Unit="ms" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1A00" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoTpdo2" PublicName="Transmit PDO 2">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1801" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1801" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="InhibitTime" PublicName="Inhibit Time" ObjectType="VAR" Index="0x1801" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.1" Unit="ms" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1A01" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoTpdo3" PublicName="Transmit PDO 3">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1802" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1802" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="InhibitTime" PublicName="Inhibit Time" ObjectType="VAR" Index="0x1802" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.1" Unit="ms" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1A02" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoTpdo4" PublicName="Transmit PDO 4">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1803" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1803" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="InhibitTime" PublicName="Inhibit Time" ObjectType="VAR" Index="0x1803" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.1" Unit="ms" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1A03" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoTpdo5" PublicName="Transmit PDO 5">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1804" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1804" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="InhibitTime" PublicName="Inhibit Time" ObjectType="VAR" Index="0x1804" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.1" Unit="ms" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1A04" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoTpdo6" PublicName="Transmit PDO 6">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1805" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1805" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="InhibitTime" PublicName="Inhibit Time" ObjectType="VAR" Index="0x1805" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.1" Unit="ms" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1A05" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoTpdo7" PublicName="Transmit PDO 7">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1806" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1806" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="InhibitTime" PublicName="Inhibit Time" ObjectType="VAR" Index="0x1806" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.1" Unit="ms" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1A06" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoTpdo8" PublicName="Transmit PDO 8">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1807" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1807" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="InhibitTime" PublicName="Inhibit Time" ObjectType="VAR" Index="0x1807" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.1" Unit="ms" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1A07" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoTpdo9" PublicName="Transmit PDO 9">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1808" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1808" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="InhibitTime" PublicName="Inhibit Time" ObjectType="VAR" Index="0x1808" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.1" Unit="ms" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1A08" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoTpdo10" PublicName="Transmit PDO 10">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x1809" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x1809" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="InhibitTime" PublicName="Inhibit Time" ObjectType="VAR" Index="0x1809" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.1" Unit="ms" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1A09" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoTpdo11" PublicName="Transmit PDO 11">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x180A" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x180A" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="InhibitTime" PublicName="Inhibit Time" ObjectType="VAR" Index="0x180A" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.1" Unit="ms" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1A0A" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="CoTpdo12" PublicName="Transmit PDO 12">
+        <Parameter SymbolName="CobId" PublicName="COB ID" ObjectType="VAR" Index="0x180B" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="CobId" PublicName="COB ID" Start="0" Length="29" />
+          <BitField SymbolName="CAN20B" PublicName="CAN 20B" Start="29" Remark="29 bit COB ID" />
+          <BitField SymbolName="NoRtr" PublicName="No RTR" Start="30" />
+          <BitField SymbolName="Invalid" PublicName="Invalid" Start="31" />
+        </Parameter>
+        <Parameter SymbolName="TransmissionType" PublicName="Transmission Type" ObjectType="VAR" Index="0x180B" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="InhibitTime" PublicName="Inhibit Time" ObjectType="VAR" Index="0x180B" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.1" Unit="ms" Visibility="Internal" />
+        <Parameter SymbolName="Mapping" PublicName="Mapping" ObjectType="ARRAY" Index="0x1A0B" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal">
+          <BitField SymbolName="Index" PublicName="Index" Start="16" Length="16" />
+          <BitField SymbolName="SubIndex" PublicName="Sub Index" Start="8" Length="8" />
+          <BitField SymbolName="Length" PublicName="Length" Start="0" Length="8" />
+        </Parameter>
+      </Group>
+      <!--      Application part of dictionary  -->
+      <Group SymbolName="Reg1" PublicName="Regulator 1">
+        <Parameter SymbolName="SetValue" PublicName="Set Value" ObjectType="VAR" Index="0x2010" SubIndex="1" DataType="INTEGER16" AccessType="rw" Default="0" Remark="Unit depends on feedback." />
+        <Parameter SymbolName="Enable" PublicName="Enable" ObjectType="VAR" Index="0x2010" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Default="0" />
+        <Parameter SymbolName="OutValue" PublicName="Out Value" ObjectType="VAR" Index="0x2010" SubIndex="4" DataType="INTEGER16" Min="-10000" Max="10000" AccessType="ro" />
+        <Parameter SymbolName="IPart" PublicName="I Part" ObjectType="VAR" Index="0x2010" SubIndex="5" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="CurrentValue" PublicName="Current Value" ObjectType="VAR" Index="0x2010" SubIndex="6" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="DerivativeValue" PublicName="Derivative Value" ObjectType="VAR" Index="0x2010" SubIndex="7" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="ErrorValue" PublicName="Error Value" ObjectType="VAR" Index="0x2010" SubIndex="8" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="RampingSlopeSteps" PublicName="Ramping slope steps" ObjectType="VAR" Index="0x2010" SubIndex="10" DataType="UNSIGNED32" AccessType="ro" Remark="RampSlopeSteps is realtime syncperiod (ms) divided by regulator period (ms)" />
+      </Group>
+      <Group SymbolName="Reg1Config" PublicName="Regulator 1 Configuration">
+        <Parameter SymbolName="ParameterGroup" PublicName="Parameter Group" ObjectType="VAR" Index="0x2015" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Min="0" Max="1" Default="0" />
+        <Parameter SymbolName="FeedbackType" PublicName="Feedback Type" ObjectType="VAR" Index="0x2015" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Min="0" Max="6" Default="3">
+          <ValueTranslation Value="0" String="No feedback" />
+          <ValueTranslation Value="1" String="Incremental Encoder Position" />
+          <ValueTranslation Value="2" String="Incremental Encoder Speed" />
+          <ValueTranslation Value="3" String="CAN Encoder Position" />
+          <ValueTranslation Value="4" String="CAN Encoder Speed" />
+          <ValueTranslation Value="5" String="Analog Pot Position" />
+          <ValueTranslation Value="6" String="Analog Tacho Speed" />
+        </Parameter>
+        <Parameter SymbolName="Output" PublicName="Output Type" ObjectType="VAR" Index="0x2015" SubIndex="3" DataType="UNSIGNED8" AccessType="rw" Min="0" Max="3" Default="0" Remark="Select regulator output">
+          <ValueTranslation Value="0" String="PWM FSA" />
+          <ValueTranslation Value="1" String="CAN" />
+          <ValueTranslation Value="2" String="Analog FSA" />
+        </Parameter>
+        <Parameter SymbolName="UseRegulator" PublicName="Use Regulator" ObjectType="VAR" Index="0x2015" SubIndex="4" DataType="BOOLEAN" AccessType="rw" Default="0" Remark="Enable use of Regulator" />
+      </Group>
+      <Group SymbolName="Reg1ParamGroup0" PublicName="Regulator 1 Parameter group 0">
+        <Parameter SymbolName="FeedForward" PublicName="Feed Forward" ObjectType="VAR" Index="0x2030" SubIndex="1" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/Set" Default="0" />
+        <Parameter SymbolName="Offset" PublicName="Offset" ObjectType="VAR" Index="0x2030" SubIndex="2" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="0" />
+        <Parameter SymbolName="P" PublicName="P" ObjectType="VAR" Index="0x2030" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/Error" Default="0" />
+        <Parameter SymbolName="I" PublicName="I" ObjectType="VAR" Index="0x2030" SubIndex="4" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/(Error*s)" Default="0" />
+        <Parameter SymbolName="D" PublicName="D" ObjectType="VAR" Index="0x2030" SubIndex="5" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/(Feedback/s)" Default="0" />
+        <Parameter SymbolName="ILimit" PublicName="I Limit" ObjectType="VAR" Index="0x2030" SubIndex="6" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="10000" Remark="Limits integral action on output" />
+        <Parameter SymbolName="PIDLimit" PublicName="PID Limit" ObjectType="VAR" Index="0x2030" SubIndex="7" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="10000" Remark="Limits the effect of feedback" />
+        <Parameter SymbolName="OutLimit" PublicName="Out Limit" ObjectType="VAR" Index="0x2030" SubIndex="8" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="10000" Remark="Total output limit" />
+        <Parameter SymbolName="FailureDelay" PublicName="Failure Delay" ObjectType="VAR" Index="0x2030" SubIndex="11" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="1000" Remark="Delay before emergency stop in absence of correct feedback movement" />
+        <Parameter SymbolName="CheckOutHysteres" PublicName="Check Out Hysteres" ObjectType="VAR" Index="0x2030" SubIndex="12" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="1000" Remark="Feedback movement is checked when the regulator output is larger than this level." />
+        <Parameter SymbolName="OutOffset" PublicName="Out Offset" ObjectType="VAR" Index="0x2030" SubIndex="13" DataType="INTEGER16" AccessType="rw" Unit="Out" Default="0" Remark="Offset added to regulator output after the PID regulation" />
+      </Group>
+      <Group SymbolName="Reg1ParamGroup1" PublicName="Regulator 1 Parameter group 1">
+        <Parameter SymbolName="FeedForward" PublicName="Feed Forward" ObjectType="VAR" Index="0x2031" SubIndex="1" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/Set" Default="0" Remark="Not used for position regulator" />
+        <Parameter SymbolName="Offset" PublicName="Offset" ObjectType="VAR" Index="0x2031" SubIndex="2" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="0" Remark="Not used for position regulator" />
+        <Parameter SymbolName="P" PublicName="P" ObjectType="VAR" Index="0x2031" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/Error" Default="0" />
+        <Parameter SymbolName="I" PublicName="I" ObjectType="VAR" Index="0x2031" SubIndex="4" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/(Error*s)" Default="0" />
+        <Parameter SymbolName="D" PublicName="D" ObjectType="VAR" Index="0x2031" SubIndex="5" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/(Feedback/s)" Default="0" Remark="Not Implemented" />
+        <Parameter SymbolName="ILimit" PublicName="I Limit" ObjectType="VAR" Index="0x2031" SubIndex="6" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="10000" Remark="Limits integral action on output" />
+        <Parameter SymbolName="PIDLimit" PublicName="PID Limit" ObjectType="VAR" Index="0x2031" SubIndex="7" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="10000" Remark="Limits the effect of feedback" />
+        <Parameter SymbolName="OutLimit" PublicName="Out Limit" ObjectType="VAR" Index="0x2031" SubIndex="8" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="10000" Remark="Total output limit" />
+        <Parameter SymbolName="FailureDelay" PublicName="Failure Delay" ObjectType="VAR" Index="0x2031" SubIndex="11" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="1000" Remark="Delay before emergency stop in absence of correct feedback movement" />
+        <Parameter SymbolName="CheckOutHysteres" PublicName="Check Out Hysteres" ObjectType="VAR" Index="0x2031" SubIndex="12" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="1000" Remark="Feedback movement is checked when the regulator output is larger than this level." />
+        <Parameter SymbolName="OutOffset" PublicName="Out Offset" ObjectType="VAR" Index="0x2031" SubIndex="13" DataType="INTEGER16" AccessType="rw" Unit="Out" Default="0" Remark="Offset to add to regulator output after the PID regulation" />
+      </Group>
+      <Group SymbolName="Reg2" PublicName="Regulator 2">
+        <Parameter SymbolName="SetValue" PublicName="Set Value" ObjectType="VAR" Index="0x2020" SubIndex="1" DataType="INTEGER16" AccessType="rw" Default="0" Remark="Unit depends on feedback." />
+        <Parameter SymbolName="Enable" PublicName="Enable" ObjectType="VAR" Index="0x2020" SubIndex="2" DataType="BOOLEAN" AccessType="rw" Default="0" />
+        <Parameter SymbolName="OutValue" PublicName="Out Value" ObjectType="VAR" Index="0x2020" SubIndex="4" DataType="INTEGER16" Min="-10000" Max="10000" AccessType="ro" />
+        <Parameter SymbolName="IPart" PublicName="I Part" ObjectType="VAR" Index="0x2020" SubIndex="5" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="CurrentValue" PublicName="Current Value" ObjectType="VAR" Index="0x2020" SubIndex="6" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="DerivativeValue" PublicName="Derivative Value" ObjectType="VAR" Index="0x2020" SubIndex="7" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="ErrorValue" PublicName="Error Value" ObjectType="VAR" Index="0x2020" SubIndex="8" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="RampingSlopeSteps" PublicName="Ramping slope steps" ObjectType="VAR" Index="0x2020" SubIndex="10" DataType="UNSIGNED32" AccessType="ro" Remark="RampSlopeSteps is realtime syncperiod (ms) divided by regulator period (ms)" />
+      </Group>
+      <Group SymbolName="Reg2Config" PublicName="Regulator 2 Configuration">
+        <Parameter SymbolName="ParameterGroup" PublicName="Parameter Group" ObjectType="VAR" Index="0x2025" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Min="0" Max="1" Default="1" />
+        <Parameter SymbolName="FeedbackType" PublicName="Feedback Type" ObjectType="VAR" Index="0x2025" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Min="0" Max="6" Default="0">
+          <ValueTranslation Value="0" String="No feedback" />
+          <ValueTranslation Value="1" String="Incremental Encoder Position" />
+          <ValueTranslation Value="2" String="Incremental Encoder Speed" />
+          <ValueTranslation Value="3" String="CAN Encoder Position" />
+          <ValueTranslation Value="4" String="CAN Encoder Speed" />
+          <ValueTranslation Value="5" String="Analog Pot Position" />
+          <ValueTranslation Value="6" String="Analog Tacho Speed" />
+        </Parameter>
+        <Parameter SymbolName="Output" PublicName="Output Type" ObjectType="VAR" Index="0x2025" SubIndex="3" DataType="UNSIGNED8" AccessType="rw" Min="0" Max="3" Default="0" Remark="Select regulator output">
+          <ValueTranslation Value="0" String="PWM FSA" />
+          <ValueTranslation Value="1" String="CAN" />
+          <ValueTranslation Value="2" String="Analog FSA" />
+        </Parameter>
+        <Parameter SymbolName="UseRegulator" PublicName="Use Regulator" ObjectType="VAR" Index="0x2025" SubIndex="4" DataType="BOOLEAN" AccessType="rw" Default="0" Remark="Enable Use of Regulator" />
+      </Group>
+      <Group SymbolName="Reg2ParamGroup0" PublicName="Regulator 2 Parameter group 0">
+        <Parameter SymbolName="FeedForward" PublicName="Feed Forward" ObjectType="VAR" Index="0x2032" SubIndex="1" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/Set" Default="0" Remark="Not used for position regulator" />
+        <Parameter SymbolName="Offset" PublicName="Offset" ObjectType="VAR" Index="0x2032" SubIndex="2" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="0" Remark="Not used for position regulator" />
+        <Parameter SymbolName="P" PublicName="P" ObjectType="VAR" Index="0x2032" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/Error" Default="0" />
+        <Parameter SymbolName="I" PublicName="I" ObjectType="VAR" Index="0x2032" SubIndex="4" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/(Error*s)" Default="0" />
+        <Parameter SymbolName="D" PublicName="D" ObjectType="VAR" Index="0x2032" SubIndex="5" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/(Feedback/s)" Default="0" Remark="Not Implemented" />
+        <Parameter SymbolName="ILimit" PublicName="I Limit" ObjectType="VAR" Index="0x2032" SubIndex="6" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="10000" Remark="Limits integral action on output" />
+        <Parameter SymbolName="PIDLimit" PublicName="PID Limit" ObjectType="VAR" Index="0x2032" SubIndex="7" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="10000" Remark="Limits the effect of feedback" />
+        <Parameter SymbolName="OutLimit" PublicName="Out Limit" ObjectType="VAR" Index="0x2032" SubIndex="8" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="10000" Remark="Total output limit" />
+        <Parameter SymbolName="FailureDelay" PublicName="Failure Delay" ObjectType="VAR" Index="0x2032" SubIndex="11" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="1000" Remark="Delay before emergency stop in absence of correct feedback movement" />
+        <Parameter SymbolName="CheckOutHysteres" PublicName="Check Out Hysteres" ObjectType="VAR" Index="0x2032" SubIndex="12" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="1000" Remark="Feedback movement is checked when the regulator output is larger than this level." />
+        <Parameter SymbolName="OutOffset" PublicName="Out Offset" ObjectType="VAR" Index="0x2032" SubIndex="13" DataType="INTEGER16" AccessType="rw" Unit="Out" Default="0" Remark="Offset to add to regulator output after the PID regulation" />
+      </Group>
+      <Group SymbolName="Reg2ParamGroup1" PublicName="Regulator 2 Parameter group 1">
+        <Parameter SymbolName="FeedForward" PublicName="Feed Forward" ObjectType="VAR" Index="0x2033" SubIndex="1" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/Set" Default="0" Remark="Not used for position regulator" />
+        <Parameter SymbolName="Offset" PublicName="Offset" ObjectType="VAR" Index="0x2033" SubIndex="2" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="0" Remark="Not used for position regulator" />
+        <Parameter SymbolName="P" PublicName="P" ObjectType="VAR" Index="0x2033" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/Error" Default="0" />
+        <Parameter SymbolName="I" PublicName="I" ObjectType="VAR" Index="0x2033" SubIndex="4" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/(Error*s)" Default="0" />
+        <Parameter SymbolName="D" PublicName="D" ObjectType="VAR" Index="0x2033" SubIndex="5" DataType="UNSIGNED16" AccessType="rw" Factor="0.01" Unit="Out/(Feedback/s)" Default="0" Remark="Not Implemented" />
+        <Parameter SymbolName="ILimit" PublicName="I Limit" ObjectType="VAR" Index="0x2033" SubIndex="6" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="10000" Remark="Limits integral action on output" />
+        <Parameter SymbolName="PIDLimit" PublicName="PID Limit" ObjectType="VAR" Index="0x2033" SubIndex="7" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="10000" Remark="Limits the effect of feedback" />
+        <Parameter SymbolName="OutLimit" PublicName="Out Limit" ObjectType="VAR" Index="0x2033" SubIndex="8" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="10000" Remark="Total output limit" />
+        <Parameter SymbolName="FailureDelay" PublicName="Failure Delay" ObjectType="VAR" Index="0x2033" SubIndex="11" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="1000" Remark="Delay before emergency stop in absence of correct feedback movement" />
+        <Parameter SymbolName="CheckOutHysteres" PublicName="Check Out Hysteres" ObjectType="VAR" Index="0x2033" SubIndex="12" DataType="UNSIGNED16" AccessType="rw" Unit="Out" Default="1000" Remark="Feedback movement is checked when the regulator output is larger than this level." />
+        <Parameter SymbolName="OutOffset" PublicName="Out Offset" ObjectType="VAR" Index="0x2033" SubIndex="13" DataType="INTEGER16" AccessType="rw" Unit="Out" Default="0" Remark="Offset added to regulator output after the PID regulation" />
+      </Group>
+      <Group SymbolName="Enc1" PublicName="Incremental Encoder 1">
+        <Parameter SymbolName="Position" PublicName="Position" ObjectType="VAR" Index="0x2040" SubIndex="1" DataType="INTEGER16" AccessType="rw" Unit="mm or 1/100 deg" Default="0" />
+        <Parameter SymbolName="Speed" PublicName="Speed" ObjectType="VAR" Index="0x2040" SubIndex="2" DataType="INTEGER16" AccessType="ro" Unit="mm/s or 1/100 deg/s" Default="0" />
+        <Parameter SymbolName="EncCounterValue" PublicName="Encoder Counter Value" ObjectType="VAR" Index="0x2040" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Remark="Raw counter value" />
+        <Parameter SymbolName="Flags" PublicName="Flags" ObjectType="VAR" Index="0x2040" SubIndex="4" DataType="UNSIGNED8" AccessType="rw">
+          <BitField SymbolName="SyncGate" PublicName="Sync Gate" Remark="Set to enable sync pulse" Start="0" />
+        </Parameter>
+        <Parameter SymbolName="Status" PublicName="Status" ObjectType="VAR" Index="0x2040" SubIndex="5" DataType="UNSIGNED16" AccessType="ro">
+          <BitField SymbolName="SyncValid" PublicName="Sync Valid" Remark="Set after 1st sync pulse. Reset at sync error." Start="0" />
+          <BitField SymbolName="Warning" PublicName="Warning" Start="1" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="Enc1Config" PublicName="Incremental Encoder 1 Configuration">
+        <Parameter SymbolName="Type" PublicName="Type" ObjectType="VAR" Index="0x2045" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Min="0" Max="1" Default="0" Remark="Select type of encoder. 0 = Linear, 1 = Angular">
+          <ValueTranslation Value="0" String="Linear" />
+          <ValueTranslation Value="1" String="Angular" />
+        </Parameter>
+        <Parameter SymbolName="Use" PublicName="Use Encoder" ObjectType="VAR" Index="0x2045" SubIndex="2" DataType="BOOLEAN" AccessType="rw" Default="0" Remark="Enable to use Encoder interface" />
+        <Parameter SymbolName="Scale" PublicName="Scale" ObjectType="VAR" Index="0x2045" SubIndex="3" DataType="INTEGER32" AccessType="rw" Unit="Pulses/m or Pulses/360 deg" Default="1" Remark="Scaling of the encoder output" />
+        <Parameter SymbolName="Offset" PublicName="Offset" ObjectType="VAR" Index="0x2045" SubIndex="4" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg if angle encoder" Default="0" Remark="Position of Sync pulse" />
+        <Parameter SymbolName="SyncEnable" PublicName="SyncEnable" ObjectType="VAR" Index="0x2045" SubIndex="5" DataType="BOOLEAN" AccessType="rw" Default="0" Remark="Enable to use Sync pulse" />
+        <Parameter SymbolName="SyncFilter" PublicName="SyncFilter" ObjectType="VAR" Index="0x2045" SubIndex="6" DataType="UNSIGNED16" AccessType="rw" Unit="pulses" Default="5" Remark="Size of sync pulse filter window in number of pulses. 0=Disabled." />
+        <Parameter SymbolName="SyncEmergency" PublicName="SyncEmergency" ObjectType="VAR" Index="0x2045" SubIndex="7" DataType="BOOLEAN" AccessType="rw" Default="1" Remark="Enable to have supervision of missing sync pulse." />
+        <Parameter SymbolName="SyncGateInput" ObjectType="VAR" Index="0x2045" SubIndex="8" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Digital input used for sync gate." />
+        <Parameter SymbolName="Simulate" ObjectType="VAR" Index="0x2045" SubIndex="9" DataType="UNSIGNED32" AccessType="rw" Default="0" Visibility="Internal" Remark="Simulate this encoder." />
+      </Group>
+      <Group SymbolName="CanEnc1" PublicName="CAN Encoder 1">
+        <Parameter SymbolName="Position" PublicName="Position" ObjectType="VAR" Index="0x2041" SubIndex="1" DataType="INTEGER16" AccessType="ro" Unit="Rescaled counter value" />
+        <Parameter SymbolName="Speed" PublicName="Speed" ObjectType="VAR" Index="0x2041" SubIndex="2" DataType="INTEGER16" AccessType="ro" Unit="Counter delta sampled every 5ms" />
+        <Parameter SymbolName="EncCounterValue" PublicName="Encoder Counter Value" ObjectType="VAR" Index="0x2041" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Remark="Raw counter value from CAN encoder" />
+      </Group>
+      <Group SymbolName="CanEnc1Config" PublicName="CAN Encoder 1 Configuration">
+        <Parameter SymbolName="Type" PublicName="Type" ObjectType="VAR" Index="0x2046" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Min="0" Max="1" Default="0" Remark="Select type of encoder">
+          <ValueTranslation Value="0" String="Linear" />
+          <ValueTranslation Value="1" String="Angular" />
+        </Parameter>
+        <Parameter SymbolName="Use" PublicName="Use Encoder" ObjectType="VAR" Index="0x2046" SubIndex="2" DataType="BOOLEAN" AccessType="rw" Min="0" Max="1" Default="0" Remark="Enable to use Encoder interface" />
+        <Parameter SymbolName="EncMax" PublicName="EncMax" ObjectType="VAR" Index="0x2046" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Default="4096" Remark="Wrapping value of output from the encoder, ie the range. Ex. For a 10 bit encoder the range is 1024." />
+        <Parameter SymbolName="Scale" PublicName="Scale" ObjectType="VAR" Index="0x2046" SubIndex="4" DataType="INTEGER32" AccessType="rw" Unit="Counts/m or Counts/360 deg" Default="4096" Remark="Scaling of the encoder output" />
+        <Parameter SymbolName="Offset" PublicName="Offset" ObjectType="VAR" Index="0x2046" SubIndex="5" DataType="INTEGER16" AccessType="rw" Unit="Counts" Default="0" Remark="Zero offset for position encoder" />
+        <Parameter SymbolName="Simulate" ObjectType="VAR" Index="0x2046" SubIndex="6" DataType="UNSIGNED32" AccessType="rw" Default="0" Visibility="Internal" Remark="Simulate this encoder." />
+      </Group>
+      <Group SymbolName="Enc2" PublicName="Incremental Encoder 2">
+        <Parameter SymbolName="Position" PublicName="Position" ObjectType="VAR" Index="0x2050" SubIndex="1" DataType="INTEGER16" AccessType="rw" Unit="mm or 1/100 deg" Default="0" />
+        <Parameter SymbolName="Speed" PublicName="Speed" ObjectType="VAR" Index="0x2050" SubIndex="2" DataType="INTEGER16" AccessType="ro" Unit="mm/s or 1/100 deg/s" Default="0" />
+        <Parameter SymbolName="EncCounterValue" PublicName="Encoder Counter Value" ObjectType="VAR" Index="0x2050" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Remark="Raw counter value" />
+        <Parameter SymbolName="Flags" PublicName="Flags" ObjectType="VAR" Index="0x2050" SubIndex="4" DataType="UNSIGNED8" AccessType="rw">
+          <BitField SymbolName="SyncGate" PublicName="Sync Gate" Remark="Set to enable sync pulse" Start="0" />
+        </Parameter>
+        <Parameter SymbolName="Status" PublicName="Status" ObjectType="VAR" Index="0x2050" SubIndex="5" DataType="UNSIGNED16" AccessType="ro">
+          <BitField SymbolName="SyncValid" PublicName="Sync Valid" Remark="Set after 1st sync pulse. Reset at sync error." Start="0" />
+          <BitField SymbolName="Warning" PublicName="Warning" Start="1" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="Enc2Config" PublicName="Incremental Encoder 2 Configuration">
+        <Parameter SymbolName="Type" PublicName="Type" ObjectType="VAR" Index="0x2055" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Min="0" Max="1" Default="0" Remark="Select type of encoder. 0 = Linear, 1 = Angular">
+          <ValueTranslation Value="0" String="Linear" />
+          <ValueTranslation Value="1" String="Angular" />
+        </Parameter>
+        <Parameter SymbolName="Use" PublicName="Use Encoder" ObjectType="VAR" Index="0x2055" SubIndex="2" DataType="BOOLEAN" AccessType="rw" Default="0" Remark="Enable to use Encoder interface" />
+        <Parameter SymbolName="Scale" PublicName="Scale" ObjectType="VAR" Index="0x2055" SubIndex="3" DataType="INTEGER32" AccessType="rw" Unit="Pulses/m or Pulses/360 deg" Default="1" Remark="Scaling of the encoder output" />
+        <Parameter SymbolName="Offset" PublicName="Offset" ObjectType="VAR" Index="0x2055" SubIndex="4" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg if angle encoder" Default="0" Remark="Position of Sync pulse" />
+        <Parameter SymbolName="SyncEnable" PublicName="SyncEnable" ObjectType="VAR" Index="0x2055" SubIndex="5" DataType="BOOLEAN" AccessType="rw" Default="0" Remark="Enable to use Sync pulse" />
+        <Parameter SymbolName="SyncFilter" PublicName="SyncFilter" ObjectType="VAR" Index="0x2055" SubIndex="6" DataType="UNSIGNED16" AccessType="rw" Unit="pulses" Default="5" Remark="Size of sync pulse filter window in number of pulses. 0=Disabled." />
+        <Parameter SymbolName="SyncEmergency" PublicName="SyncEmergency" ObjectType="VAR" Index="0x2055" SubIndex="7" DataType="BOOLEAN" AccessType="rw" Default="1" Remark="Enable to have supervision of missing sync pulse." />
+        <Parameter SymbolName="SyncGateInput" ObjectType="VAR" Index="0x2055" SubIndex="8" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Digital input used for sync gate." />
+        <Parameter SymbolName="Simulate" ObjectType="VAR" Index="0x2055" SubIndex="9" DataType="UNSIGNED32" AccessType="rw" Default="0" Visibility="Internal" Remark="Simulate this encoder." />
+      </Group>
+      <Group SymbolName="CanEnc2" PublicName="CAN Encoder 2">
+        <Parameter SymbolName="Position" PublicName="Position" ObjectType="VAR" Index="0x2051" SubIndex="1" DataType="INTEGER16" AccessType="ro" Unit="Rescaled counter value" />
+        <Parameter SymbolName="Speed" PublicName="Speed" ObjectType="VAR" Index="0x2051" SubIndex="2" DataType="INTEGER16" AccessType="ro" Unit="Counter delta sampled every 5ms" />
+        <Parameter SymbolName="EncCounterValue" PublicName="Encoder Counter Value" ObjectType="VAR" Index="0x2051" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Remark="Raw counter value from CAN encoder" />
+      </Group>
+      <Group SymbolName="CanEnc2Config" PublicName="CAN Encoder 2 Configuration">
+        <Parameter SymbolName="Type" PublicName="Type" ObjectType="VAR" Index="0x2056" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Min="0" Max="1" Default="0" Remark="Select type of encoder">
+          <ValueTranslation Value="0" String="Linear" />
+          <ValueTranslation Value="1" String="Angular" />
+        </Parameter>
+        <Parameter SymbolName="Use" PublicName="Use Encoder" ObjectType="VAR" Index="0x2056" SubIndex="2" DataType="BOOLEAN" AccessType="rw" Min="0" Max="1" Default="0" Remark="Enable to use Encoder interface" />
+        <Parameter SymbolName="EncMax" PublicName="EncMax" ObjectType="VAR" Index="0x2056" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Default="4096" Remark="Wrapping value of output from the encoder, ie the range. Ex. For a 10 bit encoder the range is 1024." />
+        <Parameter SymbolName="Scale" PublicName="Scale" ObjectType="VAR" Index="0x2056" SubIndex="4" DataType="INTEGER32" AccessType="rw" Unit="Counts/m or Counts/360 deg" Default="4096" Remark="Scaling of the encoder output" />
+        <Parameter SymbolName="Offset" PublicName="Offset" ObjectType="VAR" Index="0x2056" SubIndex="5" DataType="INTEGER16" AccessType="rw" Unit="Counts" Default="0" Remark="Zero offset for position encoder" />
+        <Parameter SymbolName="Simulate" ObjectType="VAR" Index="0x2056" SubIndex="6" DataType="UNSIGNED32" AccessType="rw" Default="0" Visibility="Internal" Remark="Simulate this encoder." />
+      </Group>
+      <Group SymbolName="Spot1" PublicName="Spot 1">
+        <Parameter SymbolName="Offset" PublicName="Offset" ObjectType="VAR" Index="0x2110" SubIndex="1" DataType="INTEGER16" AccessType="ro" Unit="mm" Remark="Measured offset to spot object." />
+        <Parameter SymbolName="StartTime" PublicName="Start Time" ObjectType="VAR" Index="0x2110" SubIndex="2" DataType="INTEGER16" AccessType="ro" Unit="ms" Remark="Time when the spot started relative the last sync." />
+        <Parameter SymbolName="StopTime" PublicName="Stop Time" ObjectType="VAR" Index="0x2110" SubIndex="3" DataType="INTEGER16" AccessType="ro" Unit="ms" Remark="Time when the spot ended relative the last sync." />
+      </Group>
+      <Group SymbolName="Spot1Config" PublicName="Spot 1 Configuration">
+        <Parameter SymbolName="UseSpot" PublicName="Use Spot" ObjectType="VAR" Index="0x2111" SubIndex="1" DataType="BOOLEAN" AccessType="rw" Default="0" Remark="Set to use Spot antenna interface 1" />
+        <Parameter SymbolName="AntennaKnee" PublicName="AntennaKnee" ObjectType="VAR" Index="0x2111" SubIndex="2" DataType="INTEGER32" AccessType="rw" Default="8" Remark="No of 167 mV steps from center of antenna where to use another slope in the  mV to mm transfer-function. Default for spot magnets is 8. Default for magnetic tape is 11." />
+      </Group>
+      <Group SymbolName="Spot2" PublicName="Spot 2">
+        <Parameter SymbolName="Offset" PublicName="Offset" ObjectType="VAR" Index="0x2120" SubIndex="1" DataType="INTEGER16" AccessType="ro" Unit="mm" Remark="Measured offset to spot object." />
+        <Parameter SymbolName="StartTime" PublicName="Start Time" ObjectType="VAR" Index="0x2120" SubIndex="2" DataType="INTEGER16" AccessType="ro" Unit="ms" Remark="Time when the spot started relative the last sync." />
+        <Parameter SymbolName="StopTime" PublicName="Stop Time" ObjectType="VAR" Index="0x2120" SubIndex="3" DataType="INTEGER16" AccessType="ro" Unit="ms" Remark="Time when the spot ended relative the last sync." />
+      </Group>
+      <Group SymbolName="Spot2Config" PublicName="Spot 2 Configuration">
+        <Parameter SymbolName="UseSpot" PublicName="Use Spot" ObjectType="VAR" Index="0x2121" SubIndex="1" DataType="BOOLEAN" AccessType="rw" Default="0" Remark="Set to use Spot antenna interface 2" />
+        <Parameter SymbolName="AntennaKnee" PublicName="AntennaKnee" ObjectType="VAR" Index="0x2121" SubIndex="2" DataType="INTEGER32" AccessType="rw" Default="8" Remark="No of 167 mV steps from center of antenna where to use another slope in the  mV to mm transfer-function. Default for spot magnets is 8. Default for magnetic tape is 11." />
+      </Group>
+      <Group SymbolName="IoConfig" PublicName="I/O Configuration">
+        <Parameter SymbolName="UseAnalogOut" PublicName="Use Analog Outputs" ObjectType="VAR" Index="0x2101" SubIndex="1" DataType="BOOLEAN" AccessType="rw" Default="0" Remark="Enable use of Analog Outputs." />
+      </Group>
+      <Group SymbolName="DigInpEdgeConfig" PublicName="Configuration of Time stamp for Digital Inputs">
+        <Parameter SymbolName="FirstDigInpEdgeConfig" PublicName="First Digital Input Time Config" ObjectType="VAR" Index="0x2900" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Set to use one Digital Input Time" />
+        <Parameter SymbolName="SecondDigInpEdgeConfig" PublicName="Sedond Digital Input Time Config" ObjectType="VAR" Index="0x2900" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Set to use two Digital Input Time" />
+        <Parameter SymbolName="ThirdDigInpEdgeConfig" PublicName="Third Digital Input Time Config" ObjectType="VAR" Index="0x2900" SubIndex="3" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Set to use three Digital Input Time" />
+        <Parameter SymbolName="FourthDigInpEdgeConfig" PublicName="Fourth Digital Input Time Config" ObjectType="VAR" Index="0x2900" SubIndex="4" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Set to use four Digital Input Time" />
+      </Group>
+      <Group SymbolName="DigInpEdgeRuntime1" PublicName="Time stamp for Digital Inputs">
+        <Parameter SymbolName="FirstDigInpRise" PublicName="Rising edge time relative the last sync" ObjectType="VAR" Index="0x2901" SubIndex="1" DataType="INTEGER16" AccessType="ro" Unit="ms" Remark="Time when first Digital Input caught a rising edge relative the last sync." />
+        <Parameter SymbolName="FirstDigInpFall" PublicName="Falling edge time relative the last sync" ObjectType="VAR" Index="0x2901" SubIndex="2" DataType="INTEGER16" AccessType="ro" Unit="ms" Remark="Time when first Digital Input caught a falling edge relative the last sync." />
+        <Parameter SymbolName="SecondDigInpRise" PublicName="Rising edge time relative the last sync" ObjectType="VAR" Index="0x2901" SubIndex="3" DataType="INTEGER16" AccessType="ro" Unit="ms" Remark="Time when second Digital Input caught a rising edge relative the last sync." />
+        <Parameter SymbolName="SecondDigInpFall" PublicName="Falling edge time relative the last sync" ObjectType="VAR" Index="0x2901" SubIndex="4" DataType="INTEGER16" AccessType="ro" Unit="ms" Remark="Time when second Digital Input caught a falling edge relative the last sync." />
+      </Group>
+      <Group SymbolName="DigInpEdgeRuntime2" PublicName="Time stamp for Digital Inputs">
+        <Parameter SymbolName="ThirdDigInpRise" PublicName="Rising edge time relative the last sync" ObjectType="VAR" Index="0x2902" SubIndex="1" DataType="INTEGER16" AccessType="ro" Unit="ms" Remark="Time when third Digital Input caught a rising edge relative the last sync." />
+        <Parameter SymbolName="ThirdDigInpFall" PublicName="Falling edge time relative the last sync" ObjectType="VAR" Index="0x2902" SubIndex="2" DataType="INTEGER16" AccessType="ro" Unit="ms" Remark="Time when third Digital Input caught a falling edge relative the last sync." />
+        <Parameter SymbolName="FourthDigInpRise" PublicName="Rising edge time relative the last sync" ObjectType="VAR" Index="0x2902" SubIndex="3" DataType="INTEGER16" AccessType="ro" Unit="ms" Remark="Time when fourth Digital Input caught a rising edge relative the last sync." />
+        <Parameter SymbolName="FourthDigInpFall" PublicName="Falling edge time relative the last sync" ObjectType="VAR" Index="0x2902" SubIndex="4" DataType="INTEGER16" AccessType="ro" Unit="ms" Remark="Time when fourth Digital Input caught a falling edge relative the last sync." />
+      </Group>
+      <Group SymbolName="DigInput" PublicName="Digital Input">
+        <Parameter SymbolName="DigInp_1_8" PublicName="Digital Input 1-8" ObjectType="VAR" Index="0x3000" SubIndex="1" DataType="UNSIGNED8" AccessType="ro" Remark="Current value of Digital Input 1-8">
+          <BitField SymbolName="DigInp1" PublicName="Digital Input 1" Start="0" />
+          <BitField SymbolName="DigInp2" PublicName="Digital Input 2" Start="1" />
+          <BitField SymbolName="DigInp3" PublicName="Digital Input 3" Start="2" />
+          <BitField SymbolName="DigInp4" PublicName="Digital Input 4" Start="3" />
+          <BitField SymbolName="DigInp5" PublicName="Digital Input 5" Start="4" />
+          <BitField SymbolName="DigInp6" PublicName="Digital Input 6" Start="5" />
+          <BitField SymbolName="DigInp7" PublicName="Digital Input 7" Start="6" />
+          <BitField SymbolName="DigInp8" PublicName="Digital Input 8" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="DigInp_9_12" PublicName="Digital Input 9-12" ObjectType="VAR" Index="0x3000" SubIndex="2" DataType="UNSIGNED8" AccessType="ro" Remark="Current value of Digital Input 9-12">
+          <BitField SymbolName="DigInp9" PublicName="Digital Input 9" Start="0" />
+          <BitField SymbolName="DigInp10" PublicName="Digital Input 10" Start="1" />
+          <BitField SymbolName="DigInp11" PublicName="Digital Input 11" Start="2" />
+          <BitField SymbolName="DigInp12" PublicName="Digital Input 12" Start="3" />
+        </Parameter>
+        <Parameter SymbolName="DigInp_9_14" PublicName="dummy" ObjectType="VAR" Index="0x3000" SubIndex="3" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="dummy">
+          <BitField SymbolName="DigInp13" PublicName="Digital Input 13" Start="0" />
+          <BitField SymbolName="DigInp14" PublicName="Digital Input 14" Start="1" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="DigInputPolarity" PublicName="Digital Input Polarity">
+        <Parameter SymbolName="DigInp_1_8" PublicName="Digital Input 1-8" ObjectType="VAR" Index="0x3002" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Polarity/Inverter bit mask for Digital Input 1-8. 1=Inverts corresponding Input.">
+          <BitField SymbolName="DigInp1" PublicName="Digital Input 1" Start="0" />
+          <BitField SymbolName="DigInp2" PublicName="Digital Input 2" Start="1" />
+          <BitField SymbolName="DigInp3" PublicName="Digital Input 3" Start="2" />
+          <BitField SymbolName="DigInp4" PublicName="Digital Input 4" Start="3" />
+          <BitField SymbolName="DigInp5" PublicName="Digital Input 5" Start="4" />
+          <BitField SymbolName="DigInp6" PublicName="Digital Input 6" Start="5" />
+          <BitField SymbolName="DigInp7" PublicName="Digital Input 7" Start="6" />
+          <BitField SymbolName="DigInp8" PublicName="Digital Input 8" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="DigInp_9_12" PublicName="Digital Input 9-12" ObjectType="VAR" Index="0x3002" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Polarity/Inverter bit mask for Digital Input 9-12. 1=Inverts corresponding Input.">
+          <BitField SymbolName="DigInp9" PublicName="Digital Input 9" Start="0" />
+          <BitField SymbolName="DigInp10" PublicName="Digital Input 10" Start="1" />
+          <BitField SymbolName="DigInp11" PublicName="Digital Input 11" Start="2" />
+          <BitField SymbolName="DigInp12" PublicName="Digital Input 12" Start="3" />
+        </Parameter>
+        <Parameter SymbolName="DigInp_9_14" PublicName="dummy" ObjectType="VAR" Index="0x3002" SubIndex="3" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="dummy">
+          <BitField SymbolName="DigInp13" PublicName="Digital Input 13" Start="0" />
+          <BitField SymbolName="DigInp14" PublicName="Digital Input 14" Start="1" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="DigInputFilter" PublicName="Digital Input Filter">
+        <Parameter SymbolName="DigInp1" PublicName="Digital Input 1" ObjectType="VAR" Index="0x4010" SubIndex="1" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp2" PublicName="Digital Input 2" ObjectType="VAR" Index="0x4010" SubIndex="2" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp3" PublicName="Digital Input 3" ObjectType="VAR" Index="0x4010" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp4" PublicName="Digital Input 4" ObjectType="VAR" Index="0x4010" SubIndex="4" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp5" PublicName="Digital Input 5" ObjectType="VAR" Index="0x4010" SubIndex="5" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp6" PublicName="Digital Input 6" ObjectType="VAR" Index="0x4010" SubIndex="6" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp7" PublicName="Digital Input 7" ObjectType="VAR" Index="0x4010" SubIndex="7" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp8" PublicName="Digital Input 8" ObjectType="VAR" Index="0x4010" SubIndex="8" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp9" PublicName="Digital Input 9" ObjectType="VAR" Index="0x4010" SubIndex="9" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp10" PublicName="Digital Input 10" ObjectType="VAR" Index="0x4010" SubIndex="10" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp11" PublicName="Digital Input 11" ObjectType="VAR" Index="0x4010" SubIndex="11" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp12" PublicName="Digital Input 12" ObjectType="VAR" Index="0x4010" SubIndex="12" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp13" PublicName="dummy" ObjectType="VAR" Index="0x4010" SubIndex="13" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+        <Parameter SymbolName="DigInp14" PublicName="dummy" ObjectType="VAR" Index="0x4010" SubIndex="14" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" />
+      </Group>
+      <Group SymbolName="DigOutput" PublicName="Digital Output">
+        <Parameter SymbolName="DigOut_1_8" PublicName="Digital Output 1-8" ObjectType="VAR" Index="0x3200" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Remark="Set value for Digital Output 1-8">
+          <BitField SymbolName="DigOut1" PublicName="Digital Output 1" Start="0" />
+          <BitField SymbolName="DigOut2" PublicName="Digital Output 2" Start="1" />
+          <BitField SymbolName="DigOut3" PublicName="Digital Output 3" Start="2" />
+          <BitField SymbolName="DigOut4" PublicName="Digital Output 4" Start="3" />
+          <BitField SymbolName="DigOut5" PublicName="Digital Output 5" Start="4" />
+          <BitField SymbolName="DigOut6" PublicName="Digital Output 6" Start="5" />
+          <BitField SymbolName="DigOut7" PublicName="Digital Output 7" Start="6" />
+          <BitField SymbolName="DigOut8" PublicName="Digital Output 8" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="DigOut_9_16" PublicName="Digital Output 9-16" ObjectType="VAR" Index="0x3200" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Remark="Set value for Digital Output 9-16">
+          <BitField SymbolName="DigOut9" PublicName="Digital Output 9" Start="0" />
+          <BitField SymbolName="DigOut10" PublicName="Digital Output 10" Start="1" />
+          <BitField SymbolName="DigOut11" PublicName="Digital Output 11" Start="2" />
+          <BitField SymbolName="DigOut12" PublicName="Digital Output 12" Start="3" />
+          <BitField SymbolName="DigOut13" PublicName="Digital Output 13" Start="4" />
+          <BitField SymbolName="DigOut14" PublicName="Digital Output 14" Start="5" />
+          <BitField SymbolName="DigOut15" PublicName="Digital Output 15" Start="6" />
+          <BitField SymbolName="DigOut16" PublicName="Digital Output 16" Start="7" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="DigOutputPolarity" PublicName="Digital Output Polarity">
+        <Parameter SymbolName="DigOut_1_8" PublicName="Digital Output 1-8" ObjectType="VAR" Index="0x3202" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Polarity/Invert bit mask for Digital Output 1-8. 1=Inverts corresponding Output set value.">
+          <BitField SymbolName="DigOut1" PublicName="Digital Output 1" Start="0" />
+          <BitField SymbolName="DigOut2" PublicName="Digital Output 2" Start="1" />
+          <BitField SymbolName="DigOut3" PublicName="Digital Output 3" Start="2" />
+          <BitField SymbolName="DigOut4" PublicName="Digital Output 4" Start="3" />
+          <BitField SymbolName="DigOut5" PublicName="Digital Output 5" Start="4" />
+          <BitField SymbolName="DigOut6" PublicName="Digital Output 6" Start="5" />
+          <BitField SymbolName="DigOut7" PublicName="Digital Output 7" Start="6" />
+          <BitField SymbolName="DigOut8" PublicName="Digital Output 8" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="DigOut_9_16" PublicName="Digital Output 9-16" ObjectType="VAR" Index="0x3202" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Polarity/Invert bit mask for Digital Output 9-16 1=Inverts corresponding Output set value.">
+          <BitField SymbolName="DigOut9" PublicName="Digital Output 9" Start="0" />
+          <BitField SymbolName="DigOut10" PublicName="Digital Output 10" Start="1" />
+          <BitField SymbolName="DigOut11" PublicName="Digital Output 11" Start="2" />
+          <BitField SymbolName="DigOut12" PublicName="Digital Output 12" Start="3" />
+          <BitField SymbolName="DigOut13" PublicName="Digital Output 13" Start="4" />
+          <BitField SymbolName="DigOut14" PublicName="Digital Output 14" Start="5" />
+          <BitField SymbolName="DigOut15" PublicName="Digital Output 15" Start="6" />
+          <BitField SymbolName="DigOut16" PublicName="Digital Output 16" Start="7" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="AnInput" PublicName="Analog Input">
+        <Parameter SymbolName="AnInp1" PublicName="Analog Input 1" ObjectType="VAR" Index="0x3401" SubIndex="1" DataType="INTEGER16" AccessType="ro" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp2" PublicName="Analog Input 2" ObjectType="VAR" Index="0x3401" SubIndex="2" DataType="INTEGER16" AccessType="ro" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp3" PublicName="Analog Input 3" ObjectType="VAR" Index="0x3401" SubIndex="3" DataType="INTEGER16" AccessType="ro" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp4" PublicName="Analog Input 4" ObjectType="VAR" Index="0x3401" SubIndex="4" DataType="INTEGER16" AccessType="ro" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp5" PublicName="Analog Input 5" ObjectType="VAR" Index="0x3401" SubIndex="5" DataType="INTEGER16" AccessType="ro" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp6" PublicName="Analog Input 6" ObjectType="VAR" Index="0x3401" SubIndex="6" DataType="INTEGER16" AccessType="ro" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp7" PublicName="Analog Input 7" ObjectType="VAR" Index="0x3401" SubIndex="7" DataType="INTEGER16" AccessType="ro" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp8" PublicName="Analog Input 8" ObjectType="VAR" Index="0x3401" SubIndex="8" DataType="INTEGER16" AccessType="ro" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp9" PublicName="Analog Input 9" ObjectType="VAR" Index="0x3401" SubIndex="9" DataType="INTEGER16" AccessType="ro" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp10" PublicName="Analog Input 10" ObjectType="VAR" Index="0x3401" SubIndex="10" DataType="INTEGER16" AccessType="ro" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp11" PublicName="Analog Input 11" ObjectType="VAR" Index="0x3401" SubIndex="11" DataType="INTEGER16" AccessType="ro" Remark="Input = Applied input voltage * Scale + Offset" />
+      </Group>
+      <Group SymbolName="AnInputDelta" PublicName="Analog Input Delta">
+        <Parameter SymbolName="AnInp1" PublicName="Analog Input 1" ObjectType="VAR" Index="0x3426" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Default="1" Remark="Treshold value for change in analog input." />
+        <Parameter SymbolName="AnInp2" PublicName="Analog Input 2" ObjectType="VAR" Index="0x3426" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Default="1" Remark="Treshold value for change in analog input." />
+        <Parameter SymbolName="AnInp3" PublicName="Analog Input 3" ObjectType="VAR" Index="0x3426" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Default="1" Remark="Treshold value for change in analog input." />
+        <Parameter SymbolName="AnInp4" PublicName="Analog Input 4" ObjectType="VAR" Index="0x3426" SubIndex="4" DataType="UNSIGNED32" AccessType="rw" Default="1" Remark="Treshold value for change in analog input." />
+        <Parameter SymbolName="AnInp5" PublicName="Analog Input 5" ObjectType="VAR" Index="0x3426" SubIndex="5" DataType="UNSIGNED32" AccessType="rw" Default="1" Remark="Treshold value for change in analog input." />
+        <Parameter SymbolName="AnInp6" PublicName="Analog Input 6" ObjectType="VAR" Index="0x3426" SubIndex="6" DataType="UNSIGNED32" AccessType="rw" Default="1" Remark="Treshold value for change in analog input." />
+        <Parameter SymbolName="AnInp7" PublicName="Analog Input 7" ObjectType="VAR" Index="0x3426" SubIndex="7" DataType="UNSIGNED32" AccessType="rw" Default="1" Remark="Treshold value for change in analog input." />
+        <Parameter SymbolName="AnInp8" PublicName="Analog Input 8" ObjectType="VAR" Index="0x3426" SubIndex="8" DataType="UNSIGNED32" AccessType="rw" Default="1" Remark="Treshold value for change in analog input." />
+        <Parameter SymbolName="AnInp9" PublicName="Analog Input 9" ObjectType="VAR" Index="0x3426" SubIndex="9" DataType="UNSIGNED32" AccessType="rw" Default="1" Remark="Treshold value for change in analog input." />
+        <Parameter SymbolName="AnInp10" PublicName="Analog Input 10" ObjectType="VAR" Index="0x3426" SubIndex="10" DataType="UNSIGNED32" AccessType="rw" Default="1" Remark="Treshold value for change in analog input." />
+        <Parameter SymbolName="AnInp11" PublicName="Analog Input 11" ObjectType="VAR" Index="0x3426" SubIndex="11" DataType="UNSIGNED32" AccessType="rw" Default="1" Remark="Treshold value for change in analog input." />
+      </Group>
+      <Group SymbolName="AnInputOffset" PublicName="Analog Input Offset">
+        <Parameter SymbolName="AnInp1" PublicName="Analog Input 1" ObjectType="VAR" Index="0x3431" SubIndex="1" DataType="INTEGER32" AccessType="rw" Default="0" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp2" PublicName="Analog Input 2" ObjectType="VAR" Index="0x3431" SubIndex="2" DataType="INTEGER32" AccessType="rw" Default="0" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp3" PublicName="Analog Input 3" ObjectType="VAR" Index="0x3431" SubIndex="3" DataType="INTEGER32" AccessType="rw" Default="0" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp4" PublicName="Analog Input 4" ObjectType="VAR" Index="0x3431" SubIndex="4" DataType="INTEGER32" AccessType="rw" Default="0" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp5" PublicName="Analog Input 5" ObjectType="VAR" Index="0x3431" SubIndex="5" DataType="INTEGER32" AccessType="rw" Default="0" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp6" PublicName="Analog Input 6" ObjectType="VAR" Index="0x3431" SubIndex="6" DataType="INTEGER32" AccessType="rw" Default="0" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp7" PublicName="Analog Input 7" ObjectType="VAR" Index="0x3431" SubIndex="7" DataType="INTEGER32" AccessType="rw" Default="0" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp8" PublicName="Analog Input 8" ObjectType="VAR" Index="0x3431" SubIndex="8" DataType="INTEGER32" AccessType="rw" Default="0" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp9" PublicName="Analog Input 9" ObjectType="VAR" Index="0x3431" SubIndex="9" DataType="INTEGER32" AccessType="rw" Default="0" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp10" PublicName="Analog Input 10" ObjectType="VAR" Index="0x3431" SubIndex="10" DataType="INTEGER32" AccessType="rw" Default="0" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp11" PublicName="Analog Input 11" ObjectType="VAR" Index="0x3431" SubIndex="11" DataType="INTEGER32" AccessType="rw" Default="0" Remark="Input = Applied input voltage * Scale + Offset" />
+      </Group>
+      <Group SymbolName="AnInputScale" PublicName="Analog Input Scale">
+        <Parameter SymbolName="AnInp1" PublicName="Analog Input 1" ObjectType="VAR" Index="0x3432" SubIndex="1" DataType="INTEGER32" AccessType="rw" Factor="0.001" Default="1000" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp2" PublicName="Analog Input 2" ObjectType="VAR" Index="0x3432" SubIndex="2" DataType="INTEGER32" AccessType="rw" Factor="0.001" Default="1000" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp3" PublicName="Analog Input 3" ObjectType="VAR" Index="0x3432" SubIndex="3" DataType="INTEGER32" AccessType="rw" Factor="0.001" Default="1000" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp4" PublicName="Analog Input 4" ObjectType="VAR" Index="0x3432" SubIndex="4" DataType="INTEGER32" AccessType="rw" Factor="0.001" Default="1000" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp5" PublicName="Analog Input 5" ObjectType="VAR" Index="0x3432" SubIndex="5" DataType="INTEGER32" AccessType="rw" Factor="0.001" Default="1000" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp6" PublicName="Analog Input 6" ObjectType="VAR" Index="0x3432" SubIndex="6" DataType="INTEGER32" AccessType="rw" Factor="0.001" Default="1000" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp7" PublicName="Analog Input 7" ObjectType="VAR" Index="0x3432" SubIndex="7" DataType="INTEGER32" AccessType="rw" Factor="0.001" Default="1000" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp8" PublicName="Analog Input 8" ObjectType="VAR" Index="0x3432" SubIndex="8" DataType="INTEGER32" AccessType="rw" Factor="0.001" Default="1000" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp9" PublicName="Analog Input 9" ObjectType="VAR" Index="0x3432" SubIndex="9" DataType="INTEGER32" AccessType="rw" Factor="0.001" Default="1000" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp10" PublicName="Analog Input 10" ObjectType="VAR" Index="0x3432" SubIndex="10" DataType="INTEGER32" AccessType="rw" Factor="0.001" Default="1000" Remark="Input = Applied input voltage * Scale + Offset" />
+        <Parameter SymbolName="AnInp11" PublicName="Analog Input 11" ObjectType="VAR" Index="0x3432" SubIndex="11" DataType="INTEGER32" AccessType="rw" Factor="0.001" Default="1000" Remark="Input = Applied input voltage * Scale + Offset" />
+      </Group>
+      <Group SymbolName="AnOutput" PublicName="Analog Output">
+        <Parameter SymbolName="AnOut1" PublicName="Analog Output 1" ObjectType="VAR" Index="0x3411" SubIndex="1" DataType="INTEGER16" Min="0" Max="10000" AccessType="rw" Factor="0.01" Unit="%" Remark="PWM output with variable duty cycle" />
+        <Parameter SymbolName="AnOut2" PublicName="Analog Output 2" ObjectType="VAR" Index="0x3411" SubIndex="2" DataType="INTEGER16" Min="0" Max="10000" AccessType="rw" Factor="0.01" Unit="%" Remark="PWM output with variable duty cycle" />
+        <Parameter SymbolName="AnOut3" PublicName="Analog Output 3" ObjectType="VAR" Index="0x3411" SubIndex="3" DataType="INTEGER16" Min="0" Max="10000" AccessType="rw" Factor="0.01" Unit="%" Remark="PWM output with variable duty cycle" />
+      </Group>
+      <Group SymbolName="GroundFault" PublicName="Ground Fault">
+        <Parameter SymbolName="Emergency" PublicName="Ground fault emergency" ObjectType="VAR" Index="0x3500" SubIndex="1" DataType="BOOLEAN" Min="0" Max="1" AccessType="rw" Visibility="OEM" Remark="Enable to trigger an emergency on detected ground fault" />
+        <Parameter SymbolName="Active" PublicName="Ground fault detected" ObjectType="VAR" Index="0x3500" SubIndex="2" DataType="BOOLEAN" Min="0" Max="1" AccessType="ro" Visibility="OEM" Remark="True if ground fault was detected" />
+      </Group>
+      <Parameter SymbolName="DEBUG_PAR" ObjectType="ARRAY" Index="0x3800" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Debugparameters" />
+      <Group SymbolName="Application" PublicName="Application debug-mode">
+        <Parameter SymbolName="Mode" PublicName="Application mode" ObjectType="VAR" Index="0x3A00" SubIndex="1" DataType="INTEGER8" AccessType="rw" Remark="Application mode (0=Run, 1=Step, 2=Halt)" />
+        <Parameter SymbolName="Steps" PublicName="Application steps" ObjectType="VAR" Index="0x3A00" SubIndex="2" DataType="INTEGER8" AccessType="rw" Remark="Number of steps before application stops" />
+      </Group>
+      <Group SymbolName="ImuOutput" PublicName="Imu Output Values">
+        <Parameter SymbolName="GyroX" PublicName="Gyro_x" ObjectType="VAR" Index="0x3600" SubIndex="1" DataType="INTEGER16" AccessType="ro" Remark="Gyroscope x-axis value, cdeg/s" />
+        <Parameter SymbolName="GyroY" PublicName="Gyro_y" ObjectType="VAR" Index="0x3600" SubIndex="2" DataType="INTEGER16" AccessType="ro" Remark="Gyroscope y-axis value, cdeg/s" />
+        <Parameter SymbolName="GyroZ" PublicName="Gyro_z" ObjectType="VAR" Index="0x3600" SubIndex="3" DataType="INTEGER16" AccessType="ro" Remark="Gyroscope z-axis value, cdeg/s" />
+        <Parameter SymbolName="AccX" PublicName="Acc_x" ObjectType="VAR" Index="0x3600" SubIndex="4" DataType="INTEGER16" AccessType="ro" Remark="Accelerometer x-axis value, mg" />
+        <Parameter SymbolName="AccY" PublicName="Acc_y" ObjectType="VAR" Index="0x3600" SubIndex="5" DataType="INTEGER16" AccessType="ro" Remark="Accelerometer y-axis value, mg" />
+        <Parameter SymbolName="AccZ" PublicName="Acc_z" ObjectType="VAR" Index="0x3600" SubIndex="6" DataType="INTEGER16" AccessType="ro" Remark="Accelerometer z-axis value, mg" />
+        <Parameter SymbolName="Temp" PublicName="ImuTemp" ObjectType="VAR" Index="0x3600" SubIndex="7" DataType="INTEGER16" AccessType="ro" Remark="IMU Temperature, deg C" />
+        <Parameter SymbolName="Error" PublicName="ImuError" ObjectType="VAR" Index="0x3600" SubIndex="8" DataType="UNSIGNED16" AccessType="ro" Remark="IMU Error value" />
+      </Group>
+      <Group SymbolName="ImuConfig" PublicName="Imu Gyro Scale Factors Configuration">
+        <Parameter SymbolName="GyroXScale" PublicName="GyroXScale" ObjectType="VAR" Index="0x3610" SubIndex="1" DataType="INTEGER16" AccessType="rw" Remark="Gyroscope x-axis scale value (the value 10000 corresponds to a real scale value of 1.0)" />
+        <Parameter SymbolName="GyroYScale" PublicName="GyroYScale" ObjectType="VAR" Index="0x3610" SubIndex="2" DataType="INTEGER16" AccessType="rw" Remark="Gyroscope y-axis scale value (the value 10000 corresponds to a real scale value of 1.0)" />
+        <Parameter SymbolName="GyroZScale" PublicName="GyroZScale" ObjectType="VAR" Index="0x3610" SubIndex="3" DataType="INTEGER16" AccessType="rw" Remark="Gyroscope z-axis scale value (the value 10000 corresponds to a real scale value of 1.0)" />
+      </Group>
+      <!--      Firmware part of dictionary    -->
+      <Parameter SymbolName="RAW_DIGITAL_INPUTS" ObjectType="VAR" Index="0x5E01" SubIndex="0" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Writable in IO simulation mode only" />
+      <Parameter SymbolName="RAW_ANALOG_INPUTS" ObjectType="ARRAY" Index="0x5E02" DataType="UNSIGNED16" AccessType="rw" Visibility="Internal" Remark="Writable in IO simulation mode only" />
+      <Parameter SymbolName="RAW_POUT_ONOFF" ObjectType="VAR" Index="0x5E03" SubIndex="0" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" Remark="Writable in production test mode only" />
+      <Parameter SymbolName="RAW_POUT_PWM" ObjectType="ARRAY" Index="0x5E04" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Dutycycle. Range 2-999. Ekv. to 0.2-99.9% of full output. Writable in production test mode only" />
+      <Parameter SymbolName="RAW_POUT_PWM_POUT_ONOFF_TRIP" ObjectType="VAR" Index="0x5E05" SubIndex="0" DataType="UNSIGNED16" AccessType="rw" Visibility="OEM" Remark="Writable in IO simulation mode only" />
+      <Parameter SymbolName="RAW_POUT_PWM_POUT_ONOFF_TRIP_RESET_REQUEST" ObjectType="VAR" Index="0x5E06" SubIndex="0" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="Writable in Production test mode only" />
+      <Parameter SymbolName="RAW_POUT_PROP" ObjectType="ARRAY" Index="0x5E07" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Dutycycle. Range 2-999. Ekv. to 0.2-99.9% of full output. Writable in production test mode only" />
+      <Parameter SymbolName="RAW_POUT_PROP_FB" ObjectType="ARRAY" Index="0x5E08" DataType="UNSIGNED16" AccessType="rw" Visibility="Internal" Remark="Feedback from the outputs. Dutycycle. Range 2-999. Ekv. to 0.2-99.9% of full output. Writeble in IO simulation mode only" />
+      <Parameter SymbolName="RAW_POUT_PROP_TRIP" ObjectType="VAR" Index="0x5E09" SubIndex="0" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="Writable in IO simulation mode only" />
+      <Parameter SymbolName="RAW_POUT_PROP_TRIP_RESET_REQUEST" ObjectType="VAR" Index="0x5E0A" SubIndex="0" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="Writable in Production test mode only" />
+      <Group SymbolName="RAW_ENCODERS" PublicName="Raw encoder values from cpld" Remark="Raw encoder values from cpld">
+        <Parameter SymbolName="Encoder1" ObjectType="VAR" Index="0x5E0F" SubIndex="1" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="Encoder1Captured" ObjectType="VAR" Index="0x5E0F" SubIndex="2" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="Encoder1Sync" ObjectType="VAR" Index="0x5E0F" SubIndex="3" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="Encoder2" ObjectType="VAR" Index="0x5E0F" SubIndex="4" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="Encoder2Captured" ObjectType="VAR" Index="0x5E0F" SubIndex="5" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="Encoder2Sync" ObjectType="VAR" Index="0x5E0F" SubIndex="6" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" Remark="" />
+      </Group>
+      <Group SymbolName="RAW_ENCODER_COUNTERS" PublicName="Raw encoder counters and sync" Remark="Raw encoder counters and sync">
+        <Parameter SymbolName="Encoder1Counter" ObjectType="VAR" Index="0x5E23" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="Encoder1SyncPos" ObjectType="VAR" Index="0x5E23" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="Encoder1SyncValid" ObjectType="VAR" Index="0x5E23" SubIndex="3" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="Encoder2Counter" ObjectType="VAR" Index="0x5E23" SubIndex="4" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="Encoder2SyncPos" ObjectType="VAR" Index="0x5E23" SubIndex="5" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="Encoder2SyncValid" ObjectType="VAR" Index="0x5E23" SubIndex="6" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="Encoder1SyncCounter" ObjectType="VAR" Index="0x5E23" SubIndex="7" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="Encoder2SyncCounter" ObjectType="VAR" Index="0x5E23" SubIndex="8" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="" />
+      </Group>
+      <Group SymbolName="ImuRawData" PublicName="ImuRawData" Remark="Inertial measurement unit">
+        <Parameter SymbolName="GyroX" ObjectType="VAR" Index="0x5E33" SubIndex="1" DataType="INTEGER16" AccessType="ro" Visibility="Internal" Remark="Gyroscope x-axis raw value" />
+        <Parameter SymbolName="GyroY" ObjectType="VAR" Index="0x5E33" SubIndex="2" DataType="INTEGER16" AccessType="ro" Visibility="Internal" Remark="Gyroscope y-axis raw value" />
+        <Parameter SymbolName="GyroZ" ObjectType="VAR" Index="0x5E33" SubIndex="3" DataType="INTEGER16" AccessType="ro" Visibility="Internal" Remark="Gyroscope z-axis raw value" />
+        <Parameter SymbolName="AccX" ObjectType="VAR" Index="0x5E33" SubIndex="4" DataType="INTEGER16" AccessType="ro" Visibility="Internal" Remark="Accelerometer x-axis raw value" />
+        <Parameter SymbolName="AccY" ObjectType="VAR" Index="0x5E33" SubIndex="5" DataType="INTEGER16" AccessType="ro" Visibility="Internal" Remark="Accelerometer y-axis raw value" />
+        <Parameter SymbolName="AccZ" ObjectType="VAR" Index="0x5E33" SubIndex="6" DataType="INTEGER16" AccessType="ro" Visibility="Internal" Remark="Accelerometer z-axis raw value" />
+        <Parameter SymbolName="Temp" ObjectType="VAR" Index="0x5E33" SubIndex="7" DataType="INTEGER16" AccessType="ro" Visibility="Internal" Remark="IMU raw temperature value" />
+        <Parameter SymbolName="Error" ObjectType="VAR" Index="0x5E33" SubIndex="8" DataType="UNSIGNED16" AccessType="ro" Visibility="Internal" Remark="IMU error value" />
+      </Group>
+      <Parameter SymbolName="Temperature" ObjectType="VAR" Index="0x5E0B" SubIndex="0" DataType="INTEGER32" AccessType="ro" Visibility="OEM" Remark="Current temperature" />
+      <Parameter SymbolName="XV_Out" ObjectType="VAR" Index="0x5E0C" SubIndex="0" DataType="INTEGER32" AccessType="ro" Visibility="OEM" Remark="Current xv out voltage" />
+      <Parameter SymbolName="B_Plus" ObjectType="VAR" Index="0x5E0D" SubIndex="0" DataType="INTEGER32" AccessType="ro" Visibility="OEM" Remark="Current b plus voltage" />
+      <Group SymbolName="CanErrorCounters" PublicName="Can error counters" Remark="Can diagnostic error counters">
+        <Parameter SymbolName="FormErrCnt" ObjectType="VAR" Index="0x5E10" SubIndex="1" DataType="UNSIGNED16" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="BitErrCnt" ObjectType="VAR" Index="0x5E10" SubIndex="2" DataType="UNSIGNED16" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="CrcErrCnt" ObjectType="VAR" Index="0x5E10" SubIndex="4" DataType="UNSIGNED16" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="StuffErrCnt" ObjectType="VAR" Index="0x5E10" SubIndex="5" DataType="UNSIGNED16" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="AckErrCnt" ObjectType="VAR" Index="0x5E10" SubIndex="6" DataType="UNSIGNED16" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="MbOvrErrCnt" ObjectType="VAR" Index="0x5E10" SubIndex="7" DataType="UNSIGNED16" AccessType="ro" Visibility="Internal" Remark="Can mailbox overrun. Number of times we have lost at least one message." />
+        <Parameter SymbolName="BufOvrCnt" ObjectType="VAR" Index="0x5E10" SubIndex="8" DataType="UNSIGNED16" AccessType="ro" Visibility="Internal" Remark="Can rx buffer overrun. Number of times we have tried, but failed, to put a received can message into the can (-open) rx buffer" />
+        <Parameter SymbolName="SendOvrCnt" ObjectType="VAR" Index="0x5E10" SubIndex="9" DataType="UNSIGNED16" AccessType="ro" Visibility="Internal" Remark="Can tx buffer overrun. Number of times we have tried, but failed, to put a canopen tx message into the can (-open) tx buffer" />
+      </Group>
+      <Parameter SymbolName="Led" PublicName="Led" ObjectType="VAR" Index="0x5E1B" SubIndex="0" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="Set (1) or clear (0) the led." />
+      <Parameter SymbolName="LastResetType" PublicName="LastResetType" ObjectType="VAR" Index="0x5E1C" SubIndex="0" DataType="UNSIGNED32" AccessType="rw" Visibility="OEM" Remark="The cause of the last reset. For the values - see VMC30 SDK html help" />
+      <Parameter SymbolName="SetProductionTestMode" PublicName="Production test mode" ObjectType="VAR" Index="0x5E30" SubIndex="0" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="Setting this parameter to 1 will cause VMC30 to reboot and start up in production test mode" />
+      <Parameter SymbolName="SetIOSimulationMode" PublicName="IO simulation mode" ObjectType="VAR" Index="0x5E31" SubIndex="0" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="Setting this parameter to 1 will cause VMC30 to reboot and start up in IO simulation mode" />
+      <Parameter SymbolName="System state" PublicName="System state" ObjectType="VAR" Index="0x5E40" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="OEM" Remark="System state: 0 = Restart, 1 = Init, 2 = PreThreadUserInit, 3 = StartScheduler, 4 = UserMain, 5 = ProductionTest, 6 = PreOperational, 7 = Operational, 8 = SafeState, 9 = Reset" />
+      <Parameter SymbolName="System mode" PublicName="System mode" ObjectType="VAR" Index="0x5E41" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="OEM" Remark="System mode: 0 = Normal, 1 = ProductionTest, 2 = IOSimultation, 3 = SafeState." />
+      <Parameter SymbolName="Node Id" ObjectType="VAR" Index="0x5E1D" SubIndex="0" DataType="UNSIGNED32" AccessType="rw" Visibility="OEM" Remark="Node id" />
+      <Parameter SymbolName="Baudrate" ObjectType="VAR" Index="0x5E1E" SubIndex="0" DataType="UNSIGNED32" AccessType="rw" Visibility="OEM" Remark="Baudrate valid baudrates are 125000, 250000 and 500000 kbps" />
+      <Group SymbolName="Stack monitor" PublicName="Stack monitor" Remark="Stack used in each thread">
+        <Parameter SymbolName="SysBgStackSize" ObjectType="VAR" Index="0x5E42" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Avaliable stack size" />
+        <Parameter SymbolName="SysBgUsedStack" ObjectType="VAR" Index="0x5E42" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Used stack size" />
+        <Parameter SymbolName="CanStackSize" ObjectType="VAR" Index="0x5E42" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Avaliable stack size" />
+        <Parameter SymbolName="CanUsedStack" ObjectType="VAR" Index="0x5E42" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Used stack size" />
+        <Parameter SymbolName="EEPROMStackSize" ObjectType="VAR" Index="0x5E42" SubIndex="5" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Avaliable stack size" />
+        <Parameter SymbolName="EEPROMUsedStack" ObjectType="VAR" Index="0x5E42" SubIndex="6" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Used stack size" />
+        <Parameter SymbolName="UserMainStackSize" ObjectType="VAR" Index="0x5E42" SubIndex="7" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Avaliable stack size" />
+        <Parameter SymbolName="UserMainUsedStack" ObjectType="VAR" Index="0x5E42" SubIndex="8" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Used stack size" />
+        <Parameter SymbolName="StackMonitorDisable" ObjectType="VAR" Index="0x5E42" SubIndex="9" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" Remark="Disable stack monitor" />
+      </Group>
+      <Group SymbolName="Heap monitor" PublicName="Heap monitor" Remark="Monitor heap data">
+        <Parameter SymbolName="HeapSize" ObjectType="VAR" Index="0x5E43" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Total amount of dynamic memory (heap)" />
+      </Group>
+      <Group SymbolName="ReadWriteMemory" PublicName="ReadWriteMemory" Remark="Read or write direct to cpu memory. This is only for desktop debugging. Improper use can cause serious damage.">
+        <Parameter SymbolName="Address" ObjectType="VAR" Index="0x5E21" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Address to read/write to/from" />
+        <Parameter SymbolName="Size" ObjectType="VAR" Index="0x5E21" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Size of data" />
+        <Parameter SymbolName="Data" ObjectType="VAR" Index="0x5E21" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="The very data" />
+      </Group>
+      <Group SymbolName="ReadWriteEEPROM" PublicName="ReadWriteEEPROM" Remark="Read or write direct to EEPROM memory. Permitted in production test mode only">
+        <Parameter SymbolName="Address" ObjectType="VAR" Index="0x5E22" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Address to read/write to/from" />
+        <Parameter SymbolName="Size" ObjectType="VAR" Index="0x5E22" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Not used. Size is always 32bit" />
+        <Parameter SymbolName="Data" ObjectType="VAR" Index="0x5E22" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="The very data" />
+        <Parameter SymbolName="ClearAll" ObjectType="VAR" Index="0x5E22" SubIndex="4" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Clear entire EEPROM" />
+      </Group>
+      <Group SymbolName="HourMeters" PublicName="HourMeters" Remark="">
+        <Parameter SymbolName="MandatoryHourMeter" PublicName="MandatoryHourMeter" ObjectType="VAR" Index="0x5E15" SubIndex="0" DataType="UNSIGNED32" AccessType="ro" Visibility="OEM" Remark="Mandatory hour meter. Total uptime in seconds for VMC30." />
+        <Parameter SymbolName="ApplicationHourMeters" ObjectType="ARRAY" Index="0x5E16" DataType="UNSIGNED32" AccessType="ro" Visibility="OEM" Remark="Application hour meters (s)." />
+        <Parameter SymbolName="ApplicationHourMetersOnOff" PublicName="ApplicationHourMetersOnOff" ObjectType="VAR" Index="0x5E17" SubIndex="0" DataType="UNSIGNED32" AccessType="rw" Visibility="OEM" Remark="Bitmask to turn on, set corresponding bit, or off, clear bit, the application hourmeters." />
+      </Group>
+      <Group SymbolName="System load" PublicName="System load" Remark="Measure cpu load in %">
+        <Parameter SymbolName="L1" ObjectType="VAR" Index="0x5E20" SubIndex="1" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="L2" ObjectType="VAR" Index="0x5E20" SubIndex="2" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="L3" ObjectType="VAR" Index="0x5E20" SubIndex="3" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" Remark="" />
+        <Parameter SymbolName="L4" ObjectType="VAR" Index="0x5E20" SubIndex="4" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" Remark="" />
+      </Group>
+      <Group SymbolName="User main task timers" PublicName="User main task timers" Remark="Loop timer for the user main thread. All Measurements are in usecs">
+        <Parameter SymbolName="Max" ObjectType="VAR" Index="0x5E11" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Max loop time" />
+        <Parameter SymbolName="Min" ObjectType="VAR" Index="0x5E11" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Min loop time" />
+        <Parameter SymbolName="Mean" ObjectType="VAR" Index="0x5E11" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Mean loop time" />
+        <Parameter SymbolName="Sum" ObjectType="VAR" Index="0x5E11" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Total time spent by the user main thread" />
+        <Parameter SymbolName="Clear" ObjectType="VAR" Index="0x5E11" SubIndex="5" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" Remark="Write 1 to clear values" />
+      </Group>
+      <Group SymbolName="Can stack loop timers" PublicName="Can stack loop timers" Remark="Loop timer for the can stack thread. All Measurements are in usecs">
+        <Parameter SymbolName="Max" ObjectType="VAR" Index="0x5E12" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Max loop time" />
+        <Parameter SymbolName="Min" ObjectType="VAR" Index="0x5E12" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Min loop time" />
+        <Parameter SymbolName="Mean" ObjectType="VAR" Index="0x5E12" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Mean loop time" />
+        <Parameter SymbolName="Sum" ObjectType="VAR" Index="0x5E12" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Total time spent by the can thread" />
+        <Parameter SymbolName="Clear" ObjectType="VAR" Index="0x5E12" SubIndex="5" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" Remark="Write 1 to clear values" />
+      </Group>
+      <Group SymbolName="System background loop timers" PublicName="System background loop timers" Remark="Loop timer for the sys bg thread. All Measurements are in usecs">
+        <Parameter SymbolName="Max" ObjectType="VAR" Index="0x5E13" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Max loop time" />
+        <Parameter SymbolName="Min" ObjectType="VAR" Index="0x5E13" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Min loop time" />
+        <Parameter SymbolName="Mean" ObjectType="VAR" Index="0x5E13" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Mean loop time" />
+        <Parameter SymbolName="Sum" ObjectType="VAR" Index="0x5E13" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Total time spent by the sys bg thread" />
+        <Parameter SymbolName="Clear" ObjectType="VAR" Index="0x5E13" SubIndex="5" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" Remark="Write 1 to clear values" />
+        <Parameter SymbolName="CntOver250us" ObjectType="VAR" Index="0x5E13" SubIndex="6" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Nr of times system background loop has executed more than 250us. It's important that this never happends, except when restarting" />
+      </Group>
+      <Group SymbolName="EEProm loop timers" PublicName="EEProm loop timers" Remark="Loop timer for the EEPROM thread. All Measurements are in usecs">
+        <Parameter SymbolName="Max" ObjectType="VAR" Index="0x5E14" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Max loop time" />
+        <Parameter SymbolName="Min" ObjectType="VAR" Index="0x5E14" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Min loop time" />
+        <Parameter SymbolName="Mean" ObjectType="VAR" Index="0x5E14" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Mean loop time" />
+        <Parameter SymbolName="Sum" ObjectType="VAR" Index="0x5E14" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Total time spent by the EEPROM thread" />
+        <Parameter SymbolName="Clear" ObjectType="VAR" Index="0x5E14" SubIndex="5" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" Remark="Write 1 to clear values" />
+      </Group>
+      <Group SymbolName="Low level can loop timers" PublicName="Low level can loop timers" Remark="Loop timer for the low level can thread. All Measurements are in usecs">
+        <Parameter SymbolName="Max" ObjectType="VAR" Index="0x5E28" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Max loop time" />
+        <Parameter SymbolName="Min" ObjectType="VAR" Index="0x5E28" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Min loop time" />
+        <Parameter SymbolName="Mean" ObjectType="VAR" Index="0x5E28" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Mean loop time" />
+        <Parameter SymbolName="Sum" ObjectType="VAR" Index="0x5E28" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" Remark="Total time spent by the low level can thread" />
+        <Parameter SymbolName="Clear" ObjectType="VAR" Index="0x5E28" SubIndex="5" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" Remark="Write 1 to clear values" />
+      </Group>
+      <Group SymbolName="EEPromVersions" PublicName="EEPromVersions" Remark="The EEPROM image version numbers">
+        <Parameter SymbolName="Main" ObjectType="VAR" Index="0x5E60" SubIndex="1" DataType="UNSIGNED16" AccessType="rw" Visibility="Internal" Remark="Main EEPROM version number" />
+        <Parameter SymbolName="Tuning" ObjectType="VAR" Index="0x5E60" SubIndex="2" DataType="UNSIGNED16" AccessType="rw" Visibility="Internal" Remark="The tuning section version number" />
+        <Parameter SymbolName="Config" ObjectType="VAR" Index="0x5E60" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Visibility="Internal" Remark="The config section version number" />
+        <Parameter SymbolName="AppErrLog" ObjectType="VAR" Index="0x5E60" SubIndex="4" DataType="UNSIGNED16" AccessType="rw" Visibility="Internal" Remark="The application error log section version number" />
+      </Group>
+      <Group SymbolName="RTC" PublicName="RTC" Remark="">
+        <Parameter SymbolName="Year" PublicName="Year" ObjectType="VAR" Index="0x5E1A" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="" />
+        <Parameter SymbolName="Month" PublicName="Month" ObjectType="VAR" Index="0x5E1A" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="" />
+        <Parameter SymbolName="Day" PublicName="Day" ObjectType="VAR" Index="0x5E1A" SubIndex="3" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="" />
+        <Parameter SymbolName="Hour" PublicName="Hour" ObjectType="VAR" Index="0x5E1A" SubIndex="4" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="" />
+        <Parameter SymbolName="Minute" PublicName="Minute" ObjectType="VAR" Index="0x5E1A" SubIndex="5" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="" />
+        <Parameter SymbolName="Second" PublicName="Second" ObjectType="VAR" Index="0x5E1A" SubIndex="6" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="" />
+        <Parameter SymbolName="UnixTime" PublicName="Unixtime" ObjectType="VAR" Index="0x5E1A" SubIndex="7" DataType="UNSIGNED32" AccessType="rw" Visibility="OEM" Remark="" />
+        <Parameter SymbolName="WriteTime" PublicName="WriteTime" ObjectType="VAR" Index="0x5E1A" SubIndex="8" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="Executes a write of time parameters to the RTC" />
+      </Group>
+      <Group SymbolName="RpdoGuardingTimeout" PublicName="Receive PDO Guarding Timeout for a slave VMC30">
+        <Parameter SymbolName="Rpdo1" PublicName="RPDO 1" ObjectType="VAR" Index="0x5D00" SubIndex="1" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="100" Remark="0=No Guarding. Only applicable for VMC30 acting as a CanOpen slave." />
+        <Parameter SymbolName="Rpdo2" PublicName="RPDO 2" ObjectType="VAR" Index="0x5D00" SubIndex="2" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="100" Remark="0=No Guarding. Only applicable for VMC30 acting as a CanOpen slave." />
+        <Parameter SymbolName="Rpdo3" PublicName="RPDO 3" ObjectType="VAR" Index="0x5D00" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="100" Remark="0=No Guarding. Only applicable for VMC30 acting as a CanOpen slave." />
+        <Parameter SymbolName="Rpdo4" PublicName="RPDO 4" ObjectType="VAR" Index="0x5D00" SubIndex="4" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="100" Remark="0=No Guarding. Only applicable for VMC30 acting as a CanOpen slave." />
+        <Parameter SymbolName="Rpdo5" PublicName="RPDO 5" ObjectType="VAR" Index="0x5D00" SubIndex="5" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="100" Remark="0=No Guarding. Only applicable for VMC30 acting as a CanOpen slave." />
+        <Parameter SymbolName="Rpdo6" PublicName="RPDO 6" ObjectType="VAR" Index="0x5D00" SubIndex="6" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="100" Remark="0=No Guarding. Only applicable for VMC30 acting as a CanOpen slave." />
+        <Parameter SymbolName="Rpdo7" PublicName="RPDO 7" ObjectType="VAR" Index="0x5D00" SubIndex="7" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="100" Remark="0=No Guarding. Only applicable for VMC30 acting as a CanOpen slave." />
+        <Parameter SymbolName="Rpdo8" PublicName="RPDO 8" ObjectType="VAR" Index="0x5D00" SubIndex="8" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="100" Remark="0=No Guarding. Only applicable for VMC30 acting as a CanOpen slave." />
+      </Group>
+      <Group SymbolName="FwDebug" PublicName="FwDebug" Remark="Internal use only">
+        <Parameter SymbolName="FwDebug1" PublicName="Year" ObjectType="VAR" Index="0x5EE0" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Internal use only" />
+        <Parameter SymbolName="FwDebug2" PublicName="Year" ObjectType="VAR" Index="0x5EE0" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Internal use only" />
+        <Parameter SymbolName="FwDebug3" PublicName="Year" ObjectType="VAR" Index="0x5EE0" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" Remark="Internal use only" />
+        <Parameter SymbolName="FwDebug4" PublicName="Year" ObjectType="VAR" Index="0x5EE0" SubIndex="4" DataType="INTEGER32" AccessType="rw" Visibility="Internal" Remark="Internal use only" />
+      </Group>
+      <Parameter SymbolName="EvsSwInfoEntries" ObjectType="VAR" Index="0x5F01" SubIndex="0" DataType="UNSIGNED8" AccessType="const" />
+      <Parameter SymbolName="EvsBootProduct" ObjectType="VAR" Index="0x5F01" SubIndex="1" DataType="VISIBLE_STRING" AccessType="const" />
+      <Parameter SymbolName="EvsApplicationSwProduct" ObjectType="VAR" Index="0x5F01" SubIndex="4" DataType="VISIBLE_STRING" AccessType="const" />
+      <Parameter SymbolName="EvsFwProduct" ObjectType="VAR" Index="0x5F01" SubIndex="7" DataType="VISIBLE_STRING" AccessType="const" />
+      <Parameter SymbolName="EvsHwProduct" ObjectType="VAR" Index="0x5F01" SubIndex="10" DataType="VISIBLE_STRING" AccessType="rw" Remark="Writable in production test mode only. The parameter VersionWriteEnablePassword must in this case also be properly set." />
+      <Parameter SymbolName="EvsHwSerialNo" ObjectType="VAR" Index="0x5F01" SubIndex="13" DataType="VISIBLE_STRING" AccessType="rw" Remark="Writable in production test mode only. The parameter VersionWriteEnablePassword must in this case also be properly set." />
+      <Parameter SymbolName="EvsOptCpldVersion" ObjectType="VAR" Index="0x5F01" SubIndex="16" DataType="VISIBLE_STRING" AccessType="rw" Remark="Writable in production test mode only. The parameter VersionWriteEnablePassword must in this case also be properly set." />
+      <Parameter SymbolName="EvsMainCpldVersion" ObjectType="VAR" Index="0x5F01" SubIndex="19" DataType="VISIBLE_STRING" AccessType="rw" Remark="Writable in production test mode only. The parameter VersionWriteEnablePassword must in this case also be properly set." />
+      <Parameter SymbolName="VersionWriteEnablePassword" ObjectType="VAR" Index="0x5F01" SubIndex="100" DataType="UNSIGNED32" AccessType="rw" Remark="This password must be properly set to be able to write to the writable EVS version parameters" />
+      <Group SymbolName="EvsCanParameters" PublicName="EVS CAN parameters">
+        <Parameter SymbolName="BitRate" PublicName="Bit Rate" ObjectType="VAR" Index="0x5F04" SubIndex="1" DataType="UNSIGNED16" AccessType="rw" Unit="kbps" Visibility="OEM" Remark="Default bit rate is 250. Valid values 125, 250 or 500." />
+        <Parameter SymbolName="NodeId" PublicName="Node ID" ObjectType="VAR" Index="0x5F04" SubIndex="5" DataType="UNSIGNED8" AccessType="rw" Visibility="OEM" Remark="" />
+      </Group>
+      <!--      Dummies to satisfy VMC500    -->
+      <Parameter SymbolName="BootTime" PublicName="Boot Time Stamp" ObjectType="VAR" Index="0x5F01" SubIndex="2" DataType="UNSIGNED32" AccessType="const" Visibility="Internal" />
+      <Parameter SymbolName="BootChecksum" PublicName="Boot Checksum" ObjectType="VAR" Index="0x5F01" SubIndex="3" DataType="UNSIGNED16" AccessType="const" Visibility="Internal" />
+      <Parameter SymbolName="ApplicationTimestamp" PublicName="Application Time Stamp" ObjectType="VAR" Index="0x5F01" SubIndex="5" DataType="UNSIGNED32" AccessType="const" Visibility="Internal" />
+      <Parameter SymbolName="ApplicationChecksum" PublicName="Application Checksum" ObjectType="VAR" Index="0x5F01" SubIndex="6" DataType="UNSIGNED16" AccessType="const" Visibility="Internal" />
+      <Parameter SymbolName="SwToHwCompatibility" PublicName="SW to HW Compatibility Number" ObjectType="VAR" Index="0x5F02" SubIndex="1" DataType="UNSIGNED16" AccessType="const" Default="0" Visibility="Internal" />
+    </Parameters>
+  </Dictionary>
+</Product>

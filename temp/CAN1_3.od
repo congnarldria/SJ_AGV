@@ -1,0 +1,487 @@
+<?xml version="1.0"?>
+<Product Name="CAN I/O Beckhoff" ArticleNumber="P41748V111" Checksum="0" TimeStamp="0" FileIntegrityVersion="1" FileIntegritySignature="DANAHER" FileIntegrityChecksum="0x46b289aa">
+  <Dictionary>
+    <Parameters>
+      <Parameter SymbolName="CoDeviceType" PublicName="Device Type" ObjectType="VAR" Index="0x1000" SubIndex="0" DataType="UNSIGNED32" AccessType="const" Default="0x?????191" Visibility="OEM" Remark="Compliant with the Device profile DS-401" />
+      <Parameter SymbolName="CoErrorRegister" ObjectType="VAR" Index="0x1001" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" />
+      <Parameter SymbolName="CoSyncCobId" PublicName="COB-ID SYNC" ObjectType="VAR" Index="0x1005" SubIndex="0" DataType="UNSIGNED32" AccessType="const" Default="0x00000080" Visibility="Internal" />
+      <Parameter SymbolName="CoDeviceName" PublicName="Manufacturer Device Name" ObjectType="VAR" Index="0x1008" SubIndex="0" DataType="VISIBLE_STRING" AccessType="const" Visibility="OEM" />
+      <Parameter SymbolName="CoHardwareVersion" PublicName="Manufacturer Hardware Version" ObjectType="VAR" Index="0x1009" SubIndex="0" DataType="VISIBLE_STRING" AccessType="const" Visibility="Service" />
+      <Parameter SymbolName="CoSoftwareVersion" PublicName="Manufacturer Software Version" ObjectType="VAR" Index="0x100A" SubIndex="0" DataType="VISIBLE_STRING" AccessType="const" Visibility="Service" />
+      <Parameter SymbolName="CoGuardTime" ObjectType="VAR" Index="0x100C" SubIndex="0" DataType="UNSIGNED16" AccessType="rw" Unit="ms" Default="0" Visibility="Internal" Remark="CANopen Life Guarding Protocol. 0=No Life Guarding." />
+      <Parameter SymbolName="CoLifeTimeFactor" ObjectType="VAR" Index="0x100D" SubIndex="0" DataType="UNSIGNED8" AccessType="rw" Default="0" Visibility="Internal" Remark="CANopen Life Guarding Protocol. 0=No Life Guarding." />
+      <Group SymbolName="CoStore" PublicName="Store Parameters" Remark="Write 0x65766173 to store parameters.">
+        <Parameter SymbolName="All" ObjectType="VAR" Index="0x1010" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="Application" ObjectType="VAR" Index="0x1010" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" />
+      </Group>
+      <Group SymbolName="CoRestore" PublicName="Restore Parameters" Remark="Write 0x64616F6C to restore default parameters.">
+        <Parameter SymbolName="All" ObjectType="VAR" Index="0x1011" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="Application" ObjectType="VAR" Index="0x1011" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Visibility="Internal" />
+      </Group>
+      <Parameter SymbolName="CoCobIdEmcy" ObjectType="VAR" Index="0x1014" SubIndex="0" DataType="UNSIGNED32" AccessType="ro" Default="80h+NodeID" Visibility="Internal" />
+      <Group SymbolName="CoIdentity" PublicName="Vendor Identity">
+        <Parameter SymbolName="VendorId" PublicName="Vendor ID" ObjectType="VAR" Index="0x1018" SubIndex="1" DataType="UNSIGNED32" AccessType="const" Visibility="OEM" Remark="Vendor Identity" />
+      </Group>
+      <Group SymbolName="CoRPDO_CommPars" PublicName="Receive PDO Communication parameters">
+        <Parameter SymbolName="RPDO1_CobId" PublicName="RPDO1 COB ID" ObjectType="VAR" Index="0x1400" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x200+NodeId" Visibility="Internal" />
+        <Parameter SymbolName="RPDO2_CobId" PublicName="RPDO2 COB ID" ObjectType="VAR" Index="0x1401" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x300+NodeId" Visibility="Internal" />
+        <Parameter SymbolName="RPDO3_CobId" PublicName="RPDO3 COB ID" ObjectType="VAR" Index="0x1402" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x400+NodeId" Visibility="Internal" />
+        <Parameter SymbolName="RPDO4_CobId" PublicName="RPDO4 COB ID" ObjectType="VAR" Index="0x1403" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x500+NodeId" Visibility="Internal" />
+      </Group>
+      <Group SymbolName="CoRPDO_MappingPars" PublicName="Receive PDO Mapping parameters" Remark="Only static PDO mapping">
+        <Parameter SymbolName="RPDO1_NumMappedObjs" PublicName="RPDO1 Number of mapped objects" ObjectType="VAR" Index="0x1600" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO1_MappedObj1" PublicName="RPDO1 1st mapped object" ObjectType="VAR" Index="0x1600" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO1_MappedObj2" PublicName="RPDO1 2nd mapped object" ObjectType="VAR" Index="0x1600" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO1_MappedObj3" PublicName="RPDO1 3rd mapped object" ObjectType="VAR" Index="0x1600" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO1_MappedObj4" PublicName="RPDO1 4th mapped object" ObjectType="VAR" Index="0x1600" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO1_MappedObj5" PublicName="RPDO1 5th mapped object" ObjectType="VAR" Index="0x1600" SubIndex="5" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO1_MappedObj6" PublicName="RPDO1 6th mapped object" ObjectType="VAR" Index="0x1600" SubIndex="6" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO1_MappedObj7" PublicName="RPDO1 7th mapped object" ObjectType="VAR" Index="0x1600" SubIndex="7" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO1_MappedObj8" PublicName="RPDO1 8th mapped object" ObjectType="VAR" Index="0x1600" SubIndex="8" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO2_NumMappedObjs" PublicName="RPDO2 Number of mapped objects" ObjectType="VAR" Index="0x1601" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO2_MappedObj1" PublicName="RPDO2 1st mapped object" ObjectType="VAR" Index="0x1601" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO2_MappedObj2" PublicName="RPDO2 2nd mapped object" ObjectType="VAR" Index="0x1601" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO2_MappedObj3" PublicName="RPDO2 3rd mapped object" ObjectType="VAR" Index="0x1601" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO2_MappedObj4" PublicName="RPDO2 4th mapped object" ObjectType="VAR" Index="0x1601" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO3_NumMappedObjs" PublicName="RPDO3 Number of mapped objects" ObjectType="VAR" Index="0x1602" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="RPDO4_NumMappedObjs" PublicName="RPDO4 Number of mapped objects" ObjectType="VAR" Index="0x1603" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" />
+      </Group>
+      <Group SymbolName="CoTPDO_CommPars" PublicName="Transmit PDO Communication parameters">
+        <Parameter SymbolName="TPDO1_CobId" PublicName="TPDO1 COB ID" ObjectType="VAR" Index="0x1800" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x180+NodeId" Visibility="Internal" />
+        <Parameter SymbolName="TPDO1_TransmissionType" PublicName="TPDO1 Transmission Type" ObjectType="VAR" Index="0x1800" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="TPDO1_InhibitTime" PublicName="TPDO1 Inhibit Time" ObjectType="VAR" Index="0x1800" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Unit="0.1 ms" Visibility="Internal" />
+        <Parameter SymbolName="TPDO2_CobId" PublicName="TPDO2 COB ID" ObjectType="VAR" Index="0x1801" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x280+NodeId" Visibility="Internal" />
+        <Parameter SymbolName="TPDO2_TransmissionType" PublicName="TPDO2 Transmission Type" ObjectType="VAR" Index="0x1801" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Visibility="Internal" />
+        <Parameter SymbolName="TPDO2_InhibitTime" PublicName="TPDO2 Inhibit Time" ObjectType="VAR" Index="0x1801" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Unit="0.1 ms" Visibility="Internal" />
+        <Parameter SymbolName="TPDO3_CobId" PublicName="TPDO3 COB ID" ObjectType="VAR" Index="0x1802" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x380+NodeId" Visibility="Internal" />
+        <Parameter SymbolName="TPDO3_TransmissionType" PublicName="TPDO3 Transmission Type" ObjectType="VAR" Index="0x1802" SubIndex="2" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO3_InhibitTime" PublicName="TPDO3 Inhibit Time" ObjectType="VAR" Index="0x1802" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Unit="0.1 ms" Visibility="Internal" />
+        <Parameter SymbolName="TPDO4_CobId" PublicName="TPDO4 COB ID" ObjectType="VAR" Index="0x1803" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Default="0x480+NodeId" Visibility="Internal" />
+        <Parameter SymbolName="TPDO4_TransmissionType" PublicName="TPDO4 Transmission Type" ObjectType="VAR" Index="0x1803" SubIndex="2" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO4_InhibitTime" PublicName="TPDO4 Inhibit Time" ObjectType="VAR" Index="0x1803" SubIndex="3" DataType="UNSIGNED16" AccessType="rw" Unit="0.1 ms" Visibility="Internal" />
+      </Group>
+      <Group SymbolName="CoTPDO_MappingPars" PublicName="Transmit PDO Mapping parameters" Remark="Only static PDO mapping">
+        <Parameter SymbolName="TPDO1_NumMappedObjs" PublicName="TPDO1 Number of mapped objects" ObjectType="VAR" Index="0x1A00" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO1_MappedObj1" PublicName="TPDO1 1st mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO1_MappedObj2" PublicName="TPDO1 2nd mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO1_MappedObj3" PublicName="TPDO1 3rd mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO1_MappedObj4" PublicName="TPDO1 4th mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO1_MappedObj5" PublicName="TPDO1 4th mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="5" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO1_MappedObj6" PublicName="TPDO1 4th mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="6" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO1_MappedObj7" PublicName="TPDO1 4th mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="7" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO1_MappedObj8" PublicName="TPDO1 4th mapped object" ObjectType="VAR" Index="0x1A00" SubIndex="8" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO2_NumMappedObjs" PublicName="TPDO2 Number of mapped objects" ObjectType="VAR" Index="0x1A01" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO2_MappedObj1" PublicName="TPDO2 1st mapped object" ObjectType="VAR" Index="0x1A01" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO2_MappedObj2" PublicName="TPDO2 2nd mapped object" ObjectType="VAR" Index="0x1A01" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO2_MappedObj3" PublicName="TPDO2 3rd mapped object" ObjectType="VAR" Index="0x1A01" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO2_MappedObj4" PublicName="TPDO2 4th mapped object" ObjectType="VAR" Index="0x1A01" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO3_NumMappedObjs" PublicName="TPDO3 Number of mapped objects" ObjectType="VAR" Index="0x1A02" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" />
+        <Parameter SymbolName="TPDO4_NumMappedObjs" PublicName="TPDO4 Number of mapped objects" ObjectType="VAR" Index="0x1A03" SubIndex="0" DataType="UNSIGNED8" AccessType="ro" Visibility="Internal" />
+      </Group>
+      <Group SymbolName="DigInput_Runtime" PublicName="Digital Input Runtime">
+        <Parameter SymbolName="Value_1_8" PublicName="Value of Digital Input 1-8" ObjectType="VAR" Index="0x6000" SubIndex="1" DataType="UNSIGNED8" AccessType="ro" Remark="Current value of Digital Input 1-8">
+          <BitField SymbolName="DigInp1" PublicName="Digital Input 1" Start="0" />
+          <BitField SymbolName="DigInp2" PublicName="Digital Input 2" Start="1" />
+          <BitField SymbolName="DigInp3" PublicName="Digital Input 3" Start="2" />
+          <BitField SymbolName="DigInp4" PublicName="Digital Input 4" Start="3" />
+          <BitField SymbolName="DigInp5" PublicName="Digital Input 5" Start="4" />
+          <BitField SymbolName="DigInp6" PublicName="Digital Input 6" Start="5" />
+          <BitField SymbolName="DigInp7" PublicName="Digital Input 7" Start="6" />
+          <BitField SymbolName="DigInp8" PublicName="Digital Input 8" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_9_16" PublicName="Value of Digital Input 9-16" ObjectType="VAR" Index="0x6000" SubIndex="2" DataType="UNSIGNED8" AccessType="ro" Remark="Current value of Digital Input 9-16">
+          <BitField SymbolName="DigInp9" PublicName="Digital Input 9" Start="0" />
+          <BitField SymbolName="DigInp10" PublicName="Digital Input 10" Start="1" />
+          <BitField SymbolName="DigInp11" PublicName="Digital Input 11" Start="2" />
+          <BitField SymbolName="DigInp12" PublicName="Digital Input 12" Start="3" />
+          <BitField SymbolName="DigInp13" PublicName="Digital Input 13" Start="4" />
+          <BitField SymbolName="DigInp14" PublicName="Digital Input 14" Start="5" />
+          <BitField SymbolName="DigInp15" PublicName="Digital Input 15" Start="6" />
+          <BitField SymbolName="DigInp16" PublicName="Digital Input 16" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_17_24" PublicName="Value of Digital Input 17-24" ObjectType="VAR" Index="0x6000" SubIndex="3" DataType="UNSIGNED8" AccessType="ro" Remark="Current value of Digital Input 17-24">
+          <BitField SymbolName="DigInp17" PublicName="Digital Input 17" Start="0" />
+          <BitField SymbolName="DigInp18" PublicName="Digital Input 18" Start="1" />
+          <BitField SymbolName="DigInp19" PublicName="Digital Input 19" Start="2" />
+          <BitField SymbolName="DigInp20" PublicName="Digital Input 20" Start="3" />
+          <BitField SymbolName="DigInp21" PublicName="Digital Input 21" Start="4" />
+          <BitField SymbolName="DigInp22" PublicName="Digital Input 22" Start="5" />
+          <BitField SymbolName="DigInp23" PublicName="Digital Input 23" Start="6" />
+          <BitField SymbolName="DigInp24" PublicName="Digital Input 24" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_25_32" PublicName="Value of Digital Input 25-32" ObjectType="VAR" Index="0x6000" SubIndex="4" DataType="UNSIGNED8" AccessType="ro" Remark="Current value of Digital Input 25-32">
+          <BitField SymbolName="DigInp25" PublicName="Digital Input 25" Start="0" />
+          <BitField SymbolName="DigInp26" PublicName="Digital Input 26" Start="1" />
+          <BitField SymbolName="DigInp27" PublicName="Digital Input 27" Start="2" />
+          <BitField SymbolName="DigInp28" PublicName="Digital Input 28" Start="3" />
+          <BitField SymbolName="DigInp29" PublicName="Digital Input 29" Start="4" />
+          <BitField SymbolName="DigInp30" PublicName="Digital Input 30" Start="5" />
+          <BitField SymbolName="DigInp31" PublicName="Digital Input 31" Start="6" />
+          <BitField SymbolName="DigInp32" PublicName="Digital Input 32" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_33_40" PublicName="Value of Digital Input 33-40" ObjectType="VAR" Index="0x6000" SubIndex="5" DataType="UNSIGNED8" AccessType="ro" Remark="Current value of Digital Input 33-40">
+          <BitField SymbolName="DigInp33" PublicName="Digital Input 33" Start="0" />
+          <BitField SymbolName="DigInp34" PublicName="Digital Input 34" Start="1" />
+          <BitField SymbolName="DigInp35" PublicName="Digital Input 35" Start="2" />
+          <BitField SymbolName="DigInp36" PublicName="Digital Input 36" Start="3" />
+          <BitField SymbolName="DigInp37" PublicName="Digital Input 37" Start="4" />
+          <BitField SymbolName="DigInp38" PublicName="Digital Input 38" Start="5" />
+          <BitField SymbolName="DigInp39" PublicName="Digital Input 39" Start="6" />
+          <BitField SymbolName="DigInp40" PublicName="Digital Input 40" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_41_48" PublicName="Value of Digital Input 41-48" ObjectType="VAR" Index="0x6000" SubIndex="6" DataType="UNSIGNED8" AccessType="ro" Remark="Current value of Digital Input 41-48">
+          <BitField SymbolName="DigInp41" PublicName="Digital Input 41" Start="0" />
+          <BitField SymbolName="DigInp42" PublicName="Digital Input 42" Start="1" />
+          <BitField SymbolName="DigInp43" PublicName="Digital Input 43" Start="2" />
+          <BitField SymbolName="DigInp44" PublicName="Digital Input 44" Start="3" />
+          <BitField SymbolName="DigInp45" PublicName="Digital Input 45" Start="4" />
+          <BitField SymbolName="DigInp46" PublicName="Digital Input 46" Start="5" />
+          <BitField SymbolName="DigInp47" PublicName="Digital Input 47" Start="6" />
+          <BitField SymbolName="DigInp48" PublicName="Digital Input 48" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_49_56" PublicName="Value of Digital Input 49-56" ObjectType="VAR" Index="0x6000" SubIndex="7" DataType="UNSIGNED8" AccessType="ro" Remark="Current value of Digital Input 49-56">
+          <BitField SymbolName="DigInp49" PublicName="Digital Input 49" Start="0" />
+          <BitField SymbolName="DigInp50" PublicName="Digital Input 50" Start="1" />
+          <BitField SymbolName="DigInp51" PublicName="Digital Input 51" Start="2" />
+          <BitField SymbolName="DigInp52" PublicName="Digital Input 52" Start="3" />
+          <BitField SymbolName="DigInp53" PublicName="Digital Input 53" Start="4" />
+          <BitField SymbolName="DigInp54" PublicName="Digital Input 54" Start="5" />
+          <BitField SymbolName="DigInp55" PublicName="Digital Input 55" Start="6" />
+          <BitField SymbolName="DigInp56" PublicName="Digital Input 56" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_57_64" PublicName="Value of Digital Input 57-64" ObjectType="VAR" Index="0x6000" SubIndex="8" DataType="UNSIGNED8" AccessType="ro" Remark="Current value of Digital Input 57-64">
+          <BitField SymbolName="DigInp57" PublicName="Digital Input 57" Start="0" />
+          <BitField SymbolName="DigInp58" PublicName="Digital Input 58" Start="1" />
+          <BitField SymbolName="DigInp59" PublicName="Digital Input 59" Start="2" />
+          <BitField SymbolName="DigInp60" PublicName="Digital Input 60" Start="3" />
+          <BitField SymbolName="DigInp61" PublicName="Digital Input 61" Start="4" />
+          <BitField SymbolName="DigInp62" PublicName="Digital Input 62" Start="5" />
+          <BitField SymbolName="DigInp63" PublicName="Digital Input 63" Start="6" />
+          <BitField SymbolName="DigInp64" PublicName="Digital Input 64" Start="7" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="DigInput_Config" PublicName="Digital Input Configuration">
+        <Parameter SymbolName="Polarity_1_8" PublicName="Digital Input 1-8 Polarity" ObjectType="VAR" Index="0x6002" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Polarity/Inverter bit mask for Digital Input 1-8. 1=Inverts corresponding Input.">
+          <BitField SymbolName="DigInp1" PublicName="Digital Input 1" Start="0" />
+          <BitField SymbolName="DigInp2" PublicName="Digital Input 2" Start="1" />
+          <BitField SymbolName="DigInp3" PublicName="Digital Input 3" Start="2" />
+          <BitField SymbolName="DigInp4" PublicName="Digital Input 4" Start="3" />
+          <BitField SymbolName="DigInp5" PublicName="Digital Input 5" Start="4" />
+          <BitField SymbolName="DigInp6" PublicName="Digital Input 6" Start="5" />
+          <BitField SymbolName="DigInp7" PublicName="Digital Input 7" Start="6" />
+          <BitField SymbolName="DigInp8" PublicName="Digital Input 8" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_9_16" PublicName="Digital Input 9-16 Polarity" ObjectType="VAR" Index="0x6002" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Polarity/Inverter bit mask for Digital Input 9-16. 1=Inverts corresponding Input.">
+          <BitField SymbolName="DigInp9" PublicName="Digital Input 9" Start="0" />
+          <BitField SymbolName="DigInp10" PublicName="Digital Input 10" Start="1" />
+          <BitField SymbolName="DigInp11" PublicName="Digital Input 11" Start="2" />
+          <BitField SymbolName="DigInp12" PublicName="Digital Input 12" Start="3" />
+          <BitField SymbolName="DigInp13" PublicName="Digital Input 13" Start="4" />
+          <BitField SymbolName="DigInp14" PublicName="Digital Input 14" Start="5" />
+          <BitField SymbolName="DigInp15" PublicName="Digital Input 15" Start="6" />
+          <BitField SymbolName="DigInp16" PublicName="Digital Input 16" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_17_24" PublicName="Digital Input 17-24 Polarity" ObjectType="VAR" Index="0x6002" SubIndex="3" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Polarity/Inverter bit mask for Digital Input 17-24. 1=Inverts corresponding Input.">
+          <BitField SymbolName="DigInp17" PublicName="Digital Input 17" Start="0" />
+          <BitField SymbolName="DigInp18" PublicName="Digital Input 18" Start="1" />
+          <BitField SymbolName="DigInp19" PublicName="Digital Input 19" Start="2" />
+          <BitField SymbolName="DigInp20" PublicName="Digital Input 20" Start="3" />
+          <BitField SymbolName="DigInp21" PublicName="Digital Input 21" Start="4" />
+          <BitField SymbolName="DigInp22" PublicName="Digital Input 22" Start="5" />
+          <BitField SymbolName="DigInp23" PublicName="Digital Input 23" Start="6" />
+          <BitField SymbolName="DigInp24" PublicName="Digital Input 24" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_25_32" PublicName="Digital Input 25-32 Polarity" ObjectType="VAR" Index="0x6002" SubIndex="4" DataType="UNSIGNED8" AccessType="rw" Remark="Polarity/Inverter bit mask for Digital Input 25-32. 1=Inverts corresponding Input.">
+          <BitField SymbolName="DigInp25" PublicName="Digital Input 25" Start="0" />
+          <BitField SymbolName="DigInp26" PublicName="Digital Input 26" Start="1" />
+          <BitField SymbolName="DigInp27" PublicName="Digital Input 27" Start="2" />
+          <BitField SymbolName="DigInp28" PublicName="Digital Input 28" Start="3" />
+          <BitField SymbolName="DigInp29" PublicName="Digital Input 29" Start="4" />
+          <BitField SymbolName="DigInp30" PublicName="Digital Input 30" Start="5" />
+          <BitField SymbolName="DigInp31" PublicName="Digital Input 31" Start="6" />
+          <BitField SymbolName="DigInp32" PublicName="Digital Input 32" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_33_40" PublicName="Digital Input 33-40 Polarity" ObjectType="VAR" Index="0x6002" SubIndex="5" DataType="UNSIGNED8" AccessType="rw" Remark="Polarity/Inverter bit mask for Digital Input 33-40. 1=Inverts corresponding Input.">
+          <BitField SymbolName="DigInp33" PublicName="Digital Input 33" Start="0" />
+          <BitField SymbolName="DigInp34" PublicName="Digital Input 34" Start="1" />
+          <BitField SymbolName="DigInp35" PublicName="Digital Input 35" Start="2" />
+          <BitField SymbolName="DigInp36" PublicName="Digital Input 36" Start="3" />
+          <BitField SymbolName="DigInp37" PublicName="Digital Input 37" Start="4" />
+          <BitField SymbolName="DigInp38" PublicName="Digital Input 38" Start="5" />
+          <BitField SymbolName="DigInp39" PublicName="Digital Input 39" Start="6" />
+          <BitField SymbolName="DigInp40" PublicName="Digital Input 40" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_41_48" PublicName="Digital Input 41-48 Polarity" ObjectType="VAR" Index="0x6002" SubIndex="6" DataType="UNSIGNED8" AccessType="rw" Remark="Polarity/Inverter bit mask for Digital Input 41-48. 1=Inverts corresponding Input.">
+          <BitField SymbolName="DigInp41" PublicName="Digital Input 41" Start="0" />
+          <BitField SymbolName="DigInp42" PublicName="Digital Input 42" Start="1" />
+          <BitField SymbolName="DigInp43" PublicName="Digital Input 43" Start="2" />
+          <BitField SymbolName="DigInp44" PublicName="Digital Input 44" Start="3" />
+          <BitField SymbolName="DigInp45" PublicName="Digital Input 45" Start="4" />
+          <BitField SymbolName="DigInp46" PublicName="Digital Input 46" Start="5" />
+          <BitField SymbolName="DigInp47" PublicName="Digital Input 47" Start="6" />
+          <BitField SymbolName="DigInp48" PublicName="Digital Input 48" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_49_56" PublicName="Digital Input 49-56 Polarity" ObjectType="VAR" Index="0x6002" SubIndex="7" DataType="UNSIGNED8" AccessType="rw" Remark="Polarity/Inverter bit mask for Digital Input 49-56. 1=Inverts corresponding Input.">
+          <BitField SymbolName="DigInp49" PublicName="Digital Input 49" Start="0" />
+          <BitField SymbolName="DigInp50" PublicName="Digital Input 50" Start="1" />
+          <BitField SymbolName="DigInp51" PublicName="Digital Input 51" Start="2" />
+          <BitField SymbolName="DigInp52" PublicName="Digital Input 52" Start="3" />
+          <BitField SymbolName="DigInp53" PublicName="Digital Input 53" Start="4" />
+          <BitField SymbolName="DigInp54" PublicName="Digital Input 54" Start="5" />
+          <BitField SymbolName="DigInp55" PublicName="Digital Input 55" Start="6" />
+          <BitField SymbolName="DigInp56" PublicName="Digital Input 56" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_57_64" PublicName="Digital Input 57-64 Polarity" ObjectType="VAR" Index="0x6002" SubIndex="8" DataType="UNSIGNED8" AccessType="rw" Remark="Polarity/Inverter bit mask for Digital Input 57-64. 1=Inverts corresponding Input.">
+          <BitField SymbolName="DigInp57" PublicName="Digital Input 57" Start="0" />
+          <BitField SymbolName="DigInp58" PublicName="Digital Input 58" Start="1" />
+          <BitField SymbolName="DigInp59" PublicName="Digital Input 59" Start="2" />
+          <BitField SymbolName="DigInp60" PublicName="Digital Input 60" Start="3" />
+          <BitField SymbolName="DigInp61" PublicName="Digital Input 61" Start="4" />
+          <BitField SymbolName="DigInp62" PublicName="Digital Input 62" Start="5" />
+          <BitField SymbolName="DigInp63" PublicName="Digital Input 63" Start="6" />
+          <BitField SymbolName="DigInp64" PublicName="Digital Input 64" Start="7" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="DigOutput_Runtime" PublicName="Digital Output Runtime">
+        <Parameter SymbolName="Value_1_8" PublicName="Value of Digital Output 1-8" ObjectType="VAR" Index="0x6200" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Remark="Set value for Digital Output 1-8">
+          <BitField SymbolName="DigOut1" PublicName="Digital Output 1" Start="0" />
+          <BitField SymbolName="DigOut2" PublicName="Digital Output 2" Start="1" />
+          <BitField SymbolName="DigOut3" PublicName="Digital Output 3" Start="2" />
+          <BitField SymbolName="DigOut4" PublicName="Digital Output 4" Start="3" />
+          <BitField SymbolName="DigOut5" PublicName="Digital Output 5" Start="4" />
+          <BitField SymbolName="DigOut6" PublicName="Digital Output 6" Start="5" />
+          <BitField SymbolName="DigOut7" PublicName="Digital Output 7" Start="6" />
+          <BitField SymbolName="DigOut8" PublicName="Digital Output 8" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_9_16" PublicName="Value of Digital Output 9-16" ObjectType="VAR" Index="0x6200" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Remark="Set value for Digital Output 9-16">
+          <BitField SymbolName="DigOut9" PublicName="Digital Output 9" Start="0" />
+          <BitField SymbolName="DigOut10" PublicName="Digital Output 10" Start="1" />
+          <BitField SymbolName="DigOut11" PublicName="Digital Output 11" Start="2" />
+          <BitField SymbolName="DigOut12" PublicName="Digital Output 12" Start="3" />
+          <BitField SymbolName="DigOut13" PublicName="Digital Output 13" Start="4" />
+          <BitField SymbolName="DigOut14" PublicName="Digital Output 14" Start="5" />
+          <BitField SymbolName="DigOut15" PublicName="Digital Output 15" Start="6" />
+          <BitField SymbolName="DigOut16" PublicName="Digital Output 16" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_17_24" PublicName="Value of Digital Output 17-24" ObjectType="VAR" Index="0x6200" SubIndex="3" DataType="UNSIGNED8" AccessType="rw" Remark="Current value of Digital Output 17-24">
+          <BitField SymbolName="DigOut17" PublicName="Digital Output 17" Start="0" />
+          <BitField SymbolName="DigOut18" PublicName="Digital Output 18" Start="1" />
+          <BitField SymbolName="DigOut19" PublicName="Digital Output 19" Start="2" />
+          <BitField SymbolName="DigOut20" PublicName="Digital Output 20" Start="3" />
+          <BitField SymbolName="DigOut21" PublicName="Digital Output 21" Start="4" />
+          <BitField SymbolName="DigOut22" PublicName="Digital Output 22" Start="5" />
+          <BitField SymbolName="DigOut23" PublicName="Digital Output 23" Start="6" />
+          <BitField SymbolName="DigOut24" PublicName="Digital Output 24" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_25_32" PublicName="Value of Digital Output 25-32" ObjectType="VAR" Index="0x6200" SubIndex="4" DataType="UNSIGNED8" AccessType="rw" Remark="Current value of Digital Output 25-32">
+          <BitField SymbolName="DigOut25" PublicName="Digital Output 25" Start="0" />
+          <BitField SymbolName="DigOut26" PublicName="Digital Output 26" Start="1" />
+          <BitField SymbolName="DigOut27" PublicName="Digital Output 27" Start="2" />
+          <BitField SymbolName="DigOut28" PublicName="Digital Output 28" Start="3" />
+          <BitField SymbolName="DigOut29" PublicName="Digital Output 29" Start="4" />
+          <BitField SymbolName="DigOut30" PublicName="Digital Output 30" Start="5" />
+          <BitField SymbolName="DigOut31" PublicName="Digital Output 31" Start="6" />
+          <BitField SymbolName="DigOut32" PublicName="Digital Output 32" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_33_40" PublicName="Value of Digital Output 33-40" ObjectType="VAR" Index="0x6200" SubIndex="5" DataType="UNSIGNED8" AccessType="rw" Remark="Current value of Digital Output 33-40">
+          <BitField SymbolName="DigOut33" PublicName="Digital Output 33" Start="0" />
+          <BitField SymbolName="DigOut34" PublicName="Digital Output 34" Start="1" />
+          <BitField SymbolName="DigOut35" PublicName="Digital Output 35" Start="2" />
+          <BitField SymbolName="DigOut36" PublicName="Digital Output 36" Start="3" />
+          <BitField SymbolName="DigOut37" PublicName="Digital Output 37" Start="4" />
+          <BitField SymbolName="DigOut38" PublicName="Digital Output 38" Start="5" />
+          <BitField SymbolName="DigOut39" PublicName="Digital Output 39" Start="6" />
+          <BitField SymbolName="DigOut40" PublicName="Digital Output 40" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_41_48" PublicName="Value of Digital Output 41-48" ObjectType="VAR" Index="0x6200" SubIndex="6" DataType="UNSIGNED8" AccessType="rw" Remark="Current value of Digital Output 41-48">
+          <BitField SymbolName="DigOut41" PublicName="Digital Output 41" Start="0" />
+          <BitField SymbolName="DigOut42" PublicName="Digital Output 42" Start="1" />
+          <BitField SymbolName="DigOut43" PublicName="Digital Output 43" Start="2" />
+          <BitField SymbolName="DigOut44" PublicName="Digital Output 44" Start="3" />
+          <BitField SymbolName="DigOut45" PublicName="Digital Output 45" Start="4" />
+          <BitField SymbolName="DigOut46" PublicName="Digital Output 46" Start="5" />
+          <BitField SymbolName="DigOut47" PublicName="Digital Output 47" Start="6" />
+          <BitField SymbolName="DigOut48" PublicName="Digital Output 48" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_49_56" PublicName="Value of Digital Output 49-56" ObjectType="VAR" Index="0x6200" SubIndex="7" DataType="UNSIGNED8" AccessType="rw" Remark="Current value of Digital Output 49-56">
+          <BitField SymbolName="DigOut49" PublicName="Digital Output 49" Start="0" />
+          <BitField SymbolName="DigOut50" PublicName="Digital Output 50" Start="1" />
+          <BitField SymbolName="DigOut51" PublicName="Digital Output 51" Start="2" />
+          <BitField SymbolName="DigOut52" PublicName="Digital Output 52" Start="3" />
+          <BitField SymbolName="DigOut53" PublicName="Digital Output 53" Start="4" />
+          <BitField SymbolName="DigOut54" PublicName="Digital Output 54" Start="5" />
+          <BitField SymbolName="DigOut55" PublicName="Digital Output 55" Start="6" />
+          <BitField SymbolName="DigOut56" PublicName="Digital Output 56" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Value_57_64" PublicName="Value of Digital Output 57-64" ObjectType="VAR" Index="0x6200" SubIndex="8" DataType="UNSIGNED8" AccessType="rw" Remark="Current value of Digital Output 57-64">
+          <BitField SymbolName="DigOut57" PublicName="Digital Output 57" Start="0" />
+          <BitField SymbolName="DigOut58" PublicName="Digital Output 58" Start="1" />
+          <BitField SymbolName="DigOut59" PublicName="Digital Output 59" Start="2" />
+          <BitField SymbolName="DigOut60" PublicName="Digital Output 60" Start="3" />
+          <BitField SymbolName="DigOut61" PublicName="Digital Output 61" Start="4" />
+          <BitField SymbolName="DigOut62" PublicName="Digital Output 62" Start="5" />
+          <BitField SymbolName="DigOut63" PublicName="Digital Output 63" Start="6" />
+          <BitField SymbolName="DigOut64" PublicName="Digital Output 64" Start="7" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="DigOutput_Config" PublicName="Digital Output Configuration">
+        <Parameter SymbolName="Polarity_1_8" PublicName="Digital Output 1-8 Polarity" ObjectType="VAR" Index="0x6202" SubIndex="1" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Polarity/Invert bit mask for Digital Output 1-8. 1=Inverts corresponding Output set value.">
+          <BitField SymbolName="DigOut1" PublicName="Digital Output 1" Start="0" />
+          <BitField SymbolName="DigOut2" PublicName="Digital Output 2" Start="1" />
+          <BitField SymbolName="DigOut3" PublicName="Digital Output 3" Start="2" />
+          <BitField SymbolName="DigOut4" PublicName="Digital Output 4" Start="3" />
+          <BitField SymbolName="DigOut5" PublicName="Digital Output 5" Start="4" />
+          <BitField SymbolName="DigOut6" PublicName="Digital Output 6" Start="5" />
+          <BitField SymbolName="DigOut7" PublicName="Digital Output 7" Start="6" />
+          <BitField SymbolName="DigOut8" PublicName="Digital Output 8" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_9_16" PublicName="Digital Output 9-16 Polarity" ObjectType="VAR" Index="0x6202" SubIndex="2" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Polarity/Invert bit mask for Digital Output 9-16 1=Inverts corresponding Output set value.">
+          <BitField SymbolName="DigOut9" PublicName="Digital Output 9" Start="0" />
+          <BitField SymbolName="DigOut10" PublicName="Digital Output 10" Start="1" />
+          <BitField SymbolName="DigOut11" PublicName="Digital Output 11" Start="2" />
+          <BitField SymbolName="DigOut12" PublicName="Digital Output 12" Start="3" />
+          <BitField SymbolName="DigOut13" PublicName="Digital Output 13" Start="4" />
+          <BitField SymbolName="DigOut14" PublicName="Digital Output 14" Start="5" />
+          <BitField SymbolName="DigOut15" PublicName="Digital Output 15" Start="6" />
+          <BitField SymbolName="DigOut16" PublicName="Digital Output 16" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_17_24" PublicName="Digital Output 17-24 Polarity" ObjectType="VAR" Index="0x6202" SubIndex="3" DataType="UNSIGNED8" AccessType="rw" Default="0" Remark="Polarity/Inverter bit mask for Digital Output 17-24. 1=Inverts corresponding Output.">
+          <BitField SymbolName="DigOut17" PublicName="Digital Output 17" Start="0" />
+          <BitField SymbolName="DigOut18" PublicName="Digital Output 18" Start="1" />
+          <BitField SymbolName="DigOut19" PublicName="Digital Output 19" Start="2" />
+          <BitField SymbolName="DigOut20" PublicName="Digital Output 20" Start="3" />
+          <BitField SymbolName="DigOut21" PublicName="Digital Output 21" Start="4" />
+          <BitField SymbolName="DigOut22" PublicName="Digital Output 22" Start="5" />
+          <BitField SymbolName="DigOut23" PublicName="Digital Output 23" Start="6" />
+          <BitField SymbolName="DigOut24" PublicName="Digital Output 24" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_25_32" PublicName="Digital Output 25-32 Polarity" ObjectType="VAR" Index="0x6202" SubIndex="4" DataType="UNSIGNED8" AccessType="rw" Remark="Polarity/Inverter bit mask for Digital Output 25-32. 1=Inverts corresponding Output.">
+          <BitField SymbolName="DigOut25" PublicName="Digital Output 25" Start="0" />
+          <BitField SymbolName="DigOut26" PublicName="Digital Output 26" Start="1" />
+          <BitField SymbolName="DigOut27" PublicName="Digital Output 27" Start="2" />
+          <BitField SymbolName="DigOut28" PublicName="Digital Output 28" Start="3" />
+          <BitField SymbolName="DigOut29" PublicName="Digital Output 29" Start="4" />
+          <BitField SymbolName="DigOut30" PublicName="Digital Output 30" Start="5" />
+          <BitField SymbolName="DigOut31" PublicName="Digital Output 31" Start="6" />
+          <BitField SymbolName="DigOut32" PublicName="Digital Output 32" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_33_40" PublicName="Digital Output 33-40 Polarity" ObjectType="VAR" Index="0x6202" SubIndex="5" DataType="UNSIGNED8" AccessType="rw" Remark="Polarity/Inverter bit mask for Digital Output 33-40. 1=Inverts corresponding Output.">
+          <BitField SymbolName="DigOut33" PublicName="Digital Output 33" Start="0" />
+          <BitField SymbolName="DigOut34" PublicName="Digital Output 34" Start="1" />
+          <BitField SymbolName="DigOut35" PublicName="Digital Output 35" Start="2" />
+          <BitField SymbolName="DigOut36" PublicName="Digital Output 36" Start="3" />
+          <BitField SymbolName="DigOut37" PublicName="Digital Output 37" Start="4" />
+          <BitField SymbolName="DigOut38" PublicName="Digital Output 38" Start="5" />
+          <BitField SymbolName="DigOut39" PublicName="Digital Output 39" Start="6" />
+          <BitField SymbolName="DigOut40" PublicName="Digital Output 40" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_41_48" PublicName="Digital Output 41-48 Polarity" ObjectType="VAR" Index="0x6202" SubIndex="6" DataType="UNSIGNED8" AccessType="rw" Remark="Polarity/Inverter bit mask for Digital Output 41-48. 1=Inverts corresponding Output.">
+          <BitField SymbolName="DigOut41" PublicName="Digital Output 41" Start="0" />
+          <BitField SymbolName="DigOut42" PublicName="Digital Output 42" Start="1" />
+          <BitField SymbolName="DigOut43" PublicName="Digital Output 43" Start="2" />
+          <BitField SymbolName="DigOut44" PublicName="Digital Output 44" Start="3" />
+          <BitField SymbolName="DigOut45" PublicName="Digital Output 45" Start="4" />
+          <BitField SymbolName="DigOut46" PublicName="Digital Output 46" Start="5" />
+          <BitField SymbolName="DigOut47" PublicName="Digital Output 47" Start="6" />
+          <BitField SymbolName="DigOut48" PublicName="Digital Output 48" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_49_56" PublicName="Digital Output 49-56 Polarity" ObjectType="VAR" Index="0x6202" SubIndex="7" DataType="UNSIGNED8" AccessType="rw" Remark="Polarity/Inverter bit mask for Digital Output 49-56. 1=Inverts corresponding Output.">
+          <BitField SymbolName="DigOut49" PublicName="Digital Output 49" Start="0" />
+          <BitField SymbolName="DigOut50" PublicName="Digital Output 50" Start="1" />
+          <BitField SymbolName="DigOut51" PublicName="Digital Output 51" Start="2" />
+          <BitField SymbolName="DigOut52" PublicName="Digital Output 52" Start="3" />
+          <BitField SymbolName="DigOut53" PublicName="Digital Output 53" Start="4" />
+          <BitField SymbolName="DigOut54" PublicName="Digital Output 54" Start="5" />
+          <BitField SymbolName="DigOut55" PublicName="Digital Output 55" Start="6" />
+          <BitField SymbolName="DigOut56" PublicName="Digital Output 56" Start="7" />
+        </Parameter>
+        <Parameter SymbolName="Polarity_57_64" PublicName="Digital Output 57-64 Polarity" ObjectType="VAR" Index="0x6202" SubIndex="8" DataType="UNSIGNED8" AccessType="rw" Remark="Polarity/Inverter bit mask for Digital Output 57-64. 1=Inverts corresponding Output.">
+          <BitField SymbolName="DigOut57" PublicName="Digital Output 57" Start="0" />
+          <BitField SymbolName="DigOut58" PublicName="Digital Output 58" Start="1" />
+          <BitField SymbolName="DigOut59" PublicName="Digital Output 59" Start="2" />
+          <BitField SymbolName="DigOut60" PublicName="Digital Output 60" Start="3" />
+          <BitField SymbolName="DigOut61" PublicName="Digital Output 61" Start="4" />
+          <BitField SymbolName="DigOut62" PublicName="Digital Output 62" Start="5" />
+          <BitField SymbolName="DigOut63" PublicName="Digital Output 63" Start="6" />
+          <BitField SymbolName="DigOut64" PublicName="Digital Output 64" Start="7" />
+        </Parameter>
+      </Group>
+      <Group SymbolName="AnInput_Runtime" PublicName="Analog Input Runtime">
+        <Parameter SymbolName="AnInput_1" PublicName="Analog Input 1" ObjectType="VAR" Index="0x6401" SubIndex="1" DataType="INTEGER16" AccessType="ro" Remark="Current value of Analog Input 1" />
+        <Parameter SymbolName="AnInput_2" PublicName="Analog Input 2" ObjectType="VAR" Index="0x6401" SubIndex="2" DataType="INTEGER16" AccessType="ro" Remark="Current value of Analog Input 2" />
+        <Parameter SymbolName="AnInput_3" PublicName="Analog Input 3" ObjectType="VAR" Index="0x6401" SubIndex="3" DataType="INTEGER16" AccessType="ro" Remark="Current value of Analog Input 3" />
+        <Parameter SymbolName="AnInput_4" PublicName="Analog Input 4" ObjectType="VAR" Index="0x6401" SubIndex="4" DataType="INTEGER16" AccessType="ro" Remark="Current value of Analog Input 4" />
+      </Group>
+      <Group SymbolName="AnInput_Config" PublicName="Analog Input Configuration">
+        <Parameter SymbolName="Global_Interrupt_Enable" PublicName="Global Interrupt Enable" ObjectType="VAR" Index="0x6423" SubIndex="0" DataType="BOOLEAN" AccessType="rw" Default="0" Remark="Enable event driven transmission (at change) of Analog Inputs message (PDO)." />
+        <Parameter SymbolName="AnInput_1_Delta_Value" PublicName="AnInput 1 Delta Value" ObjectType="VAR" Index="0x6426" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Remark="Treshold value for evaluation of change of Analog Input 1 (for event driven transmission)." />
+        <Parameter SymbolName="AnInput_2_Delta_Value" PublicName="AnInput 2 Delta Value" ObjectType="VAR" Index="0x6426" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Remark="Treshold value for evaluation of change of Analog Input 2 (for event driven transmission)." />
+        <Parameter SymbolName="AnInput_3_Delta_Value" PublicName="AnInput 3 Delta Value" ObjectType="VAR" Index="0x6426" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Remark="Treshold value for evaluation of change of Analog Input 3 (for event driven transmission)." />
+        <Parameter SymbolName="AnInput_4_Delta_Value" PublicName="AnInput 4 Delta Value" ObjectType="VAR" Index="0x6426" SubIndex="4" DataType="UNSIGNED32" AccessType="rw" Remark="Treshold value for evaluation of change of Analog Input 4 (for event driven transmission)." />
+        <Parameter SymbolName="AnInput_1_Offset" PublicName="AnInput 1 Offset" ObjectType="VAR" Index="0x6431" SubIndex="1" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInput_2_Offset" PublicName="AnInput 2 Offset" ObjectType="VAR" Index="0x6431" SubIndex="2" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInput_3_Offset" PublicName="AnInput 3 Offset" ObjectType="VAR" Index="0x6431" SubIndex="3" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInput_4_Offset" PublicName="AnInput 4 Offset" ObjectType="VAR" Index="0x6431" SubIndex="4" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInput_1_Scale" PublicName="AnInput 1 Scale" ObjectType="VAR" Index="0x6432" SubIndex="1" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInput_2_Scale" PublicName="AnInput 2 Scale" ObjectType="VAR" Index="0x6432" SubIndex="2" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInput_3_Scale" PublicName="AnInput 3 Scale" ObjectType="VAR" Index="0x6432" SubIndex="3" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInput_4_Scale" PublicName="AnInput 4 Scale" ObjectType="VAR" Index="0x6432" SubIndex="4" DataType="INTEGER32" AccessType="rw" />
+      </Group>
+      <Group SymbolName="AnOutput_Runtime" PublicName="Analog Output Runtime">
+        <Parameter SymbolName="AnOutput_1" PublicName="Analog Output 1" ObjectType="VAR" Index="0x6411" SubIndex="1" DataType="INTEGER16" AccessType="rw" Remark="Set value for Analog Output 1" />
+        <Parameter SymbolName="AnOutput_2" PublicName="Analog Output 2" ObjectType="VAR" Index="0x6411" SubIndex="2" DataType="INTEGER16" AccessType="rw" Remark="Set value for Analog Output 2" />
+        <Parameter SymbolName="AnOutput_3" PublicName="Analog Output 3" ObjectType="VAR" Index="0x6411" SubIndex="3" DataType="INTEGER16" AccessType="rw" Remark="Set value for Analog Output 3" />
+        <Parameter SymbolName="AnOutput_4" PublicName="Analog Output 4" ObjectType="VAR" Index="0x6411" SubIndex="4" DataType="INTEGER16" AccessType="rw" Remark="Set value for Analog Output 4" />
+      </Group>
+      <Group SymbolName="Spec4ByteTerminal" PublicName="Special 4-byte terminal">
+        <!-- Input area -->
+        <Parameter SymbolName="InputData_1" PublicName="4-byte input area" ObjectType="VAR" Index="0x2800" SubIndex="1" DataType="UNSIGNED32" AccessType="ro" Remark="Read area 1 for special 4 byte device" />
+        <Parameter SymbolName="InputData_2" PublicName="4-byte input area" ObjectType="VAR" Index="0x2800" SubIndex="2" DataType="UNSIGNED32" AccessType="ro" Remark="Read area 2 for special 4 byte device" />
+        <Parameter SymbolName="InputData_3" PublicName="4-byte input area" ObjectType="VAR" Index="0x2800" SubIndex="3" DataType="UNSIGNED32" AccessType="ro" Remark="Read area 3 for special 4 byte device" />
+        <Parameter SymbolName="InputData_4" PublicName="4-byte input area" ObjectType="VAR" Index="0x2800" SubIndex="4" DataType="UNSIGNED32" AccessType="ro" Remark="Read area 4 for special 4 byte device" />
+        <!-- Output area -->
+        <Parameter SymbolName="OutputData_1" PublicName="4-byte output area" ObjectType="VAR" Index="0x2900" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Remark="Write area 1 for special 4 byte device" />
+        <Parameter SymbolName="OutputData_2" PublicName="4-byte output area" ObjectType="VAR" Index="0x2900" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Remark="Write area 2 for special 4 byte device" />
+        <Parameter SymbolName="OutputData_3" PublicName="4-byte output area" ObjectType="VAR" Index="0x2900" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Remark="Write area 3 for special 4 byte device" />
+        <Parameter SymbolName="OutputData_4" PublicName="4-byte output area" ObjectType="VAR" Index="0x2900" SubIndex="4" DataType="UNSIGNED32" AccessType="rw" Remark="Write area 4 for special 4 byte device" />
+      </Group>
+      <Group SymbolName="BusNodeRegister" PublicName="Bus node register communication">
+        <Parameter SymbolName="RegisterAccess" PublicName="Register access" ObjectType="VAR" Index="0x4500" SubIndex="0" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+      </Group>
+      <Group SymbolName="BusTerminalRegister" PublicName="Bus terminal register communication">
+        <Parameter SymbolName="Terminal1" PublicName="Register access to terminal 1" ObjectType="VAR" Index="0x4501" SubIndex="1" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal2" PublicName="Register access to terminal 2" ObjectType="VAR" Index="0x4501" SubIndex="2" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal3" PublicName="Register access to terminal 3" ObjectType="VAR" Index="0x4501" SubIndex="3" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal4" PublicName="Register access to terminal 4" ObjectType="VAR" Index="0x4501" SubIndex="4" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal5" PublicName="Register access to terminal 5" ObjectType="VAR" Index="0x4501" SubIndex="5" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal6" PublicName="Register access to terminal 6" ObjectType="VAR" Index="0x4501" SubIndex="6" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal7" PublicName="Register access to terminal 7" ObjectType="VAR" Index="0x4501" SubIndex="7" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal8" PublicName="Register access to terminal 8" ObjectType="VAR" Index="0x4501" SubIndex="8" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal9" PublicName="Register access to terminal 9" ObjectType="VAR" Index="0x4501" SubIndex="9" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal10" PublicName="Register access to terminal 10" ObjectType="VAR" Index="0x4501" SubIndex="10" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal11" PublicName="Register access to terminal 11" ObjectType="VAR" Index="0x4501" SubIndex="11" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal12" PublicName="Register access to terminal 12" ObjectType="VAR" Index="0x4501" SubIndex="12" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal13" PublicName="Register access to terminal 13" ObjectType="VAR" Index="0x4501" SubIndex="13" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal14" PublicName="Register access to terminal 14" ObjectType="VAR" Index="0x4501" SubIndex="14" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal15" PublicName="Register access to terminal 15" ObjectType="VAR" Index="0x4501" SubIndex="15" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal16" PublicName="Register access to terminal 16" ObjectType="VAR" Index="0x4501" SubIndex="16" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal17" PublicName="Register access to terminal 17" ObjectType="VAR" Index="0x4501" SubIndex="17" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal18" PublicName="Register access to terminal 18" ObjectType="VAR" Index="0x4501" SubIndex="18" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal19" PublicName="Register access to terminal 19" ObjectType="VAR" Index="0x4501" SubIndex="19" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal20" PublicName="Register access to terminal 20" ObjectType="VAR" Index="0x4501" SubIndex="20" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal21" PublicName="Register access to terminal 21" ObjectType="VAR" Index="0x4501" SubIndex="21" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal22" PublicName="Register access to terminal 22" ObjectType="VAR" Index="0x4501" SubIndex="22" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal23" PublicName="Register access to terminal 23" ObjectType="VAR" Index="0x4501" SubIndex="23" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal24" PublicName="Register access to terminal 24" ObjectType="VAR" Index="0x4501" SubIndex="24" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal25" PublicName="Register access to terminal 25" ObjectType="VAR" Index="0x4501" SubIndex="25" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal26" PublicName="Register access to terminal 26" ObjectType="VAR" Index="0x4501" SubIndex="26" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal27" PublicName="Register access to terminal 27" ObjectType="VAR" Index="0x4501" SubIndex="27" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal28" PublicName="Register access to terminal 28" ObjectType="VAR" Index="0x4501" SubIndex="28" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal29" PublicName="Register access to terminal 29" ObjectType="VAR" Index="0x4501" SubIndex="29" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal30" PublicName="Register access to terminal 30" ObjectType="VAR" Index="0x4501" SubIndex="30" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal31" PublicName="Register access to terminal 31" ObjectType="VAR" Index="0x4501" SubIndex="31" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+        <Parameter SymbolName="Terminal32" PublicName="Register access to terminal 32" ObjectType="VAR" Index="0x4501" SubIndex="32" DataType="UNSIGNED32" AccessType="rw" Remark="" />
+      </Group>
+    </Parameters>
+  </Dictionary>
+</Product>

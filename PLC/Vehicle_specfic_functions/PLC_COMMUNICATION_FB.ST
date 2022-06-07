@@ -720,7 +720,6 @@ if ComStart = true then
 		(* no delay when PLC <--> CVC700*)
 		(****************************************************************************)	
 		1:
-
 			serial_read();
 			msg_index := 0;
 			while serial_read.length > 0 do
@@ -740,7 +739,7 @@ if ComStart = true then
 			Else 
 				ComStep:=0;
 			END_IF;
-
+			ComStep:=2;
 
 		(****************************************************************************)			
 		2:
@@ -765,7 +764,7 @@ if ComStart = true then
 					(* Start adress to read *)
 					ConvByteH:= PLC_message[9]; 
 					ConvByteL:= PLC_message[10]; 
-					start_adress  := Word_TO_INT(pConvWord) + 1;
+					start_adress  := Word_TO_INT(pConvWord);
 			
 					ComStep:=3;
 
@@ -775,14 +774,14 @@ if ComStart = true then
 					(*Check Function type *)							
 				
 					case tr_cmd of  
-						6:	ComStep:=60;	(* Check if Write single register *)
+						6:	ComStep:=160;	(* Check if Write single register *)
 						16:	ComStep:=160; (* Check if write Multiple register *)
+						10: ComStep:=160;
 						3:	ComStep:=30;	(*Check if Read register *)
 					Else 	
-						ComStep:=999; 	(*Send Echo *)
+						ComStep:=0; 	(*Send Echo *)
 					end_case;
-
-		
+					
 		(****************************************************************************)			
 		30:
 						(*Read register *)
@@ -857,6 +856,7 @@ if ComStart = true then
 				
 				
 						ComStep:=999;	
+						
 		(****************************************************************************)				
 		160:
 						(* Multiple write *)
@@ -873,7 +873,7 @@ if ComStart = true then
 							pConvByteH:=PLC_message[X]; 
 							X:=X+1;
 							pConvByteL:=PLC_message[X]; 
-							ModBus_ValueWord [Y]:=pConvWord;
+							PLC_Communication_ModBus_ValueWord [Y]:=pConvWord;
 							X:=X+1;
 							Y:=Y+1;
 						END_FOR;
@@ -903,34 +903,30 @@ if ComStart = true then
 						PLC_RX_Word23_BMS_ID4L := PLC_Communication_ModBus_ValueWord [39];
 						PLC_RX_Word24_BMS_ID4H := PLC_Communication_ModBus_ValueWord [40];
 						PLC_RX_Word25 := PLC_Communication_ModBus_ValueWord [41];
-						
-						ComStep:=999;				
+						ComStep := 999;
 		(****************************************************************************)
 		999:
 
-						(*Send Echo *)
-							Serial_write.data[9] := PLC_message[9];
-							serial_write.data[10] := PLC_message[10]; 
-							serial_write.data[11] := PLC_message[11];
-							serial_write.data[12] := PLC_message[12];
+				    (*Send Echo *)
+					Serial_write.data[9] := PLC_message[9];
+					serial_write.data[10] := PLC_message[10]; 
+					serial_write.data[11] := PLC_message[11];
+					serial_write.data[12] := PLC_message[12];
 					
-							length :=6;
-							tx_length := DINT_TO_BYTE(length);
-					        serial_write.data[6] := tx_length; (* lp *)
-							ComStep:=10000;
+					length :=num_words*2;
+					tx_length := DINT_TO_BYTE(length);
+					serial_write.data[6] := tx_length; (* lp *)
+							
+					ComStep:=10000;
 			
 		(****************************************************************************)					
 		10000:
 	
-					(*Send Data *)
-				
-					serial_write.length := BYTE_TO_INT(tx_header_length) + BYTE_TO_INT(tx_length);
-					serial_write();
-			
+					(*Send Data *)					
+
 					serial_write.length := 0;
 					serial_write();
-					
-			
+					serial_write();
 					IF serial_write.sent<>0 or serial_write.error<>0 Then
 						ComStep:=0;
 						DebugCounter := DebugCounter + 1;
@@ -992,6 +988,8 @@ if ComStart = true then
 
 	
 end_if;
+
+
 
 
 

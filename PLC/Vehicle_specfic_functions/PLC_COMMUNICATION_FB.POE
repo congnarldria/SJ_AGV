@@ -198,7 +198,6 @@ VAR_EXTERNAL
 	PLC_TX01_BIT_LOCALMODE : BOOL;
 	PLC_RX_WORD18_BMS_BATC : WORD;
 	PLC_RX_WORD11_INS_PNO : WORD;
-	MODBUS_VALUEWORD : ARRAY [1..500] OF Word;
 	CONVBYTEH : Byte;
 	OM_PLC_WORD2 : WORD;
 	OM_PLC_WORD1 : WORD;
@@ -2676,7 +2675,6 @@ END_VAR
 			(* case - Stmts *) 
 			ODK_CASE_00000000000001S_000000000000002:
 
-(**  **)
 (** 			serial_read(); **)
 				(* call - Stmt *)
 				CAL serial_read
@@ -2803,9 +2801,13 @@ END_VAR
 				(* if - End *) 
 				ODK_END_IF_00000000000001V:
 
+(** 			ComStep:=2; **)
+				(* assign - Stmt *)
+				LD 2
+				ST ComStep
+
 				JMP ODK_END_CASE_00000000000001S
 
-(**  **)
 (**  **)
 (** 		{****************************************************************************}			 **)
 (** 		2: **)
@@ -2903,11 +2905,10 @@ END_VAR
 				LD PLC_message[10]
 				ST ConvByteL
 
-(** 					start_adress  := Word_TO_INT(pConvWord) + 1; **)
+(** 					start_adress  := Word_TO_INT(pConvWord); **)
 				(* assign - Stmt *)
 				LD pConvWord
 				WORD_TO_INT 
-				ADD 1
 				ST start_adress
 
 (** 			 **)
@@ -2938,7 +2939,7 @@ END_VAR
 (** 					{*Check Function type *}							 **)
 (** 				 **)
 (** 					case tr_cmd of   **)
-(** 						6:	ComStep:=60;	{* Check if Write single register *} **)
+(** 						6:	ComStep:=160;	{* Check if Write single register *} **)
 				(* case - Elm *) 
 				ODK_SKIP_00000000000001W_000000000000000:
 
@@ -2953,7 +2954,7 @@ END_VAR
 				ODK_CASE_00000000000001W_000000000000001:
 
 					(* assign - Stmt *)
-					LD 60
+					LD 160
 					ST ComStep
 
 					JMP ODK_END_CASE_00000000000001W
@@ -2978,19 +2979,39 @@ END_VAR
 
 					JMP ODK_END_CASE_00000000000001W
 
-(** 						3:	ComStep:=30;	{*Check if Read register *} **)
+(** 						10: ComStep:=160; **)
 				(* case - Elm *) 
 				ODK_SKIP_00000000000001W_000000000000002:
 
 				(* case - Cond *)
 				LD tr_cmd
-				EQ 3
+				EQ 10
 				JMPC ODK_CASE_00000000000001W_000000000000003
 
 				JMP ODK_SKIP_00000000000001W_000000000000003
 
 				(* case - Stmts *) 
 				ODK_CASE_00000000000001W_000000000000003:
+
+					(* assign - Stmt *)
+					LD 160
+					ST ComStep
+
+					JMP ODK_END_CASE_00000000000001W
+
+(** 						3:	ComStep:=30;	{*Check if Read register *} **)
+				(* case - Elm *) 
+				ODK_SKIP_00000000000001W_000000000000003:
+
+				(* case - Cond *)
+				LD tr_cmd
+				EQ 3
+				JMPC ODK_CASE_00000000000001W_000000000000004
+
+				JMP ODK_SKIP_00000000000001W_000000000000004
+
+				(* case - Stmts *) 
+				ODK_CASE_00000000000001W_000000000000004:
 
 					(* assign - Stmt *)
 					LD 30
@@ -3000,13 +3021,13 @@ END_VAR
 
 (** 					Else 	 **)
 				(* else *) 
-				ODK_SKIP_00000000000001W_000000000000003:
+				ODK_SKIP_00000000000001W_000000000000004:
 
 					(* else - Statements *) 
 
-(** 						ComStep:=999; 	{*Send Echo *} **)
+(** 						ComStep:=0; 	{*Send Echo *} **)
 					(* assign - Stmt *)
-					LD 999
+					LD 0
 					ST ComStep
 
 (** 					end_case; **)
@@ -3015,8 +3036,7 @@ END_VAR
 
 				JMP ODK_END_CASE_00000000000001S
 
-(**  **)
-(** 		 **)
+(** 					 **)
 (** 		{****************************************************************************}			 **)
 (** 		30: **)
 			(* case - Elm *) 
@@ -3387,6 +3407,7 @@ END_VAR
 
 				JMP ODK_END_CASE_00000000000001S
 
+(** 						 **)
 (** 		{****************************************************************************}				 **)
 (** 		160: **)
 			(* case - Elm *) 
@@ -3499,10 +3520,10 @@ END_VAR
 					LD PLC_message[X]
 					ST pConvByteL
 
-(** 							ModBus_ValueWord [Y]:=pConvWord; **)
+(** 							PLC_Communication_ModBus_ValueWord [Y]:=pConvWord; **)
 					(* assign - Stmt *)
 					LD pConvWord
-					ST ModBus_ValueWord[Y]
+					ST PLC_Communication_ModBus_ValueWord[Y]
 
 (** 							X:=X+1; **)
 					(* assign - Stmt *)
@@ -3653,8 +3674,7 @@ END_VAR
 				LD PLC_Communication_ModBus_ValueWord[41]
 				ST PLC_RX_Word25
 
-(** 						 **)
-(** 						ComStep:=999;				 **)
+(** 						ComStep := 999; **)
 				(* assign - Stmt *)
 				LD 999
 				ST ComStep
@@ -3677,45 +3697,47 @@ END_VAR
 			ODK_CASE_00000000000001S_000000000000008:
 
 (**  **)
-(** 						{*Send Echo *} **)
-(** 							Serial_write.data[9] := PLC_message[9]; **)
+(** 				    {*Send Echo *} **)
+(** 					Serial_write.data[9] := PLC_message[9]; **)
 				(* assign - Stmt *)
 				LD PLC_message[9]
 				ST serial_write.data[9]
 
-(** 							serial_write.data[10] := PLC_message[10];  **)
+(** 					serial_write.data[10] := PLC_message[10];  **)
 				(* assign - Stmt *)
 				LD PLC_message[10]
 				ST serial_write.data[10]
 
-(** 							serial_write.data[11] := PLC_message[11]; **)
+(** 					serial_write.data[11] := PLC_message[11]; **)
 				(* assign - Stmt *)
 				LD PLC_message[11]
 				ST serial_write.data[11]
 
-(** 							serial_write.data[12] := PLC_message[12]; **)
+(** 					serial_write.data[12] := PLC_message[12]; **)
 				(* assign - Stmt *)
 				LD PLC_message[12]
 				ST serial_write.data[12]
 
 (** 					 **)
-(** 							length :=6; **)
+(** 					length :=num_words*2; **)
 				(* assign - Stmt *)
-				LD 6
+				LD num_words
+				MUL 2
 				ST length
 
-(** 							tx_length := DINT_TO_BYTE(length); **)
+(** 					tx_length := DINT_TO_BYTE(length); **)
 				(* assign - Stmt *)
 				LD length
 				DINT_TO_BYTE 
 				ST tx_length
 
-(** 					        serial_write.data[6] := tx_length; {* lp *} **)
+(** 					serial_write.data[6] := tx_length; {* lp *} **)
 				(* assign - Stmt *)
 				LD tx_length
 				ST serial_write.data[6]
 
-(** 							ComStep:=10000; **)
+(** 							 **)
+(** 					ComStep:=10000; **)
 				(* assign - Stmt *)
 				LD 10000
 				ST ComStep
@@ -3739,22 +3761,8 @@ END_VAR
 			ODK_CASE_00000000000001S_000000000000009:
 
 (** 	 **)
-(** 					{*Send Data *} **)
-(** 				 **)
-(** 					serial_write.length := BYTE_TO_INT(tx_header_length) + BYTE_TO_INT(tx_length); **)
-				(* assign - Stmt *)
-				LD tx_header_length
-				BYTE_TO_INT 
-				ADD ( tx_length
-					BYTE_TO_INT 
-				)
-				ST serial_write.length
-
-(** 					serial_write(); **)
-				(* call - Stmt *)
-				CAL serial_write
-
-(** 			 **)
+(** 					{*Send Data *}					 **)
+(**  **)
 (** 					serial_write.length := 0; **)
 				(* assign - Stmt *)
 				LD 0
@@ -3764,8 +3772,10 @@ END_VAR
 				(* call - Stmt *)
 				CAL serial_write
 
-(** 					 **)
-(** 			 **)
+(** 					serial_write(); **)
+				(* call - Stmt *)
+				CAL serial_write
+
 (** 					IF serial_write.sent<>0 or serial_write.error<>0 Then **)
 				(* if - Cond *)
 				LD serial_write.sent
@@ -3910,6 +3920,8 @@ END_VAR
 	ODK_SKIP_00000000000001Q_000000000000001:
 	ODK_END_IF_00000000000001Q:
 
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

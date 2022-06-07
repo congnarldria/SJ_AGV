@@ -1,0 +1,813 @@
+<?xml version="1.0"?>
+<Product Name="" ArticleNumber="69A21051C03" Checksum="0x8CA6" TimeStamp="1425045610" FileIntegrityVersion="1" FileIntegritySignature="DANAHER" FileIntegrityChecksum="0x88839acd">
+  <Dictionary>
+    <Parameters>
+      <Group SymbolName="DeviceType">
+        <Parameter SymbolName="DeviceType" Index="0x1000" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="EmcyErrors">
+        <Parameter SymbolName="ErrorRegister" Index="0x1001" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="SafetyErrorLog">
+        <Parameter SymbolName="LogSize" Index="0x1003" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Service" AccessType="ro" />
+        <Parameter SymbolName="CanOpenErrorLog" Index="0x1003" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED32" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="CobIdSyncMessage">
+        <Parameter SymbolName="CobIdSyncMessage" Index="0x1005" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="ManufacturerDeviceName">
+        <Parameter SymbolName="ManufacturerDeviceName" Index="0x1008" SubIndex="0" ObjectType="VAR" DataType="VISIBLE_STRING" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="StoreParameters">
+        <Parameter SymbolName="LastSubIndex" Index="0x1010" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="StoreAllParameters" Index="0x1010" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="StoreCustomerParameters" Index="0x1010" SubIndex="4" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="RestoreParameters">
+        <Parameter SymbolName="LastSubIndex" Index="0x1011" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="RestoreAllParameters" Index="0x1011" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="RestoreCommParameters" Index="0x1011" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="RestoreApplParameters" Index="0x1011" SubIndex="3" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="CobIdEmcyMessage">
+        <Parameter SymbolName="CobIdEmcyMessage" Index="0x1014" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="IdentityObject">
+        <Parameter SymbolName="LastSubIndex" Index="0x1018" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="VendorId" Index="0x1018" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="ServerSDO1Parameters">
+        <Parameter SymbolName="LastSubIndex" Index="0x1200" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="CobIdSDO1rx" Index="0x1200" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="CobIdSDO1tx" Index="0x1200" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="ServerSDO2Parameters">
+        <Parameter SymbolName="LastSubIndex" Index="0x1201" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="CobIdSDO2rx" Index="0x1201" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="CobIdSDO2tx" Index="0x1201" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="ReceivePDO1ComParameters">
+        <Parameter SymbolName="LastSubIndex" Index="0x1400" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="CobIdPDO1Rx" Index="0x1400" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="TransmissionTypePDO1Rx" Index="0x1400" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <MissingGroup SymbolName="ReceivePDO2ComParameters">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: ReceivePDO2ComParameters
+
+-->
+      <Group SymbolName="ReceivePDO1MapParameters">
+        <Parameter SymbolName="NumberOfMappedObjects" Index="0x1600" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="PDO1RxMapVar_1" Index="0x1600" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <MissingGroup SymbolName="ReceivePDO2MapParameters">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: ReceivePDO2MapParameters
+
+-->
+      <Group SymbolName="TransmitPDO1ComParameters">
+        <Parameter SymbolName="LastSubIndex" Index="0x1800" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="CobIdPDO1Tx" Index="0x1800" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="TransmissionTypePDO1Tx" Index="0x1800" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="TransmitPDO2ComParameters">
+        <Parameter SymbolName="LastSubIndex" Index="0x1801" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="CobIdPDO2Tx" Index="0x1801" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="TransmissionTypePDO2Tx" Index="0x1801" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="TransmitPDO1MapParameters">
+        <Parameter SymbolName="NumberOfMappedObjects_3" Index="0x1A00" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="PDO1TxMapVar_1" Index="0x1A00" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="TransmitPDO2MapParameters">
+        <Parameter SymbolName="NumberOfMappedObjects_4" Index="0x1A01" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="PDO2TxMapVar_1" Index="0x1A01" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="ApplicationCommands">
+        <Parameter SymbolName="LastSubIndex" Index="0x2000" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="CommandAll" Index="0x2000" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="CommandSpeed" Index="0x2000" SubIndex="2" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="CommandTorque" Index="0x2000" SubIndex="4" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="CommandAccelerationChange" Index="0x2000" SubIndex="5" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="CommandDecelerationChange" Index="0x2000" SubIndex="6" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="AccelerationReductionFactor" Index="0x2000" SubIndex="7" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="MaxSpeedInRpmReductionFactor" Index="0x2000" SubIndex="8" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="FootBrakePercentageReductionFactor" Index="0x2000" SubIndex="9" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="ExternalWatchDogCounter" Index="0x2000" SubIndex="10" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="CommandPosition" Index="0x2000" SubIndex="11" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Factor="0.01" Unit="Deg" />
+        <Parameter SymbolName="CommandDeltaPosition" Index="0x2000" SubIndex="12" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="ApplicationStatus">
+        <Parameter SymbolName="LastSubIndex" Index="0x2001" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="StatusAll" Index="0x2001" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <MissingGroup SymbolName="HallSensorFeedback">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: HallSensorFeedback
+
+-->
+        <MissingGroup SymbolName="SensorBearingFeedback">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: SensorBearingFeedback
+
+-->
+        <MissingGroup SymbolName="SixstepFeedback">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: SixstepFeedback
+
+-->
+        <MissingGroup SymbolName="InductionMotorSpeedEstimator">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: InductionMotorSpeedEstimator
+
+-->
+        <Parameter SymbolName="ApplicationState" Index="0x2001" SubIndex="4" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="DigitalInStatus" Index="0x2001" SubIndex="5" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <MissingMember SymbolName="WheelAngle" GroupName="PositionRegulator">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: PositionRegulator.WheelAngle
+
+-->
+        <Parameter SymbolName="WheelAngle" Index="0x2001" SubIndex="6" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Factor="0.01" Unit="Deg" />
+        <MissingGroup SymbolName="PulseReferenceGenerator">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: PulseReferenceGenerator
+
+-->
+      </Group>
+      <Group SymbolName="OperationTime">
+        <Parameter SymbolName="LastSubIndex" Index="0x2002" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="EasyLoadTimeHours" Index="0x2002" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Service" AccessType="rw" />
+        <Parameter SymbolName="MiddleLoadTimeHours" Index="0x2002" SubIndex="3" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Service" AccessType="rw" />
+        <Parameter SymbolName="FullLoadTimeHours" Index="0x2002" SubIndex="4" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Service" AccessType="rw" />
+        <Parameter SymbolName="TotalTimeSeconds" Index="0x2002" SubIndex="5" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="EasyLoadTimeSeconds" Index="0x2002" SubIndex="6" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="MiddleLoadTimeSeconds" Index="0x2002" SubIndex="7" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="FullLoadTimeSeconds" Index="0x2002" SubIndex="8" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="SaveOperatingTimes" Index="0x2002" SubIndex="9" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="wo" />
+      </Group>
+      <Group SymbolName="ADConverterValues">
+        <Parameter SymbolName="NumberOfAdcChannels" Index="0x2005" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="AdcResults" Index="0x2005" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="ApplicationSwInformation">
+        <Parameter SymbolName="LastSubIndex" Index="0x2009" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ApplicationSwNumber" Index="0x2009" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ApplicationSwRevision" Index="0x2009" SubIndex="3" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ApplicationSwBuildTime" Index="0x2009" SubIndex="4" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ACSId" Index="0x2009" SubIndex="7" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="SwConfiguredDriveType" Index="0x2009" SubIndex="8" ObjectType="VAR" DataType="VISIBLE_STRING" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="HwConfiguredDriveType" Index="0x2009" SubIndex="9" ObjectType="VAR" DataType="VISIBLE_STRING" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="HwDetectedMaxAcsCurrent" Index="0x2009" SubIndex="10" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="HwDetectedDriveVoltage" Index="0x2009" SubIndex="11" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ApplicationSwName" Index="0x2009" SubIndex="12" ObjectType="VAR" DataType="VISIBLE_STRING" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="EepromParameterSegmentCheckSum" Index="0x2009" SubIndex="13" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="ApplicationSetupParameters">
+        <Parameter SymbolName="LastSubIndex" Index="0x2020" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="SpeedRampMode" Index="0x2020" SubIndex="1" ObjectType="VAR" DataType="INTEGER8" Visibility="OEM" AccessType="rw" />
+        <MissingMember SymbolName="BestPerformanceCurveMode" GroupName="ApplicationSetupParameters">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: ApplicationSetupParameters.BestPerformanceCurveMode
+
+-->
+        <MissingMember SymbolName="RollBackSpeed" GroupName="ApplicationSetupParameters">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: ApplicationSetupParameters.RollBackSpeed
+
+-->
+        <MissingMember SymbolName="AutomaticDriveDisableTime" GroupName="ApplicationSetupParameters">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: ApplicationSetupParameters.AutomaticDriveDisableTime
+
+-->
+        <Parameter SymbolName="ApplicationSetupWord" Index="0x2020" SubIndex="10" ObjectType="VAR" DataType="UNSIGNED16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="MaxCommandSpeed" Index="0x2020" SubIndex="11" ObjectType="VAR" DataType="UNSIGNED16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="RegulationMode" Index="0x2020" SubIndex="12" ObjectType="VAR" DataType="INTEGER8" Visibility="Operator" AccessType="rw" />
+        <MissingMember SymbolName="ReferenceRatio" GroupName="ApplicationSetupParameters">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: ApplicationSetupParameters.ReferenceRatio
+
+-->
+      </Group>
+      <MissingGroup SymbolName="DebugData">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: DebugData
+
+-->
+      <Group SymbolName="ProductApplicationParameters">
+        <Parameter SymbolName="LastSubIndex" Index="0x2025" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="CustomerParameters" Index="0x2025" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="ProductApplicationParameters">
+        <Parameter SymbolName="LastSubIndex" Index="0x2026" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Checksum" Index="0x2026" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <MissingGroup SymbolName="ProductApplicationConstants">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: ProductApplicationConstants
+
+-->
+      <Group SymbolName="DcBus">
+        <Parameter SymbolName="LastSubIndex" Index="0x2030" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Status" Index="0x2030" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Voltage" Index="0x2030" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" Factor="0.01" Unit="V" />
+        <Parameter SymbolName="MaxMeasuredVoltage" Index="0x2030" SubIndex="3" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" Factor="0.01" Unit="V" />
+        <Parameter SymbolName="HighWarningLevel" Index="0x2030" SubIndex="4" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" Unit="V" />
+        <Parameter SymbolName="HighTripLevel" Index="0x2030" SubIndex="5" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" Factor="0.01" Unit="V" />
+        <Parameter SymbolName="LowWarningLevel" Index="0x2030" SubIndex="6" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" Factor="0.01" Unit="V" />
+        <Parameter SymbolName="LowTripLevel" Index="0x2030" SubIndex="7" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" Factor="0.01" Unit="V" />
+        <Parameter SymbolName="FilterGain" Index="0x2030" SubIndex="10" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Internal" AccessType="rw" />
+        <Parameter SymbolName="FilterDiffLim" Index="0x2030" SubIndex="11" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Internal" AccessType="rw" />
+        <MissingMember SymbolName="SetXrCalValuesDefault" GroupName="DcBus">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: DcBus.SetXrCalValuesDefault
+
+-->
+        <Parameter SymbolName="NominalVoltage" Index="0x2030" SubIndex="15" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="FilteredVoltage" Index="0x2030" SubIndex="16" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" Factor="0.01" Unit="V" />
+      </Group>
+      <MissingGroup SymbolName="Bdi">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: Bdi
+
+-->
+      <MissingGroup SymbolName="DcBusXrCalibrate">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: DcBusXrCalibrate
+
+-->
+      <Group SymbolName="MotorTemperature">
+        <Parameter SymbolName="LastSubIndex" Index="0x2040" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Status" Index="0x2040" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Temperature" Index="0x2040" SubIndex="2" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="HeatsinkTemperature">
+        <Parameter SymbolName="LastSubIndex" Index="0x2041" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Status1" Index="0x2041" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Temperature1" Index="0x2041" SubIndex="2" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+        <MissingMember SymbolName="Status2" GroupName="HeatsinkTemperature">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: HeatsinkTemperature.Status2
+
+-->
+        <MissingMember SymbolName="Temperature2" GroupName="HeatsinkTemperature">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: HeatsinkTemperature.Temperature2
+
+-->
+      </Group>
+      <MissingGroup SymbolName="SensorBearingFeedback">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: SensorBearingFeedback
+
+-->
+      <Group SymbolName="PulseEncoder">
+        <Parameter SymbolName="LastSubIndex" Index="0x2050" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Status" Index="0x2050" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Type" Index="0x2050" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Internal" AccessType="rw" Remark="0 - Disabled, 1 - Linear, 2 - Angular" />
+        <Parameter SymbolName="Scale" Index="0x2050" SubIndex="3" ObjectType="VAR" DataType="UNSIGNED32" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="SyncEnable" Index="0x2050" SubIndex="4" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Internal" AccessType="rw" />
+        <Parameter SymbolName="Offset" Index="0x2050" SubIndex="5" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="SyncFilter" Index="0x2050" SubIndex="6" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Internal" AccessType="rw" />
+        <Parameter SymbolName="SyncEmergency" Index="0x2050" SubIndex="7" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Internal" AccessType="rw" />
+        <Parameter SymbolName="VoltageFeedback" Index="0x2050" SubIndex="8" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Internal" AccessType="rw" />
+        <Parameter SymbolName="Position" Index="0x2050" SubIndex="9" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="Speed" Index="0x2050" SubIndex="10" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="SyncGate" Index="0x2050" SubIndex="11" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Internal" AccessType="rw" />
+        <Parameter SymbolName="LastSyncDiff" Index="0x2050" SubIndex="12" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="MaxSyncDiff" Index="0x2050" SubIndex="13" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="MaxPulseChangeRaw" Index="0x2050" SubIndex="14" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="ScaleFactor" Index="0x2050" SubIndex="15" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ShiftValue" Index="0x2050" SubIndex="16" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="PosRaw" Index="0x2050" SubIndex="17" ObjectType="VAR" DataType="INTEGER32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Error" Index="0x2050" SubIndex="18" ObjectType="VAR" DataType="INTEGER32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="LastSyncPosRaw" Index="0x2050" SubIndex="19" ObjectType="VAR" DataType="INTEGER32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="SpeedFilter1" Index="0x2050" SubIndex="20" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Internal" AccessType="rw" />
+        <Parameter SymbolName="SpeedFilter2" Index="0x2050" SubIndex="21" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Internal" AccessType="rw" />
+        <Parameter SymbolName="ReverseDirection" Index="0x2050" SubIndex="22" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Internal" AccessType="rw" />
+        <Parameter SymbolName="SpuriousSyncCounter" Index="0x2050" SubIndex="23" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="MissingSyncCounter" Index="0x2050" SubIndex="24" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <MissingGroup SymbolName="HallSensorFeedback">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: HallSensorFeedback
+
+-->
+      <MissingGroup SymbolName="SixstepFeedback">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: SixstepFeedback
+
+-->
+      <MissingGroup SymbolName="HallSensorFeedbackCorrectionTable">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: HallSensorFeedbackCorrectionTable
+
+-->
+      <Group SymbolName="FeedbackSensor">
+        <Parameter SymbolName="LastSubIndex" Index="0x2052" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="RotorSpeedInRpm" Index="0x2052" SubIndex="1" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" Unit="RPM" />
+        <Parameter SymbolName="DeltaRotorLowResAngle" Index="0x2052" SubIndex="2" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" Unit="incs/timeunit" />
+        <Parameter SymbolName="RotorLowResAngle" Index="0x2052" SubIndex="3" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" Unit="incs" />
+        <Parameter SymbolName="DeltaRotorAngle" Index="0x2052" SubIndex="4" ObjectType="VAR" DataType="INTEGER32" Visibility="Operator" AccessType="ro" Unit="incs/timeunit" />
+      </Group>
+      <MissingGroup SymbolName="RealFeedbackSensor">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: RealFeedbackSensor
+
+-->
+      <MissingGroup SymbolName="InductionMotorSpeedEstimator">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: InductionMotorSpeedEstimator
+
+-->
+      <Group SymbolName="OpenDrainOutputGeneral">
+        <Parameter SymbolName="LastSubIndex" Index="0x2062" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Status" Index="0x2062" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Current" Index="0x2062" SubIndex="2" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Frequency" Index="0x2062" SubIndex="3" ObjectType="VAR" DataType="UNSIGNED16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="OpenDrainOutputControlWord" Index="0x2062" SubIndex="4" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="UseOpenDrainOutputControlWordFor1And2" Index="0x2062" SubIndex="5" ObjectType="VAR" DataType="UNSIGNED16" Visibility="OEM" AccessType="rw" />
+        <MissingMember SymbolName="PwmError" GroupName="OpenDrainOutputGeneral">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: OpenDrainOutputGeneral.PwmError
+
+-->
+        <MissingMember SymbolName="PwmMinCurr" GroupName="OpenDrainOutputGeneral">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: OpenDrainOutputGeneral.PwmMinCurr
+
+-->
+        <MissingMember SymbolName="CurrRegDiff" GroupName="OpenDrainOutputGeneral">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: OpenDrainOutputGeneral.CurrRegDiff
+
+-->
+        <MissingMember SymbolName="CurrentRegLimit" GroupName="OpenDrainOutputGeneral">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: OpenDrainOutputGeneral.CurrentRegLimit
+
+-->
+        <MissingMember SymbolName="CurrentRegCounter" GroupName="OpenDrainOutputGeneral">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: OpenDrainOutputGeneral.CurrentRegCounter
+
+-->
+      </Group>
+      <MissingGroup SymbolName="OpenDrainOutputPullTime">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: OpenDrainOutputPullTime
+
+-->
+      <MissingGroup SymbolName="OpenDrainOutputPullVoltage">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: OpenDrainOutputPullVoltage
+
+-->
+      <MissingGroup SymbolName="OpenDrainOutputHoldVoltage">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: OpenDrainOutputHoldVoltage
+
+-->
+      <MissingGroup SymbolName="OpenDrainOutputMode">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: OpenDrainOutputMode
+
+-->
+      <MissingGroup SymbolName="OpenDrainOutputCurrentControl">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: OpenDrainOutputCurrentControl
+
+-->
+      <MissingGroup SymbolName="OpenDrainOutputDitheringCurrentFrequency">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: OpenDrainOutputDitheringCurrentFrequency
+
+-->
+      <MissingGroup SymbolName="OpenDrainOutputDitheringCurrentAmplitude">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: OpenDrainOutputDitheringCurrentAmplitude
+
+-->
+      <Group SymbolName="MotorControlParametersAndVariables">
+        <Parameter SymbolName="LastSubIndex" Index="0x2070" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Iq" Index="0x2070" SubIndex="1" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="NominalMagnetisationCurrent" Index="0x2070" SubIndex="2" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Factor="0.1" Unit="Arms" />
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <Parameter SymbolName="Id" Index="0x2070" SubIndex="3" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" Factor="0.1" Unit="Arms" />
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <Parameter SymbolName="UqReference" Index="0x2070" SubIndex="5" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="UdReference" Index="0x2070" SubIndex="6" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <Parameter SymbolName="MotorPoles" Index="0x2070" SubIndex="8" ObjectType="VAR" DataType="INTEGER8" Visibility="OEM" AccessType="rw" />
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <Parameter SymbolName="MagnetisationCurrentReference" Index="0x2070" SubIndex="9" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="ro" Factor="0.1" Unit="Arms" />
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <Parameter SymbolName="Pgain_CurrentController" Index="0x2070" SubIndex="12" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="Igain_CurrentController" Index="0x2070" SubIndex="13" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="Lsigma" Index="0x2070" SubIndex="15" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="TorqueCurrentReference" Index="0x2070" SubIndex="16" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="SpwmDeadBandCompensationTime" Index="0x2070" SubIndex="18" ObjectType="VAR" DataType="INTEGER16" Visibility="Internal" AccessType="rw" />
+        <Parameter SymbolName="SpwmPwmFrequency" Index="0x2070" SubIndex="19" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <Parameter SymbolName="RmsMotorCurrent" Index="0x2070" SubIndex="22" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="CurrentAndPowerFilterGain" Index="0x2070" SubIndex="23" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="UxRefMax" Index="0x2070" SubIndex="25" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" />
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <Parameter SymbolName="SpeedFeedbackSensorEnabled" Index="0x2070" SubIndex="29" ObjectType="VAR" DataType="INTEGER16" Visibility="Service" AccessType="rw" />
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <Parameter SymbolName="FrequencyWhenNoSpeedFeedback" Index="0x2070" SubIndex="30" ObjectType="VAR" DataType="INTEGER16" Visibility="Service" AccessType="rw" />
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <Parameter SymbolName="DcBusCurrent" Index="0x2070" SubIndex="32" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" Factor="0.1" Unit="A" />
+        <MissingMember SymbolName="MagPulseDcBusCurrentReference" GroupName="MagPulse">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: MagPulse.MagPulseDcBusCurrentReference
+
+-->
+        <MissingMember SymbolName="MagPulsePgain" GroupName="MagPulse">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: MagPulse.MagPulsePgain
+
+-->
+        <MissingMember SymbolName="MagPulseIgain" GroupName="MagPulse">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: MagPulse.MagPulseIgain
+
+-->
+        <MissingMember SymbolName="MagPulseLimOutMax" GroupName="MagPulse">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: MagPulse.MagPulseLimOutMax
+
+-->
+        <MissingGroup SymbolName="IndMotor">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: IndMotor
+
+-->
+        <Parameter SymbolName="StatorAngle32" Index="0x2070" SubIndex="41" ObjectType="VAR" DataType="INTEGER32" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="StatorAngle16" Index="0x2070" SubIndex="42" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+        <MissingGroup SymbolName="HarmonicCurrentInjection">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: HarmonicCurrentInjection
+
+-->
+        <MissingGroup SymbolName="HarmonicCurrentInjection">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: HarmonicCurrentInjection
+
+-->
+        <MissingGroup SymbolName="HarmonicCurrentInjection">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: HarmonicCurrentInjection
+
+-->
+        <MissingGroup SymbolName="HarmonicCurrentInjection">
+        </MissingGroup>
+        <!--*** Transform error. Can't find definition for group: HarmonicCurrentInjection
+
+-->
+      </Group>
+      <MissingGroup SymbolName="PmFieldWeakening">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: PmFieldWeakening
+
+-->
+      <MissingGroup SymbolName="ReluctanceTorqueControl">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: ReluctanceTorqueControl
+
+-->
+      <Group SymbolName="SpeedRegulatorPgain">
+        <Parameter SymbolName="LastSubIndex" Index="0x2090" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="PgainSet0" Index="0x2090" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <MissingMember SymbolName="PgainSet1" GroupName="SpeedRegulatorPgain">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: SpeedRegulatorPgain.PgainSet1
+
+-->
+      </Group>
+      <Group SymbolName="SpeedRegulatorIgainSmall">
+        <Parameter SymbolName="LastSubIndex" Index="0x2091" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="IgainSmallSet0" Index="0x2091" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <MissingMember SymbolName="IgainSmallSet1" GroupName="SpeedRegulatorIgainSmall">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: SpeedRegulatorIgainSmall.IgainSmallSet1
+
+-->
+      </Group>
+      <Group SymbolName="SpeedRegulatorIgainMedium">
+        <Parameter SymbolName="LastSubIndex" Index="0x2092" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="IgainMediumSet0" Index="0x2092" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <MissingMember SymbolName="IgainMediumSet1" GroupName="SpeedRegulatorIgainMedium">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: SpeedRegulatorIgainMedium.IgainMediumSet1
+
+-->
+      </Group>
+      <Group SymbolName="SpeedRegulatorIgainLarge">
+        <Parameter SymbolName="LastSubIndex" Index="0x2093" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="IgainLargeSet0" Index="0x2093" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <MissingMember SymbolName="IgainLargeSet1" GroupName="SpeedRegulatorIgainLarge">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: SpeedRegulatorIgainLarge.IgainLargeSet1
+
+-->
+      </Group>
+      <Group SymbolName="SpeedControlParameters">
+        <Parameter SymbolName="LastSubIndex" Index="0x2095" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="MaxAccTorqueCurrent" Index="0x2095" SubIndex="1" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="wo" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="MaxBrakeTorqueCurrent" Index="0x2095" SubIndex="2" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="wo" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="MaxTorqueCurrentChange" Index="0x2095" SubIndex="3" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="ForwardMaxAccTorqueCurrent" Index="0x2095" SubIndex="5" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="ReverseMaxAccTorqueCurrent" Index="0x2095" SubIndex="6" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="ForwardMaxBrakeTorqueCurrent" Index="0x2095" SubIndex="7" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="ReverseMaxBrakeTorqueCurrent" Index="0x2095" SubIndex="8" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="SpeedChangeShiftFactor" Index="0x2095" SubIndex="9" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="AntiClonkNumberOfCounts" Index="0x2095" SubIndex="10" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="AntiClonkDeltaSpeedLimit" Index="0x2095" SubIndex="11" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Unit="Rpm" />
+        <Parameter SymbolName="AntiClonkCommandSpeedLimit" Index="0x2095" SubIndex="12" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Unit="Rpm" />
+      </Group>
+      <Group SymbolName="SpeedRegulatorInternalVariables">
+        <Parameter SymbolName="LastSubIndex" Index="0x2096" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="InternalSpeedReference" Index="0x2096" SubIndex="1" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="RampState" Index="0x2096" SubIndex="2" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="NotLimitedTorqueCurrentReference" Index="0x2096" SubIndex="3" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="UsedMaxForwardAcceleration" Index="0x2096" SubIndex="4" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="UsedMaxForwardDeceleration" Index="0x2096" SubIndex="5" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="UsedMaxReverseAcceleration" Index="0x2096" SubIndex="6" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="UsedMaxReverseDeceleration" Index="0x2096" SubIndex="7" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="UsedMaxAccelerationTorqueCurrent" Index="0x2096" SubIndex="8" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="TemperatureDependantCurrentReductionFactor" Index="0x2096" SubIndex="9" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="SpeedRegIPart" Index="0x2096" SubIndex="10" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Factor="0.1" Unit="Arms" />
+      </Group>
+      <MissingGroup SymbolName="TorqueCurrentBoost">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: TorqueCurrentBoost
+
+-->
+      <Group SymbolName="SpeedRegulatorForwardAcceleration">
+        <Parameter SymbolName="LastSubIndex" Index="0x2100" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="MaxForwardAccelerationSet0" Index="0x2100" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="SpeedRegulatorForwardDeceleration">
+        <Parameter SymbolName="LastSubIndex" Index="0x2101" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="MaxForwardDecelerationSet0" Index="0x2101" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="SpeedRegulatorReverseAcceleration">
+        <Parameter SymbolName="LastSubIndex" Index="0x2102" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="MaxReverseAccelerationSet0" Index="0x2102" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="SpeedRegulatorReverseDeceleration">
+        <Parameter SymbolName="LastSubIndex" Index="0x2103" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="MaxReverseDecelerationSet0" Index="0x2103" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="SpeedRegulatorSpecialDecelerationForward">
+        <Parameter SymbolName="LastSubIndex" Index="0x2104" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="MaxForwardDecelerationFootBrake" Index="0x2104" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="SpeedRegulatorSpecialDecelerationReverse">
+        <Parameter SymbolName="LastSubIndex" Index="0x2105" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="MaxReverseDecelerationFootBrake" Index="0x2105" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="SpeedRegulatorReverseBrakeMaxSpeedInRpm">
+        <Parameter SymbolName="LastSubIndex" Index="0x2120" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ReverseBrakeMaxSpeedInRpm" Index="0x2120" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <MissingGroup SymbolName="MemoryDebugAccess">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: MemoryDebugAccess
+
+-->
+      <MissingGroup SymbolName="BestPerformanceCurveSpeed">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: BestPerformanceCurveSpeed
+
+-->
+      <MissingGroup SymbolName="BestPerformanceCurveTorqueCurrent">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: BestPerformanceCurveTorqueCurrent
+
+-->
+      <MissingGroup SymbolName="BestPerformanceCurveRegulator">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: BestPerformanceCurveRegulator
+
+-->
+      <Group SymbolName="PositionRegulator">
+        <Parameter SymbolName="LastSubIndex" Index="0x2200" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="GearRatio" Index="0x2200" SubIndex="1" ObjectType="VAR" DataType="INTEGER32" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="Offset" Index="0x2200" SubIndex="2" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" Factor="0.01" Unit="Deg" />
+        <Parameter SymbolName="Pgain" Index="0x2200" SubIndex="3" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="Igain" Index="0x2200" SubIndex="4" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="LimOutMax" Index="0x2200" SubIndex="5" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="MaxWheelAngle" Index="0x2200" SubIndex="6" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" Factor="0.01" Unit="Deg" />
+        <MissingMember SymbolName="IsCalibrationActivated" GroupName="PositionRegulator">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: PositionRegulator.IsCalibrationActivated
+
+-->
+        <Parameter SymbolName="SlowDownZone" Index="0x2200" SubIndex="8" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" Factor="0.01" Unit="Deg" />
+        <Parameter SymbolName="LimOutMaxSlowDownZone" Index="0x2200" SubIndex="9" ObjectType="VAR" DataType="UNSIGNED16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="ErrorWindow" Index="0x2200" SubIndex="10" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" Factor="0.01" Unit="Deg" />
+        <Parameter SymbolName="Status" Index="0x2200" SubIndex="11" ObjectType="VAR" DataType="UNSIGNED16" Visibility="OEM" AccessType="ro" />
+        <Parameter SymbolName="IsCentreSwitchNegPolarity" Index="0x2200" SubIndex="12" ObjectType="VAR" DataType="UNSIGNED16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="IsEndLimitSwitchNegPolarity" Index="0x2200" SubIndex="13" ObjectType="VAR" DataType="UNSIGNED16" Visibility="OEM" AccessType="rw" />
+        <Parameter SymbolName="AssymetricOffset" Index="0x2200" SubIndex="14" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" Factor="0.01" Unit="Deg" />
+        <Parameter SymbolName="IsEndLimitSwitchConnect" Index="0x2200" SubIndex="15" ObjectType="VAR" DataType="UNSIGNED16" Visibility="OEM" AccessType="rw" />
+        <MissingMember SymbolName="AddCalibPassWhenSwitchLow" GroupName="PositionRegulator">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: PositionRegulator.AddCalibPassWhenSwitchLow
+
+-->
+        <Parameter SymbolName="IsCamCalibrationComplete" Index="0x2200" SubIndex="17" ObjectType="VAR" DataType="UNSIGNED8" Visibility="OEM" AccessType="ro" />
+      </Group>
+      <MissingGroup SymbolName="PulseReferenceGenerator">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: PulseReferenceGenerator
+
+-->
+      <Group SymbolName="ProductApplication">
+        <Parameter SymbolName="LastSubIndex" Index="0x2300" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="SetupRegulationMode" Index="0x2300" SubIndex="1" ObjectType="VAR" DataType="INTEGER8" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="CommandDynamic" Index="0x2300" SubIndex="2" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="PositionDynamic" Index="0x2300" SubIndex="3" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="SpeedRegOffset" Index="0x2300" SubIndex="4" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" Factor="0.1" Unit="Arms" />
+      </Group>
+      <Group SymbolName="RegSupervision">
+        <Parameter SymbolName="LastSubIndex" Index="0x2301" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="CheckOutHysteresis" Index="0x2301" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" Factor="0.1" Unit="Arms" />
+        <Parameter SymbolName="FailureDelay" Index="0x2301" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="Timer" Index="0x2301" SubIndex="3" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="TimerMax" Index="0x2301" SubIndex="4" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <MissingGroup SymbolName="SafetySupervision">
+      </MissingGroup>
+      <!--*** Transform error. Can't find definition for group: SafetySupervision
+
+-->
+      <Group SymbolName="SafetyErrorLogCopy">
+        <Parameter SymbolName="LogSize" Index="0x3002" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Service" AccessType="ro" />
+        <Parameter SymbolName="CanOpenErrorLog" Index="0x3002" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED32" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="SafetyErrorLogFirstTime">
+        <Parameter SymbolName="LogSize" Index="0x3003" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Service" AccessType="ro" />
+        <Parameter SymbolName="ErrorFirstTime" Index="0x3003" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="SafetyErrorLogLastTime">
+        <Parameter SymbolName="LogSize" Index="0x3004" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Service" AccessType="ro" />
+        <Parameter SymbolName="ErrorLastTime" Index="0x3004" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="SafetyErrorLogNumberOfErrors">
+        <Parameter SymbolName="LogSize" Index="0x3005" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Service" AccessType="ro" />
+        <Parameter SymbolName="ErrorNrOfErrors" Index="0x3005" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="SafetyErrorLogMiscellaneous">
+        <Parameter SymbolName="LastSubIndex" Index="0x3006" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="TotalNumberOfErrors" Index="0x3006" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ShortCircuitGlitchCounter" Index="0x3006" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Service" AccessType="rw" />
+      </Group>
+      <Group SymbolName="Safety">
+        <Parameter SymbolName="LastSubIndex" Index="0x3010" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ExtendedWarnings" Index="0x3010" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ExtendedErrors" Index="0x3010" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="SecretWarnings" Index="0x3010" SubIndex="3" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ApplicationInfo" Index="0x3010" SubIndex="4" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Service" AccessType="rw" />
+      </Group>
+      <Group SymbolName="CurrentSensorsCalibration">
+        <Parameter SymbolName="LastSubIndex" Index="0x4000" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Status" Index="0x4000" SubIndex="2" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Temperature" Index="0x4000" SubIndex="3" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Iu" Index="0x4000" SubIndex="4" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" Factor="0.1" Unit="Apk" />
+        <Parameter SymbolName="Iv" Index="0x4000" SubIndex="5" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" Factor="0.1" Unit="Apk" />
+        <Parameter SymbolName="Iw" Index="0x4000" SubIndex="6" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="ro" Factor="0.1" Unit="Apk" />
+        <Parameter SymbolName="SetDefaultValues" Index="0x4000" SubIndex="7" ObjectType="VAR" DataType="INTEGER16" Visibility="Service" AccessType="wo" />
+        <Parameter SymbolName="IvGain" Index="0x4000" SubIndex="8" ObjectType="VAR" DataType="INTEGER16" Visibility="Service" AccessType="rw" />
+        <Parameter SymbolName="IvPositiveTemperatureGain" Index="0x4000" SubIndex="9" ObjectType="VAR" DataType="INTEGER16" Visibility="Service" AccessType="rw" />
+        <Parameter SymbolName="IvNegativeTemperatureGain" Index="0x4000" SubIndex="10" ObjectType="VAR" DataType="INTEGER16" Visibility="Service" AccessType="ro" />
+        <Parameter SymbolName="IwGain" Index="0x4000" SubIndex="11" ObjectType="VAR" DataType="INTEGER16" Visibility="Service" AccessType="rw" />
+        <Parameter SymbolName="IwPositiveTemperatureGain" Index="0x4000" SubIndex="12" ObjectType="VAR" DataType="INTEGER16" Visibility="Service" AccessType="rw" />
+        <Parameter SymbolName="IwNegativeTemperatureGain" Index="0x4000" SubIndex="13" ObjectType="VAR" DataType="INTEGER16" Visibility="Service" AccessType="ro" />
+      </Group>
+      <Group SymbolName="RealTimeData">
+        <Parameter SymbolName="LastSubIndex" Index="0x4100" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Times" Index="0x4100" SubIndex="1" ObjectType="ARRAY" DataType="INTEGER16" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="RealTimeMaxExecutionTimes">
+        <Parameter SymbolName="LastSubIndex" Index="0x4101" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="MaxTimes" Index="0x4101" SubIndex="1" ObjectType="ARRAY" DataType="INTEGER16" Visibility="Internal" AccessType="rw" />
+      </Group>
+      <Group SymbolName="RealTimeMaxExecutionTimes">
+        <Parameter SymbolName="LastSubIndex" Index="0x4102" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="LongestExecTimeState" Index="0x4102" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="Password">
+        <Parameter SymbolName="LastSubIndex" Index="0x4200" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Password" Index="0x4200" SubIndex="1" ObjectType="ARRAY" DataType="UNSIGNED32" Visibility="Operator" AccessType="rw" />
+      </Group>
+      <Group SymbolName="EvsCANopenObjectDictionaryInfo">
+        <Parameter SymbolName="LastSubIndex" Index="0x5F00" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="RevisionNumber" Index="0x5F00" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="SwDeviceInformation">
+        <Parameter SymbolName="LastSubIndex" Index="0x5F01" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="BootSwNameAndArticleNumber" Index="0x5F01" SubIndex="1" ObjectType="VAR" DataType="VISIBLE_STRING" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="BootSwBuildTime" Index="0x5F01" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="BootSwCheckSum" Index="0x5F01" SubIndex="3" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ApplicationSwArticleNumber" Index="0x5F01" SubIndex="4" ObjectType="VAR" DataType="VISIBLE_STRING" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ApplicationSwBuildTime" Index="0x5F01" SubIndex="5" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="ApplicationSwCheckSum" Index="0x5F01" SubIndex="6" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+      </Group>
+      <Group SymbolName="HwDeviceInformation">
+        <Parameter SymbolName="LastSubIndex" Index="0x5F02" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="SwToHwCompatibilityNumber" Index="0x5F02" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="HwArticleNumberString" Index="0x5F02" SubIndex="2" ObjectType="VAR" DataType="VISIBLE_STRING" Visibility="Operator" AccessType="ro" />
+        <MissingMember SymbolName="HwFileUsed" GroupName="Hardware">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: Hardware.HwFileUsed
+
+-->
+        <MissingMember SymbolName="Variant" GroupName="Hardware">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: Hardware.Variant
+
+-->
+        <MissingMember SymbolName="PcbRevision" GroupName="Hardware">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: Hardware.PcbRevision
+
+-->
+        <MissingMember SymbolName="ComponentRevision" GroupName="Hardware">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: Hardware.ComponentRevision
+
+-->
+      </Group>
+      <Group SymbolName="WorkingHours">
+        <Parameter SymbolName="LastSubIndex" Index="0x5F03" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="TotalTimeHours" Index="0x5F03" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Internal" AccessType="rw" />
+      </Group>
+      <Group SymbolName="CANParameters">
+        <Parameter SymbolName="LastSubIndex" Index="0x5F04" SubIndex="0" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="ro" />
+        <Parameter SymbolName="Bitrate" Index="0x5F04" SubIndex="1" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="SyncTimeout" Index="0x5F04" SubIndex="2" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <Parameter SymbolName="Pdo1Timeout" Index="0x5F04" SubIndex="3" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="rw" />
+        <MissingMember SymbolName="Pdo2Timeout" GroupName="CANParameters">
+        </MissingMember>
+        <!--*** Transform error. Can't find definition for member: CANParameters.Pdo2Timeout
+
+-->
+        <Parameter SymbolName="NodeId" Index="0x5F04" SubIndex="5" ObjectType="VAR" DataType="UNSIGNED8" Visibility="Operator" AccessType="rw" />
+      </Group>
+    </Parameters>
+  </Dictionary>
+</Product>

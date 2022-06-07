@@ -1,0 +1,157 @@
+<File xmlns="urn:NDC8DeviceConfigurationFile">
+  <FileInfo FileType="dc" FileRevision="1" FileFormat="40" Description="NDC8 Device Configuration File" CreationDate="2011-11-21" CreationTime="12:00:00" CreatedBy="MBJ" ModificationDate="2017-11-28" ModificationTime="16:49:55" ModifiedBy="MBJ" ModifiedWith="" ModifiedWithSerial="" />
+  <Configuration Protocol="CANopen" BusId="1" NodeId="8" Optional="false" GenericBoolCondition="DCD_8.ReadyToSwitchOn=1" Remark="DCD 50">
+    <Guarding Type="PdoGuarding" Timeout="500" />
+    <Identification ArticleNumber="69A21050C03" ArticleNumberMatch="69A21050C0????" DeviceType="0x01000000" />
+    <ReadParameters>
+      <ReadParameter Property="DeviceType" Index="0x1000" SubIndex="0" DataType="UNSIGNED32" />
+      <ReadParameter Property="ManufacturerDeviceName" Index="0x1008" SubIndex="0" DataType="VISIBLE_STRING" />
+      <ReadParameter Property="ManufacturerHardwareVersion" Index="0x5F02" SubIndex="2" DataType="VISIBLE_STRING" />
+      <ReadParameter Property="ManufacturerSoftwareVersion" Index="0x5F01" SubIndex="4" DataType="VISIBLE_STRING" />
+      <ReadParameter Property="VendorID" Index="0x1018" SubIndex="1" DataType="UNSIGNED32" ValueRepresentation="Hex" />
+    </ReadParameters>
+    <SetupValues>
+      <SetupValue SymbolAddress="ProductApplication.SetupRegulationMode" Value="4" />
+      <SetupValue SymbolAddress="ApplicationSetupParameters.SpeedRampMode" Value="1" />
+      <SetupValue SymbolAddress="TransmitPDO1ComParameters.TransmissionTypePDO1Tx" Value="1" />
+      <SetupValue SymbolAddress="TransmitPDO2ComParameters.TransmissionTypePDO2Tx" Value="1" />
+      <SetupValue SymbolAddress="PulseEncoder.Type" Value="2" />
+      <SetupValue SymbolAddress="PulseEncoder.SyncEnable" Value="1" />
+    </SetupValues>
+    <ConfigParameters>
+      <ConfigParameter Property="MotorCurrentRegP" SymbolAddress="MotorControlParametersAndVariables.Pgain_CurrentController" />
+      <ConfigParameter Property="MotorCurrentRegI" SymbolAddress="MotorControlParametersAndVariables.Igain_CurrentController" />
+      <ConfigParameter Property="ForwardMaxAccTorqueCurrent" SymbolAddress="SpeedControlParameters.ForwardMaxAccTorqueCurrent" />
+      <ConfigParameter Property="ReverseMaxAccTorqueCurrent" SymbolAddress="SpeedControlParameters.ReverseMaxAccTorqueCurrent" />
+      <ConfigParameter Property="MaxTorqueCurrentChange" SymbolAddress="SpeedControlParameters.MaxTorqueCurrentChange" />
+      <ConfigParameter Property="ForwardMaxBrakeTorqueCurrent" SymbolAddress="SpeedControlParameters.ForwardMaxBrakeTorqueCurrent" />
+      <ConfigParameter Property="ReverseMaxBrakeTorqueCurrent" SymbolAddress="SpeedControlParameters.ReverseMaxBrakeTorqueCurrent" />
+      <ConfigParameter Property="SpeedRegP" SymbolAddress="SpeedRegulatorPgain.PgainSet0" />
+      <ConfigParameter Property="SpeedRegI" SymbolAddress="SpeedRegulatorIgainSmall.IgainSmallSet0" />
+      <ConfigParameter Property="RegSupervisionCheckOutHysteresis" SymbolAddress="RegSupervision.CheckOutHysteresis" />
+      <ConfigParameter Property="RegSupervisionFailureDelay" SymbolAddress="RegSupervision.FailureDelay" />
+      <ConfigParameter Property="ReverseEncoderDirection" SymbolAddress="PulseEncoder.ReverseDirection" />
+      <ConfigParameter Property="VoltageFeedback" SymbolAddress="PulseEncoder.VoltageFeedback" />
+      <ConfigParameter Property="SteerEncScale" SymbolAddress="PulseEncoder.Scale" />
+      <ConfigParameter Property="SteerEncOffset" SymbolAddress="PulseEncoder.Offset" />
+      <ConfigParameter Property="PosRegP" SymbolAddress="PositionRegulator.Pgain" />
+      <ConfigParameter Property="PosRegI" SymbolAddress="PositionRegulator.Igain" />
+      <ConfigParameter Property="LimOutMax" SymbolAddress="PositionRegulator.LimOutMax" />
+      <ConfigParameter Property="MaxWheelAngle" SymbolAddress="PositionRegulator.MaxWheelAngle" />
+      <ConfigParameter Property="SlowDownZone" SymbolAddress="PositionRegulator.SlowDownZone" />
+      <ConfigParameter Property="LimOutMaxSlowDownZone" SymbolAddress="PositionRegulator.LimOutMaxSlowDownZone" />
+      <ConfigParameter Property="EndLimitSwitchPolarity" SymbolAddress="PositionRegulator.IsEndLimitSwitchNegPolarity" />
+      <ConfigParameter Property="SyncGate" SymbolAddress="PulseEncoder.SyncGate" />
+      <ConfigParameter Property="SyncFilter" SymbolAddress="PulseEncoder.SyncFilter" />
+      <ConfigParameter Property="SyncEmergency" SymbolAddress="PulseEncoder.SyncEmergency" />
+      <ConfigParameter Property="SpeedRegOffset" SymbolAddress="ProductApplication.SpeedRegOffset" />
+    </ConfigParameters>
+    <TxPdos>
+      <TxPdo CobId="392" ReceiveTimeout="200" TransmissionType="1" PdoType="Background">
+        <PdoMap>
+          <PdoMapParameter Property="ReadyToSwitchOn" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="SwitchedOn" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="PowerStageEnabled" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="Error" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="2" />
+          <PdoMapParameter Property="SwitchOnDisabled" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="Warning" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="8" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="16" />
+          <PdoMapParameter Property="WheelAngle" SymbolAddress="ApplicationStatus.WheelAngle" Length="16" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="Reserved_DigitalInput2" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="Reserved_DigitalInput3" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="13" />
+        </PdoMap>
+      </TxPdo>
+      <TxPdo CobId="648" ReceiveTimeout="0" TransmissionType="1" PdoType="Background">
+        <PdoMap>
+          <PdoMapParameter Property="DcBusVoltage" SymbolAddress="DcBus.Voltage" Length="16" />
+          <PdoMapParameter Property="TorqueCurrentReference" SymbolAddress="MotorControlParametersAndVariables.TorqueCurrentReference" Length="16" />
+          <PdoMapParameter Property="TorqueCurrent" SymbolAddress="MotorControlParametersAndVariables.Iq" Length="16" />
+        </PdoMap>
+      </TxPdo>
+    </TxPdos>
+    <RxPdos>
+      <RxPdo CobId="520" TransmissionType="1" PdoType="Background">
+        <PdoMap>
+          <PdoMapParameter Property="SwitchOn" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="2" />
+          <PdoMapParameter Property="EnablePowerStage" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="12" />
+          <PdoMapParameter Property="SetAngle" SymbolAddress="ApplicationCommands.CommandPosition" Length="16" />
+          <PdoMapParameter Property="DigitalOutput1" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="DigitalOutput2" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="DigitalOutput3" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="DigitalOutput4" SymbolAddress="" Length="1" />
+          <PdoMapParameter Property="" SymbolAddress="" Length="12" />
+        </PdoMap>
+      </RxPdo>
+    </RxPdos>
+    <ComponentSubType Name="DCD_8" BaseType="GenericCanDevice">
+      <Interfaces>
+        <Interface Name="DCD" />
+      </Interfaces>
+      <Properties>
+        <Property SymbolName="MotorCurrentRegP" PublicName="Motor Current Regulator Pgain" DataType="INTEGER16" AccessType="rw" Visibility="OEM" Default="160" ParameterClass="Config" Remark="Motor Parameter: Proportional gain in the PI-parts of the current controller." />
+        <Property SymbolName="MotorCurrentRegI" PublicName="Motor Current Regulator Igain" DataType="INTEGER16" AccessType="rw" Visibility="OEM" Default="60" ParameterClass="Config" Remark="Motor Parameter: Integral gain in the PI-parts of the current controller." />
+        <Property SymbolName="ForwardMaxAccTorqueCurrent" PublicName="Forward Max Acc Torque Current" DataType="INTEGER16" AccessType="rw" Max="500" Visibility="OEM" Default="500" Unit="deciAmpere" ParameterClass="Config" Remark="Maximum allowed torque current during forward acceleration." />
+        <Property SymbolName="ReverseMaxAccTorqueCurrent" PublicName="Reverse Max Acceleration Torque Current" DataType="INTEGER16" AccessType="rw" Max="500" Visibility="OEM" Default="500" Unit="deciAmpere" ParameterClass="Config" Remark="Maximum allowed torque current during reverse acceleration." />
+        <Property SymbolName="MaxTorqueCurrentChange" PublicName="Max Torque Current Change" DataType="INTEGER16" AccessType="rw" Visibility="OEM" Default="1000" Unit="deciAmpere/ms" ParameterClass="Config" Remark="The maximum allowed change during 1 ms (i.e. derivate) of the Torque Current that is allowed. A too high derivate may for example introduce noise in the gear." />
+        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" PublicName="Forward Max Brake Torque Current" DataType="INTEGER16" AccessType="rw" Max="500" Visibility="OEM" Default="500" Unit="deciAmpere" ParameterClass="Config" Remark="Maximum allowed torque current during forward braking/deceleration." />
+        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" PublicName="Reverse Max Brake Torque Current" DataType="INTEGER16" AccessType="rw" Max="500" Visibility="OEM" Default="500" Unit="deciAmpere" ParameterClass="Config" Remark="Maximum allowed torque current during reverse braking/deceleration." />
+        <Property SymbolName="SpeedRegP" PublicName="Speed Regulator Pgain" DataType="UNSIGNED16" AccessType="rw" Visibility="OEM" Default="1600" ParameterClass="Config" Remark="Proportional gain in the PI-parts of the speed controller." />
+        <Property SymbolName="SpeedRegI" PublicName="Speed Regulator Igain" DataType="UNSIGNED16" AccessType="rw" Visibility="OEM" Default="0" ParameterClass="Config" Remark="Integral gain in the PI-parts of the speed controller." />
+        <Property SymbolName="RegSupervisionCheckOutHysteresis" PublicName="Reg Supervision Check Out Hysteresis" DataType="UNSIGNED16" AccessType="rw" Visibility="OEM" Default="250" Unit="deciAmpere" ParameterClass="Config" Remark="Current limit for supervision. Supervision is enabled when the requested torque current goes above this limit. (Regulator supervision 0x6210)" />
+        <Property SymbolName="RegSupervisionFailureDelay" PublicName="Reg Supervision Failure Delay" DataType="UNSIGNED16" AccessType="rw" Visibility="OEM" Default="1000" Unit="ms" ParameterClass="Config" Remark="Delay before safe state in absence of movement in correct direction. 0 = Disable. (Regulator supervision 0x6210)" />
+        <Property SymbolName="SteerEncScale" PublicName="Steering Encoder Scale" DataType="UNSIGNED32" AccessType="rw" Unit="Pulses/360 deg" Min="32" Max="100000" Visibility="Service" ParameterClass="Config" Remark="Steering Encoder Scale" />
+        <Property SymbolName="SteerEncOffset" PublicName="Steering Encoder Offset" DataType="INTEGER16" AccessType="rw" Visibility="Service" Unit="1/100 deg" Min="-3000" Max="3000" Default="0" ParameterClass="Config" Remark="Steering Encoder Offset (Position of Sync pulse)" />
+        <Property SymbolName="PosRegP" PublicName="Position Regulator Pgain" DataType="INTEGER16" AccessType="rw" Visibility="OEM" Default="300" ParameterClass="Config" Remark="Proportional gain in the PI-parts of the position controller." />
+        <Property SymbolName="PosRegI" PublicName="Position Regulator Igain" DataType="INTEGER16" AccessType="rw" Visibility="OEM" Default="0" ParameterClass="Config" Remark="Integral gain in the PI-parts of the position controller." />
+        <Property SymbolName="LimOutMax" PublicName="Lim Out Max" DataType="INTEGER16" AccessType="rw" Visibility="OEM" Default="16384" ParameterClass="Config" Remark="Max motor speed as output from position controller and input to speed controller.&#xD;&#xA;VoltageFeedback: 1024 = 48V, Otherwise: 16384 = 90 deg/s" />
+        <Property SymbolName="MaxWheelAngle" PublicName="Max Wheel Angle" DataType="INTEGER16" AccessType="rw" Visibility="OEM" Default="0" Unit="1/100 deg" ParameterClass="Config" Remark="Wheel Angle Limit. 0 = No Limit" />
+        <Property SymbolName="SlowDownZone" PublicName="Slow Down Zone" DataType="INTEGER16" AccessType="rw" Visibility="OEM" Default="0" Unit="1/100 deg" ParameterClass="Config" Remark="Speed limited zone approaching MaxWheelAngle." />
+        <Property SymbolName="LimOutMaxSlowDownZone" PublicName="Lim Out Max Slow Down Zone" DataType="UNSIGNED16" AccessType="rw" Visibility="OEM" Default="0" Unit="1/100 deg/s" ParameterClass="Config" Remark="Speed limit for the slow down zone." />
+        <Property SymbolName="EndLimitSwitchPolarity" PublicName="End Limit Switch Polarity" DataType="UNSIGNED16" AccessType="rw" Visibility="OEM" Default="0" Unit="" ParameterClass="Config" Remark="Polarity of end limit switch. Default is active high.">
+          <ValueTranslation Value="0" String="Active High" />
+          <ValueTranslation Value="1" String="Active Low" />
+        </Property>
+        <Property SymbolName="SyncGate" PublicName="Sync Gate" DataType="BOOLEAN" AccessType="rw" Visibility="OEM" Default="1" ParameterClass="Config" Remark="Set true to allow sync. Set to false to reject unwanted sync pulse in multi turn application." />
+        <Property SymbolName="SyncFilter" PublicName="Sync filter" DataType="UNSIGNED16" AccessType="rw" Visibility="OEM" Default="5" Unit="Pulses" ParameterClass="Config" Remark="Window where we expect sync pulse to appear" />
+        <Property SymbolName="SyncEmergency" PublicName="Sync Emergency" DataType="BOOLEAN" AccessType="rw" Visibility="Internal" Default="1" ParameterClass="Config" Remark="Encoder Sync Emergency. 0 = Sync Emergency disabled. OBS! Disabling the sync emergency can be a serious safety issue!" />
+        <Property SymbolName="ReverseEncoderDirection" PublicName="Reverse Encoder Direction" DataType="BOOLEAN" AccessType="rw" Visibility="OEM" Default="0" ParameterClass="Config" Remark="Set true to reverse encoder direction. Same effect as swapping A and B signals." />
+        <Property SymbolName="VoltageFeedback" PublicName="" DataType="BOOLEAN" AccessType="rw" Visibility="OEM" Default="0" ParameterClass="Config" Remark="Set true to use motor voltage as speed feedback instead of encoder. (Speed scale: 1024 = 48 V)" />
+        <Property SymbolName="SpeedRegOffset" PublicName="Speed Regulator Torque Offset" DataType="INTEGER16" AccessType="rw" Visibility="OEM" Default="0" Unit="deciAmpere" ParameterClass="Config" Remark="Current to compensate for friction. Added to speed regulator output with sign depending on the command speed." />
+        <Property SymbolName="ReadyToSwitchOn" PublicName="Ready To Switch On" DataType="BOOLEAN" AccessType="ro" Visibility="OEM" ParameterClass="Runtime" Remark="Ready To Switch On (Dc bus is charged)" />
+        <Property SymbolName="SwitchedOn" PublicName="Switched On" DataType="BOOLEAN" AccessType="ro" Visibility="OEM" ParameterClass="Runtime" Remark="Switched On" />
+        <Property SymbolName="PowerStageEnabled" PublicName="Power Stage Enabled" DataType="BOOLEAN" AccessType="ro" Visibility="OEM" ParameterClass="Runtime" Remark="Power Stage Enabled" />
+        <Property SymbolName="Error" PublicName="Error" DataType="BOOLEAN" AccessType="ro" Visibility="OEM" ParameterClass="Runtime" Remark="Error" />
+        <Property SymbolName="SwitchOnDisabled" PublicName="Switch On Disabled" DataType="BOOLEAN" AccessType="ro" Visibility="OEM" ParameterClass="Runtime" Remark="Switch On Disabled	(Dc bus voltage to low, charging timeout)" />
+        <Property SymbolName="Warning" PublicName="Warning" DataType="BOOLEAN" AccessType="ro" Visibility="OEM" ParameterClass="Runtime" Remark="Warning" />
+        <MasterProperty SymbolName="EncoderStatus" PublicName="Encoder Status" DataType="UNSIGNED16" AccessType="ro" Visibility="OEM" ParameterClass="Runtime" Remark="Bit0 - Sync Valid. Set when first sync pulse inside the sync window has been detected" ReadPeriod="Periodic,2000,0x2050,1,0" />
+        <MasterProperty SymbolName="EncoderCounterValue" PublicName="Encoder Counter Value" DataType="UNSIGNED16" AccessType="ro" Unit="pulse edges" Visibility="Internal" ParameterClass="Runtime" Remark="Number of pulse edges captured." ReadPeriod="Periodic,2000,0x2050,11,0" />
+        <MasterProperty SymbolName="SpuriousSyncCounter" PublicName="Spurious sync pulse counter" DataType="UNSIGNED16" AccessType="ro" Unit="" Visibility="OEM" ParameterClass="Runtime" Remark="Counter for sync pulses detected outside sync window. Valid after first sync pulse inside the sync window has been detected" ReadPeriod="Periodic,2000,0x2050,23,0" />
+        <MasterProperty SymbolName="MissingSyncCounter" PublicName="Missing sync pulse counter" DataType="UNSIGNED16" AccessType="ro" Unit="" Visibility="OEM" ParameterClass="Runtime" Remark="Counter for expected but not present sync pulses inside sync window. Valid after first sync pulse inside the sync window has been detected" ReadPeriod="Periodic,2000,0x2050,24,0" />
+        <Property SymbolName="WheelAngle" PublicName="Wheel Angle" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg" Visibility="OEM" ParameterClass="Runtime" Retentive="1" Remark="Wheel Angle" />
+        <Property SymbolName="Reserved_DigitalInput2" PublicName="Digital Input 2 value" DataType="BOOLEAN" AccessType="ro" Renameable="false" Visibility="Internal" ParameterClass="Runtime" Remark="Digital Input 2 value, encoder sync, pin 14" />
+        <Property SymbolName="Reserved_DigitalInput3" PublicName="Digital Input 3 value" DataType="BOOLEAN" AccessType="ro" Renameable="false" Visibility="Internal" ParameterClass="Runtime" Remark="Digital Input 3 value, end limit switch, pin 13" />
+        <Property SymbolName="SwitchOn" PublicName="Switch On" DataType="BOOLEAN" AccessType="rw" Visibility="OEM" ParameterClass="Runtime" Remark="Switch On" />
+        <Property SymbolName="EnablePowerStage" PublicName="Enable Power Stage" DataType="BOOLEAN" AccessType="rw" Visibility="OEM" ParameterClass="Runtime" Remark="Enable Power Stage" />
+        <Property SymbolName="SetAngle" PublicName="Set Angle" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg" Visibility="OEM" ParameterClass="Runtime" Remark="Set Angle" />
+        <Property SymbolName="DigitalOutput1" PublicName="Digital Output 1 value" DataType="BOOLEAN" AccessType="rw" Renameable="true" Visibility="Operator" ParameterClass="Runtime" Remark="Digital Output 1 value, pin 2" />
+        <Property SymbolName="DigitalOutput2" PublicName="Digital Output 2 value" DataType="BOOLEAN" AccessType="rw" Renameable="true" Visibility="Operator" ParameterClass="Runtime" Remark="Digital Output 2 value, pin 18" />
+        <Property SymbolName="DigitalOutput3" PublicName="Digital Output 3 value" DataType="BOOLEAN" AccessType="rw" Renameable="true" Visibility="Operator" ParameterClass="Runtime" Remark="Digital Output 3 value, pin 21" />
+        <Property SymbolName="DigitalOutput4" PublicName="Digital Output 4 value" DataType="BOOLEAN" AccessType="rw" Renameable="true" Visibility="Operator" ParameterClass="Runtime" Remark="Digital Output 4 value, pin 22" />
+        <Property SymbolName="DcBusVoltage" PublicName="Dc Bus Voltage" DataType="UNSIGNED16" AccessType="ro" Unit="1/100 V" Visibility="OEM" ParameterClass="Runtime" Remark="Runtime voltage measurement on the B+ input" />
+        <Property SymbolName="TorqueCurrentReference" PublicName="Torque Current Reference" DataType="INTEGER16" AccessType="ro" Unit="deciAmpere" Visibility="OEM" ParameterClass="Runtime" Remark="Output from speed controller, input to current controller." />
+        <Property SymbolName="TorqueCurrent" PublicName="Torque Current" DataType="INTEGER16" AccessType="ro" Unit="deciAmpere" Visibility="OEM" ParameterClass="Runtime" Remark="Actual torque current in current controller." />
+        <MasterProperty SymbolName="HeatsinkTemperature" PublicName="Heatsink Temperature" DataType="INTEGER16" AccessType="ro" Unit="celsius" Visibility="OEM" ParameterClass="Runtime" Remark="Temperature of the heatsink" ReadPeriod="Periodic,2000,0x2041,2,0" />
+        <MasterProperty SymbolName="ExtendedWarnings" PublicName="Extended Warnings" DataType="UNSIGNED32" AccessType="ro" Visibility="OEM" ParameterClass="Runtime" Remark="Extended Warnings set by the drive, valid when Warning bit is set" ReadPeriod="Periodic,2000,0x3010,1,0" />
+        <MasterProperty SymbolName="ExtendedErrors" PublicName="Extended Errors" DataType="UNSIGNED32" AccessType="ro" Visibility="OEM" ParameterClass="Runtime" Remark="Extended Errors set by the drive, valid when Error bit is set" ReadPeriod="Periodic,2000,0x3010,2,0" />
+        <MasterProperty SymbolName="RegSupervisionTimer" PublicName="Reg Supervision Timer" DataType="UNSIGNED16" AccessType="ro" Unit="ms" Visibility="OEM" ParameterClass="Runtime" Remark="Timer counting absence of movement in correct direction. See: Reg Supervision Failure Delay" ReadPeriod="Periodic,2000,0x2301,3,0" />
+        <MasterProperty SymbolName="RegSupervisionTimerMax" PublicName="Reg Supervision Timer Max" DataType="UNSIGNED16" AccessType="ro" Unit="ms" Visibility="OEM" ParameterClass="Runtime" Remark="Max value of Reg Supervision Timer since power on." ReadPeriod="Periodic,2000,0x2301,4,0" />
+      </Properties>
+    </ComponentSubType>
+  </Configuration>
+</File>
