@@ -923,11 +923,10 @@ if ComStart = true then
 		10000:
 	
 					(*Send Data *)					
-					serial_write.length := 12;
-					serial_write();
+
 					serial_write.length := 0;
 					serial_write();
-					serial_write.sent := 0;
+					serial_write();
 					IF serial_write.sent<>0 or serial_write.error<>0 Then
 						ComStep:=0;
 						DebugCounter := DebugCounter + 1;
