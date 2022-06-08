@@ -739,7 +739,6 @@ if ComStart = true then
 			Else 
 				ComStep:=0;
 			END_IF;
-			ComStep:=2;
 
 		(****************************************************************************)			
 		2:
@@ -866,7 +865,7 @@ if ComStart = true then
 						   num_words:=25;
 						END_IF;    
 						Y:=17;
-						X:=14;  (*13 = 後面要寫入的資料位元組數，0x08=十進位制8，寫8個位元組 , 忽略*)
+						X:=14;  (*13 = ????????????,0x08=????8,?8???? , ??*)
 						End:= Byte_TO_Int(PLC_message[12]); 
 			
 						For Index:=1 to num_words BY 1 DO
@@ -988,6 +987,7 @@ if ComStart = true then
 
 	
 end_if;
+
 
 
 
