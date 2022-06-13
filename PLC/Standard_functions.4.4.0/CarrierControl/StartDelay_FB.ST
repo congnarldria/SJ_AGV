@@ -1,4 +1,4 @@
-FUNCTION_BLOCK StartDelay_FB
+FUNCTION_BLOCK STARTDELAY_FB
 VAR_EXTERNAL
 	NDC8 : NDC8_T;
 END_VAR
@@ -33,7 +33,7 @@ StartDelayInactivity	:= 	NDC8.VehicleControl.OperationMode = 0		(* If standing s
 StartDelayShortTOF(IN:=StartDelayInactivity, PT:=t#2s);							
 StartDelayInactivityTON(IN:=StartDelayInactivity, PT:=t#15s);		
 	
-if NDC8.VehicleControl.OperationMode > 0 then							(* If not ín automatic mode, then start over. *)
+if NDC8.VehicleControl.OperationMode > 0 then							(* If not in automatic mode, then start over. *)
 	StartDelayState := 0;
 end_if;
 
@@ -42,7 +42,7 @@ case StartDelayState of
 	StopStartDelay 	:= false;
 	if StartDelayInactivityTON.q then 
 		StartDelayState := 10;
-		StopStartDelay 	:= true;
+		(*StopStartDelay 	:= true;*)
 	end_if;
 	
 10: if not StartDelayInactivity then		(* Wait for a new order. *)
@@ -61,4 +61,5 @@ end_case;
 		
 (* Indicate start delay is active when a drive command is recieved. *)
 DisplayStopString(INStatus:=StartWarning, StopString:=93, StopValue:=0);
+
 END_FUNCTION_BLOCK

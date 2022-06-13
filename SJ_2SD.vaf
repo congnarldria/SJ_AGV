@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="71" xmlns="urn:NDC8VehicleApplicationFile">
-  <FileInfo FileType="vaf" FileRevision="479" FileFormat="71" Description="NDC8 Vehicle Application File" CreationDate="2019-09-24" CreationTime="23:15:58.2383554+08:00" CreatedBy="haoin" ModificationDate="2020-06-06" ModificationTime="11:11:01.6787000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vaf" FileRevision="486" FileFormat="71" Description="NDC8 Vehicle Application File" CreationDate="2019-09-24" CreationTime="23:15:58.2383554+08:00" CreatedBy="haoin" ModificationDate="2020-06-13" ModificationTime="13:26:02.8116500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <VehicleApplication Type="AGV" Password="" />
   <Links>
     <Link Type="vpf" FileName="SJ_2SD" FilePath="" />
@@ -20,6 +20,7 @@
     <Link Type="dpf" FileName="Vehicle" FilePath="Diagnostic" />
     <Link Type="dpf" FileName="Auto" FilePath="Diagnostic" />
     <Link Type="dpf" FileName="Tuning" FilePath="Diagnostic" />
+    <Link Type="dpf" FileName="Layout" FilePath="Diagnostic" />
     <Link Type="ipt" FileName="SJ_2SD" FilePath="IndividualParameters" />
     <Link Type="ip" FileName="4" FilePath="IndividualParameters" />
     <Link Type="ip" FileName="105" FilePath="IndividualParameters" />
@@ -126,20 +127,20 @@
         <Connection Name="CVC700.CANBus1" />
         <Parameters>
           <Parameter Name="RegulatorOutputPDOBehaviour" Value="0" />
-          <Parameter Name="UseAuxPWMOutput" Value="true" />
-          <Parameter Name="TransmissionType" Value="1" />
           <Parameter Name="AuxEncoder2" Value="0" />
           <Parameter Name="SD_Choice" Value="1" />
+          <Parameter Name="NodeId" Value="2" />
           <Parameter Name="SD_Controller" Value="false" />
           <Parameter Name="UseSpotAntennas" Value="false" />
           <Parameter Name="PdoInhibitTime" Value="20" />
           <Parameter Name="BusID" Value="1" />
-          <Parameter Name="NodeId" Value="2" />
+          <Parameter Name="UseAuxPWMOutput" Value="true" />
           <Parameter Name="AuxRegulator2" Value="0" />
           <Parameter Name="AuxEncoder1" Value="0" />
           <Parameter Name="AuxRegulator1" Value="0" />
           <Parameter Name="CanEncoder1" Value="5" />
           <Parameter Name="NumberOfEdgeDetectDigInp" Value="0" />
+          <Parameter Name="TransmissionType" Value="1" />
         </Parameters>
       </Device>
       <Device Type="CAN_IO_3" DeviceName="CAN_IO_3" DeviceConfigurationTemplate="P41747V1.5.2" ProductFile="P41748V111" Mandatory="false">
@@ -147,36 +148,36 @@
         <Connection Name="CVC700.CANBus1" />
         <Parameters>
           <Parameter Name="Port1_SendXonXoff" Value="0" />
+          <Parameter Name="Port2_RecXonXoff" Value="0" />
           <Parameter Name="Port4_Speed" Value="6" />
           <Parameter Name="Port3_TerminalNo" Value="3" />
           <Parameter Name="Port2_TerminalNo" Value="2" />
-          <Parameter Name="Port1_DataPar" Value="3" />
-          <Parameter Name="Port3_Type" Value="0" />
           <Parameter Name="Port1_Speed" Value="6" />
+          <Parameter Name="Port3_Type" Value="0" />
           <Parameter Name="Port3_StopBits" Value="0" />
+          <Parameter Name="NumberOfDigitalOutputs" Value="16" />
           <Parameter Name="Port2_Speed" Value="6" />
           <Parameter Name="Port4_Type" Value="0" />
           <Parameter Name="PdoInhibitTime" Value="20" />
-          <Parameter Name="Port3_SendXonXoff" Value="0" />
           <Parameter Name="Port4_SendXonXoff" Value="0" />
           <Parameter Name="NumberOfAnalogOutputs" Value="0" />
           <Parameter Name="NumberOfAnalogInputs" Value="0" />
           <Parameter Name="Port1_RecXonXoff" Value="0" />
           <Parameter Name="Port1_Type" Value="0" />
-          <Parameter Name="NumberOfDigitalOutputs" Value="16" />
+          <Parameter Name="Port1_DataPar" Value="3" />
           <Parameter Name="Port2_Type" Value="0" />
           <Parameter Name="Port3_DataPar" Value="3" />
           <Parameter Name="Port4_DataPar" Value="3" />
           <Parameter Name="Port1_TerminalNo" Value="1" />
-          <Parameter Name="TransmissionType" Value="1" />
+          <Parameter Name="Port3_SendXonXoff" Value="0" />
           <Parameter Name="Port2_DataPar" Value="3" />
           <Parameter Name="NumberOfDigitalInputs" Value="16" />
+          <Parameter Name="TransmissionType" Value="1" />
           <Parameter Name="Port2_SendXonXoff" Value="0" />
           <Parameter Name="Port4_StopBits" Value="0" />
-          <Parameter Name="Port4_TerminalNo" Value="4" />
           <Parameter Name="Port3_RecXonXoff" Value="0" />
           <Parameter Name="Port1_StopBits" Value="0" />
-          <Parameter Name="Port2_RecXonXoff" Value="0" />
+          <Parameter Name="Port4_TerminalNo" Value="4" />
           <Parameter Name="Port3_Speed" Value="6" />
           <Parameter Name="Port2_StopBits" Value="0" />
           <Parameter Name="Port4_RecXonXoff" Value="0" />

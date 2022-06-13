@@ -1,4 +1,4 @@
-FUNCTION_BLOCK StartDelay_FB
+FUNCTION_BLOCK STARTDELAY_FB
 VAR_EXTERNAL
 	NDC8 : NDC8_T;
 END_VAR
@@ -63,7 +63,7 @@ END_VAR
 	)
 
 (** 	 **)
-(** if NDC8.VehicleControl.OperationMode > 0 then							{* If not ín automatic mode, then start over. *} **)
+(** if NDC8.VehicleControl.OperationMode > 0 then							{* If not in automatic mode, then start over. *} **)
 	(* if - Cond *)
 	LD NDC8.VehicleControl.OperationMode
 	GT 0
@@ -116,13 +116,9 @@ END_VAR
 			LD 10
 			ST StartDelayState
 
-(** 		StopStartDelay 	:= true; **)
-			(* assign - Stmt *)
-			LD true
-			ST StopStartDelay
-
 			JMP ODK_END_IF_000000000000003
 
+(** 		{*StopStartDelay 	:= true;*} **)
 (** 	end_if; **)
 		(* if - End *) 
 		ODK_SKIP_000000000000003_000000000000001:
