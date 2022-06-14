@@ -43,8 +43,12 @@
 0/51	NativeCodeSegment	0/32	36
 0/52	NativeCodeSegment	0/35	36
 0/53	NativeCodeSegment	0/38	36
+0/54	Sourcesegment	--	64008
+0/55	Sourcesegment	--	64008
+0/56	Sourcesegment	--	64008
+0/57	Sourcesegment	--	10576
 1/54	Datasegment	1/55	596	MAIN
-1/55	Codesegment	1/56	4302
+1/55	Codesegment	1/56	4228
 1/56	Initialsegment	1/349	168
 1/57	Datasegment	1/58	16	MAIN.DINT_TO_TIME
 1/58	Codesegment	1/59	7
@@ -84,7 +88,7 @@
 1/92	Datasegment	1/82	20	MAIN.STOPWORDFB.STOP_FT
 1/93	Datasegment	1/64	36	MAIN.STOPWORDFB.STOPTON
 1/94	Datasegment	1/95	404	MAIN.TX_STATUS
-1/95	Codesegment	1/96	8670
+1/95	Codesegment	1/96	8678
 1/96	Initialsegment	1/359	88
 1/97	Datasegment	1/98	52	MAIN.TX_STATUS.TRACE_DINT
 1/98	Codesegment	1/99	7
@@ -125,14 +129,14 @@
 1/133	Datasegment	1/70	20	MAIN.TX_STATUS.TX_CHGCOMP_R
 1/134	Datasegment	1/70	20	MAIN.TX_STATUS.CHRG_RIGHT_LEFT_R
 1/135	Datasegment	1/70	20	MAIN.TX_STATUS.TX_LOAD_R
-1/136	Datasegment	1/137	48	MAIN.EVENTHANDLER
-1/137	Codesegment	1/138	903
-1/138	Initialsegment	1/362	44
+1/136	Datasegment	1/137	52	MAIN.EVENTHANDLER
+1/137	Codesegment	1/138	915
+1/138	Initialsegment	1/362	48
 1/139	Datasegment	1/140	44	MAIN.EVENTHANDLER.SENDEV
 1/140	Codesegment	1/141	222
 1/141	Initialsegment	1/363	48
-1/142	Datasegment	1/143	456	MAIN.AUTOLOAD
-1/143	Codesegment	1/144	5855
+1/142	Datasegment	1/143	460	MAIN.AUTOLOAD
+1/143	Codesegment	1/144	5949
 1/144	Initialsegment	1/364	128
 1/145	Datasegment	1/146	48	MAIN.AUTOLOAD.TRACE_STRING
 1/146	Codesegment	1/147	7
@@ -141,7 +145,7 @@
 1/149	Codesegment	1/150	7
 1/150	Initialsegment	1/366	56
 1/151	Datasegment	1/152	32	MAIN.AUTOLOAD.LOADOPDONE
-1/152	Codesegment	1/153	285
+1/152	Codesegment	1/153	257
 1/153	Initialsegment	1/367	36
 1/154	Datasegment	1/155	28	MAIN.AUTOLOAD.OPERATIONFAIL
 1/155	Codesegment	1/156	209
@@ -240,7 +244,7 @@
 1/248	Codesegment	1/249	397
 1/249	Initialsegment	1/389	16
 1/250	Datasegment	1/251	2988	MAIN.PLC_COMMUNICATION
-1/251	Codesegment	1/252	5728
+1/251	Codesegment	1/252	5740
 1/252	Initialsegment	1/390	2528
 1/253	Datasegment	1/64	36	MAIN.PLC_COMMUNICATION.TP_PB_NOSELTIMER
 1/254	Datasegment	1/70	20	MAIN.PLC_COMMUNICATION.RST_R
@@ -282,8 +286,8 @@
 1/290	Datasegment	1/82	20	MAIN.R_DRIVESUPERVISION.MOVINGF
 1/291	Datasegment	1/64	36	MAIN.R_DRIVESUPERVISION.OVERRANGEFAILTIMERTON
 1/292	Datasegment	1/64	36	MAIN.R_DRIVESUPERVISION.NOTMOVINGFAILTIMERTON
-1/293	Datasegment	1/294	116	MAIN.BMS_CHG
-1/294	Codesegment	1/295	1139
+1/293	Datasegment	1/294	124	MAIN.BMS_CHG
+1/294	Codesegment	1/295	1408
 1/295	Initialsegment	1/394	24
 1/296	Datasegment	1/64	36	MAIN.BMS_CHG.STEPDELAY
 1/297	Datasegment	1/64	36	MAIN.BMS_CHG.CHAGETIMER
@@ -299,7 +303,7 @@
 1/307	Datasegment	1/70	20	MAIN.INPUTMAP.MCDAUTOR
 1/308	Datasegment	1/223	28	MAIN.INPUTMAP.ORDERMODE
 1/309	Datasegment	1/310	52	MAIN.OUTPUTMAP
-1/310	Codesegment	1/311	1220
+1/310	Codesegment	1/311	1232
 1/311	Initialsegment	1/396	16
 1/312	Datasegment	1/313	64	MAIN.OUTPUTMAP.LAMPBLINK
 1/313	Codesegment	1/314	263
@@ -338,7 +342,7 @@
 1/346	Datasegment	1/236	95	MAIN.DATAUPDATE.DATAUPLOAD.SERIAL_READ
 1/347	Datasegment	1/239	94	MAIN.DATAUPDATE.DATAUPLOAD.SERIAL_WRITE
 1/348	Datasegment	1/173	36	MAIN.DATAUPDATE.DATAUPLOAD.STARTDELAYTOF
-1/349	NativeCodeSegment	1/55	37888
+1/349	NativeCodeSegment	1/55	37224
 1/350	NativeCodeSegment	1/58	36
 1/351	NativeCodeSegment	1/61	11772
 1/352	NativeCodeSegment	1/64	36
@@ -348,15 +352,15 @@
 1/356	NativeCodeSegment	1/79	820
 1/357	NativeCodeSegment	1/82	36
 1/358	NativeCodeSegment	1/89	14328
-1/359	NativeCodeSegment	1/360	64012
-1/360	NativeCodeSegment2	1/95	11816
+1/359	NativeCodeSegment	1/360	64016
+1/360	NativeCodeSegment2	1/95	11880
 1/361	NativeCodeSegment	1/98	36
-1/362	NativeCodeSegment	1/137	10472
+1/362	NativeCodeSegment	1/137	10500
 1/363	NativeCodeSegment	1/140	948
-1/364	NativeCodeSegment	1/143	47220
+1/364	NativeCodeSegment	1/143	48340
 1/365	NativeCodeSegment	1/146	36
 1/366	NativeCodeSegment	1/149	36
-1/367	NativeCodeSegment	1/152	1548
+1/367	NativeCodeSegment	1/152	1336
 1/368	NativeCodeSegment	1/155	808
 1/369	NativeCodeSegment	1/164	7184
 1/370	NativeCodeSegment	1/167	1216
@@ -379,13 +383,13 @@
 1/387	NativeCodeSegment	1/239	36
 1/388	NativeCodeSegment	1/243	2524
 1/389	NativeCodeSegment	1/248	6020
-1/390	NativeCodeSegment	1/391	64008
-1/391	NativeCodeSegment2	1/251	9156
+1/390	NativeCodeSegment	1/391	64024
+1/391	NativeCodeSegment2	1/251	9288
 1/392	NativeCodeSegment	1/262	36
 1/393	NativeCodeSegment	1/272	1784
-1/394	NativeCodeSegment	1/294	9864
+1/394	NativeCodeSegment	1/294	13128
 1/395	NativeCodeSegment	1/303	10692
-1/396	NativeCodeSegment	1/310	11708
+1/396	NativeCodeSegment	1/310	11844
 1/397	NativeCodeSegment	1/313	2584
 1/398	NativeCodeSegment	1/316	36
 1/399	NativeCodeSegment	1/319	36

@@ -367,9 +367,10 @@ END_VAR
 	ST NDC8.PLC_Application.TxStatusBit4_LowBatt
 
 (**  **)
-(** NDC8.PLC_Application.TxStatusBit6_Charge := NDC8.SDIO.DigitalOutput16_Charger; {*Charging*} **)
+(** NDC8.PLC_Application.TxStatusBit6_Charge := NDC8.SDIO.DigitalOutput16_RIGHTMGS OR NDC8.SDIO.DigitalOutput12_LEFTMGS; {*Charging*} **)
 	(* assign - Stmt *)
-	LD NDC8.SDIO.DigitalOutput16_Charger
+	LD NDC8.SDIO.DigitalOutput16_RIGHTMGS
+	OR NDC8.SDIO.DigitalOutput12_LEFTMGS
 	ST NDC8.PLC_Application.TxStatusBit6_Charge
 
 (**  **)
@@ -3467,6 +3468,7 @@ END_VAR
 	WORD_TO_INT 
 	ST NDC8.OMPLC.Stop_OM
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

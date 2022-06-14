@@ -1254,10 +1254,13 @@ END_VAR
 
 		(* then - Stmts *)
 
-(** 	if NDC8.SDIO.DigitalOutput16_Charger = TRUE then **)
+(** 	if NDC8.SDIO.DigitalOutput12_LEFTMGS = TRUE OR NDC8.SDIO.DigitalOutput16_RIGHTMGS = TRUE then **)
 		(* if - Cond *)
-		LD NDC8.SDIO.DigitalOutput16_Charger
+		LD NDC8.SDIO.DigitalOutput12_LEFTMGS
 		EQ true
+		OR ( NDC8.SDIO.DigitalOutput16_RIGHTMGS
+			EQ true
+		)
 		JMPCN ODK_SKIP_00000000000000O_000000000000001
 
 			(* then - Stmts *)
@@ -4202,6 +4205,7 @@ END_VAR
 	ODK_SKIP_00000000000001Q_000000000000001:
 	ODK_END_IF_00000000000001Q:
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

@@ -170,7 +170,7 @@ NDC8.PLC_Application.TxStatusBit8_Manual := PLC_TX01_Bit_ManMode; (*Manual Mode*
 NDC8.PLC_Application.TxStatusBit9_EStop := NDC8.VehicleControl.Estop or StopEstopButton; (*Emergency Stop*)
 NDC8.PLC_Application.TxStatusBit10_Blocked := PLC_TX03_Bit_STr_Block;  (*Blocked*)
 NDC8.PLC_Application.TxStatusBit11_IrStop := false; (*Obstacle sensor Stop*)
-NDC8.PLC_Application.TxStatusBit12_LostP := not NDC8.LayoutPosition.InSystem and (PLC_TX01_Bit_HostMode or PLC_TX01_Bit_LocalMode); (*Lost Position*)
+NDC8.PLC_Application.TxStatusBit12_LostP := g_ErrorCode = 137; (*Lost Position*)
 NDC8.PLC_Application.TxStatusBit13 := false;
 NDC8.PLC_Application.TxStatusBit14 := false;
 NDC8.PLC_Application.TxStatusBit15 := false;
@@ -960,6 +960,7 @@ end_if;
 
 NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);
 NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
+
 
 
 

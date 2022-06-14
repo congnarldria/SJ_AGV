@@ -368,7 +368,7 @@ PLC_TX03_Bit_STr_DD_L := Input.SD_Left;
 
 (* I00823 *)
 if g_PlcComLinkUp = TRUE then
-	if NDC8.SDIO.DigitalOutput16_Charger = TRUE then
+	if NDC8.SDIO.DigitalOutput12_LEFTMGS = TRUE OR NDC8.SDIO.DigitalOutput16_RIGHTMGS = TRUE then
 		PLC_TX03_Bit_STr_Charge := TRUE;
 	else
 		PLC_TX03_Bit_STr_Charge := FALSE;
@@ -996,6 +996,7 @@ if ComStart = true then
 	
 	
 end_if;
+
 
 
 

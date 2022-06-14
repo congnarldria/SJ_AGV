@@ -648,9 +648,17 @@ Case AutoloadMainState of
 			if INPUT.Auto = FALSE then
 				AutoloadMainState := 49;
 			end_if;
-		
-			PLC_TX04_Bit_ChrgCmdL_A := TRUE;
-			NDC8.SDIO.DigitalOutput16_Charger := TRUE;
+			IF NDC8.PointTrigger.Bit9_Chrg_Right = TRUE and NDC8.PointTrigger.Bit10_Chrg_Left = FALSE  then
+				PLC_TX04_Bit_ChrgCmdR_A := FALSE;
+				PLC_TX04_Bit_ChrgCmdL_A := TRUE;
+				NDC8.SDIO.DigitalOutput16_RIGHTMGS := TRUE;
+			END_IF;
+			
+			IF NDC8.PointTrigger.Bit9_Chrg_Right = FALSE and NDC8.PointTrigger.Bit10_Chrg_Left = TRUE  then
+				PLC_TX04_Bit_ChrgCmdL_A := FALSE;
+				PLC_TX04_Bit_ChrgCmdR_A := TRUE;
+				NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE;
+			END_IF;
 		
 			OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 	
@@ -669,8 +677,12 @@ Case AutoloadMainState of
 			end_if;
 			
 			PLC_TX04_Bit_ChrgCmdL_A := FALSE;
+			
+			PLC_TX04_Bit_ChrgCmdR_A := FALSE;
 		
-			NDC8.SDIO.DigitalOutput16_Charger := FALSE;
+			NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;
+			
+			NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;
 	
 			OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
 
@@ -694,7 +706,9 @@ Case AutoloadMainState of
 		
 		PLC_TX04_Bit_ChrgCmdL_A := FALSE;
 		
-		NDC8.SDIO.DigitalOutput16_Charger := FALSE;
+		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;
+		
+		NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;
 
 		OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
 
@@ -979,6 +993,7 @@ end_if;
 
 
 (* OUTPUT *)
+
 
 
 

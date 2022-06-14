@@ -1112,14 +1112,14 @@ END_VAR
 		LD NDC8.SDIO.DigitalOutput14_LED_BRK
 		ST ModBus_ValueBOOL[316]
 
-(** 	ModBus_ValueBOOL [317] := NDC8.SDIO.DigitalOutput15_RIGHTMGS; **)
+(** 	ModBus_ValueBOOL [317] := NDC8.SDIO.DigitalOutput16_RIGHTMGS; **)
 		(* assign - Stmt *)
-		LD NDC8.SDIO.DigitalOutput15_RIGHTMGS
+		LD NDC8.SDIO.DigitalOutput16_RIGHTMGS
 		ST ModBus_ValueBOOL[317]
 
-(** 	ModBus_ValueBOOL [318] := NDC8.SDIO.DigitalOutput16_Charger; **)
+(** 	ModBus_ValueBOOL [318] := NDC8.SDIO.DigitalOutput16_RIGHTMGS; **)
 		(* assign - Stmt *)
-		LD NDC8.SDIO.DigitalOutput16_Charger
+		LD NDC8.SDIO.DigitalOutput16_RIGHTMGS
 		ST ModBus_ValueBOOL[318]
 
 (**  **)
@@ -1198,15 +1198,15 @@ END_VAR
 		LD ModBus_ValueBOOL[316]
 		ST NDC8.SDIO.DigitalOutput14_LED_BRK
 
-(** 	 NDC8.SDIO.DigitalOutput15_RIGHTMGS :=  ModBus_ValueBOOL [317]; **)
+(** 	 NDC8.SDIO.DigitalOutput16_RIGHTMGS :=  ModBus_ValueBOOL [317]; **)
 		(* assign - Stmt *)
 		LD ModBus_ValueBOOL[317]
-		ST NDC8.SDIO.DigitalOutput15_RIGHTMGS
+		ST NDC8.SDIO.DigitalOutput16_RIGHTMGS
 
-(** 	 NDC8.SDIO.DigitalOutput16_Charger :=  ModBus_ValueBOOL [318]; **)
+(** 	 NDC8.SDIO.DigitalOutput16_RIGHTMGS :=  ModBus_ValueBOOL [318]; **)
 		(* assign - Stmt *)
 		LD ModBus_ValueBOOL[318]
-		ST NDC8.SDIO.DigitalOutput16_Charger
+		ST NDC8.SDIO.DigitalOutput16_RIGHTMGS
 
 (**      **)
 (** 	 NDC8.DCD_5.DigitalOutput2_Braker :=  ModBus_ValueBOOL [330]; **)
@@ -2453,6 +2453,7 @@ END_VAR
 (**  **)
 (**  **)
 (** {****************************************************************************} **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

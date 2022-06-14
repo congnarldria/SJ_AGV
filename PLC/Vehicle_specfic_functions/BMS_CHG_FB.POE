@@ -28,6 +28,7 @@ VAR_EXTERNAL
 	PLC_RX14_BIT_BMS_THERMI : BOOL;
 	G_BMS_ERROR : BOOL;
 	PLC_RX03_BIT_CHRGREQL_A : BOOL;
+	PLC_RX03_BIT_CHRGREQR_A : BOOL;
 	OM_PLC_WORD2 : WORD;
 	OM_PLC_WORD1 : WORD;
 	PLC_RX14_BIT_BMS_COUPLE : BOOL;
@@ -44,6 +45,7 @@ VAR_EXTERNAL
 	PLC_RX14_BIT_BMS_TEMPER : BOOL;
 	NDC8 : NDC8_T;
 	PLC_TX04_BIT_CHRGCMDL_A : BOOL;
+	PLC_TX04_BIT_CHRGCMDR_A : BOOL;
 END_VAR
 (** {* Check BMS Error *} **)
 (**  **)
@@ -69,10 +71,13 @@ END_VAR
 (**  **)
 (** {* Check Manual Charge *} **)
 (**  **)
-(** if PLC_RX03_Bit_ChrgReqL_A = TRUE and PLC_TX01_Bit_ManMode = TRUE then **)
+(** if PLC_RX03_Bit_ChrgReqL_A = TRUE and PLC_RX03_Bit_ChrgReqR_A = FALSE and PLC_TX01_Bit_ManMode = TRUE then **)
 	(* if - Cond *)
 	LD PLC_RX03_Bit_ChrgReqL_A
 	EQ TRUE
+	AND ( PLC_RX03_Bit_ChrgReqR_A
+		EQ FALSE
+	)
 	AND ( PLC_TX01_Bit_ManMode
 		EQ TRUE
 	)
@@ -80,10 +85,15 @@ END_VAR
 
 		(* then - Stmts *)
 
-(** 	NDC8.SDIO.DigitalOutput16_Charger := TRUE; **)
+(** 	PLC_TX04_Bit_ChrgCmdR_A := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST PLC_TX04_Bit_ChrgCmdR_A
+
+(** 	NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE; **)
 		(* assign - Stmt *)
 		LD TRUE
-		ST NDC8.SDIO.DigitalOutput16_Charger
+		ST NDC8.SDIO.DigitalOutput12_LEFTMGS
 
 (** 	PLC_TX04_Bit_ChrgCmdL_A := TRUE; **)
 		(* assign - Stmt *)
@@ -97,11 +107,14 @@ END_VAR
 
 		JMP ODK_END_IF_000000000000001
 
-(** elsif (PLC_RX03_Bit_ChrgReqL_A = FALSE or PLC_RX15_Bit_BMS_ChgCmp = TRUE) and PLC_TX01_Bit_ManMode = TRUE then **)
+(** elsif ((PLC_RX03_Bit_ChrgReqL_A = FALSE and PLC_RX03_Bit_ChrgReqR_A = FALSE) or PLC_RX15_Bit_BMS_ChgCmp = TRUE) and PLC_TX01_Bit_ManMode = TRUE then **)
 	(* elseif - Cond *) 
 	ODK_SKIP_000000000000001_000000000000001:
 	LD PLC_RX03_Bit_ChrgReqL_A
 	EQ FALSE
+	AND ( PLC_RX03_Bit_ChrgReqR_A
+		EQ FALSE
+	)
 	OR ( PLC_RX15_Bit_BMS_ChgCmp
 		EQ TRUE
 	)
@@ -112,10 +125,10 @@ END_VAR
 
 		(* elsif - Stmts *)
 
-(** 	NDC8.SDIO.DigitalOutput16_Charger := FALSE; **)
+(** 	NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE; **)
 		(* assign - Stmt *)
 		LD FALSE
-		ST NDC8.SDIO.DigitalOutput16_Charger
+		ST NDC8.SDIO.DigitalOutput12_LEFTMGS
 
 (** 	PLC_TX04_Bit_ChrgCmdL_A := FALSE; **)
 		(* assign - Stmt *)
@@ -135,26 +148,102 @@ END_VAR
 	ODK_END_IF_000000000000001:
 
 (**  **)
+(** if PLC_RX03_Bit_ChrgReqR_A = TRUE and PLC_RX03_Bit_ChrgReqL_A = FALSE and PLC_TX01_Bit_ManMode = TRUE then **)
+	(* if - Cond *)
+	LD PLC_RX03_Bit_ChrgReqR_A
+	EQ TRUE
+	AND ( PLC_RX03_Bit_ChrgReqL_A
+		EQ FALSE
+	)
+	AND ( PLC_TX01_Bit_ManMode
+		EQ TRUE
+	)
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
+(** 	PLC_TX04_Bit_ChrgCmdL_A := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST PLC_TX04_Bit_ChrgCmdL_A
+
+(** 	NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST NDC8.SDIO.DigitalOutput12_LEFTMGS
+
+(** 	PLC_TX04_Bit_ChrgCmdR_A := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST PLC_TX04_Bit_ChrgCmdR_A
+
+(** 	StopCharge := TRUE; **)
+		(* assign - Stmt *)
+		LD TRUE
+		ST StopCharge
+
+		JMP ODK_END_IF_000000000000002
+
+(** elsif ((PLC_RX03_Bit_ChrgReqL_A = FALSE and PLC_RX03_Bit_ChrgReqR_A = FALSE) or PLC_RX15_Bit_BMS_ChgCmp = TRUE) and PLC_TX01_Bit_ManMode = TRUE then **)
+	(* elseif - Cond *) 
+	ODK_SKIP_000000000000002_000000000000001:
+	LD PLC_RX03_Bit_ChrgReqL_A
+	EQ FALSE
+	AND ( PLC_RX03_Bit_ChrgReqR_A
+		EQ FALSE
+	)
+	OR ( PLC_RX15_Bit_BMS_ChgCmp
+		EQ TRUE
+	)
+	AND ( PLC_TX01_Bit_ManMode
+		EQ TRUE
+	)
+	JMPCN ODK_SKIP_000000000000002_000000000000002
+
+		(* elsif - Stmts *)
+
+(** 	NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.SDIO.DigitalOutput12_LEFTMGS
+
+(** 	PLC_TX04_Bit_ChrgCmdL_A := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST PLC_TX04_Bit_ChrgCmdL_A
+
+(** 	StopCharge := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST StopCharge
+
+		JMP ODK_END_IF_000000000000002
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_000000000000002_000000000000002:
+	ODK_END_IF_000000000000002:
+
+(**  **)
 (**  **)
 (** case AutoChargeStep of **)
 (**  **)
 (** 	0: **)
 	(* case - Elm *) 
-	ODK_SKIP_000000000000002_000000000000000:
+	ODK_SKIP_000000000000003_000000000000000:
 
 	(* case - Cond *)
 	LD AutoChargeStep
 	EQ 0
-	JMPC ODK_CASE_000000000000002_000000000000001
+	JMPC ODK_CASE_000000000000003_000000000000001
 
-	JMP ODK_SKIP_000000000000002_000000000000001
+	JMP ODK_SKIP_000000000000003_000000000000001
 
 	(* case - Stmts *) 
-	ODK_CASE_000000000000002_000000000000001:
+	ODK_CASE_000000000000003_000000000000001:
 
 (** 		 **)
-(** 		if (INPUT.Auto = TRUE and NDC8.Automatic.CurrentOrderMode = 1 and NDC8.Automatic.ExecDriveCommand = FALSE ) and  **)
-(** 			(NDC8.PointTrigger.Bit9_Chrg_Right = TRUE and NDC8.PointTrigger.Bit10_Chrg_Left = FALSE) and **)
+(** 		if (INPUT.Auto = TRUE and NDC8.Automatic.CurrentOrderMode = 1 and NDC8.Automatic.ExecDriveCommand = FALSE ) and 			 **)
 (** 			(PLC_RX01_Bit_ChrgEmg = FALSE and g_BMS_Error = FALSE) and **)
 (** 			not (NDC8.LoadDocking.OnTarget = TRUE and PLC_RX15_Bit_BMS_NoChg = TRUE) then **)
 		(* if - Cond *)
@@ -165,12 +254,6 @@ END_VAR
 		)
 		AND ( NDC8.Automatic.ExecDriveCommand
 			EQ FALSE
-		)
-		AND ( NDC8.PointTrigger.Bit9_Chrg_Right
-			EQ TRUE
-			AND ( NDC8.PointTrigger.Bit10_Chrg_Left
-				EQ FALSE
-			)
 		)
 		AND ( PLC_RX01_Bit_ChrgEmg
 			EQ FALSE
@@ -185,7 +268,7 @@ END_VAR
 			)
 			NOT
 		)
-		JMPCN ODK_SKIP_000000000000003_000000000000001
+		JMPCN ODK_SKIP_000000000000004_000000000000001
 
 			(* then - Stmts *)
 
@@ -199,30 +282,30 @@ END_VAR
 			LD NDC8.LayoutPosition.Point
 			ST ChargePnt
 
-			JMP ODK_END_IF_000000000000003
+			JMP ODK_END_IF_000000000000004
 
 (** 		end_if; **)
 		(* if - End *) 
-		ODK_SKIP_000000000000003_000000000000001:
-		ODK_END_IF_000000000000003:
+		ODK_SKIP_000000000000004_000000000000001:
+		ODK_END_IF_000000000000004:
 
-		JMP ODK_END_CASE_000000000000002
+		JMP ODK_END_CASE_000000000000003
 
 (**  **)
 (** {* Charge the battery Host Order *} **)
 (** 	70:	 **)
 	(* case - Elm *) 
-	ODK_SKIP_000000000000002_000000000000001:
+	ODK_SKIP_000000000000003_000000000000001:
 
 	(* case - Cond *)
 	LD AutoChargeStep
 	EQ 70
-	JMPC ODK_CASE_000000000000002_000000000000002
+	JMPC ODK_CASE_000000000000003_000000000000002
 
-	JMP ODK_SKIP_000000000000002_000000000000002
+	JMP ODK_SKIP_000000000000003_000000000000002
 
 	(* case - Stmts *) 
-	ODK_CASE_000000000000002_000000000000002:
+	ODK_CASE_000000000000003_000000000000002:
 
 (** 		 **)
 (** 		if INPUT.Auto = FALSE or NDC8.Automatic.CurrentOrderMode <> 1 then **)
@@ -232,7 +315,7 @@ END_VAR
 		OR ( NDC8.Automatic.CurrentOrderMode
 			NE 1
 		)
-		JMPCN ODK_SKIP_000000000000004_000000000000001
+		JMPCN ODK_SKIP_000000000000005_000000000000001
 
 			(* then - Stmts *)
 
@@ -241,12 +324,12 @@ END_VAR
 			LD 72
 			ST AutoChargeStep
 
-			JMP ODK_END_IF_000000000000004
+			JMP ODK_END_IF_000000000000005
 
 (** 		end_if; **)
 		(* if - End *) 
-		ODK_SKIP_000000000000004_000000000000001:
-		ODK_END_IF_000000000000004:
+		ODK_SKIP_000000000000005_000000000000001:
+		ODK_END_IF_000000000000005:
 
 (** 		 **)
 (** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE then **)
@@ -256,7 +339,7 @@ END_VAR
 		OR ( g_BMS_Error
 			EQ TRUE
 		)
-		JMPCN ODK_SKIP_000000000000005_000000000000001
+		JMPCN ODK_SKIP_000000000000006_000000000000001
 
 			(* then - Stmts *)
 
@@ -265,12 +348,12 @@ END_VAR
 			LD 999
 			ST AutoChargeStep
 
-			JMP ODK_END_IF_000000000000005
+			JMP ODK_END_IF_000000000000006
 
 (** 		end_if; **)
 		(* if - End *) 
-		ODK_SKIP_000000000000005_000000000000001:
-		ODK_END_IF_000000000000005:
+		ODK_SKIP_000000000000006_000000000000001:
+		ODK_END_IF_000000000000006:
 
 (** 		 **)
 (** 		NDC8.PLC_Application.TxStatusBit7_ChgComp := FALSE; **)
@@ -288,7 +371,7 @@ END_VAR
 (** 		if PLC_RX01_Bit_ChrgIdle then  **)
 		(* if - Cond *)
 		LD PLC_RX01_Bit_ChrgIdle
-		JMPCN ODK_SKIP_000000000000006_000000000000001
+		JMPCN ODK_SKIP_000000000000007_000000000000001
 
 			(* then - Stmts *)
 
@@ -302,7 +385,7 @@ END_VAR
 (** 			if StepDelay.Q then **)
 			(* if - Cond *)
 			LD StepDelay.Q
-			JMPCN ODK_SKIP_000000000000007_000000000000001
+			JMPCN ODK_SKIP_000000000000008_000000000000001
 
 				(* then - Stmts *)
 
@@ -317,38 +400,38 @@ END_VAR
 				LD 71
 				ST AutoChargeStep
 
-				JMP ODK_END_IF_000000000000007
+				JMP ODK_END_IF_000000000000008
 
 (** 			end_if; **)
 			(* if - End *) 
-			ODK_SKIP_000000000000007_000000000000001:
-			ODK_END_IF_000000000000007:
+			ODK_SKIP_000000000000008_000000000000001:
+			ODK_END_IF_000000000000008:
 
-			JMP ODK_END_IF_000000000000006
+			JMP ODK_END_IF_000000000000007
 
 (** 		 **)
 (** 		end_if; **)
 		(* if - End *) 
-		ODK_SKIP_000000000000006_000000000000001:
-		ODK_END_IF_000000000000006:
+		ODK_SKIP_000000000000007_000000000000001:
+		ODK_END_IF_000000000000007:
 
-		JMP ODK_END_CASE_000000000000002
+		JMP ODK_END_CASE_000000000000003
 
 (** 		 **)
 (** 		 **)
 (** 	71: **)
 	(* case - Elm *) 
-	ODK_SKIP_000000000000002_000000000000002:
+	ODK_SKIP_000000000000003_000000000000002:
 
 	(* case - Cond *)
 	LD AutoChargeStep
 	EQ 71
-	JMPC ODK_CASE_000000000000002_000000000000003
+	JMPC ODK_CASE_000000000000003_000000000000003
 
-	JMP ODK_SKIP_000000000000002_000000000000003
+	JMP ODK_SKIP_000000000000003_000000000000003
 
 	(* case - Stmts *) 
-	ODK_CASE_000000000000002_000000000000003:
+	ODK_CASE_000000000000003_000000000000003:
 
 (** 	 **)
 (** 		if INPUT.Auto = FALSE or NDC8.Automatic.CurrentOrderMode <> 1 then **)
@@ -358,7 +441,7 @@ END_VAR
 		OR ( NDC8.Automatic.CurrentOrderMode
 			NE 1
 		)
-		JMPCN ODK_SKIP_000000000000008_000000000000001
+		JMPCN ODK_SKIP_000000000000009_000000000000001
 
 			(* then - Stmts *)
 
@@ -367,12 +450,12 @@ END_VAR
 			LD 72
 			ST AutoChargeStep
 
-			JMP ODK_END_IF_000000000000008
+			JMP ODK_END_IF_000000000000009
 
 (** 		end_if; **)
 		(* if - End *) 
-		ODK_SKIP_000000000000008_000000000000001:
-		ODK_END_IF_000000000000008:
+		ODK_SKIP_000000000000009_000000000000001:
+		ODK_END_IF_000000000000009:
 
 (** 		 **)
 (** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE then **)
@@ -385,7 +468,7 @@ END_VAR
 		OR ( g_ChargeOverTime
 			EQ TRUE
 		)
-		JMPCN ODK_SKIP_000000000000009_000000000000001
+		JMPCN ODK_SKIP_00000000000000A_000000000000001
 
 			(* then - Stmts *)
 
@@ -394,23 +477,73 @@ END_VAR
 			LD 999
 			ST AutoChargeStep
 
-			JMP ODK_END_IF_000000000000009
+			JMP ODK_END_IF_00000000000000A
 
 (** 		end_if; **)
 		(* if - End *) 
-		ODK_SKIP_000000000000009_000000000000001:
-		ODK_END_IF_000000000000009:
+		ODK_SKIP_00000000000000A_000000000000001:
+		ODK_END_IF_00000000000000A:
+
+(** 		IF NDC8.PointTrigger.Bit10_Chrg_Left = TRUE THEN **)
+		(* if - Cond *)
+		LD NDC8.PointTrigger.Bit10_Chrg_Left
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000B_000000000000001
+
+			(* then - Stmts *)
+
+(** 			PLC_TX04_Bit_ChrgCmdL_A := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST PLC_TX04_Bit_ChrgCmdL_A
+
+(** 			PLC_TX04_Bit_ChrgCmdR_A := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST PLC_TX04_Bit_ChrgCmdR_A
+
+(** 			NDC8.SDIO.DigitalOutput16_RIGHTMGS := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.SDIO.DigitalOutput16_RIGHTMGS
+
+			JMP ODK_END_IF_00000000000000B
+
+(** 		END_IF; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000B_000000000000001:
+		ODK_END_IF_00000000000000B:
 
 (** 		 **)
-(** 		PLC_TX04_Bit_ChrgCmdL_A := TRUE; **)
-		(* assign - Stmt *)
-		LD TRUE
-		ST PLC_TX04_Bit_ChrgCmdL_A
+(** 		IF NDC8.PointTrigger.Bit9_Chrg_Right = TRUE THEN **)
+		(* if - Cond *)
+		LD NDC8.PointTrigger.Bit9_Chrg_Right
+		EQ TRUE
+		JMPCN ODK_SKIP_00000000000000C_000000000000001
 
-(** 		NDC8.SDIO.DigitalOutput16_Charger := TRUE; **)
-		(* assign - Stmt *)
-		LD TRUE
-		ST NDC8.SDIO.DigitalOutput16_Charger
+			(* then - Stmts *)
+
+(** 			PLC_TX04_Bit_ChrgCmdR_A := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST PLC_TX04_Bit_ChrgCmdR_A
+
+(** 			PLC_TX04_Bit_ChrgCmdL_A := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST PLC_TX04_Bit_ChrgCmdL_A
+
+(** 			NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST NDC8.SDIO.DigitalOutput12_LEFTMGS
+
+			JMP ODK_END_IF_00000000000000C
+
+(** 		END_IF; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000C_000000000000001:
+		ODK_END_IF_00000000000000C:
 
 (** 		 **)
 (** 		OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM); **)
@@ -425,7 +558,7 @@ END_VAR
 		(* if - Cond *)
 		LD NDC8.PointTrigger.Bit14_Full_Chrg
 		EQ TRUE
-		JMPCN ODK_SKIP_00000000000000A_000000000000001
+		JMPCN ODK_SKIP_00000000000000D_000000000000001
 
 			(* then - Stmts *)
 
@@ -433,7 +566,7 @@ END_VAR
 			(* if - Cond *)
 			LD PLC_RX15_Bit_BMS_ChgCmp
 			OR PLC_RX01_Bit_ChrgEmg
-			JMPCN ODK_SKIP_00000000000000B_000000000000001
+			JMPCN ODK_SKIP_00000000000000E_000000000000001
 
 				(* then - Stmts *)
 
@@ -442,18 +575,18 @@ END_VAR
 				LD 72
 				ST AutoChargeStep
 
-				JMP ODK_END_IF_00000000000000B
+				JMP ODK_END_IF_00000000000000E
 
 (** 			end_if; **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000B_000000000000001:
-			ODK_END_IF_00000000000000B:
+			ODK_SKIP_00000000000000E_000000000000001:
+			ODK_END_IF_00000000000000E:
 
-			JMP ODK_END_IF_00000000000000A
+			JMP ODK_END_IF_00000000000000D
 
 (** 		else **)
 		(* else *) 
-		ODK_SKIP_00000000000000A_000000000000001:
+		ODK_SKIP_00000000000000D_000000000000001:
 
 			(* else - Stmts *)
 
@@ -465,7 +598,7 @@ END_VAR
 				EQ TRUE
 			)
 			OR PLC_RX01_Bit_ChrgEmg
-			JMPCN ODK_SKIP_00000000000000C_000000000000001
+			JMPCN ODK_SKIP_00000000000000F_000000000000001
 
 				(* then - Stmts *)
 
@@ -474,33 +607,33 @@ END_VAR
 				LD 72
 				ST AutoChargeStep
 
-				JMP ODK_END_IF_00000000000000C
+				JMP ODK_END_IF_00000000000000F
 
 (** 			end_if; **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000C_000000000000001:
-			ODK_END_IF_00000000000000C:
+			ODK_SKIP_00000000000000F_000000000000001:
+			ODK_END_IF_00000000000000F:
 
 (** 		end_if; **)
 		(* if - End *) 
-		ODK_END_IF_00000000000000A:
+		ODK_END_IF_00000000000000D:
 
-		JMP ODK_END_CASE_000000000000002
+		JMP ODK_END_CASE_000000000000003
 
 (** 		 **)
 (** 	72: **)
 	(* case - Elm *) 
-	ODK_SKIP_000000000000002_000000000000003:
+	ODK_SKIP_000000000000003_000000000000003:
 
 	(* case - Cond *)
 	LD AutoChargeStep
 	EQ 72
-	JMPC ODK_CASE_000000000000002_000000000000004
+	JMPC ODK_CASE_000000000000003_000000000000004
 
-	JMP ODK_SKIP_000000000000002_000000000000004
+	JMP ODK_SKIP_000000000000003_000000000000004
 
 	(* case - Stmts *) 
-	ODK_CASE_000000000000002_000000000000004:
+	ODK_CASE_000000000000003_000000000000004:
 
 (** 	 **)
 (** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE then **)
@@ -510,7 +643,7 @@ END_VAR
 		OR ( g_BMS_Error
 			EQ TRUE
 		)
-		JMPCN ODK_SKIP_00000000000000D_000000000000001
+		JMPCN ODK_SKIP_00000000000000G_000000000000001
 
 			(* then - Stmts *)
 
@@ -519,12 +652,12 @@ END_VAR
 			LD 999
 			ST AutoChargeStep
 
-			JMP ODK_END_IF_00000000000000D
+			JMP ODK_END_IF_00000000000000G
 
 (** 		end_if; **)
 		(* if - End *) 
-		ODK_SKIP_00000000000000D_000000000000001:
-		ODK_END_IF_00000000000000D:
+		ODK_SKIP_00000000000000G_000000000000001:
+		ODK_END_IF_00000000000000G:
 
 (** 		 **)
 (** 		PLC_TX04_Bit_ChrgCmdL_A := FALSE; **)
@@ -533,10 +666,16 @@ END_VAR
 		ST PLC_TX04_Bit_ChrgCmdL_A
 
 (** 			 **)
-(** 		NDC8.SDIO.DigitalOutput16_Charger := FALSE; **)
+(** 		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE; **)
 		(* assign - Stmt *)
 		LD FALSE
-		ST NDC8.SDIO.DigitalOutput16_Charger
+		ST NDC8.SDIO.DigitalOutput16_RIGHTMGS
+
+(** 		 **)
+(** 		NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.SDIO.DigitalOutput12_LEFTMGS
 
 (** 		 **)
 (** 		NDC8.PLC_Application.TxStatusBit7_ChgComp := TRUE; **)
@@ -575,7 +714,7 @@ END_VAR
 (** 		if StepDelay.Q then **)
 		(* if - Cond *)
 		LD StepDelay.Q
-		JMPCN ODK_SKIP_00000000000000E_000000000000001
+		JMPCN ODK_SKIP_00000000000000H_000000000000001
 
 			(* then - Stmts *)
 
@@ -595,121 +734,29 @@ END_VAR
 			LD 73
 			ST AutoChargeStep
 
-			JMP ODK_END_IF_00000000000000E
+			JMP ODK_END_IF_00000000000000H
 
 (** 		end_if; **)
 		(* if - End *) 
-		ODK_SKIP_00000000000000E_000000000000001:
-		ODK_END_IF_00000000000000E:
+		ODK_SKIP_00000000000000H_000000000000001:
+		ODK_END_IF_00000000000000H:
 
-		JMP ODK_END_CASE_000000000000002
+		JMP ODK_END_CASE_000000000000003
 
 (** 		 **)
 (** 	73: **)
 	(* case - Elm *) 
-	ODK_SKIP_000000000000002_000000000000004:
+	ODK_SKIP_000000000000003_000000000000004:
 
 	(* case - Cond *)
 	LD AutoChargeStep
 	EQ 73
-	JMPC ODK_CASE_000000000000002_000000000000005
+	JMPC ODK_CASE_000000000000003_000000000000005
 
-	JMP ODK_SKIP_000000000000002_000000000000005
-
-	(* case - Stmts *) 
-	ODK_CASE_000000000000002_000000000000005:
-
-(** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE then **)
-		(* if - Cond *)
-		LD PLC_RX01_Bit_ChrgEmg
-		EQ TRUE
-		OR ( g_BMS_Error
-			EQ TRUE
-		)
-		JMPCN ODK_SKIP_00000000000000F_000000000000001
-
-			(* then - Stmts *)
-
-(** 			AutoChargeStep := 999; **)
-			(* assign - Stmt *)
-			LD 999
-			ST AutoChargeStep
-
-			JMP ODK_END_IF_00000000000000F
-
-(** 		end_if; **)
-		(* if - End *) 
-		ODK_SKIP_00000000000000F_000000000000001:
-		ODK_END_IF_00000000000000F:
-
-(** 		 **)
-(** 		if PLC_RX01_Bit_ChrgIdle then  **)
-		(* if - Cond *)
-		LD PLC_RX01_Bit_ChrgIdle
-		JMPCN ODK_SKIP_00000000000000G_000000000000001
-
-			(* then - Stmts *)
-
-(** 			StepDelay(IN:=TRUE, PT:=t#1s); **)
-			(* call - Stmt *)
-			CAL StepDelay (
-				IN := TRUE,
-				PT := t#1s
-			)
-
-(** 			if StepDelay.Q then **)
-			(* if - Cond *)
-			LD StepDelay.Q
-			JMPCN ODK_SKIP_00000000000000H_000000000000001
-
-				(* then - Stmts *)
-
-(** 				StepDelay(IN:=FALSE); **)
-				(* call - Stmt *)
-				CAL StepDelay (
-					IN := FALSE
-				)
-
-(** 				StopCharge := FALSE; **)
-				(* assign - Stmt *)
-				LD FALSE
-				ST StopCharge
-
-(** 				AutoChargeStep := 74; **)
-				(* assign - Stmt *)
-				LD 74
-				ST AutoChargeStep
-
-				JMP ODK_END_IF_00000000000000H
-
-(** 			end_if; **)
-			(* if - End *) 
-			ODK_SKIP_00000000000000H_000000000000001:
-			ODK_END_IF_00000000000000H:
-
-			JMP ODK_END_IF_00000000000000G
-
-(** 		end_if; **)
-		(* if - End *) 
-		ODK_SKIP_00000000000000G_000000000000001:
-		ODK_END_IF_00000000000000G:
-
-		JMP ODK_END_CASE_000000000000002
-
-(** 		 **)
-(** 	74: **)
-	(* case - Elm *) 
-	ODK_SKIP_000000000000002_000000000000005:
-
-	(* case - Cond *)
-	LD AutoChargeStep
-	EQ 74
-	JMPC ODK_CASE_000000000000002_000000000000006
-
-	JMP ODK_SKIP_000000000000002_000000000000006
+	JMP ODK_SKIP_000000000000003_000000000000005
 
 	(* case - Stmts *) 
-	ODK_CASE_000000000000002_000000000000006:
+	ODK_CASE_000000000000003_000000000000005:
 
 (** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE then **)
 		(* if - Cond *)
@@ -735,6 +782,98 @@ END_VAR
 		ODK_END_IF_00000000000000I:
 
 (** 		 **)
+(** 		if PLC_RX01_Bit_ChrgIdle then  **)
+		(* if - Cond *)
+		LD PLC_RX01_Bit_ChrgIdle
+		JMPCN ODK_SKIP_00000000000000J_000000000000001
+
+			(* then - Stmts *)
+
+(** 			StepDelay(IN:=TRUE, PT:=t#1s); **)
+			(* call - Stmt *)
+			CAL StepDelay (
+				IN := TRUE,
+				PT := t#1s
+			)
+
+(** 			if StepDelay.Q then **)
+			(* if - Cond *)
+			LD StepDelay.Q
+			JMPCN ODK_SKIP_00000000000000K_000000000000001
+
+				(* then - Stmts *)
+
+(** 				StepDelay(IN:=FALSE); **)
+				(* call - Stmt *)
+				CAL StepDelay (
+					IN := FALSE
+				)
+
+(** 				StopCharge := FALSE; **)
+				(* assign - Stmt *)
+				LD FALSE
+				ST StopCharge
+
+(** 				AutoChargeStep := 74; **)
+				(* assign - Stmt *)
+				LD 74
+				ST AutoChargeStep
+
+				JMP ODK_END_IF_00000000000000K
+
+(** 			end_if; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000K_000000000000001:
+			ODK_END_IF_00000000000000K:
+
+			JMP ODK_END_IF_00000000000000J
+
+(** 		end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000J_000000000000001:
+		ODK_END_IF_00000000000000J:
+
+		JMP ODK_END_CASE_000000000000003
+
+(** 		 **)
+(** 	74: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000003_000000000000005:
+
+	(* case - Cond *)
+	LD AutoChargeStep
+	EQ 74
+	JMPC ODK_CASE_000000000000003_000000000000006
+
+	JMP ODK_SKIP_000000000000003_000000000000006
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000003_000000000000006:
+
+(** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE then **)
+		(* if - Cond *)
+		LD PLC_RX01_Bit_ChrgEmg
+		EQ TRUE
+		OR ( g_BMS_Error
+			EQ TRUE
+		)
+		JMPCN ODK_SKIP_00000000000000L_000000000000001
+
+			(* then - Stmts *)
+
+(** 			AutoChargeStep := 999; **)
+			(* assign - Stmt *)
+			LD 999
+			ST AutoChargeStep
+
+			JMP ODK_END_IF_00000000000000L
+
+(** 		end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000L_000000000000001:
+		ODK_END_IF_00000000000000L:
+
+(** 		 **)
 (** 		if INPUT.Auto = FALSE or NDC8.Automatic.CurrentOrderMode <> 1 then **)
 		(* if - Cond *)
 		LD INPUT.Auto
@@ -742,7 +881,7 @@ END_VAR
 		OR ( NDC8.Automatic.CurrentOrderMode
 			NE 1
 		)
-		JMPCN ODK_SKIP_00000000000000J_000000000000001
+		JMPCN ODK_SKIP_00000000000000M_000000000000001
 
 			(* then - Stmts *)
 
@@ -751,12 +890,12 @@ END_VAR
 			LD 0
 			ST AutoChargeStep
 
-			JMP ODK_END_IF_00000000000000J
+			JMP ODK_END_IF_00000000000000M
 
 (** 		end_if; **)
 		(* if - End *) 
-		ODK_SKIP_00000000000000J_000000000000001:
-		ODK_END_IF_00000000000000J:
+		ODK_SKIP_00000000000000M_000000000000001:
+		ODK_END_IF_00000000000000M:
 
 (** 		 **)
 (** 		if NDC8.LayoutPosition.Point <> ChargePnt or NDC8.PLC_Application.TxStatusBit4_LowBatt = TRUE then **)
@@ -766,7 +905,7 @@ END_VAR
 		OR ( NDC8.PLC_Application.TxStatusBit4_LowBatt
 			EQ TRUE
 		)
-		JMPCN ODK_SKIP_00000000000000K_000000000000001
+		JMPCN ODK_SKIP_00000000000000N_000000000000001
 
 			(* then - Stmts *)
 
@@ -775,30 +914,30 @@ END_VAR
 			LD 0
 			ST AutoChargeStep
 
-			JMP ODK_END_IF_00000000000000K
+			JMP ODK_END_IF_00000000000000N
 
 (** 		end_if; **)
 		(* if - End *) 
-		ODK_SKIP_00000000000000K_000000000000001:
-		ODK_END_IF_00000000000000K:
+		ODK_SKIP_00000000000000N_000000000000001:
+		ODK_END_IF_00000000000000N:
 
-		JMP ODK_END_CASE_000000000000002
+		JMP ODK_END_CASE_000000000000003
 
 (** 		 **)
 (** 		 **)
 (** 	999: **)
 	(* case - Elm *) 
-	ODK_SKIP_000000000000002_000000000000006:
+	ODK_SKIP_000000000000003_000000000000006:
 
 	(* case - Cond *)
 	LD AutoChargeStep
 	EQ 999
-	JMPC ODK_CASE_000000000000002_000000000000007
+	JMPC ODK_CASE_000000000000003_000000000000007
 
-	JMP ODK_SKIP_000000000000002_000000000000007
+	JMP ODK_SKIP_000000000000003_000000000000007
 
 	(* case - Stmts *) 
-	ODK_CASE_000000000000002_000000000000007:
+	ODK_CASE_000000000000003_000000000000007:
 
 (** 		PLC_TX04_Bit_ChrgCmdL_A := FALSE; **)
 		(* assign - Stmt *)
@@ -806,10 +945,16 @@ END_VAR
 		ST PLC_TX04_Bit_ChrgCmdL_A
 
 (** 			 **)
-(** 		NDC8.SDIO.DigitalOutput16_Charger := FALSE; **)
+(** 		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE; **)
 		(* assign - Stmt *)
 		LD FALSE
-		ST NDC8.SDIO.DigitalOutput16_Charger
+		ST NDC8.SDIO.DigitalOutput16_RIGHTMGS
+
+(** 		 **)
+(** 		NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.SDIO.DigitalOutput12_LEFTMGS
 
 (** 		 **)
 (** 		NDC8.PLC_Application.TxStatusBit7_ChgComp := TRUE; **)
@@ -849,67 +994,150 @@ END_VAR
 		LD 0
 		ST AutoChargeStep
 
-		JMP ODK_END_CASE_000000000000002
+		JMP ODK_END_CASE_000000000000003
 
 (** 		 **)
 (** 	 **)
 (**  **)
 (** end_case; **)
 	(* case - End *) 
-	ODK_SKIP_000000000000002_000000000000007:
-	ODK_END_CASE_000000000000002:
+	ODK_SKIP_000000000000003_000000000000007:
+	ODK_END_CASE_000000000000003:
 
 (**  **)
 (** {* Charge Over Time Check *} **)
-(** 	ChageTimer(IN:= NDC8.SDIO.DigitalOutput16_Charger, PT:=t#1800s); **)
-	(* call - Stmt *)
-	CAL ChageTimer (
-		IN := NDC8.SDIO.DigitalOutput16_Charger,
-		PT := t#1800s
+(** IF PLC_TX04_Bit_ChrgCmdR_A = TRUE and PLC_TX04_Bit_ChrgCmdL_A = FALSE THEN **)
+	(* if - Cond *)
+	LD PLC_TX04_Bit_ChrgCmdR_A
+	EQ TRUE
+	AND ( PLC_TX04_Bit_ChrgCmdL_A
+		EQ FALSE
 	)
+	JMPCN ODK_SKIP_00000000000000O_000000000000001
+
+		(* then - Stmts *)
+
+(** 	ChageTimer(IN:= NDC8.SDIO.DigitalOutput16_RIGHTMGS, PT:=t#1800s); **)
+		(* call - Stmt *)
+		CAL ChageTimer (
+			IN := NDC8.SDIO.DigitalOutput16_RIGHTMGS,
+			PT := t#1800s
+		)
 
 (** 	 **)
 (** 	if ChageTimer.Q then **)
-	(* if - Cond *)
-	LD ChageTimer.Q
-	JMPCN ODK_SKIP_00000000000000L_000000000000001
+		(* if - Cond *)
+		LD ChageTimer.Q
+		JMPCN ODK_SKIP_00000000000000P_000000000000001
 
-		(* then - Stmts *)
+			(* then - Stmts *)
 
 (** 		g_ChargeOverTime := TRUE; **)
-		(* assign - Stmt *)
-		LD TRUE
-		ST g_ChargeOverTime
+			(* assign - Stmt *)
+			LD TRUE
+			ST g_ChargeOverTime
 
-		JMP ODK_END_IF_00000000000000L
+			JMP ODK_END_IF_00000000000000P
 
 (** 	end_if; **)
-	(* if - End *) 
-	ODK_SKIP_00000000000000L_000000000000001:
-	ODK_END_IF_00000000000000L:
+		(* if - End *) 
+		ODK_SKIP_00000000000000P_000000000000001:
+		ODK_END_IF_00000000000000P:
 
 (** 	 **)
-(** 	if NDC8.SDIO.DigitalOutput16_Charger = FALSE then **)
+(** 	if NDC8.SDIO.DigitalOutput16_RIGHTMGS = FALSE then **)
+		(* if - Cond *)
+		LD NDC8.SDIO.DigitalOutput16_RIGHTMGS
+		EQ FALSE
+		JMPCN ODK_SKIP_00000000000000Q_000000000000001
+
+			(* then - Stmts *)
+
+(** 		g_ChargeOverTime := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST g_ChargeOverTime
+
+			JMP ODK_END_IF_00000000000000Q
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000Q_000000000000001:
+		ODK_END_IF_00000000000000Q:
+
+		JMP ODK_END_IF_00000000000000O
+
+(** END_IF; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000O_000000000000001:
+	ODK_END_IF_00000000000000O:
+
+(** IF PLC_TX04_Bit_ChrgCmdR_A = FALSE and PLC_TX04_Bit_ChrgCmdL_A = TRUE THEN **)
 	(* if - Cond *)
-	LD NDC8.SDIO.DigitalOutput16_Charger
+	LD PLC_TX04_Bit_ChrgCmdR_A
 	EQ FALSE
-	JMPCN ODK_SKIP_00000000000000M_000000000000001
+	AND ( PLC_TX04_Bit_ChrgCmdL_A
+		EQ TRUE
+	)
+	JMPCN ODK_SKIP_00000000000000R_000000000000001
 
 		(* then - Stmts *)
 
-(** 		g_ChargeOverTime := FALSE; **)
-		(* assign - Stmt *)
-		LD FALSE
-		ST g_ChargeOverTime
-
-		JMP ODK_END_IF_00000000000000M
-
-(** 	end_if; **)
-	(* if - End *) 
-	ODK_SKIP_00000000000000M_000000000000001:
-	ODK_END_IF_00000000000000M:
+(** 	ChageTimer(IN:= NDC8.SDIO.DigitalOutput12_LEFTMGS, PT:=t#1800s); **)
+		(* call - Stmt *)
+		CAL ChageTimer (
+			IN := NDC8.SDIO.DigitalOutput12_LEFTMGS,
+			PT := t#1800s
+		)
 
 (** 	 **)
+(** 	if ChageTimer.Q then **)
+		(* if - Cond *)
+		LD ChageTimer.Q
+		JMPCN ODK_SKIP_00000000000000S_000000000000001
+
+			(* then - Stmts *)
+
+(** 		g_ChargeOverTime := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST g_ChargeOverTime
+
+			JMP ODK_END_IF_00000000000000S
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000S_000000000000001:
+		ODK_END_IF_00000000000000S:
+
+(** 	 **)
+(** 	if NDC8.SDIO.DigitalOutput12_LEFTMGS = FALSE then **)
+		(* if - Cond *)
+		LD NDC8.SDIO.DigitalOutput12_LEFTMGS
+		EQ FALSE
+		JMPCN ODK_SKIP_00000000000000T_000000000000001
+
+			(* then - Stmts *)
+
+(** 		g_ChargeOverTime := FALSE; **)
+			(* assign - Stmt *)
+			LD FALSE
+			ST g_ChargeOverTime
+
+			JMP ODK_END_IF_00000000000000T
+
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000T_000000000000001:
+		ODK_END_IF_00000000000000T:
+
+		JMP ODK_END_IF_00000000000000R
+
+(** END_IF; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000R_000000000000001:
+	ODK_END_IF_00000000000000R:
+
 (** 	 **)
 (** 	 **)
 (** {* Check BMS Error Status *} **)
@@ -917,7 +1145,7 @@ END_VAR
 (** 	(PLC_RX01_Bit_ChrgEmg = TRUE **)
 (** 	or g_BMS_Error = TRUE **)
 (** 	or PLC_RX15_Bit_BMS_ChgCmp = TRUE  **)
-(** 	or g_ChargeOverTime) then **)
+(** 	or g_ChargeOverTime) then	 **)
 	(* if - Cond *)
 	LD NDC8.SDIO.DigitalInput2_BTN_RST
 	EQ FALSE
@@ -931,27 +1159,36 @@ END_VAR
 		)
 		OR g_ChargeOverTime
 	)
-	JMPCN ODK_SKIP_00000000000000N_000000000000001
+	JMPCN ODK_SKIP_00000000000000U_000000000000001
 
 		(* then - Stmts *)
 
-(** 	 **)
 (** 		PLC_TX04_Bit_ChrgCmdL_A := FALSE; **)
 		(* assign - Stmt *)
 		LD FALSE
 		ST PLC_TX04_Bit_ChrgCmdL_A
 
-(** 		NDC8.SDIO.DigitalOutput16_Charger := FALSE; **)
+(** 		PLC_TX04_Bit_ChrgCmdR_A := FALSE; **)
 		(* assign - Stmt *)
 		LD FALSE
-		ST NDC8.SDIO.DigitalOutput16_Charger
+		ST PLC_TX04_Bit_ChrgCmdR_A
 
-		JMP ODK_END_IF_00000000000000N
+(** 		NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.SDIO.DigitalOutput12_LEFTMGS
+
+(** 		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.SDIO.DigitalOutput16_RIGHTMGS
+
+		JMP ODK_END_IF_00000000000000U
 
 (** end_if; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000N_000000000000001:
-	ODK_END_IF_00000000000000N:
+	ODK_SKIP_00000000000000U_000000000000001:
+	ODK_END_IF_00000000000000U:
 
 (**  **)
 (**  **)
@@ -959,7 +1196,7 @@ END_VAR
 	(* if - Cond *)
 	LD PLC_TX04_Bit_ChrgCmdL_A
 	EQ TRUE
-	JMPCN ODK_SKIP_00000000000000O_000000000000001
+	JMPCN ODK_SKIP_00000000000000V_000000000000001
 
 		(* then - Stmts *)
 
@@ -968,13 +1205,15 @@ END_VAR
 		LD TRUE
 		ST StopCharge
 
-		JMP ODK_END_IF_00000000000000O
+		JMP ODK_END_IF_00000000000000V
 
 (** end_if; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000O_000000000000001:
-	ODK_END_IF_00000000000000O:
+	ODK_SKIP_00000000000000V_000000000000001:
+	ODK_END_IF_00000000000000V:
 
+(**  **)
+(**  **)
 (**  **)
 
 END_FUNCTION_BLOCK

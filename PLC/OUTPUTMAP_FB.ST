@@ -137,7 +137,9 @@ if g_FindSyncFlag = TRUE then
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;
-	elsif 	NDC8.PLC_Application.TxStatusBit4_LowBatt = TRUE and NDC8.SDIO.DigitalOutput16_Charger = FALSE and 
+	elsif 	NDC8.PLC_Application.TxStatusBit4_LowBatt = TRUE and
+		NDC8.SDIO.DigitalOutput12_LEFTMGS = FALSE and
+		NDC8.SDIO.DigitalOutput16_RIGHTMGS = FALSE and 
 		NDC8.PointTrigger.Bit9_Chrg_Right = FALSE and
 		NDC8.PointTrigger.Bit10_Chrg_Left = FALSE and 
 		NDC8.PointTrigger.Bit14_Full_Chrg = FALSE  then (*Ch14*)
@@ -214,6 +216,7 @@ if g_FindSyncFlag = TRUE then
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE;
 	end_if;
 end_if;
+
 
 
 

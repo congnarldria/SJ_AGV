@@ -2530,7 +2530,8 @@ END_VAR
 (** 	if VehicleMovingFlag = FALSE  **)
 (** 		and  NDC8.LoadDocking.OnTarget = FALSE  **)
 (** 		and PLC_TX01_Bit_ManMode = FALSE  **)
-(** 		and NDC8.SDIO.DigitalOutput16_Charger = FALSE then **)
+(** 		and NDC8.SDIO.DigitalOutput16_RIGHTMGS = FALSE **)
+(** 		and NDC8.SDIO.DigitalOutput12_LEFTMGS = FALSE THEN **)
 		(* if - Cond *)
 		LD VehicleMovingFlag
 		EQ FALSE
@@ -2540,14 +2541,16 @@ END_VAR
 		AND ( PLC_TX01_Bit_ManMode
 			EQ FALSE
 		)
-		AND ( NDC8.SDIO.DigitalOutput16_Charger
+		AND ( NDC8.SDIO.DigitalOutput16_RIGHTMGS
+			EQ FALSE
+		)
+		AND ( NDC8.SDIO.DigitalOutput12_LEFTMGS
 			EQ FALSE
 		)
 		JMPCN ODK_SKIP_000000000000011_000000000000001
 
 			(* then - Stmts *)
 
-(** 		 **)
 (** 		g_BattLim_NG := TRUE; **)
 			(* assign - Stmt *)
 			LD TRUE
@@ -3148,6 +3151,7 @@ END_VAR
 	(* call - Stmt *)
 	CAL DataUpdate
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

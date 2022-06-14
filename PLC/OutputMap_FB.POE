@@ -472,14 +472,19 @@ END_VAR
 
 			JMP ODK_END_IF_000000000000006
 
-(** 	elsif 	NDC8.PLC_Application.TxStatusBit4_LowBatt = TRUE and NDC8.SDIO.DigitalOutput16_Charger = FALSE and  **)
+(** 	elsif 	NDC8.PLC_Application.TxStatusBit4_LowBatt = TRUE and **)
+(** 		NDC8.SDIO.DigitalOutput12_LEFTMGS = FALSE and **)
+(** 		NDC8.SDIO.DigitalOutput16_RIGHTMGS = FALSE and  **)
 (** 		NDC8.PointTrigger.Bit9_Chrg_Right = FALSE and **)
 (** 		NDC8.PointTrigger.Bit10_Chrg_Left = FALSE and  **)
 		(* elseif - Cond *) 
 		ODK_SKIP_000000000000006_000000000000006:
 		LD NDC8.PLC_Application.TxStatusBit4_LowBatt
 		EQ TRUE
-		AND ( NDC8.SDIO.DigitalOutput16_Charger
+		AND ( NDC8.SDIO.DigitalOutput12_LEFTMGS
+			EQ FALSE
+		)
+		AND ( NDC8.SDIO.DigitalOutput16_RIGHTMGS
 			EQ FALSE
 		)
 		AND ( NDC8.PointTrigger.Bit9_Chrg_Right
@@ -876,6 +881,7 @@ END_VAR
 	ODK_SKIP_000000000000005_000000000000001:
 	ODK_END_IF_000000000000005:
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

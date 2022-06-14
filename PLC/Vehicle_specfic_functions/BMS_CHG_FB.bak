@@ -31,12 +31,24 @@ g_BMS_Error := PLC_RX14_Bit_BMS_Short or
 
 (* Check Manual Charge *)
 
-if PLC_RX03_Bit_ChrgReqL_A = TRUE and PLC_TX01_Bit_ManMode = TRUE then
-	NDC8.SDIO.DigitalOutput16_Charger := TRUE;
+if PLC_RX03_Bit_ChrgReqL_A = TRUE and PLC_RX03_Bit_ChrgReqR_A = FALSE and PLC_TX01_Bit_ManMode = TRUE then
+	PLC_TX04_Bit_ChrgCmdR_A := FALSE;
+	NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE;
 	PLC_TX04_Bit_ChrgCmdL_A := TRUE;
 	StopCharge := TRUE;
-elsif (PLC_RX03_Bit_ChrgReqL_A = FALSE or PLC_RX15_Bit_BMS_ChgCmp = TRUE) and PLC_TX01_Bit_ManMode = TRUE then
-	NDC8.SDIO.DigitalOutput16_Charger := FALSE;
+elsif ((PLC_RX03_Bit_ChrgReqL_A = FALSE and PLC_RX03_Bit_ChrgReqR_A = FALSE) or PLC_RX15_Bit_BMS_ChgCmp = TRUE) and PLC_TX01_Bit_ManMode = TRUE then
+	NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;
+	PLC_TX04_Bit_ChrgCmdL_A := FALSE;
+	StopCharge := FALSE;
+end_if;
+
+if PLC_RX03_Bit_ChrgReqR_A = TRUE and PLC_RX03_Bit_ChrgReqL_A = FALSE and PLC_TX01_Bit_ManMode = TRUE then
+	PLC_TX04_Bit_ChrgCmdL_A := FALSE;
+	NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE;
+	PLC_TX04_Bit_ChrgCmdR_A := TRUE;
+	StopCharge := TRUE;
+elsif ((PLC_RX03_Bit_ChrgReqL_A = FALSE and PLC_RX03_Bit_ChrgReqR_A = FALSE) or PLC_RX15_Bit_BMS_ChgCmp = TRUE) and PLC_TX01_Bit_ManMode = TRUE then
+	NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;
 	PLC_TX04_Bit_ChrgCmdL_A := FALSE;
 	StopCharge := FALSE;
 end_if;
@@ -46,8 +58,7 @@ case AutoChargeStep of
 
 	0:
 		
-		if (INPUT.Auto = TRUE and NDC8.Automatic.CurrentOrderMode = 1 and NDC8.Automatic.ExecDriveCommand = FALSE ) and 
-			(NDC8.PointTrigger.Bit9_Chrg_Right = TRUE and NDC8.PointTrigger.Bit10_Chrg_Left = FALSE) and
+		if (INPUT.Auto = TRUE and NDC8.Automatic.CurrentOrderMode = 1 and NDC8.Automatic.ExecDriveCommand = FALSE ) and 			
 			(PLC_RX01_Bit_ChrgEmg = FALSE and g_BMS_Error = FALSE) and
 			not (NDC8.LoadDocking.OnTarget = TRUE and PLC_RX15_Bit_BMS_NoChg = TRUE) then
 			AutoChargeStep := 70;
@@ -88,9 +99,17 @@ case AutoChargeStep of
 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE then
 			AutoChargeStep := 999;
 		end_if;
+		IF NDC8.PointTrigger.Bit10_Chrg_Left = TRUE THEN
+			PLC_TX04_Bit_ChrgCmdL_A := TRUE;
+			PLC_TX04_Bit_ChrgCmdR_A := FALSE;
+			NDC8.SDIO.DigitalOutput16_RIGHTMGS := TRUE;
+		END_IF;
 		
-		PLC_TX04_Bit_ChrgCmdL_A := TRUE;
-		NDC8.SDIO.DigitalOutput16_Charger := TRUE;
+		IF NDC8.PointTrigger.Bit9_Chrg_Right = TRUE THEN
+			PLC_TX04_Bit_ChrgCmdR_A := TRUE;
+			PLC_TX04_Bit_ChrgCmdL_A := FALSE;
+			NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE;
+		END_IF;
 		
 		OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 
@@ -113,7 +132,9 @@ case AutoChargeStep of
 		
 		PLC_TX04_Bit_ChrgCmdL_A := FALSE;
 			
-		NDC8.SDIO.DigitalOutput16_Charger := FALSE;
+		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;
+		
+		NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;
 		
 		NDC8.PLC_Application.TxStatusBit7_ChgComp := TRUE;
 	
@@ -161,7 +182,9 @@ case AutoChargeStep of
 	999:
 		PLC_TX04_Bit_ChrgCmdL_A := FALSE;
 			
-		NDC8.SDIO.DigitalOutput16_Charger := FALSE;
+		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;
+		
+		NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;
 		
 		NDC8.PLC_Application.TxStatusBit7_ChgComp := TRUE;
 	
@@ -180,33 +203,47 @@ case AutoChargeStep of
 end_case;
 
 (* Charge Over Time Check *)
-	ChageTimer(IN:= NDC8.SDIO.DigitalOutput16_Charger, PT:=t#1800s);
+IF PLC_TX04_Bit_ChrgCmdR_A = TRUE and PLC_TX04_Bit_ChrgCmdL_A = FALSE THEN
+	ChageTimer(IN:= NDC8.SDIO.DigitalOutput16_RIGHTMGS, PT:=t#1800s);
 	
 	if ChageTimer.Q then
 		g_ChargeOverTime := TRUE;
 	end_if;
 	
-	if NDC8.SDIO.DigitalOutput16_Charger = FALSE then
+	if NDC8.SDIO.DigitalOutput16_RIGHTMGS = FALSE then
 		g_ChargeOverTime := FALSE;
 	end_if;
+IF PLC_TX04_Bit_ChrgCmdR_A = FALSE and PLC_TX04_Bit_ChrgCmdL_A = TRUE THEN
+	ChageTimer(IN:= NDC8.SDIO.DigitalOutput12_LEFTMGS, PT:=t#1800s);
 	
+	if ChageTimer.Q then
+		g_ChargeOverTime := TRUE;
+	end_if;
+	
+	if NDC8.SDIO.DigitalOutput12_LEFTMGS = FALSE then
+		g_ChargeOverTime := FALSE;
+	end_if;
+END_IF	
 	
 	
 (* Check BMS Error Status *)
-if DigitalInput2_BTN_RST = FALSE and
+if NDC8.SDIO.DigitalInput2_BTN_RST = FALSE and
 	(PLC_RX01_Bit_ChrgEmg = TRUE
 	or g_BMS_Error = TRUE
 	or PLC_RX15_Bit_BMS_ChgCmp = TRUE 
-	or g_ChargeOverTime) then
-	
+	or g_ChargeOverTime) then	
 		PLC_TX04_Bit_ChrgCmdL_A := FALSE;
-		NDC8.SDIO.DigitalOutput16_Charger := FALSE;
+		PLC_TX04_Bit_ChrgCmdR_A := FALSE;
+		NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;
+		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;
 end_if;
 
 
 if PLC_TX04_Bit_ChrgCmdL_A = TRUE then
 	StopCharge := TRUE;
 end_if;
+
+
 
 
 END_FUNCTION_BLOCK
