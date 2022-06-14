@@ -178,6 +178,7 @@ VAR_EXTERNAL
 	PLC_RX14_BIT_BMS_SHORT : BOOL;
 	PLC_RX01_BIT_CHKCOM_RX : BOOL;
 	STOPWORD : DWORD;
+	G_AGV_ERRORRESET : BOOL;
 	G_FINDSYNCFLAG : BOOL;
 	PLC_TX01_BIT_MANMODE : BOOL;
 	STOPBYCANERR_NODE8 : BOOL;
@@ -1260,9 +1261,16 @@ END_VAR
 
 (** 	 **)
 (**  **)
-(** 	if {*MasterLinkR.Q or g_AGV_ErrorReset or (NDC8.Mcd.Button8 = TRUE and INPUT.Manual = TRUE)*} True then {* When Master Link up, Error Status need to be update again *} **)
+(** 	if MasterLinkR.Q or g_AGV_ErrorReset or (NDC8.Mcd.Button8 = TRUE and INPUT.Manual = TRUE) then {* When Master Link up, Error Status need to be update again *} **)
 		(* if - Cond *)
-		LD TRUE
+		LD MasterLinkR.Q
+		OR g_AGV_ErrorReset
+		OR ( NDC8.Mcd.Button8
+			EQ TRUE
+			AND ( INPUT.Manual
+				EQ TRUE
+			)
+		)
 		JMPCN ODK_SKIP_00000000000000L_000000000000001
 
 			(* then - Stmts *)
@@ -2247,9 +2255,9 @@ END_VAR
 		(* then - Stmts *)
 
 (** 	{*StopRobotNotIdle := TRUE; TEST*} **)
-(** 	StopRobotNotIdle := FALSE; **)
+(** 	StopRobotNotIdle := TRUE; **)
 		(* assign - Stmt *)
-		LD FALSE
+		LD TRUE
 		ST StopRobotNotIdle
 
 		JMP ODK_END_IF_00000000000000S
@@ -3216,6 +3224,7 @@ END_VAR
 	(* call - Stmt *)
 	CAL DataUpdate
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)
