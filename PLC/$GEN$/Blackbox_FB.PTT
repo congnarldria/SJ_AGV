@@ -7,7 +7,7 @@ FUNCTION_BLOCK Blackbox_FB
  VAR_OUTPUT
   Finished : bool := false ;
   State_BlackBox : DINT := 1 ;
-  VersionNDC8Lib : dint := 125 ;
+  VersionNDC8Lib : dint := 128 ;
   Count : dint ;
   END_VAR 
 

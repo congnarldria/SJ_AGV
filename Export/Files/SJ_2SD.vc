@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2021-11-29" CreationTime="15:08:48.4075316+08:00" CreatedBy="user" ModificationDate="2021-11-29" ModificationTime="15:08:48.4075316+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2020-06-14" CreationTime="09:25:51.6871500+08:00" CreatedBy="user" ModificationDate="2020-06-14" ModificationTime="09:25:51.6871500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
-  <ComponentList Name="P46164" TimeStamp="1638198544">
+  <ComponentList Name="P46164" TimeStamp="1592126757">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
       <Properties>
         <Property SymbolName="Method" Value="2" Remark="Navigation init methods:&#xD;&#xA;0. NavAreaInit. The vehicle controller will search for a&#xD;&#xA;   position within the given navigation area. If navigation area is&#xD;&#xA;   set to 0 the vehicle controller will search the whole layout. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;1. PointInit. The vehicle controller will search for a position in an&#xD;&#xA;   area around the given NDC point. The size of the search area is&#xD;&#xA;   defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;2. SetPosition. The vehicle controller will set its position to that&#xD;&#xA;   of the given NDC point. The vehicle must be in manual or semi manual&#xD;&#xA;   mode and standing still.&#xD;&#xA;&#xD;&#xA;3. CoordinatesInit. The vehicle controller will search for a position&#xD;&#xA;   in an area around the given coordinates. The size of the search&#xD;&#xA;   area is defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;4. SetCoordinates. The vehicle controller will set its position to&#xD;&#xA;   that of the given given coordinates. The vehicle must be in manual&#xD;&#xA;   or semi manual mode and standing still." ParentName="NavInit" />
@@ -515,7 +515,7 @@
         <Property SymbolName="Boolean_17" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_18" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_19" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_20" Value="0" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_20" Value="0" Remark="1 = Local Mode; 0 = Host Mode" AliasName="Boolean_20_OnlineOrderMode" ParentName="UserDefined" />
         <Property SymbolName="Boolean_21" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_22" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_23" Value="0" Remark="" ParentName="UserDefined" />
@@ -674,16 +674,16 @@
         <Property SymbolName="Angle" Value="0" Remark="Laser Scanner position Angle" ParentName="LS2000" />
         <Property SymbolName="UpsideDown" Value="0" Remark="Indicates if the range sensor is mounted upside down.&#xD;&#xA;&#xD;&#xA;Set to False if the range sensor is mounted right side up.&#xD;&#xA;Set to True if the range sensor is mounted upside down." ParentName="LS2000" />
         <Property SymbolName="IP" Value="192.168.100.9" Remark="The IP address used to connect to the scanner." ParentName="LS2000" />
-        <Property SymbolName="Field1_X1" Value="-865" Remark="Bottom X position in vehicle coordinate where the field starts. This value should be less than Field1_X2 to define a valid field." ParentName="LS2000" />
-        <Property SymbolName="Field1_X2" Value="-665" Remark="Top X position in vehicle coordinate where the field ends. This value should be greater than Field1_X1 to define a valid field." ParentName="LS2000" />
-        <Property SymbolName="Field1_Y1" Value="-100" Remark="Right Y position in vehicle coordinate where the field starts. This value should be less than Field1_Y2 to define a valid field." ParentName="LS2000" />
-        <Property SymbolName="Field1_Y2" Value="100" Remark="Left Y position in vehicle coordinate where the field ends. This value should be greater than Field1_Y1 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field1_X1" Value="-770" Remark="Bottom X position in vehicle coordinate where the field starts. This value should be less than Field1_X2 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field1_X2" Value="-770" Remark="Top X position in vehicle coordinate where the field ends. This value should be greater than Field1_X1 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field1_Y1" Value="0" Remark="Right Y position in vehicle coordinate where the field starts. This value should be less than Field1_Y2 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field1_Y2" Value="0" Remark="Left Y position in vehicle coordinate where the field ends. This value should be greater than Field1_Y1 to define a valid field." ParentName="LS2000" />
         <Property SymbolName="Field1_Triggered" Value="0" Remark="True if something is inside field" ParentName="LS2000" />
         <Property SymbolName="Field1_Dist" Value="0" Remark="Distance from sensor to nearest object inside field. Valid only if Field1_Triggered is true." ParentName="LS2000" />
-        <Property SymbolName="Field2_X1" Value="-865" Remark="Bottom X position in vehicle coordinate where the field starts. This value should be less than Field2_X2 to define a valid field." ParentName="LS2000" />
-        <Property SymbolName="Field2_X2" Value="-665" Remark="Top X position in vehicle coordinate where the field ends. This value should be greater than Field2_X1 to define a valid field." ParentName="LS2000" />
-        <Property SymbolName="Field2_Y1" Value="-100" Remark="Right Y position in vehicle coordinate where the field starts. This value should be less than Field2_Y2 to define a valid field." ParentName="LS2000" />
-        <Property SymbolName="Field2_Y2" Value="100" Remark="Left Y position in vehicle coordinate where the field ends. This value should be greater than Field1_Y1 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field2_X1" Value="-770" Remark="Bottom X position in vehicle coordinate where the field starts. This value should be less than Field2_X2 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field2_X2" Value="-770" Remark="Top X position in vehicle coordinate where the field ends. This value should be greater than Field2_X1 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field2_Y1" Value="0" Remark="Right Y position in vehicle coordinate where the field starts. This value should be less than Field2_Y2 to define a valid field." ParentName="LS2000" />
+        <Property SymbolName="Field2_Y2" Value="0" Remark="Left Y position in vehicle coordinate where the field ends. This value should be greater than Field1_Y1 to define a valid field." ParentName="LS2000" />
         <Property SymbolName="Field2_Triggered" Value="0" Remark="True if something is inside field" ParentName="LS2000" />
         <Property SymbolName="Field2_Dist" Value="0" Remark="Distance from sensor to nearest object inside field. Valid only if Field2_Triggered is true." ParentName="LS2000" />
         <Property SymbolName="Sector1_Ignore" Value="0" Remark="If enabled bearings within sector will be ignored." ParentName="LS2000" />
@@ -831,7 +831,7 @@
         <Property SymbolName="ReverseEncoderDirection" Value="0" Remark="Set true to reverse encoder direction. Same effect as swapping A and B signals." ParentName="DCD_5" />
         <Property SymbolName="VoltageFeedback" Value="0" Remark="Set true to use motor voltage as speed feedback instead of encoder. (Speed scale: 1024 = 48 V)" ParentName="DCD_5" />
         <Property SymbolName="SpeedRegOffset" Value="0" Remark="Current to compensate for friction. Added to speed regulator output with sign depending on the command speed." ParentName="DCD_5" />
-        <Property SymbolName="DriveEncScale" Value="4548" Remark="The number of pulses per 1000 mm." ParentName="DCD_5" />
+        <Property SymbolName="DriveEncScale" Value="2561" Remark="The number of pulses per 1000 mm." ParentName="DCD_5" />
         <Property SymbolName="DigitalInput2" Value="" Remark="Digital Input 2 value, pin 14" AliasName="DigitalInput2_OverRelayFS" ParentName="DCD_5" />
         <Property SymbolName="DigitalInput3" Value="" Remark="Digital Input 3 value, pin 13" AliasName="DigitalInput3_OverRelayFD" ParentName="DCD_5" />
         <Property SymbolName="AllOK_DigitalOutput1" Value="1" Remark="Reserved Digital Output 1 value, pin 2" ParentName="DCD_5" />
@@ -846,17 +846,17 @@
         <Property SymbolName="ActiveInSafeState" Value="0" Remark="Decides if the device will start up in safe state." ParentName="DCD_6" />
         <Property SymbolName="MotorCurrentRegP" Value="160" Remark="Motor Parameter: Proportional gain in the PI-parts of the current controller." ParentName="DCD_6" />
         <Property SymbolName="MotorCurrentRegI" Value="60" Remark="Motor Parameter: Integral gain in the PI-parts of the current controller." ParentName="DCD_6" />
-        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="20" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_6" />
-        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="20" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_6" />
+        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="42" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_6" />
+        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="42" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_6" />
         <Property SymbolName="MaxTorqueCurrentChange" Value="250" Remark="The maximum allowed change during 1 ms (i.e. derivate) of the Torque Current that is allowed. A too high derivate may for example introduce noise in the gear." ParentName="DCD_6" />
-        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="20" Remark="Maximum allowed torque current during forward braking/deceleration." ParentName="DCD_6" />
-        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="20" Remark="Maximum allowed torque current during reverse braking/deceleration." ParentName="DCD_6" />
+        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="42" Remark="Maximum allowed torque current during forward braking/deceleration." ParentName="DCD_6" />
+        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="42" Remark="Maximum allowed torque current during reverse braking/deceleration." ParentName="DCD_6" />
         <Property SymbolName="SpeedRegP" Value="3500" Remark="Proportional gain in the PI-parts of the speed controller." ParentName="DCD_6" />
-        <Property SymbolName="SpeedRegI" Value="65" Remark="Integral gain in the PI-parts of the speed controller." ParentName="DCD_6" />
+        <Property SymbolName="SpeedRegI" Value="60" Remark="Integral gain in the PI-parts of the speed controller." ParentName="DCD_6" />
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="125" Remark="Current limit for supervision. Supervision is enabled when the requested torque current goes above this limit. (Regulator supervision 0x6210)" ParentName="DCD_6" />
         <Property SymbolName="RegSupervisionFailureDelay" Value="1000" Remark="Delay before safe state in absence of movement in correct direction. 0 = Disable. (Regulator supervision 0x6210)" ParentName="DCD_6" />
-        <Property SymbolName="SteerEncScale" Value="1980" Remark="Steering Encoder Scale" ParentName="DCD_6" />
-        <Property SymbolName="SteerEncOffset" Value="-350" Remark="Steering Encoder Offset (Position of Sync pulse)" ParentName="DCD_6" />
+        <Property SymbolName="SteerEncScale" Value="6000" Remark="Steering Encoder Scale" ParentName="DCD_6" />
+        <Property SymbolName="SteerEncOffset" Value="0" Remark="Steering Encoder Offset (Position of Sync pulse)" ParentName="DCD_6" />
         <Property SymbolName="PosRegP" Value="80" Remark="Proportional gain in the PI-parts of the position controller." ParentName="DCD_6" />
         <Property SymbolName="PosRegI" Value="0" Remark="Integral gain in the PI-parts of the position controller." ParentName="DCD_6" />
         <Property SymbolName="LimOutMax" Value="512" Remark="Max motor speed as output from position controller and input to speed controller.&#xD;&#xA;VoltageFeedback: 1024 = 48V, Otherwise: 16384 = 90 deg/s" ParentName="DCD_6" />
@@ -893,7 +893,7 @@
         <Property SymbolName="ReverseEncoderDirection" Value="0" Remark="Set true to reverse encoder direction. Same effect as swapping A and B signals." ParentName="DCD_7" />
         <Property SymbolName="VoltageFeedback" Value="0" Remark="Set true to use motor voltage as speed feedback instead of encoder. (Speed scale: 1024 = 48 V)" ParentName="DCD_7" />
         <Property SymbolName="SpeedRegOffset" Value="0" Remark="Current to compensate for friction. Added to speed regulator output with sign depending on the command speed." ParentName="DCD_7" />
-        <Property SymbolName="DriveEncScale" Value="4535" Remark="The number of pulses per 1000 mm." ParentName="DCD_7" />
+        <Property SymbolName="DriveEncScale" Value="2561" Remark="The number of pulses per 1000 mm." ParentName="DCD_7" />
         <Property SymbolName="DigitalInput2" Value="" Remark="Digital Input 2 value, pin 14" AliasName="DigitalInput2_OverRelayRS" ParentName="DCD_7" />
         <Property SymbolName="DigitalInput3" Value="" Remark="Digital Input 3 value, pin 13" AliasName="DigitalInput3_OverRelayRD" ParentName="DCD_7" />
         <Property SymbolName="DigitalOutput2" Value="" Remark="Digital Output 2 value, pin 18" AliasName="DigitalOutput2_Braker" ParentName="DCD_7" />
@@ -907,17 +907,17 @@
         <Property SymbolName="ActiveInSafeState" Value="0" Remark="Decides if the device will start up in safe state." ParentName="DCD_8" />
         <Property SymbolName="MotorCurrentRegP" Value="160" Remark="Motor Parameter: Proportional gain in the PI-parts of the current controller." ParentName="DCD_8" />
         <Property SymbolName="MotorCurrentRegI" Value="60" Remark="Motor Parameter: Integral gain in the PI-parts of the current controller." ParentName="DCD_8" />
-        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="20" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_8" />
-        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="20" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_8" />
+        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="42" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_8" />
+        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="42" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_8" />
         <Property SymbolName="MaxTorqueCurrentChange" Value="250" Remark="The maximum allowed change during 1 ms (i.e. derivate) of the Torque Current that is allowed. A too high derivate may for example introduce noise in the gear." ParentName="DCD_8" />
-        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="20" Remark="Maximum allowed torque current during forward braking/deceleration." ParentName="DCD_8" />
-        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="20" Remark="Maximum allowed torque current during reverse braking/deceleration." ParentName="DCD_8" />
+        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="42" Remark="Maximum allowed torque current during forward braking/deceleration." ParentName="DCD_8" />
+        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="42" Remark="Maximum allowed torque current during reverse braking/deceleration." ParentName="DCD_8" />
         <Property SymbolName="SpeedRegP" Value="3500" Remark="Proportional gain in the PI-parts of the speed controller." ParentName="DCD_8" />
-        <Property SymbolName="SpeedRegI" Value="65" Remark="Integral gain in the PI-parts of the speed controller." ParentName="DCD_8" />
+        <Property SymbolName="SpeedRegI" Value="60" Remark="Integral gain in the PI-parts of the speed controller." ParentName="DCD_8" />
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="125" Remark="Current limit for supervision. Supervision is enabled when the requested torque current goes above this limit. (Regulator supervision 0x6210)" ParentName="DCD_8" />
         <Property SymbolName="RegSupervisionFailureDelay" Value="1000" Remark="Delay before safe state in absence of movement in correct direction. 0 = Disable. (Regulator supervision 0x6210)" ParentName="DCD_8" />
-        <Property SymbolName="SteerEncScale" Value="1980" Remark="Steering Encoder Scale" ParentName="DCD_8" />
-        <Property SymbolName="SteerEncOffset" Value="550" Remark="Steering Encoder Offset (Position of Sync pulse)" ParentName="DCD_8" />
+        <Property SymbolName="SteerEncScale" Value="6000" Remark="Steering Encoder Scale" ParentName="DCD_8" />
+        <Property SymbolName="SteerEncOffset" Value="0" Remark="Steering Encoder Offset (Position of Sync pulse)" ParentName="DCD_8" />
         <Property SymbolName="PosRegP" Value="80" Remark="Proportional gain in the PI-parts of the position controller." ParentName="DCD_8" />
         <Property SymbolName="PosRegI" Value="0" Remark="Integral gain in the PI-parts of the position controller." ParentName="DCD_8" />
         <Property SymbolName="LimOutMax" Value="512" Remark="Max motor speed as output from position controller and input to speed controller.&#xD;&#xA;VoltageFeedback: 1024 = 48V, Otherwise: 16384 = 90 deg/s" ParentName="DCD_8" />
@@ -1016,9 +1016,10 @@
         <Property SymbolName="DigitalOutput6" Value="" Remark="Digital Output 6 value, pin #B1" AliasName="DigitalOutput6_LED_INPOS" ParentName="SDIO" />
         <Property SymbolName="DigitalOutput7" Value="" Remark="Digital Output 7 value, pin #B3" AliasName="DigitalOutput7_LED_STR" ParentName="SDIO" />
         <Property SymbolName="DigitalOutput8" Value="" Remark="Digital Output 8 value, pin #B2" AliasName="DigitalOutput8_LED_RST" ParentName="SDIO" />
+        <Property SymbolName="DigitalOutput12" Value="" Remark="Digital Output 12 value, pin #A3" AliasName="DigitalOutput12_LEFTMGS" ParentName="SDIO" />
         <Property SymbolName="DigitalOutput13" Value="" Remark="Digital Output 13 value, pin #A10" AliasName="DigitalOutput13_PWR_OFF" ParentName="SDIO" />
         <Property SymbolName="DigitalOutput14" Value="" Remark="Digital Output 14 value, pin #A2" AliasName="DigitalOutput14_LED_BRK" ParentName="SDIO" />
-        <Property SymbolName="DigitalOutput16" Value="" Remark="Digital Output 16 value, pin #A16" AliasName="DigitalOutput16_Charger" ParentName="SDIO" />
+        <Property SymbolName="DigitalOutput16" Value="" Remark="Digital Output 16 value, pin #A16" AliasName="DigitalOutput16_RIGHTMGS" ParentName="SDIO" />
         <Property SymbolName="PWMOutput1" Value="0" Remark="PWM Output 1 value, pin #A5. The value is the duty cycle of the output." ParentName="SDIO" />
         <Property SymbolName="PWMOutput2" Value="0" Remark="PWM Output 2 value, pin #A12. The value is the duty cycle of the output." ParentName="SDIO" />
         <Property SymbolName="PWMOutput3" Value="0" Remark="PWM Output 3 value, pin #A11. The value is the duty cycle of the output." ParentName="SDIO" />

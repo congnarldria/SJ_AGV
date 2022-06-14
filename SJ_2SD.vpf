@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vpf" FileRevision="453" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-08-01" ModificationTime="22:10:38.8883004+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vpf" FileRevision="469" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-06-14" ModificationTime="09:25:45.7421500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
   <ComponentList Name="P46164" TimeStamp="0">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
@@ -851,16 +851,16 @@
         <Property SymbolName="Angle" Value="0" />
         <Property SymbolName="UpsideDown" Value="0" />
         <Property SymbolName="IP" Value="192.168.100.9" />
-        <Property SymbolName="Field1_X1" Value="-865" />
-        <Property SymbolName="Field1_X2" Value="-665" />
-        <Property SymbolName="Field1_Y1" Value="-100" />
-        <Property SymbolName="Field1_Y2" Value="100" />
+        <Property SymbolName="Field1_X1" Value="-770" />
+        <Property SymbolName="Field1_X2" Value="-770" />
+        <Property SymbolName="Field1_Y1" Value="0" />
+        <Property SymbolName="Field1_Y2" Value="0" />
         <Property SymbolName="Field1_Triggered" Value="0" />
         <Property SymbolName="Field1_Dist" Value="0" />
-        <Property SymbolName="Field2_X1" Value="-865" />
-        <Property SymbolName="Field2_X2" Value="-665" />
-        <Property SymbolName="Field2_Y1" Value="-100" />
-        <Property SymbolName="Field2_Y2" Value="100" />
+        <Property SymbolName="Field2_X1" Value="-770" />
+        <Property SymbolName="Field2_X2" Value="-770" />
+        <Property SymbolName="Field2_Y1" Value="0" />
+        <Property SymbolName="Field2_Y2" Value="0" />
         <Property SymbolName="Field2_Triggered" Value="0" />
         <Property SymbolName="Field2_Dist" Value="0" />
         <Property SymbolName="Sector1_Ignore" Value="0" />
@@ -1020,7 +1020,7 @@
         <Property SymbolName="Error" Value="" />
         <Property SymbolName="SwitchOnDisabled" Value="" />
         <Property SymbolName="Warning" Value="" />
-        <Property SymbolName="DriveEncScale" Value="4548" />
+        <Property SymbolName="DriveEncScale" Value="2561" />
         <Property SymbolName="DriveEncDist" Value="" />
         <Property SymbolName="DriveEncSpeed" Value="" />
         <Property SymbolName="DigitalInput2" Value="" PublicName="DigitalInput2_OverRelayFS" Remark="Digital Input 2 value, pin 14" AliasName="DigitalInput2_OverRelayFS" />
@@ -1052,17 +1052,17 @@
         <Property SymbolName="SdoBufferSize" Value="" />
         <Property SymbolName="MotorCurrentRegP" Value="160" />
         <Property SymbolName="MotorCurrentRegI" Value="60" />
-        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="20" />
-        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="20" />
+        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="42" />
+        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="42" />
         <Property SymbolName="MaxTorqueCurrentChange" Value="250" />
-        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="20" />
-        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="20" />
+        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="42" />
+        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="42" />
         <Property SymbolName="SpeedRegP" Value="3500" />
-        <Property SymbolName="SpeedRegI" Value="65" />
+        <Property SymbolName="SpeedRegI" Value="60" />
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="125" />
         <Property SymbolName="RegSupervisionFailureDelay" Value="1000" />
-        <Property SymbolName="SteerEncScale" Value="1980" />
-        <Property SymbolName="SteerEncOffset" Value="-350" />
+        <Property SymbolName="SteerEncScale" Value="6000" />
+        <Property SymbolName="SteerEncOffset" Value="0" />
         <Property SymbolName="PosRegP" Value="80" />
         <Property SymbolName="PosRegI" Value="0" />
         <Property SymbolName="LimOutMax" Value="512" />
@@ -1135,7 +1135,7 @@
         <Property SymbolName="Error" Value="" />
         <Property SymbolName="SwitchOnDisabled" Value="" />
         <Property SymbolName="Warning" Value="" />
-        <Property SymbolName="DriveEncScale" Value="4535" />
+        <Property SymbolName="DriveEncScale" Value="2561" />
         <Property SymbolName="DriveEncDist" Value="" />
         <Property SymbolName="DriveEncSpeed" Value="" />
         <Property SymbolName="DigitalInput2" Value="" PublicName="DigitalInput2_OverRelayRS" Remark="Digital Input 2 value, pin 14" AliasName="DigitalInput2_OverRelayRS" />
@@ -1167,17 +1167,17 @@
         <Property SymbolName="SdoBufferSize" Value="" />
         <Property SymbolName="MotorCurrentRegP" Value="160" />
         <Property SymbolName="MotorCurrentRegI" Value="60" />
-        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="20" />
-        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="20" />
+        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="42" />
+        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="42" />
         <Property SymbolName="MaxTorqueCurrentChange" Value="250" />
-        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="20" />
-        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="20" />
+        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="42" />
+        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="42" />
         <Property SymbolName="SpeedRegP" Value="3500" />
-        <Property SymbolName="SpeedRegI" Value="65" />
+        <Property SymbolName="SpeedRegI" Value="60" />
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="125" />
         <Property SymbolName="RegSupervisionFailureDelay" Value="1000" />
-        <Property SymbolName="SteerEncScale" Value="1980" />
-        <Property SymbolName="SteerEncOffset" Value="550" />
+        <Property SymbolName="SteerEncScale" Value="6000" />
+        <Property SymbolName="SteerEncOffset" Value="0" />
         <Property SymbolName="PosRegP" Value="80" />
         <Property SymbolName="PosRegI" Value="0" />
         <Property SymbolName="LimOutMax" Value="512" />
@@ -1318,11 +1318,11 @@
         <Property SymbolName="DigitalOutput6" Value="" PublicName="DigitalOutput6_LED_INPOS" Remark="Digital Output 6 value, pin #B1" AliasName="DigitalOutput6_LED_INPOS" />
         <Property SymbolName="DigitalOutput7" Value="" PublicName="DigitalOutput7_LED_STR" Remark="Digital Output 7 value, pin #B3" AliasName="DigitalOutput7_LED_STR" />
         <Property SymbolName="DigitalOutput8" Value="" PublicName="DigitalOutput8_LED_RST" Remark="Digital Output 8 value, pin #B2" AliasName="DigitalOutput8_LED_RST" />
-        <Property SymbolName="DigitalOutput12" Value="" PublicName="DigitalOutput12" Remark="Digital Output 12 value, pin #A3" />
+        <Property SymbolName="DigitalOutput12" Value="" PublicName="DigitalOutput12_LEFTMGS" Remark="Digital Output 12 value, pin #A3" AliasName="DigitalOutput12_LEFTMGS" />
         <Property SymbolName="DigitalOutput13" Value="" PublicName="DigitalOutput13_PWR_OFF" Remark="Digital Output 13 value, pin #A10" AliasName="DigitalOutput13_PWR_OFF" />
         <Property SymbolName="DigitalOutput14" Value="" PublicName="DigitalOutput14_LED_BRK" Remark="Digital Output 14 value, pin #A2" AliasName="DigitalOutput14_LED_BRK" />
         <Property SymbolName="DigitalOutput15" Value="" PublicName="DigitalOutput15" Remark="Digital Output 15 value, pin #A9" />
-        <Property SymbolName="DigitalOutput16" Value="" PublicName="DigitalOutput16_Charger" Remark="Digital Output 16 value, pin #A16" AliasName="DigitalOutput16_Charger" />
+        <Property SymbolName="DigitalOutput16" Value="" PublicName="DigitalOutput16_RIGHTMGS" Remark="Digital Output 16 value, pin #A16" AliasName="DigitalOutput16_RIGHTMGS" />
         <Property SymbolName="AnalogInput1" Value="" PublicName="AnalogInput1" Remark="Analog Input 1 value, pin #B15. The value is the applied input voltage (in Volts) * Scale + Offset" />
         <Property SymbolName="AnalogInput2" Value="" PublicName="AnalogInput2" Remark="Analog Input 2 value, pin #B17. The value is the applied input voltage (in Volts) * Scale + Offset" />
         <Property SymbolName="AnalogInput3" Value="" PublicName="AnalogInput3" Remark="Analog Input 3 value, pin #B10. The value is the applied input voltage (in Volts) * Scale + Offset" />

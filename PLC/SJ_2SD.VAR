@@ -11,8 +11,8 @@ FILE5=\Standard_functions\Display\.svn
 FILE4=\Standard_functions\Autoload\.svn
 FILE7=\Standard_functions\Safety\.svn
 FILE6=\Standard_functions\FlexSegment\.svn
-FILE9=\Standard_functions\CarrierControl\.svn
 COUNT=10
+FILE9=\Standard_functions\CarrierControl\.svn
 FILE8=\Standard_functions\Regulators\.svn
 FILE10=
 FILE1=\.svn
@@ -20,7 +20,10 @@ FILE0=\Subroutines\.svn
 [ENCODING]
 UTF8=1
 [LIBRARY]
-COUNT=2
+FILE3=\LIB\SMARTMOTION\SMARTMOTION.VAR
+FILE2=\LIB\NDC8LIB.1.2.8\NDC8LIB.VAR
+FILE4=\LIB\SFCLIB\SFCLIB.VAR
+COUNT=5
 FILE1=\LIB\NDC8LIB.1.2.6\NDC8LIB.VAR
 FILE0=\LIB\PORTABILITY\PORTABILITY.VAR
 [ST_FUNCTIONBLOCK]

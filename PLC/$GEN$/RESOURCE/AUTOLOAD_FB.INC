@@ -116,8 +116,8 @@ TYPE CAN_IO_3_T :
         DigitalInput2_SteerLimitF_R : BOOL ;   (* Digital Input 2 value  *)
         DigitalInput3_SteerLimitR_L : BOOL ;   (* Digital Input 3 value  *)
         DigitalInput4_SteerLimitR_R : BOOL ;   (* Digital Input 4 value  *)
-        DigitalInput5_LIMF_O : BOOL ;   (* Digital Input 5 value  *)
-        DigitalInput6_LIMR_O : BOOL ;   (* Digital Input 6 value  *)
+        DigitalInput5 : BOOL ;   (* Digital Input 5 value  *)
+        DigitalInput6 : BOOL ;   (* Digital Input 6 value  *)
         DigitalInput7 : BOOL ;   (* Digital Input 7 value  *)
         DigitalInput8 : BOOL ;   (* Digital Input 8 value  *)
         DigitalInput9_AreaF_IN1 : BOOL ;   (* Digital Input 9 value  *)
@@ -243,11 +243,11 @@ TYPE SDIO_T :
         DigitalOutput6_LED_INPOS : BOOL ;   (* Digital Output 6 value, pin #B1  *)
         DigitalOutput7_LED_STR : BOOL ;   (* Digital Output 7 value, pin #B3  *)
         DigitalOutput8_LED_RST : BOOL ;   (* Digital Output 8 value, pin #B2  *)
-        DigitalOutput12 : BOOL ;   (* Digital Output 12 value, pin #A3  *)
+        DigitalOutput12_LEFTMGS : BOOL ;   (* Digital Output 12 value, pin #A3  *)
         DigitalOutput13_PWR_OFF : BOOL ;   (* Digital Output 13 value, pin #A10  *)
         DigitalOutput14_LED_BRK : BOOL ;   (* Digital Output 14 value, pin #A2  *)
         DigitalOutput15 : BOOL ;   (* Digital Output 15 value, pin #A9  *)
-        DigitalOutput16_Charger : BOOL ;   (* Digital Output 16 value, pin #A16  *)
+        DigitalOutput16_RIGHTMGS : BOOL ;   (* Digital Output 16 value, pin #A16  *)
         AnalogInput1 : INT ;   (* Analog Input 1 value, pin #B15. The value is the applied input voltage (in Volts) * Scale + Offset  *)
         AnalogInput2 : INT ;   (* Analog Input 2 value, pin #B17. The value is the applied input voltage (in Volts) * Scale + Offset  *)
         AnalogInput3 : INT ;   (* Analog Input 3 value, pin #B10. The value is the applied input voltage (in Volts) * Scale + Offset  *)
@@ -1713,8 +1713,8 @@ FUNCTION TRACE_BOOL : BOOL
 
 (* PROJEKT PROTOTYPEN *)
 
-$INCLUDE "D:\SJ_2SD_G45_CVC700_FULLMOD_20220309\PLC\$GEN$\OPERATIONFAIL_FB.PTT"
-$INCLUDE "D:\SJ_2SD_G45_CVC700_FULLMOD_20220309\PLC\$GEN$\LOADOPDONE_FB.PTT"
+$INCLUDE "D:\SJ_2SD_G5_CVC700\PLC\$GEN$\OPERATIONFAIL_FB.PTT"
+$INCLUDE "C:\PROGRAMDATA\INFOTEAM SOFTWARE\OPENPCS2008\OPENPCS.520\LIB\NDC8LIB.1.2.8\$GEN$\LOADOPDONE_FB.PTT"
 
 
 (* EXTERNE POEs *)

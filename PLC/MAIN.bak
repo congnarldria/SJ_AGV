@@ -617,7 +617,7 @@ else
 	StopBatLowOT := FALSE;
 end_if;
 
-g_PowerOffFlag := (g_PowerOffFlag_Error or g_PowerOffFlag_Block or g_PowerOffFlag_Lost or g_PowerOffFlag_PLC or g_PowerOffFlag_OMPLC or g_PowerOffFlag_OP) and NDC8.PLC_Application.TxStatusBit9_EStop = FALSE and NDC8.LayoutPosition.Point <> 0;
+g_PowerOffFlag := g_PowerOffFlag_Error or g_PowerOffFlag_Block or g_PowerOffFlag_Lost or g_PowerOffFlag_PLC or g_PowerOffFlag_OMPLC or g_PowerOffFlag_OP;
 
 (* Display Stop String update *)
 InStatus 			:= g_ErrorCode<>0;
@@ -752,6 +752,9 @@ Display();
 OPTX2();
 
 DataUpdate();
+
+
+
 
 
 

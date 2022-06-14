@@ -1473,17 +1473,12 @@ END_VAR
 
 			JMP ODK_END_IF_00000000000000J
 
-(** 	elsif not NDC8.DCD_5.DigitalInput2_OverRelayFS or not NDC8.DCD_5.DigitalInput3_OverRelayFD or not NDC8.DCD_7.DigitalInput2_OverRelayRS or not NDC8.DCD_7.DigitalInput3_OverRelayRD then **)
+(** 	{*elsif not NDC8.DCD_5.DigitalInput2_OverRelayFS or not NDC8.DCD_5.DigitalInput3_OverRelayFD or not NDC8.DCD_7.DigitalInput2_OverRelayRS or not NDC8.DCD_7.DigitalInput3_OverRelayRD then*} **)
+(** 	elsif not NDC8.DCD_5.DigitalInput3_OverRelayFD or not NDC8.DCD_7.DigitalInput3_OverRelayRD then **)
 		(* elseif - Cond *) 
 		ODK_SKIP_00000000000000J_00000000000000G:
-		LD NDC8.DCD_5.DigitalInput2_OverRelayFS
+		LD NDC8.DCD_5.DigitalInput3_OverRelayFD
 		NOT
-		OR ( NDC8.DCD_5.DigitalInput3_OverRelayFD
-			NOT
-		)
-		OR ( NDC8.DCD_7.DigitalInput2_OverRelayRS
-			NOT
-		)
 		OR ( NDC8.DCD_7.DigitalInput3_OverRelayRD
 			NOT
 		)
@@ -3153,6 +3148,9 @@ END_VAR
 	(* call - Stmt *)
 	CAL DataUpdate
 
+(**  **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)
