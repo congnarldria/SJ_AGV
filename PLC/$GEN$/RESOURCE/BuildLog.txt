@@ -630,7 +630,7 @@ compilation of all segments finished successfully!
 Linking resource: RESOURCE ...
 Linking: D:\SJ_2SD_G5_CVC700\PLC\$GEN$\RESOURCE\$TASK00$.CRD.
 Linking: D:\SJ_2SD_G5_CVC700\PLC\$GEN$\RESOURCE\MAIN.CRD.
-Code size in bytes: 938945.
+Code size in bytes: 939074.
 Number of segments: 411.
 0 error(s), 0 warning(s) - D:\SJ_2SD_G5_CVC700\PLC\$GEN$\RESOURCE\RESOURCE.PCD.
 

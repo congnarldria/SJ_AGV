@@ -167,10 +167,10 @@ END_VAR
 		LD FALSE
 		ST PLC_TX04_Bit_ChrgCmdL_A
 
-(** 	NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE; **)
+(** 	NDC8.SDIO.DigitalOutput16_RIGHTMGS := TRUE; **)
 		(* assign - Stmt *)
 		LD TRUE
-		ST NDC8.SDIO.DigitalOutput12_LEFTMGS
+		ST NDC8.SDIO.DigitalOutput16_RIGHTMGS
 
 (** 	PLC_TX04_Bit_ChrgCmdR_A := TRUE; **)
 		(* assign - Stmt *)
@@ -202,15 +202,20 @@ END_VAR
 
 		(* elsif - Stmts *)
 
-(** 	NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE; **)
-		(* assign - Stmt *)
-		LD FALSE
-		ST NDC8.SDIO.DigitalOutput12_LEFTMGS
-
 (** 	PLC_TX04_Bit_ChrgCmdL_A := FALSE; **)
 		(* assign - Stmt *)
 		LD FALSE
 		ST PLC_TX04_Bit_ChrgCmdL_A
+
+(** 	NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;	 **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST NDC8.SDIO.DigitalOutput16_RIGHTMGS
+
+(** 	PLC_TX04_Bit_ChrgCmdR_A := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST PLC_TX04_Bit_ChrgCmdR_A
 
 (** 	StopCharge := FALSE; **)
 		(* assign - Stmt *)
@@ -1212,6 +1217,8 @@ END_VAR
 	ODK_SKIP_00000000000000V_000000000000001:
 	ODK_END_IF_00000000000000V:
 
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

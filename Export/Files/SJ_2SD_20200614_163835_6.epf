@@ -1,0 +1,1217 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Product xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="CVC700" ArticleNumber="P46164V1.0.0" TimeStamp="1592152730" xmlns="urn:NDC8EpfDescriptionFile">
+  <Dictionary>
+    <Parameters>
+      <Group SymbolName="NavInit">
+        <Parameter SymbolName="Method" ObjectType="VAR" Index="0x200B" SubIndex="1" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Target" ObjectType="VAR" Index="0x200B" SubIndex="2" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="TargetX" ObjectType="VAR" Index="0x200B" SubIndex="3" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="TargetY" ObjectType="VAR" Index="0x200B" SubIndex="4" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="TargetAngle" ObjectType="VAR" Index="0x200B" SubIndex="5" DataType="INTEGER32" AccessType="rw" Unit="1/100 degree (cdeg)" />
+        <Parameter SymbolName="RequestEN" ObjectType="VAR" Index="0x200B" SubIndex="6" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="RequestENO" ObjectType="VAR" Index="0x200B" SubIndex="7" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Error" ObjectType="VAR" Index="0x200B" SubIndex="8" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="PointSearchLimit" ObjectType="VAR" Index="0x200B" SubIndex="9" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="PointSearchAngleLimit" ObjectType="VAR" Index="0x200B" SubIndex="10" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="LostSearchLimit" ObjectType="VAR" Index="0x200B" SubIndex="11" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+      </Group>
+      <Group SymbolName="Mcd">
+        <Parameter SymbolName="Speed" ObjectType="VAR" Index="0x200C" SubIndex="1" DataType="INTEGER32" AccessType="ro" Unit="mm/s" />
+        <Parameter SymbolName="Angle" ObjectType="VAR" Index="0x200C" SubIndex="2" DataType="INTEGER32" AccessType="ro" Unit="deg" />
+        <Parameter SymbolName="Buttons" ObjectType="VAR" Index="0x200C" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="DeviceType" ObjectType="VAR" Index="0x200C" SubIndex="4" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="Button1" ObjectType="VAR" Index="0x200C" SubIndex="5" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Button2" ObjectType="VAR" Index="0x200C" SubIndex="6" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Button3" ObjectType="VAR" Index="0x200C" SubIndex="7" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Button4" ObjectType="VAR" Index="0x200C" SubIndex="8" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Button5" ObjectType="VAR" Index="0x200C" SubIndex="9" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Button6" ObjectType="VAR" Index="0x200C" SubIndex="10" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Button7" ObjectType="VAR" Index="0x200C" SubIndex="11" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Button8" ObjectType="VAR" Index="0x200C" SubIndex="12" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Button9" ObjectType="VAR" Index="0x200C" SubIndex="13" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Button10" ObjectType="VAR" Index="0x200C" SubIndex="14" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Button11" ObjectType="VAR" Index="0x200C" SubIndex="15" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="McdHighSpeed" ObjectType="VAR" Index="0x200C" SubIndex="16" DataType="INTEGER32" AccessType="rw" Unit="mm/s" />
+        <Parameter SymbolName="McdLowSpeed" ObjectType="VAR" Index="0x200C" SubIndex="17" DataType="INTEGER32" AccessType="rw" Unit="mm/s" />
+        <Parameter SymbolName="Valid" ObjectType="VAR" Index="0x200C" SubIndex="18" DataType="BOOLEAN" AccessType="ro" />
+      </Group>
+      <Group SymbolName="Position">
+        <Parameter SymbolName="X" ObjectType="VAR" Index="0x200D" SubIndex="1" DataType="INTEGER32" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="Y" ObjectType="VAR" Index="0x200D" SubIndex="2" DataType="INTEGER32" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="Angle" ObjectType="VAR" Index="0x200D" SubIndex="3" DataType="INTEGER32" AccessType="ro" Unit="deg" />
+        <Parameter SymbolName="Angle2" ObjectType="VAR" Index="0x200D" SubIndex="4" DataType="INTEGER32" AccessType="ro" Unit="cdeg" />
+        <Parameter SymbolName="NavLevel" ObjectType="VAR" Index="0x200D" SubIndex="5" DataType="INTEGER32" AccessType="ro" Unit="%" />
+        <Parameter SymbolName="Valid" ObjectType="VAR" Index="0x200D" SubIndex="6" DataType="BOOLEAN" AccessType="ro" />
+      </Group>
+      <Group SymbolName="Guidance">
+        <Parameter SymbolName="SafetyZoneX" ObjectType="VAR" Index="0x200E" SubIndex="1" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="SafetyZoneY" ObjectType="VAR" Index="0x200E" SubIndex="2" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="SafetyZoneTh" ObjectType="VAR" Index="0x200E" SubIndex="3" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="OutsideSafetyZone" ObjectType="VAR" Index="0x200E" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="LateralWeight" ObjectType="VAR" Index="0x200E" SubIndex="5" DataType="INTEGER32" AccessType="rw" Factor="100" Unit="1/m^2" />
+        <Parameter SymbolName="HeadingWeight" ObjectType="VAR" Index="0x200E" SubIndex="6" DataType="INTEGER32" AccessType="rw" Factor="100" Unit="1/rad^2" />
+        <Parameter SymbolName="UsePredictedPosition" ObjectType="VAR" Index="0x200E" SubIndex="7" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="CurvatureLimitsControl" ObjectType="VAR" Index="0x200E" SubIndex="8" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="StrictDiffMode" ObjectType="VAR" Index="0x200E" SubIndex="9" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="LoopTime" ObjectType="VAR" Index="0x200E" SubIndex="10" DataType="INTEGER32" AccessType="ro" Unit="ms" />
+        <Parameter SymbolName="StatusTrigDistance" ObjectType="VAR" Index="0x200E" SubIndex="11" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="DevPosValid" ObjectType="VAR" Index="0x200E" SubIndex="12" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DevX" ObjectType="VAR" Index="0x200E" SubIndex="13" DataType="INTEGER32" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="DevY" ObjectType="VAR" Index="0x200E" SubIndex="14" DataType="INTEGER32" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="DevAngle" ObjectType="VAR" Index="0x200E" SubIndex="15" DataType="INTEGER32" AccessType="ro" Unit="cdeg" />
+        <Parameter SymbolName="DistanceToStop" ObjectType="VAR" Index="0x200E" SubIndex="16" DataType="INTEGER32" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="StopReason" ObjectType="VAR" Index="0x200E" SubIndex="17" DataType="INTEGER32" AccessType="ro" />
+      </Group>
+      <Group SymbolName="Autoinsert">
+        <Parameter SymbolName="Speed" ObjectType="VAR" Index="0x200F" SubIndex="1" DataType="INTEGER32" AccessType="rw" Unit="mm/s" />
+        <Parameter SymbolName="AllowBackwards" ObjectType="VAR" Index="0x200F" SubIndex="2" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SearchAngleLimit" ObjectType="VAR" Index="0x200F" SubIndex="3" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="SearchDistance" ObjectType="VAR" Index="0x200F" SubIndex="4" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="PointAngleLimit" ObjectType="VAR" Index="0x200F" SubIndex="5" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="PointTolerance" ObjectType="VAR" Index="0x200F" SubIndex="6" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="PointInsertInhibit" ObjectType="VAR" Index="0x200F" SubIndex="7" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="OnSegment" ObjectType="VAR" Index="0x200F" SubIndex="8" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Target" ObjectType="VAR" Index="0x200F" SubIndex="9" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="QuickEnable" ObjectType="VAR" Index="0x200F" SubIndex="10" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="StatusID" ObjectType="VAR" Index="0x200F" SubIndex="11" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="StatusText" ObjectType="VAR" Index="0x200F" SubIndex="12" DataType="VISIBLE_STRING" AccessType="ro" />
+      </Group>
+      <Group SymbolName="Opt">
+        <Parameter SymbolName="VehicleStatusID" ObjectType="VAR" Index="0x2010" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="VehicleStatusInlineValue" ObjectType="VAR" Index="0x2010" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="PlcVehicleStatusID" ObjectType="VAR" Index="0x2010" SubIndex="3" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="PlcVehicleStatusInlineValue" ObjectType="VAR" Index="0x2010" SubIndex="4" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="PlcEnable" ObjectType="VAR" Index="0x2010" SubIndex="5" DataType="BOOLEAN" AccessType="rw" />
+      </Group>
+      <Group SymbolName="LayoutPosition">
+        <Parameter SymbolName="InSystem" ObjectType="VAR" Index="0x2011" SubIndex="1" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Point" ObjectType="VAR" Index="0x2011" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Segment" ObjectType="VAR" Index="0x2011" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Distance" ObjectType="VAR" Index="0x2011" SubIndex="4" DataType="INTEGER32" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="RemainingDistance" ObjectType="VAR" Index="0x2011" SubIndex="5" DataType="INTEGER32" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="MaxSpeed" ObjectType="VAR" Index="0x2011" SubIndex="6" DataType="INTEGER32" AccessType="ro" Unit="mm/s" />
+      </Group>
+      <Group SymbolName="Automatic">
+        <Parameter SymbolName="DestPoint" ObjectType="VAR" Index="0x2012" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="ExecDriveCommand" ObjectType="VAR" Index="0x2012" SubIndex="2" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="CurrentOrderMode" ObjectType="VAR" Index="0x2012" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="StartupOrderMode" ObjectType="VAR" Index="0x2012" SubIndex="4" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="SetOrderMode" ObjectType="VAR" Index="0x2012" SubIndex="5" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="SetOrderModeError" ObjectType="VAR" Index="0x2012" SubIndex="6" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="SetOrderModeEN" ObjectType="VAR" Index="0x2012" SubIndex="7" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SetOrderModeENO" ObjectType="VAR" Index="0x2012" SubIndex="8" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="StatusID" ObjectType="VAR" Index="0x2012" SubIndex="9" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="StatusText" ObjectType="VAR" Index="0x2012" SubIndex="10" DataType="VISIBLE_STRING" AccessType="ro" />
+      </Group>
+      <Group SymbolName="Manual">
+        <Parameter SymbolName="PlcAngle" ObjectType="VAR" Index="0x2013" SubIndex="1" DataType="INTEGER32" AccessType="rw" Unit="cdeg" />
+        <Parameter SymbolName="PlcSpeed" ObjectType="VAR" Index="0x2013" SubIndex="2" DataType="INTEGER32" AccessType="rw" Unit="mm/s" />
+        <Parameter SymbolName="PlcSteerMode" ObjectType="VAR" Index="0x2013" SubIndex="3" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="PlcSetOperationMode" ObjectType="VAR" Index="0x2013" SubIndex="4" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="PlcSelectMask" ObjectType="VAR" Index="0x2013" SubIndex="5" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="PlcSelect" ObjectType="VAR" Index="0x2013" SubIndex="6" DataType="BOOLEAN" AccessType="rw" />
+      </Group>
+      <Group SymbolName="BlackBox">
+        <Parameter SymbolName="TrigENO" ObjectType="VAR" Index="0x2014" SubIndex="1" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="TrigEN" ObjectType="VAR" Index="0x2014" SubIndex="2" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TrigReason" ObjectType="VAR" Index="0x2014" SubIndex="3" DataType="VISIBLE_STRING" AccessType="rw" />
+      </Group>
+      <Group SymbolName="LocalOrder">
+        <Parameter SymbolName="DestPoint" ObjectType="VAR" Index="0x2015" SubIndex="1" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="OpCode" ObjectType="VAR" Index="0x2015" SubIndex="2" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="OpParam1" ObjectType="VAR" Index="0x2015" SubIndex="3" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="OpParam2" ObjectType="VAR" Index="0x2015" SubIndex="4" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Error" ObjectType="VAR" Index="0x2015" SubIndex="5" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="OrderEN" ObjectType="VAR" Index="0x2015" SubIndex="6" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="OrderENO" ObjectType="VAR" Index="0x2015" SubIndex="7" DataType="BOOLEAN" AccessType="ro" />
+      </Group>
+      <Group SymbolName="SSIO">
+        <Parameter SymbolName="LogicalLine" ObjectType="VAR" Index="0x2016" SubIndex="1" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="UnitNumber" ObjectType="VAR" Index="0x2016" SubIndex="2" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="InputOutputID" ObjectType="VAR" Index="0x2016" SubIndex="3" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="RequestType" ObjectType="VAR" Index="0x2016" SubIndex="4" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="SetStatus" ObjectType="VAR" Index="0x2016" SubIndex="5" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Status" ObjectType="VAR" Index="0x2016" SubIndex="6" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="SSIO_EN" ObjectType="VAR" Index="0x2016" SubIndex="7" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SSIO_ENO" ObjectType="VAR" Index="0x2016" SubIndex="8" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Error" ObjectType="VAR" Index="0x2016" SubIndex="9" DataType="INTEGER32" AccessType="ro" />
+      </Group>
+      <Group SymbolName="SegmentTrigger">
+        <Parameter SymbolName="Value" ObjectType="VAR" Index="0x2017" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Value2" ObjectType="VAR" Index="0x2017" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Bit0" ObjectType="VAR" Index="0x2017" SubIndex="3" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit1" ObjectType="VAR" Index="0x2017" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit2" ObjectType="VAR" Index="0x2017" SubIndex="5" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit3" ObjectType="VAR" Index="0x2017" SubIndex="6" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit4" ObjectType="VAR" Index="0x2017" SubIndex="7" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit5" ObjectType="VAR" Index="0x2017" SubIndex="8" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit6" ObjectType="VAR" Index="0x2017" SubIndex="9" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit7" ObjectType="VAR" Index="0x2017" SubIndex="10" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit8" ObjectType="VAR" Index="0x2017" SubIndex="11" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit9" ObjectType="VAR" Index="0x2017" SubIndex="12" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit10" ObjectType="VAR" Index="0x2017" SubIndex="13" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit11" ObjectType="VAR" Index="0x2017" SubIndex="14" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit12" ObjectType="VAR" Index="0x2017" SubIndex="15" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit13" ObjectType="VAR" Index="0x2017" SubIndex="16" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit14" ObjectType="VAR" Index="0x2017" SubIndex="17" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit15" ObjectType="VAR" Index="0x2017" SubIndex="18" DataType="BOOLEAN" AccessType="ro" />
+      </Group>
+      <Group SymbolName="PointTrigger">
+        <Parameter SymbolName="Value" ObjectType="VAR" Index="0x2018" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Value2" ObjectType="VAR" Index="0x2018" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Bit0" ObjectType="VAR" Index="0x2018" SubIndex="3" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit1" ObjectType="VAR" Index="0x2018" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit2" ObjectType="VAR" Index="0x2018" SubIndex="5" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit3" ObjectType="VAR" Index="0x2018" SubIndex="6" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit4" ObjectType="VAR" Index="0x2018" SubIndex="7" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit5" ObjectType="VAR" Index="0x2018" SubIndex="8" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit6" ObjectType="VAR" Index="0x2018" SubIndex="9" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit7" ObjectType="VAR" Index="0x2018" SubIndex="10" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit8" ObjectType="VAR" Index="0x2018" SubIndex="11" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit9" ObjectType="VAR" Index="0x2018" SubIndex="12" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit10" ObjectType="VAR" Index="0x2018" SubIndex="13" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit11" ObjectType="VAR" Index="0x2018" SubIndex="14" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit12" ObjectType="VAR" Index="0x2018" SubIndex="15" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit13" ObjectType="VAR" Index="0x2018" SubIndex="16" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit14" ObjectType="VAR" Index="0x2018" SubIndex="17" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Bit15" ObjectType="VAR" Index="0x2018" SubIndex="18" DataType="BOOLEAN" AccessType="ro" />
+      </Group>
+      <Group SymbolName="LoadDocking">
+        <Parameter SymbolName="OnLastSegment" ObjectType="VAR" Index="0x2019" SubIndex="1" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DistOpPoint" ObjectType="VAR" Index="0x2019" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="RequestDistance" ObjectType="VAR" Index="0x2019" SubIndex="3" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="PlcDistError" ObjectType="VAR" Index="0x2019" SubIndex="4" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="PlcDistENO" ObjectType="VAR" Index="0x2019" SubIndex="5" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="PlcDistance" ObjectType="VAR" Index="0x2019" SubIndex="6" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="PlcDistFromEnd" ObjectType="VAR" Index="0x2019" SubIndex="7" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="PlcDistEN" ObjectType="VAR" Index="0x2019" SubIndex="8" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="OnTarget" ObjectType="VAR" Index="0x2019" SubIndex="9" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="ArrivedEN" ObjectType="VAR" Index="0x2019" SubIndex="10" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="ArrivedENO" ObjectType="VAR" Index="0x2019" SubIndex="11" DataType="BOOLEAN" AccessType="ro" />
+      </Group>
+      <Group SymbolName="LoadOperation">
+        <Parameter SymbolName="OperationCode" ObjectType="VAR" Index="0x201A" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="OperationParam1" ObjectType="VAR" Index="0x201A" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="OperationParam2" ObjectType="VAR" Index="0x201A" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="CancelOperation" ObjectType="VAR" Index="0x201A" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="LoadOpDoneError" ObjectType="VAR" Index="0x201A" SubIndex="5" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="LoadOpDoneResult" ObjectType="VAR" Index="0x201A" SubIndex="6" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="LoadOpDoneEN" ObjectType="VAR" Index="0x201A" SubIndex="7" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="LoadOpDoneENO" ObjectType="VAR" Index="0x201A" SubIndex="8" DataType="BOOLEAN" AccessType="ro" />
+      </Group>
+      <Group SymbolName="CANBus1">
+        <Parameter SymbolName="BusID" ObjectType="VAR" Index="0x201B" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="MasterNodeID" ObjectType="VAR" Index="0x201B" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="LoadBase" ObjectType="VAR" Index="0x201B" SubIndex="3" DataType="INTEGER32" AccessType="ro" Unit="%" />
+        <Parameter SymbolName="Bitrate" ObjectType="VAR" Index="0x201B" SubIndex="4" DataType="INTEGER32" AccessType="ro" Unit="kBit/s" />
+        <Parameter SymbolName="NMTMaster" ObjectType="VAR" Index="0x201B" SubIndex="5" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SlaveComponent" ObjectType="VAR" Index="0x201B" SubIndex="6" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="SyncGeneration" ObjectType="VAR" Index="0x201B" SubIndex="7" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="ReadSDO_NodeID" ObjectType="VAR" Index="0x201B" SubIndex="8" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_ObjectIndex" ObjectType="VAR" Index="0x201B" SubIndex="9" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_SubIndex" ObjectType="VAR" Index="0x201B" SubIndex="10" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_Value" ObjectType="VAR" Index="0x201B" SubIndex="11" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_StrValue" ObjectType="VAR" Index="0x201B" SubIndex="12" DataType="VISIBLE_STRING" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_DataType" ObjectType="VAR" Index="0x201B" SubIndex="13" DataType="VISIBLE_STRING" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_Valid" ObjectType="VAR" Index="0x201B" SubIndex="14" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="ReadSDO_ErrorText" ObjectType="VAR" Index="0x201B" SubIndex="15" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="ReadSDO_EN" ObjectType="VAR" Index="0x201B" SubIndex="16" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_ENO" ObjectType="VAR" Index="0x201B" SubIndex="17" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="WriteSDO_NodeID" ObjectType="VAR" Index="0x201B" SubIndex="18" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_ObjectIndex" ObjectType="VAR" Index="0x201B" SubIndex="19" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_SubIndex" ObjectType="VAR" Index="0x201B" SubIndex="20" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_Value" ObjectType="VAR" Index="0x201B" SubIndex="21" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_StrValue" ObjectType="VAR" Index="0x201B" SubIndex="22" DataType="VISIBLE_STRING" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_DataType" ObjectType="VAR" Index="0x201B" SubIndex="23" DataType="VISIBLE_STRING" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_Valid" ObjectType="VAR" Index="0x201B" SubIndex="24" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="WriteSDO_ErrorText" ObjectType="VAR" Index="0x201B" SubIndex="25" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="WriteSDO_EN" ObjectType="VAR" Index="0x201B" SubIndex="26" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_ENO" ObjectType="VAR" Index="0x201B" SubIndex="27" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="State" ObjectType="VAR" Index="0x201B" SubIndex="28" DataType="INTEGER32" AccessType="ro" />
+      </Group>
+      <Group SymbolName="CANBus2">
+        <Parameter SymbolName="BusID" ObjectType="VAR" Index="0x201C" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="MasterNodeID" ObjectType="VAR" Index="0x201C" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="LoadBase" ObjectType="VAR" Index="0x201C" SubIndex="3" DataType="INTEGER32" AccessType="ro" Unit="%" />
+        <Parameter SymbolName="Bitrate" ObjectType="VAR" Index="0x201C" SubIndex="4" DataType="INTEGER32" AccessType="ro" Unit="kBit/s" />
+        <Parameter SymbolName="NMTMaster" ObjectType="VAR" Index="0x201C" SubIndex="5" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SlaveComponent" ObjectType="VAR" Index="0x201C" SubIndex="6" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="SyncGeneration" ObjectType="VAR" Index="0x201C" SubIndex="7" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="ReadSDO_NodeID" ObjectType="VAR" Index="0x201C" SubIndex="8" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_ObjectIndex" ObjectType="VAR" Index="0x201C" SubIndex="9" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_SubIndex" ObjectType="VAR" Index="0x201C" SubIndex="10" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_Value" ObjectType="VAR" Index="0x201C" SubIndex="11" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_StrValue" ObjectType="VAR" Index="0x201C" SubIndex="12" DataType="VISIBLE_STRING" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_DataType" ObjectType="VAR" Index="0x201C" SubIndex="13" DataType="VISIBLE_STRING" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_Valid" ObjectType="VAR" Index="0x201C" SubIndex="14" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="ReadSDO_ErrorText" ObjectType="VAR" Index="0x201C" SubIndex="15" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="ReadSDO_EN" ObjectType="VAR" Index="0x201C" SubIndex="16" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="ReadSDO_ENO" ObjectType="VAR" Index="0x201C" SubIndex="17" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="WriteSDO_NodeID" ObjectType="VAR" Index="0x201C" SubIndex="18" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_ObjectIndex" ObjectType="VAR" Index="0x201C" SubIndex="19" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_SubIndex" ObjectType="VAR" Index="0x201C" SubIndex="20" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_Value" ObjectType="VAR" Index="0x201C" SubIndex="21" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_StrValue" ObjectType="VAR" Index="0x201C" SubIndex="22" DataType="VISIBLE_STRING" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_DataType" ObjectType="VAR" Index="0x201C" SubIndex="23" DataType="VISIBLE_STRING" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_Valid" ObjectType="VAR" Index="0x201C" SubIndex="24" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="WriteSDO_ErrorText" ObjectType="VAR" Index="0x201C" SubIndex="25" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="WriteSDO_EN" ObjectType="VAR" Index="0x201C" SubIndex="26" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="WriteSDO_ENO" ObjectType="VAR" Index="0x201C" SubIndex="27" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="State" ObjectType="VAR" Index="0x201C" SubIndex="28" DataType="INTEGER32" AccessType="ro" />
+      </Group>
+      <Group SymbolName="VehicleControl">
+        <Parameter SymbolName="SetSpeed" ObjectType="VAR" Index="0x201D" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="TravelDir" ObjectType="VAR" Index="0x201D" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Moving" ObjectType="VAR" Index="0x201D" SubIndex="3" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Estop" ObjectType="VAR" Index="0x201D" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Stop" ObjectType="VAR" Index="0x201D" SubIndex="5" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="QuickStop" ObjectType="VAR" Index="0x201D" SubIndex="6" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SlowDown" ObjectType="VAR" Index="0x201D" SubIndex="7" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SlowDownSpeed" ObjectType="VAR" Index="0x201D" SubIndex="8" DataType="INTEGER32" AccessType="rw" Unit="mm/s" />
+        <Parameter SymbolName="OperationMode" ObjectType="VAR" Index="0x201D" SubIndex="9" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="SensorStopInputSignal" ObjectType="VAR" Index="0x201D" SubIndex="10" DataType="VISIBLE_STRING" AccessType="rw" />
+        <Parameter SymbolName="SensorStopInputPolarity" ObjectType="VAR" Index="0x201D" SubIndex="11" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SensorStopEnable" ObjectType="VAR" Index="0x201D" SubIndex="12" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="BrakeOutputSignal" ObjectType="VAR" Index="0x201D" SubIndex="13" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="BrakeOutputPolarity" ObjectType="VAR" Index="0x201D" SubIndex="14" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="BrakeOnDelay" ObjectType="VAR" Index="0x201D" SubIndex="15" DataType="INTEGER32" AccessType="rw" Unit="ms" />
+        <Parameter SymbolName="BrakeOffDelay" ObjectType="VAR" Index="0x201D" SubIndex="16" DataType="INTEGER32" AccessType="rw" Unit="ms" />
+        <Parameter SymbolName="EstopInputSignal" ObjectType="VAR" Index="0x201D" SubIndex="17" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="EstopInputPolarity" ObjectType="VAR" Index="0x201D" SubIndex="18" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="HaltRequest" ObjectType="VAR" Index="0x201D" SubIndex="19" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="HaltRequestDone" ObjectType="VAR" Index="0x201D" SubIndex="20" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="PreventAppDownload" ObjectType="VAR" Index="0x201D" SubIndex="21" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="PlcSetSteerEnable" ObjectType="VAR" Index="0x201D" SubIndex="22" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="PlcSetDriveEnable" ObjectType="VAR" Index="0x201D" SubIndex="23" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="PlcSelectMask" ObjectType="VAR" Index="0x201D" SubIndex="24" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="PlcSelect" ObjectType="VAR" Index="0x201D" SubIndex="25" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="VeryLateSSIO" ObjectType="VAR" Index="0x201D" SubIndex="26" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="CollisionRisk" ObjectType="VAR" Index="0x201D" SubIndex="27" DataType="BOOLEAN" AccessType="ro" />
+      </Group>
+      <Group SymbolName="VehicleOptions">
+        <Parameter SymbolName="StatusID" ObjectType="VAR" Index="0x201E" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="StatusText" ObjectType="VAR" Index="0x201E" SubIndex="2" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="MaxNoVehicles" ObjectType="VAR" Index="0x201E" SubIndex="3" DataType="INTEGER32" AccessType="ro" Unit="mm/s" />
+        <Parameter SymbolName="MaxSpeed" ObjectType="VAR" Index="0x201E" SubIndex="4" DataType="INTEGER32" AccessType="ro" Unit="mm/s" />
+        <Parameter SymbolName="VehicleOptClass" ObjectType="VAR" Index="0x201E" SubIndex="5" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="VehicleTypeQuad" ObjectType="VAR" Index="0x201E" SubIndex="6" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="VehicleTypeMultiWheel" ObjectType="VAR" Index="0x201E" SubIndex="7" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="RadioComm" ObjectType="VAR" Index="0x201E" SubIndex="8" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NavLaser" ObjectType="VAR" Index="0x201E" SubIndex="9" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NavSpot" ObjectType="VAR" Index="0x201E" SubIndex="10" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NavMagnetic" ObjectType="VAR" Index="0x201E" SubIndex="11" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NavInductive" ObjectType="VAR" Index="0x201E" SubIndex="12" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NavWall" ObjectType="VAR" Index="0x201E" SubIndex="13" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="ExternalPath" ObjectType="VAR" Index="0x201E" SubIndex="14" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="RangeAndWalls" ObjectType="VAR" Index="0x201E" SubIndex="15" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DualCANBus" ObjectType="VAR" Index="0x201E" SubIndex="16" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="VehicleTypeMultiWheelerSD" ObjectType="VAR" Index="0x201E" SubIndex="17" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="VehicleTypeMultiWheelerQuad4" ObjectType="VAR" Index="0x201E" SubIndex="18" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="VehicleTypeMultiWheelerQuad8" ObjectType="VAR" Index="0x201E" SubIndex="19" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="VehicleTypeMultiWheelerQuad16" ObjectType="VAR" Index="0x201E" SubIndex="20" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="VehicleTypeMultiWheelerQuad20" ObjectType="VAR" Index="0x201E" SubIndex="21" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="IMUSupport" ObjectType="VAR" Index="0x201E" SubIndex="22" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NetworkInterface" ObjectType="VAR" Index="0x201E" SubIndex="23" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NavBarcode" ObjectType="VAR" Index="0x201E" SubIndex="24" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="ThirdPartyNavigationSensor" ObjectType="VAR" Index="0x201E" SubIndex="25" DataType="BOOLEAN" AccessType="ro" />
+      </Group>
+      <Group SymbolName="PLC_Application">
+        <Parameter SymbolName="TxStatusBit0" ObjectType="VAR" Index="0x201F" SubIndex="1" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit1" ObjectType="VAR" Index="0x201F" SubIndex="2" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit2" ObjectType="VAR" Index="0x201F" SubIndex="3" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit3" ObjectType="VAR" Index="0x201F" SubIndex="4" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit4" ObjectType="VAR" Index="0x201F" SubIndex="5" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit5" ObjectType="VAR" Index="0x201F" SubIndex="6" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit6" ObjectType="VAR" Index="0x201F" SubIndex="7" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit7" ObjectType="VAR" Index="0x201F" SubIndex="8" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit8" ObjectType="VAR" Index="0x201F" SubIndex="9" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit9" ObjectType="VAR" Index="0x201F" SubIndex="10" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit10" ObjectType="VAR" Index="0x201F" SubIndex="11" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit11" ObjectType="VAR" Index="0x201F" SubIndex="12" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit12" ObjectType="VAR" Index="0x201F" SubIndex="13" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit13" ObjectType="VAR" Index="0x201F" SubIndex="14" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit14" ObjectType="VAR" Index="0x201F" SubIndex="15" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="TxStatusBit15" ObjectType="VAR" Index="0x201F" SubIndex="16" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="UserEventEN" ObjectType="VAR" Index="0x201F" SubIndex="17" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="UserEventENO" ObjectType="VAR" Index="0x201F" SubIndex="18" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="UserEventCode" ObjectType="VAR" Index="0x201F" SubIndex="19" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="UserEventPar1" ObjectType="VAR" Index="0x201F" SubIndex="20" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="UserEventPar2" ObjectType="VAR" Index="0x201F" SubIndex="21" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="UserEventPar3" ObjectType="VAR" Index="0x201F" SubIndex="22" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="UserEventPar4" ObjectType="VAR" Index="0x201F" SubIndex="23" DataType="INTEGER32" AccessType="rw" />
+      </Group>
+      <Group SymbolName="COM1">
+        <Parameter SymbolName="Baudrate" ObjectType="VAR" Index="0x2020" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Databits" ObjectType="VAR" Index="0x2020" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Parity" ObjectType="VAR" Index="0x2020" SubIndex="3" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="Stopbits" ObjectType="VAR" Index="0x2020" SubIndex="4" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Protocol" ObjectType="VAR" Index="0x2020" SubIndex="5" DataType="VISIBLE_STRING" AccessType="ro" />
+      </Group>
+      <Group SymbolName="COM2">
+        <Parameter SymbolName="Baudrate" ObjectType="VAR" Index="0x2021" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Databits" ObjectType="VAR" Index="0x2021" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Parity" ObjectType="VAR" Index="0x2021" SubIndex="3" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="Stopbits" ObjectType="VAR" Index="0x2021" SubIndex="4" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Protocol" ObjectType="VAR" Index="0x2021" SubIndex="5" DataType="VISIBLE_STRING" AccessType="ro" />
+      </Group>
+      <Group SymbolName="COM3">
+        <Parameter SymbolName="Baudrate" ObjectType="VAR" Index="0x2022" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Databits" ObjectType="VAR" Index="0x2022" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Parity" ObjectType="VAR" Index="0x2022" SubIndex="3" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="Stopbits" ObjectType="VAR" Index="0x2022" SubIndex="4" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Protocol" ObjectType="VAR" Index="0x2022" SubIndex="5" DataType="VISIBLE_STRING" AccessType="ro" />
+      </Group>
+      <Group SymbolName="Master">
+        <Parameter SymbolName="MasterLinkUp" ObjectType="VAR" Index="0x2023" SubIndex="1" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="MasterCom" ObjectType="VAR" Index="0x2023" SubIndex="2" DataType="VISIBLE_STRING" AccessType="ro" />
+      </Group>
+      <Group SymbolName="Vmc">
+        <Parameter SymbolName="AllOK" ObjectType="VAR" Index="0x2024" SubIndex="1" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Clock" ObjectType="VAR" Index="0x2024" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="LocalClock" ObjectType="VAR" Index="0x2024" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="PlcLoopTime" ObjectType="VAR" Index="0x2024" SubIndex="4" DataType="INTEGER32" AccessType="ro" Unit="ms" />
+        <Parameter SymbolName="PlcLoopTimeMax" ObjectType="VAR" Index="0x2024" SubIndex="5" DataType="INTEGER32" AccessType="ro" Unit="ms" />
+        <Parameter SymbolName="PlcLoopTimeAvg" ObjectType="VAR" Index="0x2024" SubIndex="6" DataType="INTEGER32" AccessType="ro" Unit="ms" />
+      </Group>
+      <Group SymbolName="Wlan">
+        <Parameter SymbolName="AccessPoint" ObjectType="VAR" Index="0x2025" SubIndex="1" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="SSID" ObjectType="VAR" Index="0x2025" SubIndex="2" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="Channel" ObjectType="VAR" Index="0x2025" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="SignalLevel" ObjectType="VAR" Index="0x2025" SubIndex="4" DataType="INTEGER32" AccessType="ro" Unit="dBm" />
+        <Parameter SymbolName="BitRate" ObjectType="VAR" Index="0x2025" SubIndex="5" DataType="INTEGER32" AccessType="ro" Unit="bits/s" />
+      </Group>
+      <Group SymbolName="OMPLC">
+        <Parameter SymbolName="Data1" ObjectType="VAR" Index="0x2029" SubIndex="1" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data2" ObjectType="VAR" Index="0x2029" SubIndex="2" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data3" ObjectType="VAR" Index="0x2029" SubIndex="3" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data4" ObjectType="VAR" Index="0x2029" SubIndex="4" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data5" ObjectType="VAR" Index="0x2029" SubIndex="5" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data6" ObjectType="VAR" Index="0x2029" SubIndex="6" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data7" ObjectType="VAR" Index="0x2029" SubIndex="7" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data8" ObjectType="VAR" Index="0x2029" SubIndex="8" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data9" ObjectType="VAR" Index="0x2029" SubIndex="9" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data10" ObjectType="VAR" Index="0x2029" SubIndex="10" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data11" ObjectType="VAR" Index="0x2029" SubIndex="11" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data12" ObjectType="VAR" Index="0x2029" SubIndex="12" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data13" ObjectType="VAR" Index="0x2029" SubIndex="13" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data14" ObjectType="VAR" Index="0x2029" SubIndex="14" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data15" ObjectType="VAR" Index="0x2029" SubIndex="15" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data16" ObjectType="VAR" Index="0x2029" SubIndex="16" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data17" ObjectType="VAR" Index="0x2029" SubIndex="17" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data18" ObjectType="VAR" Index="0x2029" SubIndex="18" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data19" ObjectType="VAR" Index="0x2029" SubIndex="19" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data20" ObjectType="VAR" Index="0x2029" SubIndex="20" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data21" ObjectType="VAR" Index="0x2029" SubIndex="21" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data22" ObjectType="VAR" Index="0x2029" SubIndex="22" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data23" ObjectType="VAR" Index="0x2029" SubIndex="23" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data24" ObjectType="VAR" Index="0x2029" SubIndex="24" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data25" ObjectType="VAR" Index="0x2029" SubIndex="25" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data26" ObjectType="VAR" Index="0x2029" SubIndex="26" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data27" ObjectType="VAR" Index="0x2029" SubIndex="27" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data28" ObjectType="VAR" Index="0x2029" SubIndex="28" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data29" ObjectType="VAR" Index="0x2029" SubIndex="29" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data30" ObjectType="VAR" Index="0x2029" SubIndex="30" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data31" ObjectType="VAR" Index="0x2029" SubIndex="31" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data32" ObjectType="VAR" Index="0x2029" SubIndex="32" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data33" ObjectType="VAR" Index="0x2029" SubIndex="33" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data34" ObjectType="VAR" Index="0x2029" SubIndex="34" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data35" ObjectType="VAR" Index="0x2029" SubIndex="35" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data36" ObjectType="VAR" Index="0x2029" SubIndex="36" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data37" ObjectType="VAR" Index="0x2029" SubIndex="37" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data38" ObjectType="VAR" Index="0x2029" SubIndex="38" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data39" ObjectType="VAR" Index="0x2029" SubIndex="39" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data40" ObjectType="VAR" Index="0x2029" SubIndex="40" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data41" ObjectType="VAR" Index="0x2029" SubIndex="41" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data42" ObjectType="VAR" Index="0x2029" SubIndex="42" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data43" ObjectType="VAR" Index="0x2029" SubIndex="43" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data44" ObjectType="VAR" Index="0x2029" SubIndex="44" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data45" ObjectType="VAR" Index="0x2029" SubIndex="45" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data46" ObjectType="VAR" Index="0x2029" SubIndex="46" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data47" ObjectType="VAR" Index="0x2029" SubIndex="47" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data48" ObjectType="VAR" Index="0x2029" SubIndex="48" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data49" ObjectType="VAR" Index="0x2029" SubIndex="49" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data50" ObjectType="VAR" Index="0x2029" SubIndex="50" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data51" ObjectType="VAR" Index="0x2029" SubIndex="51" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data52" ObjectType="VAR" Index="0x2029" SubIndex="52" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data53" ObjectType="VAR" Index="0x2029" SubIndex="53" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data54" ObjectType="VAR" Index="0x2029" SubIndex="54" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data55" ObjectType="VAR" Index="0x2029" SubIndex="55" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data56" ObjectType="VAR" Index="0x2029" SubIndex="56" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data57" ObjectType="VAR" Index="0x2029" SubIndex="57" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data58" ObjectType="VAR" Index="0x2029" SubIndex="58" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data59" ObjectType="VAR" Index="0x2029" SubIndex="59" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data60" ObjectType="VAR" Index="0x2029" SubIndex="60" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data61" ObjectType="VAR" Index="0x2029" SubIndex="61" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data62" ObjectType="VAR" Index="0x2029" SubIndex="62" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data63" ObjectType="VAR" Index="0x2029" SubIndex="63" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data64" ObjectType="VAR" Index="0x2029" SubIndex="64" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data65" ObjectType="VAR" Index="0x2029" SubIndex="65" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data66" ObjectType="VAR" Index="0x2029" SubIndex="66" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data67" ObjectType="VAR" Index="0x2029" SubIndex="67" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data68" ObjectType="VAR" Index="0x2029" SubIndex="68" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data69" ObjectType="VAR" Index="0x2029" SubIndex="69" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data70" ObjectType="VAR" Index="0x2029" SubIndex="70" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data71" ObjectType="VAR" Index="0x2029" SubIndex="71" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data72" ObjectType="VAR" Index="0x2029" SubIndex="72" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data73" ObjectType="VAR" Index="0x2029" SubIndex="73" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data74" ObjectType="VAR" Index="0x2029" SubIndex="74" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data75" ObjectType="VAR" Index="0x2029" SubIndex="75" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data76" ObjectType="VAR" Index="0x2029" SubIndex="76" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data77" ObjectType="VAR" Index="0x2029" SubIndex="77" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data78" ObjectType="VAR" Index="0x2029" SubIndex="78" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data79" ObjectType="VAR" Index="0x2029" SubIndex="79" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data80" ObjectType="VAR" Index="0x2029" SubIndex="80" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data81" ObjectType="VAR" Index="0x2029" SubIndex="81" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data82" ObjectType="VAR" Index="0x2029" SubIndex="82" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data83" ObjectType="VAR" Index="0x2029" SubIndex="83" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data84" ObjectType="VAR" Index="0x2029" SubIndex="84" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data85" ObjectType="VAR" Index="0x2029" SubIndex="85" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data86" ObjectType="VAR" Index="0x2029" SubIndex="86" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data87" ObjectType="VAR" Index="0x2029" SubIndex="87" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data88" ObjectType="VAR" Index="0x2029" SubIndex="88" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data89" ObjectType="VAR" Index="0x2029" SubIndex="89" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data90" ObjectType="VAR" Index="0x2029" SubIndex="90" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data91" ObjectType="VAR" Index="0x2029" SubIndex="91" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data92" ObjectType="VAR" Index="0x2029" SubIndex="92" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data93" ObjectType="VAR" Index="0x2029" SubIndex="93" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data94" ObjectType="VAR" Index="0x2029" SubIndex="94" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data95" ObjectType="VAR" Index="0x2029" SubIndex="95" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data96" ObjectType="VAR" Index="0x2029" SubIndex="96" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data97" ObjectType="VAR" Index="0x2029" SubIndex="97" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data98" ObjectType="VAR" Index="0x2029" SubIndex="98" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data99" ObjectType="VAR" Index="0x2029" SubIndex="99" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data100" ObjectType="VAR" Index="0x2029" SubIndex="100" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data101" ObjectType="VAR" Index="0x2029" SubIndex="101" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data102" ObjectType="VAR" Index="0x2029" SubIndex="102" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data103" ObjectType="VAR" Index="0x2029" SubIndex="103" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data104" ObjectType="VAR" Index="0x2029" SubIndex="104" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data105" ObjectType="VAR" Index="0x2029" SubIndex="105" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data106" ObjectType="VAR" Index="0x2029" SubIndex="106" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data107" ObjectType="VAR" Index="0x2029" SubIndex="107" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data108" ObjectType="VAR" Index="0x2029" SubIndex="108" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data109" ObjectType="VAR" Index="0x2029" SubIndex="109" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data110" ObjectType="VAR" Index="0x2029" SubIndex="110" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data111" ObjectType="VAR" Index="0x2029" SubIndex="111" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data112" ObjectType="VAR" Index="0x2029" SubIndex="112" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data113" ObjectType="VAR" Index="0x2029" SubIndex="113" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data114" ObjectType="VAR" Index="0x2029" SubIndex="114" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data115" ObjectType="VAR" Index="0x2029" SubIndex="115" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data116" ObjectType="VAR" Index="0x2029" SubIndex="116" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data117" ObjectType="VAR" Index="0x2029" SubIndex="117" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data118" ObjectType="VAR" Index="0x2029" SubIndex="118" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data119" ObjectType="VAR" Index="0x2029" SubIndex="119" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="Data120" ObjectType="VAR" Index="0x2029" SubIndex="120" DataType="INTEGER16" AccessType="rw" />
+      </Group>
+      <Group SymbolName="VehicleApplication">
+        <Parameter SymbolName="Name" ObjectType="VAR" Index="0x202A" SubIndex="1" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="ModificationDate" ObjectType="VAR" Index="0x202A" SubIndex="2" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="ModificationTime" ObjectType="VAR" Index="0x202A" SubIndex="3" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="CompilationID" ObjectType="VAR" Index="0x202A" SubIndex="4" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="TimeStamp" ObjectType="VAR" Index="0x202A" SubIndex="5" DataType="INTEGER32" AccessType="ro" />
+      </Group>
+      <Group SymbolName="Layout">
+        <Parameter SymbolName="LayoutName" ObjectType="VAR" Index="0x202B" SubIndex="1" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="SystemName" ObjectType="VAR" Index="0x202B" SubIndex="2" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="ModificationDate" ObjectType="VAR" Index="0x202B" SubIndex="3" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="ModificationTime" ObjectType="VAR" Index="0x202B" SubIndex="4" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="FileRevision" ObjectType="VAR" Index="0x202B" SubIndex="5" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="NewLayoutAvailable" ObjectType="VAR" Index="0x202B" SubIndex="6" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="ReloadNewLayout" ObjectType="VAR" Index="0x202B" SubIndex="7" DataType="BOOLEAN" AccessType="rw" />
+      </Group>
+      <Group SymbolName="CanOpenMaster">
+        <Parameter SymbolName="MasterExecutionPeriod" ObjectType="VAR" Index="0x202C" SubIndex="1" DataType="INTEGER32" AccessType="ro" Unit="ms" />
+        <Parameter SymbolName="SyncPeriod" ObjectType="VAR" Index="0x202C" SubIndex="2" DataType="INTEGER32" AccessType="ro" Unit="Multiples of MasterExecutionPeriod" />
+        <Parameter SymbolName="CollectTimeout" ObjectType="VAR" Index="0x202C" SubIndex="3" DataType="INTEGER32" AccessType="ro" Unit="s" />
+        <Parameter SymbolName="CanMasterCmd" ObjectType="VAR" Index="0x202C" SubIndex="4" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="CanMasterCmdEN" ObjectType="VAR" Index="0x202C" SubIndex="5" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="CanMasterCmdENO" ObjectType="VAR" Index="0x202C" SubIndex="6" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NMTState" ObjectType="VAR" Index="0x202C" SubIndex="7" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="State" ObjectType="VAR" Index="0x202C" SubIndex="8" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="StatusText" ObjectType="VAR" Index="0x202C" SubIndex="9" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="EMCY_BusID" ObjectType="VAR" Index="0x202C" SubIndex="10" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="EMCY_NodeID" ObjectType="VAR" Index="0x202C" SubIndex="11" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="EMCY_Code" ObjectType="VAR" Index="0x202C" SubIndex="12" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="EMCY_ErrReg" ObjectType="VAR" Index="0x202C" SubIndex="13" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="EMCY_Byte1" ObjectType="VAR" Index="0x202C" SubIndex="14" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="EMCY_Byte2" ObjectType="VAR" Index="0x202C" SubIndex="15" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="EMCY_Byte3" ObjectType="VAR" Index="0x202C" SubIndex="16" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="EMCY_Byte4" ObjectType="VAR" Index="0x202C" SubIndex="17" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="EMCY_Byte5" ObjectType="VAR" Index="0x202C" SubIndex="18" DataType="INTEGER32" AccessType="ro" />
+      </Group>
+      <Group SymbolName="CanOpenEmergency">
+        <Parameter SymbolName="EmcyEN" ObjectType="VAR" Index="0x202D" SubIndex="1" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="EmcyENO" ObjectType="VAR" Index="0x202D" SubIndex="2" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="BusID" ObjectType="VAR" Index="0x202D" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="NodeID" ObjectType="VAR" Index="0x202D" SubIndex="4" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Code" ObjectType="VAR" Index="0x202D" SubIndex="5" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="ErrReg" ObjectType="VAR" Index="0x202D" SubIndex="6" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Byte1" ObjectType="VAR" Index="0x202D" SubIndex="7" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Byte2" ObjectType="VAR" Index="0x202D" SubIndex="8" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Byte3" ObjectType="VAR" Index="0x202D" SubIndex="9" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Byte4" ObjectType="VAR" Index="0x202D" SubIndex="10" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Byte5" ObjectType="VAR" Index="0x202D" SubIndex="11" DataType="INTEGER32" AccessType="ro" />
+      </Group>
+      <Group SymbolName="PLCEmergency">
+        <Parameter SymbolName="Canbus" ObjectType="VAR" Index="0x202E" SubIndex="1" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Code" ObjectType="VAR" Index="0x202E" SubIndex="2" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="ErrReg" ObjectType="VAR" Index="0x202E" SubIndex="3" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Byte1" ObjectType="VAR" Index="0x202E" SubIndex="4" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Byte2" ObjectType="VAR" Index="0x202E" SubIndex="5" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Byte3" ObjectType="VAR" Index="0x202E" SubIndex="6" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Byte4" ObjectType="VAR" Index="0x202E" SubIndex="7" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Byte5" ObjectType="VAR" Index="0x202E" SubIndex="8" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="EmcyEN" ObjectType="VAR" Index="0x202E" SubIndex="9" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="EmcyENO" ObjectType="VAR" Index="0x202E" SubIndex="10" DataType="BOOLEAN" AccessType="rw" />
+      </Group>
+      <Group SymbolName="SlavebusControl">
+        <Parameter SymbolName="EnterPreOpEN" ObjectType="VAR" Index="0x202F" SubIndex="1" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="EnterPreOpENO" ObjectType="VAR" Index="0x202F" SubIndex="2" DataType="BOOLEAN" AccessType="rw" />
+      </Group>
+      <Group SymbolName="UserDefined">
+        <Parameter SymbolName="Boolean_1" ObjectType="VAR" Index="0x2030" SubIndex="1" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_2" ObjectType="VAR" Index="0x2030" SubIndex="2" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_3" ObjectType="VAR" Index="0x2030" SubIndex="3" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_4" ObjectType="VAR" Index="0x2030" SubIndex="4" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_5" ObjectType="VAR" Index="0x2030" SubIndex="5" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_6" ObjectType="VAR" Index="0x2030" SubIndex="6" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_7" ObjectType="VAR" Index="0x2030" SubIndex="7" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_8" ObjectType="VAR" Index="0x2030" SubIndex="8" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_9" ObjectType="VAR" Index="0x2030" SubIndex="9" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_10" ObjectType="VAR" Index="0x2030" SubIndex="10" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_11" ObjectType="VAR" Index="0x2030" SubIndex="11" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_12" ObjectType="VAR" Index="0x2030" SubIndex="12" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_13" ObjectType="VAR" Index="0x2030" SubIndex="13" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_14" ObjectType="VAR" Index="0x2030" SubIndex="14" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_15" ObjectType="VAR" Index="0x2030" SubIndex="15" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_16" ObjectType="VAR" Index="0x2030" SubIndex="16" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_17" ObjectType="VAR" Index="0x2030" SubIndex="17" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_18" ObjectType="VAR" Index="0x2030" SubIndex="18" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_19" ObjectType="VAR" Index="0x2030" SubIndex="19" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_20" ObjectType="VAR" Index="0x2030" SubIndex="20" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_21" ObjectType="VAR" Index="0x2030" SubIndex="21" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_22" ObjectType="VAR" Index="0x2030" SubIndex="22" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_23" ObjectType="VAR" Index="0x2030" SubIndex="23" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_24" ObjectType="VAR" Index="0x2030" SubIndex="24" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_25" ObjectType="VAR" Index="0x2030" SubIndex="25" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_26" ObjectType="VAR" Index="0x2030" SubIndex="26" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_27" ObjectType="VAR" Index="0x2030" SubIndex="27" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_28" ObjectType="VAR" Index="0x2030" SubIndex="28" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_29" ObjectType="VAR" Index="0x2030" SubIndex="29" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Boolean_30" ObjectType="VAR" Index="0x2030" SubIndex="30" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Integer32_1" ObjectType="VAR" Index="0x2030" SubIndex="31" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_2" ObjectType="VAR" Index="0x2030" SubIndex="32" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_3" ObjectType="VAR" Index="0x2030" SubIndex="33" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_4" ObjectType="VAR" Index="0x2030" SubIndex="34" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_5" ObjectType="VAR" Index="0x2030" SubIndex="35" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_6" ObjectType="VAR" Index="0x2030" SubIndex="36" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_7" ObjectType="VAR" Index="0x2030" SubIndex="37" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_8" ObjectType="VAR" Index="0x2030" SubIndex="38" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_9" ObjectType="VAR" Index="0x2030" SubIndex="39" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_10" ObjectType="VAR" Index="0x2030" SubIndex="40" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_11" ObjectType="VAR" Index="0x2030" SubIndex="41" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_12" ObjectType="VAR" Index="0x2030" SubIndex="42" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_13" ObjectType="VAR" Index="0x2030" SubIndex="43" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_14" ObjectType="VAR" Index="0x2030" SubIndex="44" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_15" ObjectType="VAR" Index="0x2030" SubIndex="45" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_16" ObjectType="VAR" Index="0x2030" SubIndex="46" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_17" ObjectType="VAR" Index="0x2030" SubIndex="47" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_18" ObjectType="VAR" Index="0x2030" SubIndex="48" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_19" ObjectType="VAR" Index="0x2030" SubIndex="49" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_20" ObjectType="VAR" Index="0x2030" SubIndex="50" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_21" ObjectType="VAR" Index="0x2030" SubIndex="51" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_22" ObjectType="VAR" Index="0x2030" SubIndex="52" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_23" ObjectType="VAR" Index="0x2030" SubIndex="53" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_24" ObjectType="VAR" Index="0x2030" SubIndex="54" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_25" ObjectType="VAR" Index="0x2030" SubIndex="55" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_26" ObjectType="VAR" Index="0x2030" SubIndex="56" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_27" ObjectType="VAR" Index="0x2030" SubIndex="57" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_28" ObjectType="VAR" Index="0x2030" SubIndex="58" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_29" ObjectType="VAR" Index="0x2030" SubIndex="59" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_30" ObjectType="VAR" Index="0x2030" SubIndex="60" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_31" ObjectType="VAR" Index="0x2030" SubIndex="61" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_32" ObjectType="VAR" Index="0x2030" SubIndex="62" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_33" ObjectType="VAR" Index="0x2030" SubIndex="63" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_34" ObjectType="VAR" Index="0x2030" SubIndex="64" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_35" ObjectType="VAR" Index="0x2030" SubIndex="65" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_36" ObjectType="VAR" Index="0x2030" SubIndex="66" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_37" ObjectType="VAR" Index="0x2030" SubIndex="67" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_38" ObjectType="VAR" Index="0x2030" SubIndex="68" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_39" ObjectType="VAR" Index="0x2030" SubIndex="69" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_40" ObjectType="VAR" Index="0x2030" SubIndex="70" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_41" ObjectType="VAR" Index="0x2030" SubIndex="71" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_42" ObjectType="VAR" Index="0x2030" SubIndex="72" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_43" ObjectType="VAR" Index="0x2030" SubIndex="73" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_44" ObjectType="VAR" Index="0x2030" SubIndex="74" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_45" ObjectType="VAR" Index="0x2030" SubIndex="75" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_46" ObjectType="VAR" Index="0x2030" SubIndex="76" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_47" ObjectType="VAR" Index="0x2030" SubIndex="77" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_48" ObjectType="VAR" Index="0x2030" SubIndex="78" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_49" ObjectType="VAR" Index="0x2030" SubIndex="79" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_50" ObjectType="VAR" Index="0x2030" SubIndex="80" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_51" ObjectType="VAR" Index="0x2030" SubIndex="81" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_52" ObjectType="VAR" Index="0x2030" SubIndex="82" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_53" ObjectType="VAR" Index="0x2030" SubIndex="83" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_54" ObjectType="VAR" Index="0x2030" SubIndex="84" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_55" ObjectType="VAR" Index="0x2030" SubIndex="85" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_56" ObjectType="VAR" Index="0x2030" SubIndex="86" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_57" ObjectType="VAR" Index="0x2030" SubIndex="87" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_58" ObjectType="VAR" Index="0x2030" SubIndex="88" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_59" ObjectType="VAR" Index="0x2030" SubIndex="89" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="Integer32_60" ObjectType="VAR" Index="0x2030" SubIndex="90" DataType="INTEGER32" AccessType="rw" />
+      </Group>
+      <Group SymbolName="ExternalPath">
+        <Parameter SymbolName="ReqExtSegment" ObjectType="VAR" Index="0x2031" SubIndex="1" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="ReqSegmentId" ObjectType="VAR" Index="0x2031" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+      </Group>
+      <Group SymbolName="BlockedInfo">
+        <Parameter SymbolName="BlockedById" ObjectType="VAR" Index="0x2032" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="BlockedByText" ObjectType="VAR" Index="0x2032" SubIndex="2" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="LogicalLine" ObjectType="VAR" Index="0x2032" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="UnitNumber" ObjectType="VAR" Index="0x2032" SubIndex="4" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="IoId" ObjectType="VAR" Index="0x2032" SubIndex="5" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="IoType" ObjectType="VAR" Index="0x2032" SubIndex="6" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Status" ObjectType="VAR" Index="0x2032" SubIndex="7" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Vehicle1" ObjectType="VAR" Index="0x2032" SubIndex="8" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Vehicle2" ObjectType="VAR" Index="0x2032" SubIndex="9" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Vehicle3" ObjectType="VAR" Index="0x2032" SubIndex="10" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="Vehicle4" ObjectType="VAR" Index="0x2032" SubIndex="11" DataType="INTEGER32" AccessType="ro" />
+      </Group>
+      <Group SymbolName="FrontWheel">
+        <Parameter SymbolName="MaxAngularSpeed" ObjectType="VAR" Index="0x2033" SubIndex="1" DataType="INTEGER32" AccessType="rw" Unit="deg/s" />
+        <Parameter SymbolName="MinSteerAngle" ObjectType="VAR" Index="0x2033" SubIndex="2" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="MaxSteerAngle" ObjectType="VAR" Index="0x2033" SubIndex="3" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="X" ObjectType="VAR" Index="0x2033" SubIndex="4" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="Y" ObjectType="VAR" Index="0x2033" SubIndex="5" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="SetSpeedRef" ObjectType="VAR" Index="0x2033" SubIndex="6" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="SetAngleRef" ObjectType="VAR" Index="0x2033" SubIndex="7" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="SetSpeedEnableRef" ObjectType="VAR" Index="0x2033" SubIndex="8" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="SetAngleEnableRef" ObjectType="VAR" Index="0x2033" SubIndex="9" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="EncSpeedRef" ObjectType="VAR" Index="0x2033" SubIndex="10" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="EncDistRef" ObjectType="VAR" Index="0x2033" SubIndex="11" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="EncAngleRef" ObjectType="VAR" Index="0x2033" SubIndex="12" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="EncSpeedPlcInputRef" ObjectType="VAR" Index="0x2033" SubIndex="13" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="EncAnglePlcInputRef" ObjectType="VAR" Index="0x2033" SubIndex="14" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="WheelType" ObjectType="VAR" Index="0x2033" SubIndex="15" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="PlcSetAngle" ObjectType="VAR" Index="0x2033" SubIndex="16" DataType="INTEGER32" AccessType="rw" Unit="cdeg" />
+        <Parameter SymbolName="PlcSetSpeed" ObjectType="VAR" Index="0x2033" SubIndex="17" DataType="INTEGER32" AccessType="rw" Unit="mm/s" />
+      </Group>
+      <Group SymbolName="RearWheel">
+        <Parameter SymbolName="MaxAngularSpeed" ObjectType="VAR" Index="0x2034" SubIndex="1" DataType="INTEGER32" AccessType="rw" Unit="deg/s" />
+        <Parameter SymbolName="MinSteerAngle" ObjectType="VAR" Index="0x2034" SubIndex="2" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="MaxSteerAngle" ObjectType="VAR" Index="0x2034" SubIndex="3" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="X" ObjectType="VAR" Index="0x2034" SubIndex="4" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="Y" ObjectType="VAR" Index="0x2034" SubIndex="5" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="SetSpeedRef" ObjectType="VAR" Index="0x2034" SubIndex="6" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="SetAngleRef" ObjectType="VAR" Index="0x2034" SubIndex="7" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="SetSpeedEnableRef" ObjectType="VAR" Index="0x2034" SubIndex="8" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="SetAngleEnableRef" ObjectType="VAR" Index="0x2034" SubIndex="9" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="EncSpeedRef" ObjectType="VAR" Index="0x2034" SubIndex="10" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="EncDistRef" ObjectType="VAR" Index="0x2034" SubIndex="11" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="EncAngleRef" ObjectType="VAR" Index="0x2034" SubIndex="12" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="EncSpeedPlcInputRef" ObjectType="VAR" Index="0x2034" SubIndex="13" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="EncAnglePlcInputRef" ObjectType="VAR" Index="0x2034" SubIndex="14" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="WheelType" ObjectType="VAR" Index="0x2034" SubIndex="15" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="PlcSetAngle" ObjectType="VAR" Index="0x2034" SubIndex="16" DataType="INTEGER32" AccessType="rw" Unit="cdeg" />
+        <Parameter SymbolName="PlcSetSpeed" ObjectType="VAR" Index="0x2034" SubIndex="17" DataType="INTEGER32" AccessType="rw" Unit="mm/s" />
+      </Group>
+      <Group SymbolName="COM5">
+        <Parameter SymbolName="Protocol" ObjectType="VAR" Index="0x2036" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="IP" ObjectType="VAR" Index="0x2036" SubIndex="2" DataType="VISIBLE_STRING" AccessType="rw" />
+        <Parameter SymbolName="Port" ObjectType="VAR" Index="0x2036" SubIndex="3" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="SendBuffer" ObjectType="VAR" Index="0x2036" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+      </Group>
+      <Group SymbolName="LS2000">
+        <Parameter SymbolName="DetectDistance" ObjectType="VAR" Index="0x203B" SubIndex="1" DataType="INTEGER32" AccessType="rw" Unit="m" />
+        <Parameter SymbolName="Sensitivity" ObjectType="VAR" Index="0x203B" SubIndex="2" DataType="INTEGER32" AccessType="rw" Unit="" />
+        <Parameter SymbolName="ReflectorShadow" ObjectType="VAR" Index="0x203B" SubIndex="3" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="X" ObjectType="VAR" Index="0x203B" SubIndex="4" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="Y" ObjectType="VAR" Index="0x203B" SubIndex="5" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="Angle" ObjectType="VAR" Index="0x203B" SubIndex="6" DataType="INTEGER32" AccessType="rw" Factor="100" Unit="deg" />
+        <Parameter SymbolName="UpsideDown" ObjectType="VAR" Index="0x203B" SubIndex="7" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="IP" ObjectType="VAR" Index="0x203B" SubIndex="8" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="Field1_X1" ObjectType="VAR" Index="0x203B" SubIndex="9" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="Field1_X2" ObjectType="VAR" Index="0x203B" SubIndex="10" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="Field1_Y1" ObjectType="VAR" Index="0x203B" SubIndex="11" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="Field1_Y2" ObjectType="VAR" Index="0x203B" SubIndex="12" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="Field1_Triggered" ObjectType="VAR" Index="0x203B" SubIndex="13" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Field1_Dist" ObjectType="VAR" Index="0x203B" SubIndex="14" DataType="INTEGER32" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="Field2_X1" ObjectType="VAR" Index="0x203B" SubIndex="15" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="Field2_X2" ObjectType="VAR" Index="0x203B" SubIndex="16" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="Field2_Y1" ObjectType="VAR" Index="0x203B" SubIndex="17" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="Field2_Y2" ObjectType="VAR" Index="0x203B" SubIndex="18" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="Field2_Triggered" ObjectType="VAR" Index="0x203B" SubIndex="19" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Field2_Dist" ObjectType="VAR" Index="0x203B" SubIndex="20" DataType="INTEGER32" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="Sector1_Ignore" ObjectType="VAR" Index="0x203B" SubIndex="21" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Sector1_Heading" ObjectType="VAR" Index="0x203B" SubIndex="22" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="Sector1_Size" ObjectType="VAR" Index="0x203B" SubIndex="23" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="Sector2_Ignore" ObjectType="VAR" Index="0x203B" SubIndex="24" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Sector2_Heading" ObjectType="VAR" Index="0x203B" SubIndex="25" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="Sector2_Size" ObjectType="VAR" Index="0x203B" SubIndex="26" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="Sector3_Ignore" ObjectType="VAR" Index="0x203B" SubIndex="27" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Sector3_Heading" ObjectType="VAR" Index="0x203B" SubIndex="28" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="Sector3_Size" ObjectType="VAR" Index="0x203B" SubIndex="29" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="Sector4_Ignore" ObjectType="VAR" Index="0x203B" SubIndex="30" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Sector4_Heading" ObjectType="VAR" Index="0x203B" SubIndex="31" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="Sector4_Size" ObjectType="VAR" Index="0x203B" SubIndex="32" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="Sector5_Ignore" ObjectType="VAR" Index="0x203B" SubIndex="33" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Sector5_Heading" ObjectType="VAR" Index="0x203B" SubIndex="34" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="Sector5_Size" ObjectType="VAR" Index="0x203B" SubIndex="35" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="Connected" ObjectType="VAR" Index="0x203B" SubIndex="36" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NavActive" ObjectType="VAR" Index="0x203B" SubIndex="37" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="Attached" ObjectType="VAR" Index="0x203B" SubIndex="38" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Temperature" ObjectType="VAR" Index="0x203B" SubIndex="39" DataType="INTEGER32" AccessType="ro" Unit="degrees Celsius" />
+      </Group>
+      <Group SymbolName="Vehicle">
+        <Parameter SymbolName="VehicleType" ObjectType="VAR" Index="0x2000" SubIndex="1" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="VehicleID" ObjectType="VAR" Index="0x2000" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="IndividualName" ObjectType="VAR" Index="0x2000" SubIndex="3" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="OptionClass" ObjectType="VAR" Index="0x2000" SubIndex="4" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="MaxSpeed" ObjectType="VAR" Index="0x2000" SubIndex="5" DataType="INTEGER32" AccessType="rw" Unit="mm/s" />
+        <Parameter SymbolName="SimulationMode" ObjectType="VAR" Index="0x2000" SubIndex="6" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="StopTolerance" ObjectType="VAR" Index="0x2000" SubIndex="7" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="StopPointTrim" ObjectType="VAR" Index="0x2000" SubIndex="8" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="CreepSpeed" ObjectType="VAR" Index="0x2000" SubIndex="9" DataType="INTEGER32" AccessType="rw" Unit="mm/s" />
+        <Parameter SymbolName="CreepDistance" ObjectType="VAR" Index="0x2000" SubIndex="10" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="AccSlope" ObjectType="VAR" Index="0x2000" SubIndex="11" DataType="INTEGER32" AccessType="rw" Unit="mm/s^2" />
+        <Parameter SymbolName="DecSlope" ObjectType="VAR" Index="0x2000" SubIndex="12" DataType="INTEGER32" AccessType="rw" Unit="mm/s^2" />
+        <Parameter SymbolName="EmcyDecSlope" ObjectType="VAR" Index="0x2000" SubIndex="13" DataType="INTEGER32" AccessType="rw" Unit="mm/s^2" />
+        <Parameter SymbolName="SpeedDelayCompensation" ObjectType="VAR" Index="0x2000" SubIndex="14" DataType="INTEGER32" AccessType="rw" Unit="ms" />
+        <Parameter SymbolName="SteeringDelayCompensation" ObjectType="VAR" Index="0x2000" SubIndex="15" DataType="INTEGER32" AccessType="rw" Unit="ms" />
+        <Parameter SymbolName="Blocked" ObjectType="VAR" Index="0x2000" SubIndex="16" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="CarrierType" ObjectType="VAR" Index="0x2000" SubIndex="17" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="WaitForWheelTurnMaxAngle" ObjectType="VAR" Index="0x2000" SubIndex="18" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+      </Group>
+      <Group SymbolName="ReflectorInit">
+        <Parameter SymbolName="StatusID" ObjectType="VAR" Index="0x2008" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="StatusText" ObjectType="VAR" Index="0x2008" SubIndex="2" DataType="VISIBLE_STRING" AccessType="ro" />
+      </Group>
+      <Group SymbolName="NaturalNavigator">
+        <Parameter SymbolName="MatchRatio" ObjectType="VAR" Index="0x2009" SubIndex="1" DataType="INTEGER32" AccessType="ro" Unit="%" />
+        <Parameter SymbolName="LowMatchRatio" ObjectType="VAR" Index="0x2009" SubIndex="2" DataType="INTEGER32" AccessType="rw" Unit="%" />
+        <Parameter SymbolName="HighMatchRatio" ObjectType="VAR" Index="0x2009" SubIndex="3" DataType="INTEGER32" AccessType="rw" Unit="%" />
+        <Parameter SymbolName="Reliability" ObjectType="VAR" Index="0x2009" SubIndex="4" DataType="INTEGER32" AccessType="ro" Unit="%" />
+        <Parameter SymbolName="LowReliability" ObjectType="VAR" Index="0x2009" SubIndex="5" DataType="INTEGER32" AccessType="rw" Unit="%" />
+        <Parameter SymbolName="HighReliability" ObjectType="VAR" Index="0x2009" SubIndex="6" DataType="INTEGER32" AccessType="rw" Unit="%" />
+        <Parameter SymbolName="CorrectionXLimit" ObjectType="VAR" Index="0x2009" SubIndex="7" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="CorrectionYLimit" ObjectType="VAR" Index="0x2009" SubIndex="8" DataType="INTEGER32" AccessType="rw" Unit="mm" />
+        <Parameter SymbolName="CorrectionAngleLimit" ObjectType="VAR" Index="0x2009" SubIndex="9" DataType="INTEGER32" AccessType="rw" Unit="deg" />
+        <Parameter SymbolName="PointThreshold" ObjectType="VAR" Index="0x2009" SubIndex="10" DataType="INTEGER32" AccessType="rw" Factor="100" />
+        <Parameter SymbolName="VarScan" ObjectType="VAR" Index="0x2009" SubIndex="11" DataType="INTEGER32" AccessType="rw" Factor="100" />
+        <Parameter SymbolName="SensorTimeout" ObjectType="VAR" Index="0x2009" SubIndex="12" DataType="INTEGER32" AccessType="rw" Unit="ms" />
+      </Group>
+      <Group SymbolName="VehicleNavigator">
+        <Parameter SymbolName="NavMethod" ObjectType="VAR" Index="0x200A" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="NavMethodText" ObjectType="VAR" Index="0x200A" SubIndex="2" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="StartupNavMethod" ObjectType="VAR" Index="0x200A" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="SetNavMethod" ObjectType="VAR" Index="0x200A" SubIndex="4" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="SetNavMethodEN" ObjectType="VAR" Index="0x200A" SubIndex="5" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SetNavMethodENO" ObjectType="VAR" Index="0x200A" SubIndex="6" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SetNavMethodErr" ObjectType="VAR" Index="0x200A" SubIndex="7" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="SetNavMethodErrText" ObjectType="VAR" Index="0x200A" SubIndex="8" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="IgnoreAbnormalEncVal" ObjectType="VAR" Index="0x200A" SubIndex="9" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="RangeLogInhibit" ObjectType="VAR" Index="0x200A" SubIndex="10" DataType="INTEGER32" AccessType="ro" Unit="ms" />
+        <Parameter SymbolName="NavLevelEventLimit" ObjectType="VAR" Index="0x200A" SubIndex="11" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="SleepTime" ObjectType="VAR" Index="0x200A" SubIndex="12" DataType="INTEGER32" AccessType="rw" Unit="ms" />
+        <Parameter SymbolName="CorrectionX" ObjectType="VAR" Index="0x200A" SubIndex="13" DataType="INTEGER32" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="CorrectionY" ObjectType="VAR" Index="0x200A" SubIndex="14" DataType="INTEGER32" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="CorrectionAngle" ObjectType="VAR" Index="0x200A" SubIndex="15" DataType="INTEGER32" AccessType="ro" Unit="cdeg" />
+      </Group>
+      <Group SymbolName="ReflectorNavigator">
+        <Parameter SymbolName="RefStatValid" ObjectType="VAR" Index="0x2035" SubIndex="1" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NumberOfAssociatedReflectors" ObjectType="VAR" Index="0x2035" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="SelectReflectorType" ObjectType="VAR" Index="0x2035" SubIndex="3" DataType="INTEGER32" AccessType="rw" />
+      </Group>
+      <Group SymbolName="COM6">
+        <Parameter SymbolName="Protocol" ObjectType="VAR" Index="0x2007" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="IP" ObjectType="VAR" Index="0x2007" SubIndex="2" DataType="VISIBLE_STRING" AccessType="rw" />
+        <Parameter SymbolName="Port" ObjectType="VAR" Index="0x2007" SubIndex="3" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="SendBuffer" ObjectType="VAR" Index="0x2007" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+      </Group>
+      <Group SymbolName="DCD_5">
+        <Parameter SymbolName="BusID" ObjectType="VAR" Index="0x2002" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="NodeID" ObjectType="VAR" Index="0x2002" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="FailureAction" ObjectType="VAR" Index="0x2002" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="ActiveInSafeState" ObjectType="VAR" Index="0x2002" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NMTState" ObjectType="VAR" Index="0x2002" SubIndex="5" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="SdoBufferSize" ObjectType="VAR" Index="0x2002" SubIndex="6" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="MotorCurrentRegP" ObjectType="VAR" Index="0x2002" SubIndex="7" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="MotorCurrentRegI" ObjectType="VAR" Index="0x2002" SubIndex="8" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="MaxCommandSpeed" ObjectType="VAR" Index="0x2002" SubIndex="9" DataType="UNSIGNED16" AccessType="rw" Unit="mm/s" />
+        <Parameter SymbolName="ForwardMaxAccTorqueCurrent" ObjectType="VAR" Index="0x2002" SubIndex="10" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="ReverseMaxAccTorqueCurrent" ObjectType="VAR" Index="0x2002" SubIndex="11" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="MaxTorqueCurrentChange" ObjectType="VAR" Index="0x2002" SubIndex="12" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere/ms" />
+        <Parameter SymbolName="ForwardMaxBrakeTorqueCurrent" ObjectType="VAR" Index="0x2002" SubIndex="13" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="ReverseMaxBrakeTorqueCurrent" ObjectType="VAR" Index="0x2002" SubIndex="14" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="SpeedRegP" ObjectType="VAR" Index="0x2002" SubIndex="15" DataType="UNSIGNED16" AccessType="rw" />
+        <Parameter SymbolName="SpeedRegI" ObjectType="VAR" Index="0x2002" SubIndex="16" DataType="UNSIGNED16" AccessType="rw" />
+        <Parameter SymbolName="RegSupervisionCheckOutHysteresis" ObjectType="VAR" Index="0x2002" SubIndex="17" DataType="UNSIGNED16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="RegSupervisionFailureDelay" ObjectType="VAR" Index="0x2002" SubIndex="18" DataType="UNSIGNED16" AccessType="rw" Unit="ms" />
+        <Parameter SymbolName="ReverseEncoderDirection" ObjectType="VAR" Index="0x2002" SubIndex="19" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="VoltageFeedback" ObjectType="VAR" Index="0x2002" SubIndex="20" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SpeedRegOffset" ObjectType="VAR" Index="0x2002" SubIndex="21" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="ReadyToSwitchOn" ObjectType="VAR" Index="0x2002" SubIndex="22" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SwitchedOn" ObjectType="VAR" Index="0x2002" SubIndex="23" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="PowerStageEnabled" ObjectType="VAR" Index="0x2002" SubIndex="24" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Error" ObjectType="VAR" Index="0x2002" SubIndex="25" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SwitchOnDisabled" ObjectType="VAR" Index="0x2002" SubIndex="26" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Warning" ObjectType="VAR" Index="0x2002" SubIndex="27" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DriveEncScale" ObjectType="VAR" Index="0x2002" SubIndex="28" DataType="UNSIGNED32" AccessType="rw" Unit="Pulses/1000 mm" />
+        <Parameter SymbolName="DriveEncDist" ObjectType="VAR" Index="0x2002" SubIndex="29" DataType="UNSIGNED16" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="DriveEncSpeed" ObjectType="VAR" Index="0x2002" SubIndex="30" DataType="INTEGER16" AccessType="ro" Unit="mm/s" />
+        <Parameter SymbolName="DigitalInput2" ObjectType="VAR" Index="0x2002" SubIndex="31" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput3" ObjectType="VAR" Index="0x2002" SubIndex="32" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SwitchOn" ObjectType="VAR" Index="0x2002" SubIndex="33" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="EnablePowerStage" ObjectType="VAR" Index="0x2002" SubIndex="34" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SetSpeed" ObjectType="VAR" Index="0x2002" SubIndex="35" DataType="INTEGER16" AccessType="rw" Unit="mm/s" />
+        <Parameter SymbolName="AllOK_DigitalOutput1" ObjectType="VAR" Index="0x2002" SubIndex="36" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalOutput2" ObjectType="VAR" Index="0x2002" SubIndex="37" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput3" ObjectType="VAR" Index="0x2002" SubIndex="38" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput4" ObjectType="VAR" Index="0x2002" SubIndex="39" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DcBusVoltage" ObjectType="VAR" Index="0x2002" SubIndex="40" DataType="UNSIGNED16" AccessType="ro" Unit="1/100 V" />
+        <Parameter SymbolName="TorqueCurrentReference" ObjectType="VAR" Index="0x2002" SubIndex="41" DataType="INTEGER16" AccessType="ro" Unit="deciAmpere" />
+        <Parameter SymbolName="TorqueCurrent" ObjectType="VAR" Index="0x2002" SubIndex="42" DataType="INTEGER16" AccessType="ro" Unit="deciAmpere" />
+        <Parameter SymbolName="HeatsinkTemperature" ObjectType="VAR" Index="0x2002" SubIndex="43" DataType="INTEGER16" AccessType="ro" Unit="celsius" />
+        <Parameter SymbolName="ExtendedWarnings" ObjectType="VAR" Index="0x2002" SubIndex="44" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="ExtendedErrors" ObjectType="VAR" Index="0x2002" SubIndex="45" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="RegSupervisionTimer" ObjectType="VAR" Index="0x2002" SubIndex="46" DataType="UNSIGNED16" AccessType="ro" Unit="ms" />
+        <Parameter SymbolName="RegSupervisionTimerMax" ObjectType="VAR" Index="0x2002" SubIndex="47" DataType="UNSIGNED16" AccessType="ro" Unit="ms" />
+      </Group>
+      <Group SymbolName="DCD_6">
+        <Parameter SymbolName="BusID" ObjectType="VAR" Index="0x2003" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="NodeID" ObjectType="VAR" Index="0x2003" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="FailureAction" ObjectType="VAR" Index="0x2003" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="ActiveInSafeState" ObjectType="VAR" Index="0x2003" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NMTState" ObjectType="VAR" Index="0x2003" SubIndex="5" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="SdoBufferSize" ObjectType="VAR" Index="0x2003" SubIndex="6" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="MotorCurrentRegP" ObjectType="VAR" Index="0x2003" SubIndex="7" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="MotorCurrentRegI" ObjectType="VAR" Index="0x2003" SubIndex="8" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="ForwardMaxAccTorqueCurrent" ObjectType="VAR" Index="0x2003" SubIndex="9" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="ReverseMaxAccTorqueCurrent" ObjectType="VAR" Index="0x2003" SubIndex="10" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="MaxTorqueCurrentChange" ObjectType="VAR" Index="0x2003" SubIndex="11" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere/ms" />
+        <Parameter SymbolName="ForwardMaxBrakeTorqueCurrent" ObjectType="VAR" Index="0x2003" SubIndex="12" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="ReverseMaxBrakeTorqueCurrent" ObjectType="VAR" Index="0x2003" SubIndex="13" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="SpeedRegP" ObjectType="VAR" Index="0x2003" SubIndex="14" DataType="UNSIGNED16" AccessType="rw" />
+        <Parameter SymbolName="SpeedRegI" ObjectType="VAR" Index="0x2003" SubIndex="15" DataType="UNSIGNED16" AccessType="rw" />
+        <Parameter SymbolName="RegSupervisionCheckOutHysteresis" ObjectType="VAR" Index="0x2003" SubIndex="16" DataType="UNSIGNED16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="RegSupervisionFailureDelay" ObjectType="VAR" Index="0x2003" SubIndex="17" DataType="UNSIGNED16" AccessType="rw" Unit="ms" />
+        <Parameter SymbolName="SteerEncScale" ObjectType="VAR" Index="0x2003" SubIndex="18" DataType="UNSIGNED32" AccessType="rw" Unit="Pulses/360 deg" />
+        <Parameter SymbolName="SteerEncOffset" ObjectType="VAR" Index="0x2003" SubIndex="19" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg" />
+        <Parameter SymbolName="PosRegP" ObjectType="VAR" Index="0x2003" SubIndex="20" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="PosRegI" ObjectType="VAR" Index="0x2003" SubIndex="21" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="LimOutMax" ObjectType="VAR" Index="0x2003" SubIndex="22" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="MaxWheelAngle" ObjectType="VAR" Index="0x2003" SubIndex="23" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg" />
+        <Parameter SymbolName="SlowDownZone" ObjectType="VAR" Index="0x2003" SubIndex="24" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg" />
+        <Parameter SymbolName="LimOutMaxSlowDownZone" ObjectType="VAR" Index="0x2003" SubIndex="25" DataType="UNSIGNED16" AccessType="rw" Unit="1/100 deg/s" />
+        <Parameter SymbolName="EndLimitSwitchPolarity" ObjectType="VAR" Index="0x2003" SubIndex="26" DataType="UNSIGNED16" AccessType="rw" Unit="" />
+        <Parameter SymbolName="SyncGate" ObjectType="VAR" Index="0x2003" SubIndex="27" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SyncFilter" ObjectType="VAR" Index="0x2003" SubIndex="28" DataType="UNSIGNED16" AccessType="rw" Unit="Pulses" />
+        <Parameter SymbolName="SyncEmergency" ObjectType="VAR" Index="0x2003" SubIndex="29" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="ReverseEncoderDirection" ObjectType="VAR" Index="0x2003" SubIndex="30" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="VoltageFeedback" ObjectType="VAR" Index="0x2003" SubIndex="31" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SpeedRegOffset" ObjectType="VAR" Index="0x2003" SubIndex="32" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="ReadyToSwitchOn" ObjectType="VAR" Index="0x2003" SubIndex="33" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SwitchedOn" ObjectType="VAR" Index="0x2003" SubIndex="34" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="PowerStageEnabled" ObjectType="VAR" Index="0x2003" SubIndex="35" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Error" ObjectType="VAR" Index="0x2003" SubIndex="36" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SwitchOnDisabled" ObjectType="VAR" Index="0x2003" SubIndex="37" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Warning" ObjectType="VAR" Index="0x2003" SubIndex="38" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="WheelAngle" ObjectType="VAR" Index="0x2003" SubIndex="39" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg" />
+        <Parameter SymbolName="Reserved_DigitalInput2" ObjectType="VAR" Index="0x2003" SubIndex="40" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Reserved_DigitalInput3" ObjectType="VAR" Index="0x2003" SubIndex="41" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SwitchOn" ObjectType="VAR" Index="0x2003" SubIndex="42" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="EnablePowerStage" ObjectType="VAR" Index="0x2003" SubIndex="43" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SetAngle" ObjectType="VAR" Index="0x2003" SubIndex="44" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg" />
+        <Parameter SymbolName="DigitalOutput1" ObjectType="VAR" Index="0x2003" SubIndex="45" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput2" ObjectType="VAR" Index="0x2003" SubIndex="46" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput3" ObjectType="VAR" Index="0x2003" SubIndex="47" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput4" ObjectType="VAR" Index="0x2003" SubIndex="48" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DcBusVoltage" ObjectType="VAR" Index="0x2003" SubIndex="49" DataType="UNSIGNED16" AccessType="ro" Unit="1/100 V" />
+        <Parameter SymbolName="TorqueCurrentReference" ObjectType="VAR" Index="0x2003" SubIndex="50" DataType="INTEGER16" AccessType="ro" Unit="deciAmpere" />
+        <Parameter SymbolName="TorqueCurrent" ObjectType="VAR" Index="0x2003" SubIndex="51" DataType="INTEGER16" AccessType="ro" Unit="deciAmpere" />
+        <Parameter SymbolName="EncoderStatus" ObjectType="VAR" Index="0x2003" SubIndex="52" DataType="UNSIGNED16" AccessType="ro" />
+        <Parameter SymbolName="EncoderCounterValue" ObjectType="VAR" Index="0x2003" SubIndex="53" DataType="UNSIGNED16" AccessType="ro" Unit="pulse edges" />
+        <Parameter SymbolName="SpuriousSyncCounter" ObjectType="VAR" Index="0x2003" SubIndex="54" DataType="UNSIGNED16" AccessType="ro" Unit="" />
+        <Parameter SymbolName="MissingSyncCounter" ObjectType="VAR" Index="0x2003" SubIndex="55" DataType="UNSIGNED16" AccessType="ro" Unit="" />
+        <Parameter SymbolName="HeatsinkTemperature" ObjectType="VAR" Index="0x2003" SubIndex="56" DataType="INTEGER16" AccessType="ro" Unit="celsius" />
+        <Parameter SymbolName="ExtendedWarnings" ObjectType="VAR" Index="0x2003" SubIndex="57" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="ExtendedErrors" ObjectType="VAR" Index="0x2003" SubIndex="58" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="RegSupervisionTimer" ObjectType="VAR" Index="0x2003" SubIndex="59" DataType="UNSIGNED16" AccessType="ro" Unit="ms" />
+        <Parameter SymbolName="RegSupervisionTimerMax" ObjectType="VAR" Index="0x2003" SubIndex="60" DataType="UNSIGNED16" AccessType="ro" Unit="ms" />
+      </Group>
+      <Group SymbolName="DCD_7">
+        <Parameter SymbolName="BusID" ObjectType="VAR" Index="0x2004" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="NodeID" ObjectType="VAR" Index="0x2004" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="FailureAction" ObjectType="VAR" Index="0x2004" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="ActiveInSafeState" ObjectType="VAR" Index="0x2004" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NMTState" ObjectType="VAR" Index="0x2004" SubIndex="5" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="SdoBufferSize" ObjectType="VAR" Index="0x2004" SubIndex="6" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="MotorCurrentRegP" ObjectType="VAR" Index="0x2004" SubIndex="7" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="MotorCurrentRegI" ObjectType="VAR" Index="0x2004" SubIndex="8" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="MaxCommandSpeed" ObjectType="VAR" Index="0x2004" SubIndex="9" DataType="UNSIGNED16" AccessType="rw" Unit="mm/s" />
+        <Parameter SymbolName="ForwardMaxAccTorqueCurrent" ObjectType="VAR" Index="0x2004" SubIndex="10" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="ReverseMaxAccTorqueCurrent" ObjectType="VAR" Index="0x2004" SubIndex="11" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="MaxTorqueCurrentChange" ObjectType="VAR" Index="0x2004" SubIndex="12" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere/ms" />
+        <Parameter SymbolName="ForwardMaxBrakeTorqueCurrent" ObjectType="VAR" Index="0x2004" SubIndex="13" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="ReverseMaxBrakeTorqueCurrent" ObjectType="VAR" Index="0x2004" SubIndex="14" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="SpeedRegP" ObjectType="VAR" Index="0x2004" SubIndex="15" DataType="UNSIGNED16" AccessType="rw" />
+        <Parameter SymbolName="SpeedRegI" ObjectType="VAR" Index="0x2004" SubIndex="16" DataType="UNSIGNED16" AccessType="rw" />
+        <Parameter SymbolName="RegSupervisionCheckOutHysteresis" ObjectType="VAR" Index="0x2004" SubIndex="17" DataType="UNSIGNED16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="RegSupervisionFailureDelay" ObjectType="VAR" Index="0x2004" SubIndex="18" DataType="UNSIGNED16" AccessType="rw" Unit="ms" />
+        <Parameter SymbolName="ReverseEncoderDirection" ObjectType="VAR" Index="0x2004" SubIndex="19" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="VoltageFeedback" ObjectType="VAR" Index="0x2004" SubIndex="20" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SpeedRegOffset" ObjectType="VAR" Index="0x2004" SubIndex="21" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="ReadyToSwitchOn" ObjectType="VAR" Index="0x2004" SubIndex="22" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SwitchedOn" ObjectType="VAR" Index="0x2004" SubIndex="23" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="PowerStageEnabled" ObjectType="VAR" Index="0x2004" SubIndex="24" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Error" ObjectType="VAR" Index="0x2004" SubIndex="25" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SwitchOnDisabled" ObjectType="VAR" Index="0x2004" SubIndex="26" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Warning" ObjectType="VAR" Index="0x2004" SubIndex="27" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DriveEncScale" ObjectType="VAR" Index="0x2004" SubIndex="28" DataType="UNSIGNED32" AccessType="rw" Unit="Pulses/1000 mm" />
+        <Parameter SymbolName="DriveEncDist" ObjectType="VAR" Index="0x2004" SubIndex="29" DataType="UNSIGNED16" AccessType="ro" Unit="mm" />
+        <Parameter SymbolName="DriveEncSpeed" ObjectType="VAR" Index="0x2004" SubIndex="30" DataType="INTEGER16" AccessType="ro" Unit="mm/s" />
+        <Parameter SymbolName="DigitalInput2" ObjectType="VAR" Index="0x2004" SubIndex="31" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput3" ObjectType="VAR" Index="0x2004" SubIndex="32" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SwitchOn" ObjectType="VAR" Index="0x2004" SubIndex="33" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="EnablePowerStage" ObjectType="VAR" Index="0x2004" SubIndex="34" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SetSpeed" ObjectType="VAR" Index="0x2004" SubIndex="35" DataType="INTEGER16" AccessType="rw" Unit="mm/s" />
+        <Parameter SymbolName="DigitalOutput1" ObjectType="VAR" Index="0x2004" SubIndex="36" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput2" ObjectType="VAR" Index="0x2004" SubIndex="37" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput3" ObjectType="VAR" Index="0x2004" SubIndex="38" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput4" ObjectType="VAR" Index="0x2004" SubIndex="39" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DcBusVoltage" ObjectType="VAR" Index="0x2004" SubIndex="40" DataType="UNSIGNED16" AccessType="ro" Unit="1/100 V" />
+        <Parameter SymbolName="TorqueCurrentReference" ObjectType="VAR" Index="0x2004" SubIndex="41" DataType="INTEGER16" AccessType="ro" Unit="deciAmpere" />
+        <Parameter SymbolName="TorqueCurrent" ObjectType="VAR" Index="0x2004" SubIndex="42" DataType="INTEGER16" AccessType="ro" Unit="deciAmpere" />
+        <Parameter SymbolName="HeatsinkTemperature" ObjectType="VAR" Index="0x2004" SubIndex="43" DataType="INTEGER16" AccessType="ro" Unit="celsius" />
+        <Parameter SymbolName="ExtendedWarnings" ObjectType="VAR" Index="0x2004" SubIndex="44" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="ExtendedErrors" ObjectType="VAR" Index="0x2004" SubIndex="45" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="RegSupervisionTimer" ObjectType="VAR" Index="0x2004" SubIndex="46" DataType="UNSIGNED16" AccessType="ro" Unit="ms" />
+        <Parameter SymbolName="RegSupervisionTimerMax" ObjectType="VAR" Index="0x2004" SubIndex="47" DataType="UNSIGNED16" AccessType="ro" Unit="ms" />
+      </Group>
+      <Group SymbolName="DCD_8">
+        <Parameter SymbolName="BusID" ObjectType="VAR" Index="0x2005" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="NodeID" ObjectType="VAR" Index="0x2005" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="FailureAction" ObjectType="VAR" Index="0x2005" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="ActiveInSafeState" ObjectType="VAR" Index="0x2005" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NMTState" ObjectType="VAR" Index="0x2005" SubIndex="5" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="SdoBufferSize" ObjectType="VAR" Index="0x2005" SubIndex="6" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="MotorCurrentRegP" ObjectType="VAR" Index="0x2005" SubIndex="7" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="MotorCurrentRegI" ObjectType="VAR" Index="0x2005" SubIndex="8" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="ForwardMaxAccTorqueCurrent" ObjectType="VAR" Index="0x2005" SubIndex="9" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="ReverseMaxAccTorqueCurrent" ObjectType="VAR" Index="0x2005" SubIndex="10" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="MaxTorqueCurrentChange" ObjectType="VAR" Index="0x2005" SubIndex="11" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere/ms" />
+        <Parameter SymbolName="ForwardMaxBrakeTorqueCurrent" ObjectType="VAR" Index="0x2005" SubIndex="12" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="ReverseMaxBrakeTorqueCurrent" ObjectType="VAR" Index="0x2005" SubIndex="13" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="SpeedRegP" ObjectType="VAR" Index="0x2005" SubIndex="14" DataType="UNSIGNED16" AccessType="rw" />
+        <Parameter SymbolName="SpeedRegI" ObjectType="VAR" Index="0x2005" SubIndex="15" DataType="UNSIGNED16" AccessType="rw" />
+        <Parameter SymbolName="RegSupervisionCheckOutHysteresis" ObjectType="VAR" Index="0x2005" SubIndex="16" DataType="UNSIGNED16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="RegSupervisionFailureDelay" ObjectType="VAR" Index="0x2005" SubIndex="17" DataType="UNSIGNED16" AccessType="rw" Unit="ms" />
+        <Parameter SymbolName="SteerEncScale" ObjectType="VAR" Index="0x2005" SubIndex="18" DataType="UNSIGNED32" AccessType="rw" Unit="Pulses/360 deg" />
+        <Parameter SymbolName="SteerEncOffset" ObjectType="VAR" Index="0x2005" SubIndex="19" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg" />
+        <Parameter SymbolName="PosRegP" ObjectType="VAR" Index="0x2005" SubIndex="20" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="PosRegI" ObjectType="VAR" Index="0x2005" SubIndex="21" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="LimOutMax" ObjectType="VAR" Index="0x2005" SubIndex="22" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="MaxWheelAngle" ObjectType="VAR" Index="0x2005" SubIndex="23" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg" />
+        <Parameter SymbolName="SlowDownZone" ObjectType="VAR" Index="0x2005" SubIndex="24" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg" />
+        <Parameter SymbolName="LimOutMaxSlowDownZone" ObjectType="VAR" Index="0x2005" SubIndex="25" DataType="UNSIGNED16" AccessType="rw" Unit="1/100 deg/s" />
+        <Parameter SymbolName="EndLimitSwitchPolarity" ObjectType="VAR" Index="0x2005" SubIndex="26" DataType="UNSIGNED16" AccessType="rw" Unit="" />
+        <Parameter SymbolName="SyncGate" ObjectType="VAR" Index="0x2005" SubIndex="27" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SyncFilter" ObjectType="VAR" Index="0x2005" SubIndex="28" DataType="UNSIGNED16" AccessType="rw" Unit="Pulses" />
+        <Parameter SymbolName="SyncEmergency" ObjectType="VAR" Index="0x2005" SubIndex="29" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="ReverseEncoderDirection" ObjectType="VAR" Index="0x2005" SubIndex="30" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="VoltageFeedback" ObjectType="VAR" Index="0x2005" SubIndex="31" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SpeedRegOffset" ObjectType="VAR" Index="0x2005" SubIndex="32" DataType="INTEGER16" AccessType="rw" Unit="deciAmpere" />
+        <Parameter SymbolName="ReadyToSwitchOn" ObjectType="VAR" Index="0x2005" SubIndex="33" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SwitchedOn" ObjectType="VAR" Index="0x2005" SubIndex="34" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="PowerStageEnabled" ObjectType="VAR" Index="0x2005" SubIndex="35" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Error" ObjectType="VAR" Index="0x2005" SubIndex="36" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SwitchOnDisabled" ObjectType="VAR" Index="0x2005" SubIndex="37" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Warning" ObjectType="VAR" Index="0x2005" SubIndex="38" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="WheelAngle" ObjectType="VAR" Index="0x2005" SubIndex="39" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg" />
+        <Parameter SymbolName="Reserved_DigitalInput2" ObjectType="VAR" Index="0x2005" SubIndex="40" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="Reserved_DigitalInput3" ObjectType="VAR" Index="0x2005" SubIndex="41" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="SwitchOn" ObjectType="VAR" Index="0x2005" SubIndex="42" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="EnablePowerStage" ObjectType="VAR" Index="0x2005" SubIndex="43" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="SetAngle" ObjectType="VAR" Index="0x2005" SubIndex="44" DataType="INTEGER16" AccessType="rw" Unit="1/100 deg" />
+        <Parameter SymbolName="DigitalOutput1" ObjectType="VAR" Index="0x2005" SubIndex="45" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput2" ObjectType="VAR" Index="0x2005" SubIndex="46" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput3" ObjectType="VAR" Index="0x2005" SubIndex="47" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput4" ObjectType="VAR" Index="0x2005" SubIndex="48" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DcBusVoltage" ObjectType="VAR" Index="0x2005" SubIndex="49" DataType="UNSIGNED16" AccessType="ro" Unit="1/100 V" />
+        <Parameter SymbolName="TorqueCurrentReference" ObjectType="VAR" Index="0x2005" SubIndex="50" DataType="INTEGER16" AccessType="ro" Unit="deciAmpere" />
+        <Parameter SymbolName="TorqueCurrent" ObjectType="VAR" Index="0x2005" SubIndex="51" DataType="INTEGER16" AccessType="ro" Unit="deciAmpere" />
+        <Parameter SymbolName="EncoderStatus" ObjectType="VAR" Index="0x2005" SubIndex="52" DataType="UNSIGNED16" AccessType="ro" />
+        <Parameter SymbolName="EncoderCounterValue" ObjectType="VAR" Index="0x2005" SubIndex="53" DataType="UNSIGNED16" AccessType="ro" Unit="pulse edges" />
+        <Parameter SymbolName="SpuriousSyncCounter" ObjectType="VAR" Index="0x2005" SubIndex="54" DataType="UNSIGNED16" AccessType="ro" Unit="" />
+        <Parameter SymbolName="MissingSyncCounter" ObjectType="VAR" Index="0x2005" SubIndex="55" DataType="UNSIGNED16" AccessType="ro" Unit="" />
+        <Parameter SymbolName="HeatsinkTemperature" ObjectType="VAR" Index="0x2005" SubIndex="56" DataType="INTEGER16" AccessType="ro" Unit="celsius" />
+        <Parameter SymbolName="ExtendedWarnings" ObjectType="VAR" Index="0x2005" SubIndex="57" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="ExtendedErrors" ObjectType="VAR" Index="0x2005" SubIndex="58" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="RegSupervisionTimer" ObjectType="VAR" Index="0x2005" SubIndex="59" DataType="UNSIGNED16" AccessType="ro" Unit="ms" />
+        <Parameter SymbolName="RegSupervisionTimerMax" ObjectType="VAR" Index="0x2005" SubIndex="60" DataType="UNSIGNED16" AccessType="ro" Unit="ms" />
+      </Group>
+      <Group SymbolName="SDIO">
+        <Parameter SymbolName="BusID" ObjectType="VAR" Index="0x2006" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="NodeID" ObjectType="VAR" Index="0x2006" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="FailureAction" ObjectType="VAR" Index="0x2006" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="ActiveInSafeState" ObjectType="VAR" Index="0x2006" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NMTState" ObjectType="VAR" Index="0x2006" SubIndex="5" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="SdoBufferSize" ObjectType="VAR" Index="0x2006" SubIndex="6" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="IMUAxis" ObjectType="VAR" Index="0x2006" SubIndex="7" DataType="VISIBLE_STRING" AccessType="ro" />
+        <Parameter SymbolName="IMUNavActive" ObjectType="VAR" Index="0x2006" SubIndex="8" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="IMUGyroX" ObjectType="VAR" Index="0x2006" SubIndex="9" DataType="INTEGER16" AccessType="ro" Unit="cdeg/s" />
+        <Parameter SymbolName="IMUGyroY" ObjectType="VAR" Index="0x2006" SubIndex="10" DataType="INTEGER16" AccessType="ro" Unit="cdeg/s" />
+        <Parameter SymbolName="IMUGyroZ" ObjectType="VAR" Index="0x2006" SubIndex="11" DataType="INTEGER16" AccessType="ro" Unit="cdeg/s" />
+        <Parameter SymbolName="IMUAccX" ObjectType="VAR" Index="0x2006" SubIndex="12" DataType="INTEGER16" AccessType="ro" Unit="mg" />
+        <Parameter SymbolName="IMUAccY" ObjectType="VAR" Index="0x2006" SubIndex="13" DataType="INTEGER16" AccessType="ro" Unit="mg" />
+        <Parameter SymbolName="IMUAccZ" ObjectType="VAR" Index="0x2006" SubIndex="14" DataType="INTEGER16" AccessType="ro" Unit="mg" />
+        <Parameter SymbolName="IMUError" ObjectType="VAR" Index="0x2006" SubIndex="15" DataType="UNSIGNED16" AccessType="ro" />
+        <Parameter SymbolName="IMUGyroXScale" ObjectType="VAR" Index="0x2006" SubIndex="16" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="IMUGyroYScale" ObjectType="VAR" Index="0x2006" SubIndex="17" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="IMUGyroZScale" ObjectType="VAR" Index="0x2006" SubIndex="18" DataType="INTEGER16" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput1_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="19" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput2_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="20" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput3_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="21" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput4_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="22" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput5_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="23" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput6_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="24" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput7_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="25" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput8_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="26" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput9_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="27" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput10_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="28" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput11_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="29" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput12_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="30" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput2_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="31" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput3_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="32" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput4_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="33" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput5_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="34" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput6_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="35" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput7_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="36" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput8_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="37" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput12_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="38" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput13_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="39" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput14_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="40" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput15_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="41" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput16_Polarity" ObjectType="VAR" Index="0x2006" SubIndex="42" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="AnInp1_Scale" ObjectType="VAR" Index="0x2006" SubIndex="43" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp2_Scale" ObjectType="VAR" Index="0x2006" SubIndex="44" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp3_Scale" ObjectType="VAR" Index="0x2006" SubIndex="45" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp4_Scale" ObjectType="VAR" Index="0x2006" SubIndex="46" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp5_Scale" ObjectType="VAR" Index="0x2006" SubIndex="47" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp6_Scale" ObjectType="VAR" Index="0x2006" SubIndex="48" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp7_Scale" ObjectType="VAR" Index="0x2006" SubIndex="49" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp8_Scale" ObjectType="VAR" Index="0x2006" SubIndex="50" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp9_Scale" ObjectType="VAR" Index="0x2006" SubIndex="51" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp10_Scale" ObjectType="VAR" Index="0x2006" SubIndex="52" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp11_Scale" ObjectType="VAR" Index="0x2006" SubIndex="53" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp1_Delta" ObjectType="VAR" Index="0x2006" SubIndex="54" DataType="UNSIGNED32" AccessType="rw" />
+        <Parameter SymbolName="AnInp2_Delta" ObjectType="VAR" Index="0x2006" SubIndex="55" DataType="UNSIGNED32" AccessType="rw" />
+        <Parameter SymbolName="AnInp3_Delta" ObjectType="VAR" Index="0x2006" SubIndex="56" DataType="UNSIGNED32" AccessType="rw" />
+        <Parameter SymbolName="AnInp4_Delta" ObjectType="VAR" Index="0x2006" SubIndex="57" DataType="UNSIGNED32" AccessType="rw" />
+        <Parameter SymbolName="AnInp5_Delta" ObjectType="VAR" Index="0x2006" SubIndex="58" DataType="UNSIGNED32" AccessType="rw" />
+        <Parameter SymbolName="AnInp6_Delta" ObjectType="VAR" Index="0x2006" SubIndex="59" DataType="UNSIGNED32" AccessType="rw" />
+        <Parameter SymbolName="AnInp7_Delta" ObjectType="VAR" Index="0x2006" SubIndex="60" DataType="UNSIGNED32" AccessType="rw" />
+        <Parameter SymbolName="AnInp8_Delta" ObjectType="VAR" Index="0x2006" SubIndex="61" DataType="UNSIGNED32" AccessType="rw" />
+        <Parameter SymbolName="AnInp9_Delta" ObjectType="VAR" Index="0x2006" SubIndex="62" DataType="UNSIGNED32" AccessType="rw" />
+        <Parameter SymbolName="AnInp10_Delta" ObjectType="VAR" Index="0x2006" SubIndex="63" DataType="UNSIGNED32" AccessType="rw" />
+        <Parameter SymbolName="AnInp11_Delta" ObjectType="VAR" Index="0x2006" SubIndex="64" DataType="UNSIGNED32" AccessType="rw" />
+        <Parameter SymbolName="AnInp1_Offset" ObjectType="VAR" Index="0x2006" SubIndex="65" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp2_Offset" ObjectType="VAR" Index="0x2006" SubIndex="66" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp3_Offset" ObjectType="VAR" Index="0x2006" SubIndex="67" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp4_Offset" ObjectType="VAR" Index="0x2006" SubIndex="68" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp5_Offset" ObjectType="VAR" Index="0x2006" SubIndex="69" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp6_Offset" ObjectType="VAR" Index="0x2006" SubIndex="70" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp7_Offset" ObjectType="VAR" Index="0x2006" SubIndex="71" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp8_Offset" ObjectType="VAR" Index="0x2006" SubIndex="72" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp9_Offset" ObjectType="VAR" Index="0x2006" SubIndex="73" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp10_Offset" ObjectType="VAR" Index="0x2006" SubIndex="74" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="AnInp11_Offset" ObjectType="VAR" Index="0x2006" SubIndex="75" DataType="INTEGER32" AccessType="rw" />
+        <Parameter SymbolName="DigitalInput1" ObjectType="VAR" Index="0x2006" SubIndex="76" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput2" ObjectType="VAR" Index="0x2006" SubIndex="77" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput3" ObjectType="VAR" Index="0x2006" SubIndex="78" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput4" ObjectType="VAR" Index="0x2006" SubIndex="79" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput5" ObjectType="VAR" Index="0x2006" SubIndex="80" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput6" ObjectType="VAR" Index="0x2006" SubIndex="81" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput7" ObjectType="VAR" Index="0x2006" SubIndex="82" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput8" ObjectType="VAR" Index="0x2006" SubIndex="83" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput9" ObjectType="VAR" Index="0x2006" SubIndex="84" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput10" ObjectType="VAR" Index="0x2006" SubIndex="85" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput11" ObjectType="VAR" Index="0x2006" SubIndex="86" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput12" ObjectType="VAR" Index="0x2006" SubIndex="87" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="AllOK_DigitalOutput1" ObjectType="VAR" Index="0x2006" SubIndex="88" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalOutput2" ObjectType="VAR" Index="0x2006" SubIndex="89" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput3" ObjectType="VAR" Index="0x2006" SubIndex="90" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput4" ObjectType="VAR" Index="0x2006" SubIndex="91" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput5" ObjectType="VAR" Index="0x2006" SubIndex="92" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput6" ObjectType="VAR" Index="0x2006" SubIndex="93" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput7" ObjectType="VAR" Index="0x2006" SubIndex="94" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput8" ObjectType="VAR" Index="0x2006" SubIndex="95" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput12" ObjectType="VAR" Index="0x2006" SubIndex="96" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput13" ObjectType="VAR" Index="0x2006" SubIndex="97" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput14" ObjectType="VAR" Index="0x2006" SubIndex="98" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput15" ObjectType="VAR" Index="0x2006" SubIndex="99" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput16" ObjectType="VAR" Index="0x2006" SubIndex="100" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="AnalogInput1" ObjectType="VAR" Index="0x2006" SubIndex="101" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="AnalogInput2" ObjectType="VAR" Index="0x2006" SubIndex="102" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="AnalogInput3" ObjectType="VAR" Index="0x2006" SubIndex="103" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="AnalogInput4" ObjectType="VAR" Index="0x2006" SubIndex="104" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="AnalogInput5" ObjectType="VAR" Index="0x2006" SubIndex="105" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="AnalogInput6" ObjectType="VAR" Index="0x2006" SubIndex="106" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="AnalogInput7" ObjectType="VAR" Index="0x2006" SubIndex="107" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="AnalogInput8" ObjectType="VAR" Index="0x2006" SubIndex="108" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="AnalogInput9" ObjectType="VAR" Index="0x2006" SubIndex="109" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="AnalogInput10" ObjectType="VAR" Index="0x2006" SubIndex="110" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="AnalogInput11" ObjectType="VAR" Index="0x2006" SubIndex="111" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="PWMOutput1" ObjectType="VAR" Index="0x2006" SubIndex="112" DataType="INTEGER16" AccessType="rw" Unit="0.1%" />
+        <Parameter SymbolName="PWMOutput2" ObjectType="VAR" Index="0x2006" SubIndex="113" DataType="INTEGER16" AccessType="rw" Unit="0.1%" />
+        <Parameter SymbolName="PWMOutput3" ObjectType="VAR" Index="0x2006" SubIndex="114" DataType="INTEGER16" AccessType="rw" Unit="0.1%" />
+        <Parameter SymbolName="Reg1Output" ObjectType="VAR" Index="0x2006" SubIndex="115" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="Reg2Output" ObjectType="VAR" Index="0x2006" SubIndex="116" DataType="INTEGER16" AccessType="ro" />
+        <Parameter SymbolName="GroundFaultEvent" ObjectType="VAR" Index="0x2006" SubIndex="117" DataType="BOOLEAN" AccessType="rw" Unit="" />
+        <Parameter SymbolName="GroundFaultActive" ObjectType="VAR" Index="0x2006" SubIndex="118" DataType="BOOLEAN" AccessType="ro" Unit="" />
+        <Parameter SymbolName="Temperature" ObjectType="VAR" Index="0x2006" SubIndex="119" DataType="INTEGER32" AccessType="ro" Unit="decicelsius" />
+        <Parameter SymbolName="XV_Out" ObjectType="VAR" Index="0x2006" SubIndex="120" DataType="INTEGER32" AccessType="ro" Unit="centivolt" />
+        <Parameter SymbolName="B_Plus" ObjectType="VAR" Index="0x2006" SubIndex="121" DataType="INTEGER32" AccessType="ro" Unit="centivolt" />
+      </Group>
+      <Group SymbolName="CAN_IO_3">
+        <Parameter SymbolName="BusID" ObjectType="VAR" Index="0x2037" SubIndex="1" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="NodeID" ObjectType="VAR" Index="0x2037" SubIndex="2" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="FailureAction" ObjectType="VAR" Index="0x2037" SubIndex="3" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="ActiveInSafeState" ObjectType="VAR" Index="0x2037" SubIndex="4" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="NMTState" ObjectType="VAR" Index="0x2037" SubIndex="5" DataType="UNSIGNED32" AccessType="ro" />
+        <Parameter SymbolName="SdoBufferSize" ObjectType="VAR" Index="0x2037" SubIndex="6" DataType="INTEGER32" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput1" ObjectType="VAR" Index="0x2037" SubIndex="7" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput2" ObjectType="VAR" Index="0x2037" SubIndex="8" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput3" ObjectType="VAR" Index="0x2037" SubIndex="9" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput4" ObjectType="VAR" Index="0x2037" SubIndex="10" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput5" ObjectType="VAR" Index="0x2037" SubIndex="11" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput6" ObjectType="VAR" Index="0x2037" SubIndex="12" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput7" ObjectType="VAR" Index="0x2037" SubIndex="13" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput8" ObjectType="VAR" Index="0x2037" SubIndex="14" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput9" ObjectType="VAR" Index="0x2037" SubIndex="15" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput10" ObjectType="VAR" Index="0x2037" SubIndex="16" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput11" ObjectType="VAR" Index="0x2037" SubIndex="17" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput12" ObjectType="VAR" Index="0x2037" SubIndex="18" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput13" ObjectType="VAR" Index="0x2037" SubIndex="19" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput14" ObjectType="VAR" Index="0x2037" SubIndex="20" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput15" ObjectType="VAR" Index="0x2037" SubIndex="21" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalInput16" ObjectType="VAR" Index="0x2037" SubIndex="22" DataType="BOOLEAN" AccessType="ro" />
+        <Parameter SymbolName="DigitalOutput1" ObjectType="VAR" Index="0x2037" SubIndex="23" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput2" ObjectType="VAR" Index="0x2037" SubIndex="24" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput3" ObjectType="VAR" Index="0x2037" SubIndex="25" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput4" ObjectType="VAR" Index="0x2037" SubIndex="26" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput5" ObjectType="VAR" Index="0x2037" SubIndex="27" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput6" ObjectType="VAR" Index="0x2037" SubIndex="28" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput7" ObjectType="VAR" Index="0x2037" SubIndex="29" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput8" ObjectType="VAR" Index="0x2037" SubIndex="30" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput9" ObjectType="VAR" Index="0x2037" SubIndex="31" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput10" ObjectType="VAR" Index="0x2037" SubIndex="32" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput11" ObjectType="VAR" Index="0x2037" SubIndex="33" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput12" ObjectType="VAR" Index="0x2037" SubIndex="34" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput13" ObjectType="VAR" Index="0x2037" SubIndex="35" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput14" ObjectType="VAR" Index="0x2037" SubIndex="36" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput15" ObjectType="VAR" Index="0x2037" SubIndex="37" DataType="BOOLEAN" AccessType="rw" />
+        <Parameter SymbolName="DigitalOutput16" ObjectType="VAR" Index="0x2037" SubIndex="38" DataType="BOOLEAN" AccessType="rw" />
+      </Group>
+    </Parameters>
+  </Dictionary>
+</Product>

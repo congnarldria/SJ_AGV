@@ -1,0 +1,78 @@
+<top xmlns:dc="urn:NDC8DeviceConfigurationFile" xmlns:vc="urn:NDC8ComponentTemplateFile" xmlns="urn:NDC8AllComponentTypes">
+  <comptypes FileFormat="40" BaseType="GenericCanDevice_T" BaseComponentType="_T">
+    <comptype compname="CAN_IO_3_T" remark="Generic IO module">
+      <properties>
+        <property propname="DigitalInput1_SteerLimitF_L" propremark="Digital Input 1 value" datatype="BOOLEAN" symboladdress="DigitalInput1">
+        </property>
+        <property propname="DigitalInput2_SteerLimitF_R" propremark="Digital Input 2 value" datatype="BOOLEAN" symboladdress="DigitalInput2">
+        </property>
+        <property propname="DigitalInput3_SteerLimitR_L" propremark="Digital Input 3 value" datatype="BOOLEAN" symboladdress="DigitalInput3">
+        </property>
+        <property propname="DigitalInput4_SteerLimitR_R" propremark="Digital Input 4 value" datatype="BOOLEAN" symboladdress="DigitalInput4">
+        </property>
+        <property propname="DigitalInput5" propremark="Digital Input 5 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput6" propremark="Digital Input 6 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput7" propremark="Digital Input 7 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput8" propremark="Digital Input 8 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput9_AreaF_IN1" propremark="Digital Input 9 value" datatype="BOOLEAN" symboladdress="DigitalInput9">
+        </property>
+        <property propname="DigitalInput10_AreaF_IN2" propremark="Digital Input 10 value" datatype="BOOLEAN" symboladdress="DigitalInput10">
+        </property>
+        <property propname="DigitalInput11" propremark="Digital Input 11 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput12" propremark="Digital Input 12 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput13_AreaR_IN1" propremark="Digital Input 13 value" datatype="BOOLEAN" symboladdress="DigitalInput13">
+        </property>
+        <property propname="DigitalInput14_AreaR_IN2" propremark="Digital Input 14 value" datatype="BOOLEAN" symboladdress="DigitalInput14">
+        </property>
+        <property propname="DigitalInput15" propremark="Digital Input 15 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalInput16" propremark="Digital Input 16 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput1_BuzzerCh1" propremark="Digital Output 1 value" datatype="BOOLEAN" symboladdress="DigitalOutput1">
+        </property>
+        <property propname="DigitalOutput2_BuzzerCh2" propremark="Digital Output 2 value" datatype="BOOLEAN" symboladdress="DigitalOutput2">
+        </property>
+        <property propname="DigitalOutput3_BuzzerCh3" propremark="Digital Output 3 value" datatype="BOOLEAN" symboladdress="DigitalOutput3">
+        </property>
+        <property propname="DigitalOutput4_BuzzerCh4" propremark="Digital Output 4 value" datatype="BOOLEAN" symboladdress="DigitalOutput4">
+        </property>
+        <property propname="DigitalOutput5" propremark="Digital Output 5 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput6" propremark="Digital Output 6 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput7" propremark="Digital Output 7 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput8" propremark="Digital Output 8 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput9_AreaF_SW1" propremark="Digital Output 9 value" datatype="BOOLEAN" symboladdress="DigitalOutput9">
+        </property>
+        <property propname="DigitalOutput10_AreaF_SW2" propremark="Digital Output 10 value" datatype="BOOLEAN" symboladdress="DigitalOutput10">
+        </property>
+        <property propname="DigitalOutput11" propremark="Digital Output 11 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput12" propremark="Digital Output 12 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput13_AreaR_SW1" propremark="Digital Output 13 value" datatype="BOOLEAN" symboladdress="DigitalOutput13">
+        </property>
+        <property propname="DigitalOutput14_AreaR_SW2" propremark="Digital Output 14 value" datatype="BOOLEAN" symboladdress="DigitalOutput14">
+        </property>
+        <property propname="DigitalOutput15" propremark="Digital Output 15 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput16" propremark="Digital Output 16 value" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="BusID" propremark="CAN bus ID" datatype="INTEGER32" symboladdress="" />
+        <property propname="NodeID" propremark="CAN node ID" datatype="INTEGER32" symboladdress="" />
+        <property propname="FailureAction" propremark="0 = Background, the background programs takes action when an error occur in the device. 1 = PLC, no action from background program. The error should be handled by the PLC application." datatype="INTEGER32" symboladdress="" />
+        <property propname="ActiveInSafeState" propremark="Decides if the device will start up in safe state." datatype="BOOLEAN" symboladdress="" />
+        <property propname="NMTState" propremark="The current CANopen state of the device." datatype="UNSIGNED32" symboladdress="" />
+        <property propname="SdoBufferSize" propremark="The current size of the client SDO buffer (read/write SDO's from the vehicle controller to this device)." datatype="INTEGER32" symboladdress="" />
+      </properties>
+    </comptype>
+  </comptypes>
+</top>

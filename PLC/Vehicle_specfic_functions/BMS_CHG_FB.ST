@@ -44,12 +44,13 @@ end_if;
 
 if PLC_RX03_Bit_ChrgReqR_A = TRUE and PLC_RX03_Bit_ChrgReqL_A = FALSE and PLC_TX01_Bit_ManMode = TRUE then
 	PLC_TX04_Bit_ChrgCmdL_A := FALSE;
-	NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE;
+	NDC8.SDIO.DigitalOutput16_RIGHTMGS := TRUE;
 	PLC_TX04_Bit_ChrgCmdR_A := TRUE;
 	StopCharge := TRUE;
 elsif ((PLC_RX03_Bit_ChrgReqL_A = FALSE and PLC_RX03_Bit_ChrgReqR_A = FALSE) or PLC_RX15_Bit_BMS_ChgCmp = TRUE) and PLC_TX01_Bit_ManMode = TRUE then
-	NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;
 	PLC_TX04_Bit_ChrgCmdL_A := FALSE;
+	NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;	
+	PLC_TX04_Bit_ChrgCmdR_A := FALSE;
 	StopCharge := FALSE;
 end_if;
 
@@ -243,6 +244,8 @@ end_if;
 if PLC_TX04_Bit_ChrgCmdL_A = TRUE then
 	StopCharge := TRUE;
 end_if;
+
+
 
 
 

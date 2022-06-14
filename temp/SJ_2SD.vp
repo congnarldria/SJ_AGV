@@ -1,0 +1,2281 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8VehicleParameterFile">
+  <FileInfo FileType="vp" FileRevision="1" Description="NDC8 Vehicle Parameter File" CreationDate="2020-06-14" CreationTime="16:38:29.7151500+08:00" CreatedBy="user" ModificationDate="2020-06-14" ModificationTime="16:38:29.7151500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <Vehicles>
+    <Vehicle VehicleId="4">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4458" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="12" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4455" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-12" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="0" />
+            <Property SymbolName="X" Value="-770" />
+            <Property SymbolName="Y" Value="0" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_55" Value="0" />
+            <Property SymbolName="Integer32_58" Value="0" />
+            <Property SymbolName="Integer32_59" Value="0" />
+            <Property SymbolName="Integer32_60" Value="0" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="40" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="105">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4548" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-475" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4535" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="325" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-0.400000005960464" />
+            <Property SymbolName="X" Value="-765" />
+            <Property SymbolName="Y" Value="-15" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="860105083" />
+            <Property SymbolName="Integer32_58" Value="330" />
+            <Property SymbolName="Integer32_59" Value="13" />
+            <Property SymbolName="Integer32_60" Value="46" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="30" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="110">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4463" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="25" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4453" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-30" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="0.0799999982118607" />
+            <Property SymbolName="X" Value="-780" />
+            <Property SymbolName="Y" Value="0" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="250" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="372081712" />
+            <Property SymbolName="Integer32_58" Value="297" />
+            <Property SymbolName="Integer32_59" Value="16" />
+            <Property SymbolName="Integer32_60" Value="13" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="900" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="73">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4467" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-8" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4460" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-13" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-1" />
+            <Property SymbolName="X" Value="-770" />
+            <Property SymbolName="Y" Value="-15" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="609994858" />
+            <Property SymbolName="Integer32_58" Value="270" />
+            <Property SymbolName="Integer32_59" Value="16" />
+            <Property SymbolName="Integer32_60" Value="50" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="90">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4455" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-120" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4456" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-170" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-1.29999995231628" />
+            <Property SymbolName="X" Value="-772" />
+            <Property SymbolName="Y" Value="-4" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="582626376" />
+            <Property SymbolName="Integer32_58" Value="269" />
+            <Property SymbolName="Integer32_59" Value="13" />
+            <Property SymbolName="Integer32_60" Value="53" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="86">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4454" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="15" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4454" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-10" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-1.39999997615814" />
+            <Property SymbolName="X" Value="-760" />
+            <Property SymbolName="Y" Value="-20" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="573515240" />
+            <Property SymbolName="Integer32_58" Value="259" />
+            <Property SymbolName="Integer32_59" Value="3" />
+            <Property SymbolName="Integer32_60" Value="60" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="900" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="103">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4462" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-80" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4457" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="0" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="0.150000005960464" />
+            <Property SymbolName="X" Value="-760" />
+            <Property SymbolName="Y" Value="3" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="210726378" />
+            <Property SymbolName="Integer32_58" Value="230" />
+            <Property SymbolName="Integer32_59" Value="21" />
+            <Property SymbolName="Integer32_60" Value="48" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="900" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="104">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4462" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="0" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4457" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="0" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-0.150000005960464" />
+            <Property SymbolName="X" Value="-775" />
+            <Property SymbolName="Y" Value="0" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="366324236" />
+            <Property SymbolName="Integer32_58" Value="228" />
+            <Property SymbolName="Integer32_59" Value="16" />
+            <Property SymbolName="Integer32_60" Value="23" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="79">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4456" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="600" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4458" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-150" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="0.899999976158142" />
+            <Property SymbolName="X" Value="-762" />
+            <Property SymbolName="Y" Value="-7" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="615674784" />
+            <Property SymbolName="Integer32_58" Value="237" />
+            <Property SymbolName="Integer32_59" Value="18" />
+            <Property SymbolName="Integer32_60" Value="27" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="40" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="80">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4459" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-35" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4458" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="90" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="1.10000002384186" />
+            <Property SymbolName="X" Value="-750" />
+            <Property SymbolName="Y" Value="3" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="542187988" />
+            <Property SymbolName="Integer32_58" Value="223" />
+            <Property SymbolName="Integer32_59" Value="5" />
+            <Property SymbolName="Integer32_60" Value="35" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="30" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="83">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4458" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="125" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4453" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="0" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="0.400000005960464" />
+            <Property SymbolName="X" Value="-765" />
+            <Property SymbolName="Y" Value="0" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="512488902" />
+            <Property SymbolName="Integer32_58" Value="218" />
+            <Property SymbolName="Integer32_59" Value="20" />
+            <Property SymbolName="Integer32_60" Value="16" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="40" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="85">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4454" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-105" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4455" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="60" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-0.5" />
+            <Property SymbolName="X" Value="-755" />
+            <Property SymbolName="Y" Value="-5" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="240" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="495516575" />
+            <Property SymbolName="Integer32_58" Value="212" />
+            <Property SymbolName="Integer32_59" Value="0" />
+            <Property SymbolName="Integer32_60" Value="11" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="30" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="102">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4449" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-50" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4450" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="50" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="0.25" />
+            <Property SymbolName="X" Value="-788" />
+            <Property SymbolName="Y" Value="-15" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="290329038" />
+            <Property SymbolName="Integer32_58" Value="139" />
+            <Property SymbolName="Integer32_59" Value="5" />
+            <Property SymbolName="Integer32_60" Value="30" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="30" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="106">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4550" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="40" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4450" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-25" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="0.4" />
+            <Property SymbolName="X" Value="-780" />
+            <Property SymbolName="Y" Value="-6" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="263238730" />
+            <Property SymbolName="Integer32_58" Value="131" />
+            <Property SymbolName="Integer32_59" Value="16" />
+            <Property SymbolName="Integer32_60" Value="46" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="30" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="107">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4451" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="60" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4445" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-40" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-1.20000004768372" />
+            <Property SymbolName="X" Value="-780" />
+            <Property SymbolName="Y" Value="-4" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="260" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="262982325" />
+            <Property SymbolName="Integer32_58" Value="126" />
+            <Property SymbolName="Integer32_59" Value="19" />
+            <Property SymbolName="Integer32_60" Value="34" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="30" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="109">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4461" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="220" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4453" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="80" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="1" />
+            <Property SymbolName="X" Value="-780" />
+            <Property SymbolName="Y" Value="-3" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="243526032" />
+            <Property SymbolName="Integer32_58" Value="120" />
+            <Property SymbolName="Integer32_59" Value="11" />
+            <Property SymbolName="Integer32_60" Value="34" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="30" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="71">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4480" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-130" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4436" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-30" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-0.8" />
+            <Property SymbolName="X" Value="-764" />
+            <Property SymbolName="Y" Value="-13" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="240" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="260616741" />
+            <Property SymbolName="Integer32_58" Value="99" />
+            <Property SymbolName="Integer32_59" Value="12" />
+            <Property SymbolName="Integer32_60" Value="35" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="25" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="72">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4460" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-44" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4486" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-61" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="0" />
+            <Property SymbolName="X" Value="-768" />
+            <Property SymbolName="Y" Value="-10" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="247451996" />
+            <Property SymbolName="Integer32_58" Value="93" />
+            <Property SymbolName="Integer32_59" Value="11" />
+            <Property SymbolName="Integer32_60" Value="29" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="25" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="75">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4487" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-550" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4565" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-75" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-0.05" />
+            <Property SymbolName="X" Value="-770" />
+            <Property SymbolName="Y" Value="-10" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="241384846" />
+            <Property SymbolName="Integer32_58" Value="86" />
+            <Property SymbolName="Integer32_59" Value="23" />
+            <Property SymbolName="Integer32_60" Value="41" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="77">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4446" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-120" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4445" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-60" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-1.10000002384186" />
+            <Property SymbolName="X" Value="-770" />
+            <Property SymbolName="Y" Value="-5" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="204583057" />
+            <Property SymbolName="Integer32_58" Value="79" />
+            <Property SymbolName="Integer32_59" Value="6" />
+            <Property SymbolName="Integer32_60" Value="42" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="25" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="87">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4540" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="80" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4454" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="0" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-1.29999995231628" />
+            <Property SymbolName="X" Value="-760" />
+            <Property SymbolName="Y" Value="-15" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="194874926" />
+            <Property SymbolName="Integer32_58" Value="74" />
+            <Property SymbolName="Integer32_59" Value="5" />
+            <Property SymbolName="Integer32_60" Value="56" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="88">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4425" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="0" />
+            <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-70" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4425" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="0" />
+            <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="0" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-1" />
+            <Property SymbolName="X" Value="-770" />
+            <Property SymbolName="Y" Value="0" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="3168299" />
+            <Property SymbolName="Integer32_58" Value="1" />
+            <Property SymbolName="Integer32_59" Value="3" />
+            <Property SymbolName="Integer32_60" Value="29" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="151">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4460" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="0" />
+            <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-400" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4460" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="0" />
+            <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-400" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="0.6" />
+            <Property SymbolName="X" Value="-774" />
+            <Property SymbolName="Y" Value="-17" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="86384469" />
+            <Property SymbolName="Integer32_58" Value="57" />
+            <Property SymbolName="Integer32_59" Value="13" />
+            <Property SymbolName="Integer32_60" Value="3" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="152">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4457" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="0" />
+            <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="360" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4448" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="0" />
+            <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="110" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-0.600000023841858" />
+            <Property SymbolName="X" Value="-765" />
+            <Property SymbolName="Y" Value="0" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="46110483" />
+            <Property SymbolName="Integer32_58" Value="52" />
+            <Property SymbolName="Integer32_59" Value="21" />
+            <Property SymbolName="Integer32_60" Value="6" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="155">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4460" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="0" />
+            <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="10" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4453" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="0" />
+            <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="20" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="0" />
+            <Property SymbolName="X" Value="-780" />
+            <Property SymbolName="Y" Value="0" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="0" />
+            <Property SymbolName="Integer32_58" Value="0" />
+            <Property SymbolName="Integer32_59" Value="0" />
+            <Property SymbolName="Integer32_60" Value="0" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="800" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="154">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4458" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="0" />
+            <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-30" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="4458" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="0" />
+            <Property SymbolName="SpeedRegOffset" Value="35" />
+            <Property SymbolName="SpeedRegP" Value="240" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="-180" />
+            <Property SymbolName="SteerEncScale" Value="1980" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="-0.430000007152557" />
+            <Property SymbolName="X" Value="-765" />
+            <Property SymbolName="Y" Value="15" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="1" />
+            <Property SymbolName="Boolean_11" Value="1" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="196861" />
+            <Property SymbolName="Integer32_58" Value="0" />
+            <Property SymbolName="Integer32_59" Value="2" />
+            <Property SymbolName="Integer32_60" Value="7" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="1000" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="123">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="5061" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="30" />
+            <Property SymbolName="SteerEncOffset" Value="0" />
+            <Property SymbolName="SteerEncScale" Value="6000" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="5061" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="30" />
+            <Property SymbolName="SteerEncOffset" Value="0" />
+            <Property SymbolName="SteerEncScale" Value="6000" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="0" />
+            <Property SymbolName="X" Value="-770" />
+            <Property SymbolName="Y" Value="0" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="0" />
+            <Property SymbolName="Boolean_11" Value="0" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="0" />
+            <Property SymbolName="Integer32_58" Value="4" />
+            <Property SymbolName="Integer32_59" Value="13" />
+            <Property SymbolName="Integer32_60" Value="55" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="1000" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+    <Vehicle VehicleId="50">
+      <ComponentList Name="P46164" TimeStamp="1592152710">
+        <Component SymbolName="DCD_5" DataType="DCD_5" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="2561" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_6" DataType="DCD_6" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="0" />
+            <Property SymbolName="SteerEncScale" Value="6000" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_7" DataType="DCD_7" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="DriveEncScale" Value="2561" />
+            <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="MaxTorqueCurrentChange" Value="900" />
+            <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" />
+            <Property SymbolName="RegSupervisionFailureDelay" Value="3000" />
+            <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
+            <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" />
+            <Property SymbolName="SpeedRegI" Value="1" />
+            <Property SymbolName="SpeedRegOffset" Value="0" />
+            <Property SymbolName="SpeedRegP" Value="120" />
+          </Properties>
+        </Component>
+        <Component SymbolName="DCD_8" DataType="DCD_8" BaseType="GenericCanDevice">
+          <Properties>
+            <Property SymbolName="PosRegI" Value="0" />
+            <Property SymbolName="PosRegP" Value="80" />
+            <Property SymbolName="SteerEncOffset" Value="0" />
+            <Property SymbolName="SteerEncScale" Value="6000" />
+          </Properties>
+        </Component>
+        <Component SymbolName="LS2000" DataType="LS2000Scanner">
+          <Properties>
+            <Property SymbolName="Angle" Value="0" />
+            <Property SymbolName="X" Value="-770" />
+            <Property SymbolName="Y" Value="0" />
+          </Properties>
+        </Component>
+        <Component SymbolName="UserDefined" DataType="UserDefined">
+          <Properties>
+            <Property SymbolName="Boolean_10" Value="0" />
+            <Property SymbolName="Boolean_11" Value="0" />
+            <Property SymbolName="Boolean_20" Value="0" />
+            <Property SymbolName="Integer32_50" Value="245" />
+            <Property SymbolName="Integer32_51" Value="1" />
+            <Property SymbolName="Integer32_52" Value="600000" />
+            <Property SymbolName="Integer32_55" Value="104809768" />
+            <Property SymbolName="Integer32_58" Value="3" />
+            <Property SymbolName="Integer32_59" Value="21" />
+            <Property SymbolName="Integer32_60" Value="43" />
+          </Properties>
+        </Component>
+        <Component SymbolName="Vehicle" DataType="Vehicle">
+          <Properties>
+            <Property SymbolName="AccSlope" Value="300" />
+            <Property SymbolName="CreepDistance" Value="200" />
+            <Property SymbolName="CreepSpeed" Value="80" />
+            <Property SymbolName="DecSlope" Value="300" />
+            <Property SymbolName="MaxSpeed" Value="1000" />
+            <Property SymbolName="OptionClass" Value="2" />
+            <Property SymbolName="StopTolerance" Value="35" />
+          </Properties>
+        </Component>
+      </ComponentList>
+    </Vehicle>
+  </Vehicles>
+</File>

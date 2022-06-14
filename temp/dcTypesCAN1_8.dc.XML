@@ -1,0 +1,122 @@
+<top xmlns:dc="urn:NDC8DeviceConfigurationFile" xmlns:vc="urn:NDC8ComponentTemplateFile" xmlns="urn:NDC8AllComponentTypes">
+  <comptypes FileFormat="40" BaseType="GenericCanDevice_T" BaseComponentType="_T">
+    <comptype compname="DCD_8_T" remark="DCD 50">
+      <properties>
+        <property propname="MotorCurrentRegP" propremark="Motor Parameter: Proportional gain in the PI-parts of the current controller." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="MotorCurrentRegI" propremark="Motor Parameter: Integral gain in the PI-parts of the current controller." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="ForwardMaxAccTorqueCurrent" propremark="Maximum allowed torque current during forward acceleration." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="ReverseMaxAccTorqueCurrent" propremark="Maximum allowed torque current during reverse acceleration." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="MaxTorqueCurrentChange" propremark="The maximum allowed change during 1 ms (i.e. derivate) of the Torque Current that is allowed. A too high derivate may for example introduce noise in the gear." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="ForwardMaxBrakeTorqueCurrent" propremark="Maximum allowed torque current during forward braking/deceleration." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="ReverseMaxBrakeTorqueCurrent" propremark="Maximum allowed torque current during reverse braking/deceleration." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="SpeedRegP" propremark="Proportional gain in the PI-parts of the speed controller." datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="SpeedRegI" propremark="Integral gain in the PI-parts of the speed controller." datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="RegSupervisionCheckOutHysteresis" propremark="Current limit for supervision. Supervision is enabled when the requested torque current goes above this limit. (Regulator supervision 0x6210)" datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="RegSupervisionFailureDelay" propremark="Delay before safe state in absence of movement in correct direction. 0 = Disable. (Regulator supervision 0x6210)" datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="SteerEncScale" propremark="Steering Encoder Scale" datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="SteerEncOffset" propremark="Steering Encoder Offset (Position of Sync pulse)" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="PosRegP" propremark="Proportional gain in the PI-parts of the position controller." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="PosRegI" propremark="Integral gain in the PI-parts of the position controller." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="LimOutMax" propremark="Max motor speed as output from position controller and input to speed controller.&#xD;&#xA;VoltageFeedback: 1024 = 48V, Otherwise: 16384 = 90 deg/s" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="MaxWheelAngle" propremark="Wheel Angle Limit. 0 = No Limit" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="SlowDownZone" propremark="Speed limited zone approaching MaxWheelAngle." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="LimOutMaxSlowDownZone" propremark="Speed limit for the slow down zone." datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="EndLimitSwitchPolarity" propremark="Polarity of end limit switch. Default is active high." datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="SyncGate" propremark="Set true to allow sync. Set to false to reject unwanted sync pulse in multi turn application." datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="SyncFilter" propremark="Window where we expect sync pulse to appear" datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="SyncEmergency" propremark="Encoder Sync Emergency. 0 = Sync Emergency disabled. OBS! Disabling the sync emergency can be a serious safety issue!" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="ReverseEncoderDirection" propremark="Set true to reverse encoder direction. Same effect as swapping A and B signals." datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="VoltageFeedback" propremark="Set true to use motor voltage as speed feedback instead of encoder. (Speed scale: 1024 = 48 V)" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="SpeedRegOffset" propremark="Current to compensate for friction. Added to speed regulator output with sign depending on the command speed." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="ReadyToSwitchOn" propremark="Ready To Switch On (Dc bus is charged)" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="SwitchedOn" propremark="Switched On" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="PowerStageEnabled" propremark="Power Stage Enabled" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="Error" propremark="Error" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="SwitchOnDisabled" propremark="Switch On Disabled	(Dc bus voltage to low, charging timeout)" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="Warning" propremark="Warning" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="WheelAngle" propremark="Wheel Angle" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="Reserved_DigitalInput2" propremark="Digital Input 2 value, encoder sync, pin 14" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="Reserved_DigitalInput3" propremark="Digital Input 3 value, end limit switch, pin 13" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="SwitchOn" propremark="Switch On" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="EnablePowerStage" propremark="Enable Power Stage" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="SetAngle" propremark="Set Angle" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="DigitalOutput1" propremark="Digital Output 1 value, pin 2" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput2" propremark="Digital Output 2 value, pin 18" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput3" propremark="Digital Output 3 value, pin 21" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DigitalOutput4" propremark="Digital Output 4 value, pin 22" datatype="BOOLEAN" symboladdress="">
+        </property>
+        <property propname="DcBusVoltage" propremark="Runtime voltage measurement on the B+ input" datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="TorqueCurrentReference" propremark="Output from speed controller, input to current controller." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="TorqueCurrent" propremark="Actual torque current in current controller." datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="EncoderStatus" propremark="Bit0 - Sync Valid. Set when first sync pulse inside the sync window has been detected" datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="EncoderCounterValue" propremark="Number of pulse edges captured." datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="SpuriousSyncCounter" propremark="Counter for sync pulses detected outside sync window. Valid after first sync pulse inside the sync window has been detected" datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="MissingSyncCounter" propremark="Counter for expected but not present sync pulses inside sync window. Valid after first sync pulse inside the sync window has been detected" datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="HeatsinkTemperature" propremark="Temperature of the heatsink" datatype="INTEGER16" symboladdress="">
+        </property>
+        <property propname="ExtendedWarnings" propremark="Extended Warnings set by the drive, valid when Warning bit is set" datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="ExtendedErrors" propremark="Extended Errors set by the drive, valid when Error bit is set" datatype="UNSIGNED32" symboladdress="">
+        </property>
+        <property propname="RegSupervisionTimer" propremark="Timer counting absence of movement in correct direction. See: Reg Supervision Failure Delay" datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="RegSupervisionTimerMax" propremark="Max value of Reg Supervision Timer since power on." datatype="UNSIGNED16" symboladdress="">
+        </property>
+        <property propname="BusID" propremark="CAN bus ID" datatype="INTEGER32" symboladdress="" />
+        <property propname="NodeID" propremark="CAN node ID" datatype="INTEGER32" symboladdress="" />
+        <property propname="FailureAction" propremark="0 = Background, the background programs takes action when an error occur in the device. 1 = PLC, no action from background program. The error should be handled by the PLC application." datatype="INTEGER32" symboladdress="" />
+        <property propname="ActiveInSafeState" propremark="Decides if the device will start up in safe state." datatype="BOOLEAN" symboladdress="" />
+        <property propname="NMTState" propremark="The current CANopen state of the device." datatype="UNSIGNED32" symboladdress="" />
+        <property propname="SdoBufferSize" propremark="The current size of the client SDO buffer (read/write SDO's from the vehicle controller to this device)." datatype="INTEGER32" symboladdress="" />
+      </properties>
+    </comptype>
+  </comptypes>
+</top>
