@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8EventDescriptionFile">
-  <FileInfo FileType="edf" FileRevision="172" FileFormat="1" Description="NDC8 Event Descriptions" CreationDate="2020-10-07" CreationTime="09:50:36.0000000+08:00" CreatedBy="CWay8" ModificationDate="2020-06-13" ModificationTime="13:26:02.9026500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="edf" FileRevision="172" FileFormat="1" Description="NDC8 Event Descriptions" CreationDate="2020-10-07" CreationTime="09:50:36.0000000+08:00" CreatedBy="CWay8" ModificationDate="2020-06-15" ModificationTime="19:53:46.4185500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Events>
     <Event EventType="SystemError" EventCode="1" Severity="Info" Source="" CreateDate="1990-09-21">
       <Description>The unit has restarted and performed a cold start. Cold start means that no information is saved from the situation preceeding the restart.  Normally, the unit will perform a cold start at operator request.  However, it may happen that internal data is found to be corrupted during a warm-start, resulting in a necessary cold start of the unit.  The unit will also make a coldstart if warmstart is disabled in  the definition.</Description>

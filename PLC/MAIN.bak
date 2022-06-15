@@ -405,7 +405,7 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 	MasterLinkR(CLK:= NDC8.Master.MasterLinkUp);
 	
 
-	if MasterLinkR.Q or g_AGV_ErrorReset or (NDC8.Mcd.Button8 = TRUE and INPUT.Manual = TRUE) then (* When Master Link up, Error Status need to be update again *)
+	if (*MasterLinkR.Q or g_AGV_ErrorReset or (NDC8.Mcd.Button8 = TRUE and INPUT.Manual = TRUE)*) True then (* When Master Link up, Error Status need to be update again *)
 		g_ErrorCode := 0;
 		PLC_TX_Word13_STr_Err := 0;
 		OM_PLC_W2_Bit_SetEmgStop := FALSE;
@@ -542,8 +542,7 @@ else
 end_if;
 
 if (PLC_RX01_Bit_EnableLD_i = FALSE or Input.StartMode = FALSE) and Input.Auto then
-	(*StopRobotNotIdle := TRUE; TEST*)
-	StopRobotNotIdle := FALSE;
+	StopRobotNotIdle := TRUE;
 else
 	StopRobotNotIdle := FALSE;
 end_if;
@@ -766,8 +765,6 @@ Display();
 OPTX2();
 
 DataUpdate();
-
-
 
 
 
