@@ -601,8 +601,8 @@ if PLC_RX04_Bit_STw_LowOT then
 	if VehicleMovingFlag = FALSE 
 		and  NDC8.LoadDocking.OnTarget = FALSE 
 		and PLC_TX01_Bit_ManMode = FALSE 
-		and NDC8.SDIO.DigitalOutput16_Charger = FALSE then
-		
+		and NDC8.SDIO.DigitalOutput16_RIGHTMGS = FALSE
+		and NDC8.SDIO.DigitalOutput12_LEFTMGS = FALSE THEN
 		g_BattLim_NG := TRUE;
 		BatLowTm(IN := TRUE, PT := t#10s);
 		if BatLowTm.Q then
@@ -753,6 +753,7 @@ Display();
 OPTX2();
 
 DataUpdate();
+
 
 
 

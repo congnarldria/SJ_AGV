@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2020-06-14" CreationTime="16:38:29.7151500+08:00" CreatedBy="user" ModificationDate="2020-06-14" ModificationTime="16:38:29.7151500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2020-06-15" CreationTime="13:00:49.2125000+08:00" CreatedBy="user" ModificationDate="2020-06-15" ModificationTime="13:00:49.2125000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
-  <ComponentList Name="P46164" TimeStamp="1592152710">
+  <ComponentList Name="P46164" TimeStamp="1592226050">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
       <Properties>
         <Property SymbolName="Method" Value="2" Remark="Navigation init methods:&#xD;&#xA;0. NavAreaInit. The vehicle controller will search for a&#xD;&#xA;   position within the given navigation area. If navigation area is&#xD;&#xA;   set to 0 the vehicle controller will search the whole layout. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;1. PointInit. The vehicle controller will search for a position in an&#xD;&#xA;   area around the given NDC point. The size of the search area is&#xD;&#xA;   defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;2. SetPosition. The vehicle controller will set its position to that&#xD;&#xA;   of the given NDC point. The vehicle must be in manual or semi manual&#xD;&#xA;   mode and standing still.&#xD;&#xA;&#xD;&#xA;3. CoordinatesInit. The vehicle controller will search for a position&#xD;&#xA;   in an area around the given coordinates. The size of the search&#xD;&#xA;   area is defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;4. SetCoordinates. The vehicle controller will set its position to&#xD;&#xA;   that of the given given coordinates. The vehicle must be in manual&#xD;&#xA;   or semi manual mode and standing still." ParentName="NavInit" />
@@ -504,20 +504,20 @@
         <Property SymbolName="Boolean_6" Value="0" Remark="Boolean_6" ParentName="UserDefined" />
         <Property SymbolName="Boolean_7" Value="0" Remark="Boolean_7" ParentName="UserDefined" />
         <Property SymbolName="Boolean_8" Value="0" Remark="Boolean_8" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_9" Value="0" Remark="Boolean_9" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_9" Value="1" Remark="Boolean_9" ParentName="UserDefined" />
         <Property SymbolName="Boolean_10" Value="0" Remark="Boolean_10" AliasName="Boolean_10_BlockPowOffEn" ParentName="UserDefined" />
         <Property SymbolName="Boolean_11" Value="0" Remark="" AliasName="Boolean_11_LostPosPowOffEn" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_12" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_13" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_14" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_15" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_16" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_17" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_18" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_19" Value="0" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_12" Value="1" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_13" Value="1" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_14" Value="1" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_15" Value="1" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_16" Value="1" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_17" Value="1" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_18" Value="1" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_19" Value="1" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_20" Value="0" Remark="1 = Local Mode; 0 = Host Mode" AliasName="Boolean_20_OnlineOrderMode" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_21" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_22" Value="0" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_21" Value="1" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_22" Value="1" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_23" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_24" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_25" Value="0" Remark="" ParentName="UserDefined" />
@@ -526,59 +526,59 @@
         <Property SymbolName="Boolean_28" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_29" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_30" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_1" Value="1024" Remark="Integer32_1" AliasName="StopWord" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_1" Value="0" Remark="Integer32_1" AliasName="StopWord" ParentName="UserDefined" />
         <Property SymbolName="Integer32_2" Value="0" Remark="Integer32_2" ParentName="UserDefined" />
         <Property SymbolName="Integer32_3" Value="0" Remark="Integer32_3" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_4" Value="0" Remark="Integer32_4" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_5" Value="0" Remark="Integer32_5" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_6" Value="0" Remark="Integer32_6" AliasName="SlowDownDisable" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_7" Value="0" Remark="Integer32_7" AliasName="PPAEnable" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_4" Value="1128529920" Remark="Integer32_4" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_5" Value="775315268" Remark="Integer32_5" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_6" Value="1098147155" Remark="Integer32_6" AliasName="SlowDownDisable" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_7" Value="1701603182" Remark="Integer32_7" AliasName="PPAEnable" ParentName="UserDefined" />
         <Property SymbolName="Integer32_8" Value="0" Remark="Integer32_8" AliasName="SafetyScannerTurnAngle" ParentName="UserDefined" />
         <Property SymbolName="Integer32_9" Value="200" Remark="Integer32_9" AliasName="NormalCreepDistance" ParentName="UserDefined" />
         <Property SymbolName="Integer32_10" Value="0" Remark="Integer32_10" ParentName="UserDefined" />
         <Property SymbolName="Integer32_11" Value="0" Remark="Integer32_11" ParentName="UserDefined" />
         <Property SymbolName="Integer32_12" Value="0" Remark="Integer32_12" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_13" Value="0" Remark="Integer32_13" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_14" Value="0" Remark="Integer32_14" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_15" Value="0" Remark="Integer32_15" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_16" Value="0" Remark="Integer32_16" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_17" Value="0" Remark="Integer32_17" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_18" Value="0" Remark="Integer32_18" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_13" Value="1128529920" Remark="Integer32_13" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_14" Value="775249732" Remark="Integer32_14" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_15" Value="1650552389" Remark="Integer32_15" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_16" Value="1867539820" Remark="Integer32_16" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_17" Value="1400006007" Remark="Integer32_17" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_18" Value="1701273972" Remark="Integer32_18" ParentName="UserDefined" />
         <Property SymbolName="Integer32_19" Value="0" Remark="Integer32_19" ParentName="UserDefined" />
         <Property SymbolName="Integer32_20" Value="0" Remark="Integer32_20" ParentName="UserDefined" />
         <Property SymbolName="Integer32_21" Value="0" Remark="Integer32_21" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_22" Value="0" Remark="Integer32_22" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_23" Value="0" Remark="Integer32_23" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_24" Value="0" Remark="Integer32_24" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_25" Value="0" Remark="Integer32_25" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_26" Value="0" Remark="Integer32_26" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_27" Value="0" Remark="Integer32_27" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_22" Value="1128529920" Remark="Integer32_22" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_23" Value="775315268" Remark="Integer32_23" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_24" Value="1650552389" Remark="Integer32_24" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_25" Value="1867539820" Remark="Integer32_25" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_26" Value="1400006007" Remark="Integer32_26" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_27" Value="1701273972" Remark="Integer32_27" ParentName="UserDefined" />
         <Property SymbolName="Integer32_28" Value="0" Remark="Integer32_28" ParentName="UserDefined" />
         <Property SymbolName="Integer32_29" Value="0" Remark="Integer32_29" ParentName="UserDefined" />
         <Property SymbolName="Integer32_30" Value="0" Remark="Integer32_30" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_31" Value="0" Remark="Integer32_31" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_32" Value="0" Remark="Integer32_32" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_33" Value="0" Remark="Integer32_33" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_34" Value="0" Remark="Integer32_34" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_35" Value="0" Remark="Integer32_35" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_36" Value="0" Remark="Integer32_36" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_31" Value="1128529920" Remark="Integer32_31" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_32" Value="775249732" Remark="Integer32_32" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_33" Value="1986622020" Remark="Integer32_33" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_34" Value="1668171109" Remark="Integer32_34" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_35" Value="1701146707" Remark="Integer32_35" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_36" Value="100" Remark="Integer32_36" ParentName="UserDefined" />
         <Property SymbolName="Integer32_37" Value="0" Remark="Integer32_37" ParentName="UserDefined" />
         <Property SymbolName="Integer32_38" Value="0" Remark="Integer32_38" ParentName="UserDefined" />
         <Property SymbolName="Integer32_39" Value="0" Remark="Integer32_39" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_40" Value="0" Remark="Integer32_40" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_41" Value="0" Remark="Integer32_41" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_42" Value="0" Remark="Integer32_42" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_43" Value="0" Remark="Integer32_43" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_44" Value="0" Remark="Integer32_44" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_40" Value="1128529920" Remark="Integer32_40" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_41" Value="775249732" Remark="Integer32_41" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_42" Value="1986622020" Remark="Integer32_42" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_43" Value="1668171109" Remark="Integer32_43" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_44" Value="1953720644" Remark="Integer32_44" ParentName="UserDefined" />
         <Property SymbolName="Integer32_45" Value="0" Remark="Integer32_45" ParentName="UserDefined" />
         <Property SymbolName="Integer32_46" Value="0" Remark="Integer32_46" ParentName="UserDefined" />
         <Property SymbolName="Integer32_47" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Integer32_48" Value="0" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_49" Value="0" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_49" Value="1128529920" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Integer32_50" Value="245" Remark="" AliasName="Integer32_50_BattLowVol" ParentName="UserDefined" />
         <Property SymbolName="Integer32_51" Value="1" Remark="1=L or M or H, 2=M or H, 3=H" AliasName="Integer32_51_BattLowSel" ParentName="UserDefined" />
         <Property SymbolName="Integer32_52" Value="600000" Remark="ms" AliasName="Integer32_52_PowOffTm" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_53" Value="0" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_53" Value="25964" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Integer32_54" Value="0" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Integer32_55" Value="104809768" Remark="" AliasName="Integer32_55_TravelDistance" ParentName="UserDefined" />
         <Property SymbolName="Integer32_56" Value="0" Remark="" ParentName="UserDefined" />
@@ -819,11 +819,11 @@
         <Property SymbolName="MotorCurrentRegP" Value="800" Remark="Motor Parameter: Proportional gain in the PI-parts of the current controller." ParentName="DCD_5" />
         <Property SymbolName="MotorCurrentRegI" Value="300" Remark="Motor Parameter: Integral gain in the PI-parts of the current controller." ParentName="DCD_5" />
         <Property SymbolName="MaxCommandSpeed" Value="2000" Remark="Max command speed" ParentName="DCD_5" />
-        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_5" />
-        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_5" />
+        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="210" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_5" />
+        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="210" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_5" />
         <Property SymbolName="MaxTorqueCurrentChange" Value="900" Remark="The maximum allowed change during 1 ms (i.e. derivate) of the Torque Current that is allowed. A too high derivate may for example introduce noise in the gear." ParentName="DCD_5" />
-        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" Remark="Maximum allowed torque current during forward braking/deceleration." ParentName="DCD_5" />
-        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" Remark="Maximum allowed torque current during reverse braking/deceleration." ParentName="DCD_5" />
+        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="210" Remark="Maximum allowed torque current during forward braking/deceleration." ParentName="DCD_5" />
+        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="210" Remark="Maximum allowed torque current during reverse braking/deceleration." ParentName="DCD_5" />
         <Property SymbolName="SpeedRegP" Value="120" Remark="Proportional gain in the PI-parts of the speed controller." ParentName="DCD_5" />
         <Property SymbolName="SpeedRegI" Value="1" Remark="Integral gain in the PI-parts of the speed controller." ParentName="DCD_5" />
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" Remark="Current limit for supervision. Supervision is enabled when the requested torque current goes above this limit. (Regulator supervision 0x6210)" ParentName="DCD_5" />
@@ -856,8 +856,8 @@
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="125" Remark="Current limit for supervision. Supervision is enabled when the requested torque current goes above this limit. (Regulator supervision 0x6210)" ParentName="DCD_6" />
         <Property SymbolName="RegSupervisionFailureDelay" Value="1000" Remark="Delay before safe state in absence of movement in correct direction. 0 = Disable. (Regulator supervision 0x6210)" ParentName="DCD_6" />
         <Property SymbolName="SteerEncScale" Value="6000" Remark="Steering Encoder Scale" ParentName="DCD_6" />
-        <Property SymbolName="SteerEncOffset" Value="0" Remark="Steering Encoder Offset (Position of Sync pulse)" ParentName="DCD_6" />
-        <Property SymbolName="PosRegP" Value="30" Remark="Proportional gain in the PI-parts of the position controller." ParentName="DCD_6" />
+        <Property SymbolName="SteerEncOffset" Value="-700" Remark="Steering Encoder Offset (Position of Sync pulse)" ParentName="DCD_6" />
+        <Property SymbolName="PosRegP" Value="25" Remark="Proportional gain in the PI-parts of the position controller." ParentName="DCD_6" />
         <Property SymbolName="PosRegI" Value="0" Remark="Integral gain in the PI-parts of the position controller." ParentName="DCD_6" />
         <Property SymbolName="LimOutMax" Value="512" Remark="Max motor speed as output from position controller and input to speed controller.&#xD;&#xA;VoltageFeedback: 1024 = 48V, Otherwise: 16384 = 90 deg/s" ParentName="DCD_6" />
         <Property SymbolName="MaxWheelAngle" Value="0" Remark="Wheel Angle Limit. 0 = No Limit" ParentName="DCD_6" />
@@ -881,11 +881,11 @@
         <Property SymbolName="MotorCurrentRegP" Value="800" Remark="Motor Parameter: Proportional gain in the PI-parts of the current controller." ParentName="DCD_7" />
         <Property SymbolName="MotorCurrentRegI" Value="300" Remark="Motor Parameter: Integral gain in the PI-parts of the current controller." ParentName="DCD_7" />
         <Property SymbolName="MaxCommandSpeed" Value="2000" Remark="Max command speed" ParentName="DCD_7" />
-        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_7" />
-        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_7" />
+        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="210" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_7" />
+        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="210" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_7" />
         <Property SymbolName="MaxTorqueCurrentChange" Value="900" Remark="The maximum allowed change during 1 ms (i.e. derivate) of the Torque Current that is allowed. A too high derivate may for example introduce noise in the gear." ParentName="DCD_7" />
-        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="450" Remark="Maximum allowed torque current during forward braking/deceleration." ParentName="DCD_7" />
-        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="450" Remark="Maximum allowed torque current during reverse braking/deceleration." ParentName="DCD_7" />
+        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="210" Remark="Maximum allowed torque current during forward braking/deceleration." ParentName="DCD_7" />
+        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="210" Remark="Maximum allowed torque current during reverse braking/deceleration." ParentName="DCD_7" />
         <Property SymbolName="SpeedRegP" Value="120" Remark="Proportional gain in the PI-parts of the speed controller." ParentName="DCD_7" />
         <Property SymbolName="SpeedRegI" Value="1" Remark="Integral gain in the PI-parts of the speed controller." ParentName="DCD_7" />
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="440" Remark="Current limit for supervision. Supervision is enabled when the requested torque current goes above this limit. (Regulator supervision 0x6210)" ParentName="DCD_7" />
@@ -918,7 +918,7 @@
         <Property SymbolName="RegSupervisionFailureDelay" Value="1000" Remark="Delay before safe state in absence of movement in correct direction. 0 = Disable. (Regulator supervision 0x6210)" ParentName="DCD_8" />
         <Property SymbolName="SteerEncScale" Value="6000" Remark="Steering Encoder Scale" ParentName="DCD_8" />
         <Property SymbolName="SteerEncOffset" Value="0" Remark="Steering Encoder Offset (Position of Sync pulse)" ParentName="DCD_8" />
-        <Property SymbolName="PosRegP" Value="30" Remark="Proportional gain in the PI-parts of the position controller." ParentName="DCD_8" />
+        <Property SymbolName="PosRegP" Value="33" Remark="Proportional gain in the PI-parts of the position controller." ParentName="DCD_8" />
         <Property SymbolName="PosRegI" Value="0" Remark="Integral gain in the PI-parts of the position controller." ParentName="DCD_8" />
         <Property SymbolName="LimOutMax" Value="512" Remark="Max motor speed as output from position controller and input to speed controller.&#xD;&#xA;VoltageFeedback: 1024 = 48V, Otherwise: 16384 = 90 deg/s" ParentName="DCD_8" />
         <Property SymbolName="MaxWheelAngle" Value="0" Remark="Wheel Angle Limit. 0 = No Limit" ParentName="DCD_8" />
@@ -973,8 +973,8 @@
         <Property SymbolName="AnInp3_Scale" Value="1000" Remark="Analog Input 3 Scale, pin #B10" ParentName="SDIO" />
         <Property SymbolName="AnInp4_Scale" Value="1000" Remark="Analog Input 4 Scale, pin #B18" ParentName="SDIO" />
         <Property SymbolName="AnInp5_Scale" Value="1000" Remark="Analog Input 5 Scale, pin #B11" ParentName="SDIO" />
-        <Property SymbolName="AnInp6_Scale" Value="1000" Remark="Analog Input 6 Scale, pin #B19" ParentName="SDIO" />
-        <Property SymbolName="AnInp7_Scale" Value="1000" Remark="Analog Input 7 Scale, pin #B12" ParentName="SDIO" />
+        <Property SymbolName="AnInp6_Scale" Value="66536" Remark="Analog Input 6 Scale, pin #B19" ParentName="SDIO" />
+        <Property SymbolName="AnInp7_Scale" Value="1001" Remark="Analog Input 7 Scale, pin #B12" ParentName="SDIO" />
         <Property SymbolName="AnInp8_Scale" Value="1000" Remark="Analog Input 8 Scale, pin #B20" ParentName="SDIO" />
         <Property SymbolName="AnInp9_Scale" Value="1000" Remark="Analog Input 9 Scale, pin #B13" ParentName="SDIO" />
         <Property SymbolName="AnInp10_Scale" Value="1000" Remark="Analog Input 10 Scale, pin #B21" ParentName="SDIO" />

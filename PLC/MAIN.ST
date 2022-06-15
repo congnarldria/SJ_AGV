@@ -424,7 +424,7 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 123;
 	elsif F_SteerSupervision.NotMovingFail = TRUE or R_SteerSupervision.NotMovingFail = TRUE or (NDC8.DCD_6.EncoderStatus = 0 or NDC8.DCD_8.EncoderStatus = 0)then
 		g_ErrorCode := 124;
-	elsif PLC_RX_Word16_BMS_BatV < 220 or g_BattLim_NG then
+	elsif PLC_RX_Word16_BMS_BatV < 420 or g_BattLim_NG then
 		g_ErrorCode := 127;
 	(*elsif not NDC8.DCD_5.DigitalInput2_OverRelayFS or not NDC8.DCD_5.DigitalInput3_OverRelayFD or not NDC8.DCD_7.DigitalInput2_OverRelayRS or not NDC8.DCD_7.DigitalInput3_OverRelayRD then*)
 	elsif not NDC8.DCD_5.DigitalInput3_OverRelayFD or not NDC8.DCD_7.DigitalInput3_OverRelayRD then
@@ -753,6 +753,7 @@ Display();
 OPTX2();
 
 DataUpdate();
+
 
 
 

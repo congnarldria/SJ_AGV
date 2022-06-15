@@ -46,7 +46,7 @@
 0/54	Sourcesegment	--	64008
 0/55	Sourcesegment	--	64008
 0/56	Sourcesegment	--	64008
-0/57	Sourcesegment	--	10625
+0/57	Sourcesegment	--	10622
 1/54	Datasegment	1/55	596	MAIN
 1/55	Codesegment	1/56	4228
 1/56	Initialsegment	1/349	168
@@ -342,7 +342,7 @@
 1/346	Datasegment	1/236	95	MAIN.DATAUPDATE.DATAUPLOAD.SERIAL_READ
 1/347	Datasegment	1/239	94	MAIN.DATAUPDATE.DATAUPLOAD.SERIAL_WRITE
 1/348	Datasegment	1/173	36	MAIN.DATAUPDATE.DATAUPLOAD.STARTDELAYTOF
-1/349	NativeCodeSegment	1/55	37224
+1/349	NativeCodeSegment	1/55	37228
 1/350	NativeCodeSegment	1/58	36
 1/351	NativeCodeSegment	1/61	11772
 1/352	NativeCodeSegment	1/64	36

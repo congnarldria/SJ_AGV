@@ -1456,11 +1456,11 @@ END_VAR
 
 			JMP ODK_END_IF_00000000000000J
 
-(** 	elsif PLC_RX_Word16_BMS_BatV < 220 or g_BattLim_NG then **)
+(** 	elsif PLC_RX_Word16_BMS_BatV < 420 or g_BattLim_NG then **)
 		(* elseif - Cond *) 
 		ODK_SKIP_00000000000000J_00000000000000F:
 		LD PLC_RX_Word16_BMS_BatV
-		LT 220
+		LT 420
 		OR g_BattLim_NG
 		JMPCN ODK_SKIP_00000000000000J_00000000000000G
 
@@ -3151,6 +3151,7 @@ END_VAR
 	(* call - Stmt *)
 	CAL DataUpdate
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)
