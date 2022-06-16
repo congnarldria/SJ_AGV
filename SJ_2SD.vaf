@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="71" xmlns="urn:NDC8VehicleApplicationFile">
-  <FileInfo FileType="vaf" FileRevision="486" FileFormat="71" Description="NDC8 Vehicle Application File" CreationDate="2019-09-24" CreationTime="23:15:58.2383554+08:00" CreatedBy="haoin" ModificationDate="2020-06-15" ModificationTime="19:53:46.3515500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vaf" FileRevision="486" FileFormat="71" Description="NDC8 Vehicle Application File" CreationDate="2019-09-24" CreationTime="23:15:58.2383554+08:00" CreatedBy="haoin" ModificationDate="2020-06-16" ModificationTime="14:04:27.2995000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <VehicleApplication Type="AGV" Password="" />
   <Links>
     <Link Type="vpf" FileName="SJ_2SD" FilePath="" />
