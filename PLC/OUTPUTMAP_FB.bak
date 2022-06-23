@@ -22,6 +22,8 @@ VAR
 	
 	BuzzerSyncTm : TON;
 	
+	BUZZERMEANS : INT;
+	
 END_VAR
 (*
 ------------------------------------------------------------------------------------                              
@@ -94,7 +96,7 @@ else
 	NDC8.SDIO.DigitalOutput8_LED_RST := FALSE;
 end_if;
 
-PowerOffEvTm(IN:= g_PowerOffFlag, PT:= t#1s);
+PowerOffEvTm(IN:= g_PowerOffFlag, PT:= t#600s);
 
 if PowerOffEvTm.Q then
 	NDC8.SDIO.DigitalOutput13_PWR_OFF := TRUE;
@@ -105,7 +107,7 @@ end_if;
 BuzzerSyncTm(IN:=TRUE, PT:=t#10s);
 
 
-if g_FindSyncFlag = TRUE then
+if g_FindSyncFlag = TRUE THEN
 	if BuzzerSyncTm.Q = TRUE then
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
@@ -122,22 +124,28 @@ if g_FindSyncFlag = TRUE then
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;
+		BUZZERMEANS := 15;
 	elsif NDC8.PLC_Application.TxStatusBit9_EStop = TRUE then (*Ch12*)
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;
+		BUZZERMEANS := 12
 	elsif g_ErrorCode <> 0 then (*Ch11*)
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;
+		BUZZERMEANS := 11;
 	elsif NDC8.PLC_Application.TxStatusBit12_LostP = TRUE then (*Ch13*)
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;
-	elsif 	NDC8.PLC_Application.TxStatusBit4_LowBatt = TRUE and NDC8.SDIO.DigitalOutput16_Charger = FALSE and 
+		BUZZERMEANS := 13;
+	elsif 	NDC8.PLC_Application.TxStatusBit4_LowBatt = TRUE and
+		NDC8.SDIO.DigitalOutput12_LEFTMGS = FALSE and
+		NDC8.SDIO.DigitalOutput16_RIGHTMGS = FALSE and 
 		NDC8.PointTrigger.Bit9_Chrg_Right = FALSE and
 		NDC8.PointTrigger.Bit10_Chrg_Left = FALSE and 
 		NDC8.PointTrigger.Bit14_Full_Chrg = FALSE  then (*Ch14*)
@@ -145,22 +153,26 @@ if g_FindSyncFlag = TRUE then
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE;
-		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;		
+		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;	
+		BUZZERMEANS := 14;	
 	elsif NDC8.SDIO.DigitalInput3_BMP_O1 = TRUE or NDC8.SDIO.DigitalInput4_BMP_O2 then (*Ch10*)
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;	
+		BUZZERMEANS := 10;
 	elsif NDC8.PLC_Application.TxStatusBit11_IrStop = TRUE then (*Ch9*)
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;
+		BUZZERMEANS := 9;
 	elsif NDC8.PLC_Application.TxStatusBit10_Blocked = TRUE then (*Ch8*)
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;	
+		BUZZERMEANS := 8;
 	elsif PLC_TX_Word2 <> 0 then (*Ch7*)
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE;
@@ -171,6 +183,7 @@ if g_FindSyncFlag = TRUE then
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE;
+		BUZZERMEANS := 5;
 	elsif Input.SD_Right or Input.DD_Right then (*Ch4*)
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
@@ -186,6 +199,7 @@ if g_FindSyncFlag = TRUE then
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE;
+		BUZZERMEANS := 2;
 	elsif Input.SD_Forward then (*Ch1*)
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
@@ -196,7 +210,7 @@ if g_FindSyncFlag = TRUE then
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE;	
-	
+		BUZZERMEANS := 1;
 
 	
 	(*Ch6*)
@@ -212,8 +226,11 @@ if g_FindSyncFlag = TRUE then
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE;
+		BUZZERMEANS := 0;
 	end_if;
 end_if;
+
+
 
 
 

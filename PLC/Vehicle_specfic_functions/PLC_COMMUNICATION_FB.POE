@@ -14,7 +14,7 @@ END_VAR
 VAR
 	BMS_BatLowSel : INT;
 	BMS_BatLow : BOOL;
-	
+	BAT50LOWVOL : WORD;
 	TP_PB_NoSelTimer : TON;
 	
 	Debug_PB_Cont : BOOL := FALSE;
@@ -2496,7 +2496,12 @@ END_VAR
 	ODK_SKIP_00000000000001K_000000000000003:
 	ODK_END_CASE_00000000000001K:
 
-(**  **)
+(** BAT50LOWVOL := DINT_TO_WORD(NDC8.UserDefined.Integer32_50_BattLowVol); **)
+	(* assign - Stmt *)
+	LD NDC8.UserDefined.Integer32_50_BattLowVol
+	DINT_TO_WORD 
+	ST BAT50LOWVOL
+
 (** if NDC8.UserDefined.Integer32_50_BattLowVol = 0 or NDC8.UserDefined.Integer32_50_BattLowVol < 0 then **)
 	(* if - Cond *)
 	LD NDC8.UserDefined.Integer32_50_BattLowVol
@@ -2508,9 +2513,9 @@ END_VAR
 
 		(* then - Stmts *)
 
-(** 	NDC8.UserDefined.Integer32_50_BattLowVol := 240; **)
+(** 	NDC8.UserDefined.Integer32_50_BattLowVol := 420; **)
 		(* assign - Stmt *)
-		LD 240
+		LD 420
 		ST NDC8.UserDefined.Integer32_50_BattLowVol
 
 		JMP ODK_END_IF_00000000000001L
@@ -2554,13 +2559,10 @@ END_VAR
 	ODK_END_IF_00000000000001M:
 
 (**   **)
-(** if (BMS_BatLow = TRUE or BatLow = TRUE)then **)
+(** if {*(BMS_BatLow = TRUE or *} BatLow = TRUE then **)
 	(* if - Cond *)
-	LD BMS_BatLow
+	LD BatLow
 	EQ true
-	OR ( BatLow
-		EQ true
-	)
 	JMPCN ODK_SKIP_00000000000001N_000000000000001
 
 		(* then - Stmts *)
@@ -4205,6 +4207,9 @@ END_VAR
 	ODK_SKIP_00000000000001Q_000000000000001:
 	ODK_END_IF_00000000000001Q:
 
+(**  **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

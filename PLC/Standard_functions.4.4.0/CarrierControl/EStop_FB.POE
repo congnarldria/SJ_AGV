@@ -2,6 +2,7 @@ FUNCTION_BLOCK ESTOP_FB
 VAR_EXTERNAL
 	NDC8 : NDC8_T;
 	INPUT : INPUT_T;
+	
 END_VAR
 
 VAR_INPUT
@@ -16,12 +17,15 @@ VAR
 	EstopRT		 	: R_trig;
 	EstopFT		 	: R_trig;
 	EstopPBRT	 	: R_trig;
+	BlackBox : BlackBox_FB;
 END_VAR
 
 (*Automatically declared*)
 VAR_EXTERNAL
 	STOPRESET : BOOL;
+	A : bool;
 	DISPLAYSTOPSTRING : DisplayStopString_FB;
+	EVENTQUEUE : EventQueue_FB;
 	INSTATUS : bool;
 	STOPESTOPBUTTON : BOOL;
 END_VAR
@@ -78,19 +82,66 @@ END_VAR
 
 (**  **)
 (**  **)
-(** {* Event  Estop ON * ) **)
+(** {* Event  Estop ON *} **)
+(**  **)
 (**  **)
 (** EStopRT(CLK:=NDC8.VehicleControl.Estop); **)
+	(* call - Stmt *)
+	CAL EStopRT (
+		CLK := NDC8.VehicleControl.Estop
+	)
+
 (** EStopFT(CLK:=NDC8.VehicleControl.Estop); **)
+	(* call - Stmt *)
+	CAL EStopFT (
+		CLK := NDC8.VehicleControl.Estop
+	)
+
 (** if EStopRT.Q then **)
+	(* if - Cond *)
+	LD EStopRT.Q
+	JMPCN ODK_SKIP_000000000000002_000000000000001
+
+		(* then - Stmts *)
+
 (** 	EventQueue(EventCode:=100, **)
+		(* call - Stmt *)
+		CAL EventQueue (
+			EventCode := 100,
 (** 			Par1:=NDC8.LayoutPosition.Segment, **)
+			Par1 := NDC8.LayoutPosition.Segment,
 (** 			Par2:=0, **)
+			Par2 := 0,
 (** 			Par3:=0, **)
+			Par3 := 0,
 (** 			Par4:=0); **)
+			Par4 := 0
+		)
+
+(** 	NDC8.BlackBox.TrigReason:= 'E_STOP'; **)
+		(* assign - Stmt *)
+		LD 'E_STOP'
+		ST NDC8.BlackBox.TrigReason
+
+(** 	BlackBox();		 **)
+		(* call - Stmt *)
+		CAL BlackBox
+
 (** 	a:=TRACE_DINT('EventCode', EventQueue.EventCode); **)
+		(* assign - Stmt *)
+		LD 'EventCode'
+		TRACE_DINT EventQueue.EventCode
+		ST a
+
+		JMP ODK_END_IF_000000000000002
+
 (** end_if; **)
-(** *} **)
+	(* if - End *) 
+	ODK_SKIP_000000000000002_000000000000001:
+	ODK_END_IF_000000000000002:
+
+(**  **)
+(**  **)
 (**  **)
 
 END_FUNCTION_BLOCK

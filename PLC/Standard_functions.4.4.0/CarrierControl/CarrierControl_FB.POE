@@ -384,7 +384,7 @@ END_VAR
 	ODK_END_IF_000000000000005:
 
 (**  **)
-(**  **)
+(** {* G5 CHECK BATTERY OVER VOLTAGE *} **)
 (**  **)
 (** {**************************************************************************************} **)
 (** {* 			DEBUG handling *} **)
@@ -463,6 +463,7 @@ END_VAR
 	LD StartDelay.StartWarning
 	ST StartDelayStartWarning
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

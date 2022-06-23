@@ -139,7 +139,7 @@ elsif not NDC8.VehicleControl.HaltRequest and StopHalt then
     StopHalt:= False; 
 end_if;
 
-
+(* G5 CHECK BATTERY OVER VOLTAGE *)
 
 (**************************************************************************************)
 (* 			DEBUG handling *)
@@ -161,6 +161,7 @@ end_if;
 AutoinsertInProgress			:= Autoinsert.InProgress;
 AutoInsertNotInsideTargetSafety := AutoInsert.NotInsideTargetSafety;
 StartDelayStartWarning			:= StartDelay.StartWarning;
+
 
 
 

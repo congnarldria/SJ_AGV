@@ -245,8 +245,13 @@ if PLC_TX04_Bit_ChrgCmdL_A = TRUE then
 	StopCharge := TRUE;
 end_if;
 
+(* G5 ACC70 CGERRORCNT.NPU  *)
 
-
+if not NDC8.VehicleControl.Estop then
+	if g_ErrorCode <> 174 then
+		;
+	end_if;
+end_if;
 
 
 

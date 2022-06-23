@@ -46,6 +46,7 @@ VAR_EXTERNAL
 	NDC8 : NDC8_T;
 	PLC_TX04_BIT_CHRGCMDL_A : BOOL;
 	PLC_TX04_BIT_CHRGCMDR_A : BOOL;
+	G_ERRORCODE : WORD;
 END_VAR
 (** {* Check BMS Error *} **)
 (**  **)
@@ -1218,8 +1219,39 @@ END_VAR
 	ODK_END_IF_00000000000000V:
 
 (**  **)
+(** {* G5 ACC70 CGERRORCNT.NPU  *} **)
 (**  **)
-(**  **)
+(** if not NDC8.VehicleControl.Estop then **)
+	(* if - Cond *)
+	LD NDC8.VehicleControl.Estop
+	NOT
+	JMPCN ODK_SKIP_00000000000000W_000000000000001
+
+		(* then - Stmts *)
+
+(** 	if g_ErrorCode <> 174 then **)
+		(* if - Cond *)
+		LD g_ErrorCode
+		NE 174
+		JMPCN ODK_SKIP_00000000000000X_000000000000001
+
+			(* then - Stmts *)
+
+			JMP ODK_END_IF_00000000000000X
+
+(** 		; **)
+(** 	end_if; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000X_000000000000001:
+		ODK_END_IF_00000000000000X:
+
+		JMP ODK_END_IF_00000000000000W
+
+(** end_if; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000W_000000000000001:
+	ODK_END_IF_00000000000000W:
+
 (**  **)
 (**  **)
 

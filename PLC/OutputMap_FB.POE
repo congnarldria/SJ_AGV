@@ -22,6 +22,8 @@ VAR
 	
 	BuzzerSyncTm : TON;
 	
+	BUZZERMEANS : INT;
+	
 END_VAR
 
 (*Automatically declared*)
@@ -226,11 +228,11 @@ END_VAR
 	ODK_END_IF_000000000000003:
 
 (**  **)
-(** PowerOffEvTm(IN:= g_PowerOffFlag, PT:= t#1s); **)
+(** PowerOffEvTm(IN:= g_PowerOffFlag, PT:= t#600s); **)
 	(* call - Stmt *)
 	CAL PowerOffEvTm (
 		IN := g_PowerOffFlag,
-		PT := t#1s
+		PT := t#600s
 	)
 
 (**  **)
@@ -273,7 +275,7 @@ END_VAR
 
 (**  **)
 (**  **)
-(** if g_FindSyncFlag = TRUE then **)
+(** if g_FindSyncFlag = TRUE THEN **)
 	(* if - Cond *)
 	LD g_FindSyncFlag
 	EQ TRUE
@@ -377,6 +379,11 @@ END_VAR
 			LD TRUE
 			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
 
+(** 		BUZZERMEANS := 15; **)
+			(* assign - Stmt *)
+			LD 15
+			ST BUZZERMEANS
+
 			JMP ODK_END_IF_000000000000006
 
 (** 	elsif NDC8.PLC_Application.TxStatusBit9_EStop = TRUE then {*Ch12*} **)
@@ -407,6 +414,11 @@ END_VAR
 			(* assign - Stmt *)
 			LD TRUE
 			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+(** 		BUZZERMEANS := 12; **)
+			(* assign - Stmt *)
+			LD 12
+			ST BUZZERMEANS
 
 			JMP ODK_END_IF_000000000000006
 
@@ -439,6 +451,11 @@ END_VAR
 			LD TRUE
 			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
 
+(** 		BUZZERMEANS := 11; **)
+			(* assign - Stmt *)
+			LD 11
+			ST BUZZERMEANS
+
 			JMP ODK_END_IF_000000000000006
 
 (** 	elsif NDC8.PLC_Application.TxStatusBit12_LostP = TRUE then {*Ch13*} **)
@@ -469,6 +486,11 @@ END_VAR
 			(* assign - Stmt *)
 			LD TRUE
 			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+(** 		BUZZERMEANS := 13; **)
+			(* assign - Stmt *)
+			LD 13
+			ST BUZZERMEANS
 
 			JMP ODK_END_IF_000000000000006
 
@@ -517,10 +539,15 @@ END_VAR
 			LD TRUE
 			ST NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3
 
-(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;		 **)
+(** 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;	 **)
 			(* assign - Stmt *)
 			LD TRUE
 			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+(** 		BUZZERMEANS := 14;	 **)
+			(* assign - Stmt *)
+			LD 14
+			ST BUZZERMEANS
 
 			JMP ODK_END_IF_000000000000006
 
@@ -554,6 +581,11 @@ END_VAR
 			LD TRUE
 			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
 
+(** 		BUZZERMEANS := 10; **)
+			(* assign - Stmt *)
+			LD 10
+			ST BUZZERMEANS
+
 			JMP ODK_END_IF_000000000000006
 
 (** 	elsif NDC8.PLC_Application.TxStatusBit11_IrStop = TRUE then {*Ch9*} **)
@@ -585,6 +617,11 @@ END_VAR
 			LD TRUE
 			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
 
+(** 		BUZZERMEANS := 9; **)
+			(* assign - Stmt *)
+			LD 9
+			ST BUZZERMEANS
+
 			JMP ODK_END_IF_000000000000006
 
 (** 	elsif NDC8.PLC_Application.TxStatusBit10_Blocked = TRUE then {*Ch8*} **)
@@ -615,6 +652,11 @@ END_VAR
 			(* assign - Stmt *)
 			LD TRUE
 			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+(** 		BUZZERMEANS := 8; **)
+			(* assign - Stmt *)
+			LD 8
+			ST BUZZERMEANS
 
 			JMP ODK_END_IF_000000000000006
 
@@ -677,6 +719,11 @@ END_VAR
 			(* assign - Stmt *)
 			LD FALSE
 			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
+
+(** 		BUZZERMEANS := 5; **)
+			(* assign - Stmt *)
+			LD 5
+			ST BUZZERMEANS
 
 			JMP ODK_END_IF_000000000000006
 
@@ -770,6 +817,11 @@ END_VAR
 			LD FALSE
 			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
 
+(** 		BUZZERMEANS := 2; **)
+			(* assign - Stmt *)
+			LD 2
+			ST BUZZERMEANS
+
 			JMP ODK_END_IF_000000000000006
 
 (** 	elsif Input.SD_Forward then {*Ch1*} **)
@@ -831,9 +883,13 @@ END_VAR
 			LD FALSE
 			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
 
+(** 		BUZZERMEANS := 1; **)
+			(* assign - Stmt *)
+			LD 1
+			ST BUZZERMEANS
+
 			JMP ODK_END_IF_000000000000006
 
-(** 	 **)
 (**  **)
 (** 	 **)
 (** 	{*Ch6*} **)
@@ -870,6 +926,11 @@ END_VAR
 			LD FALSE
 			ST NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4
 
+(** 		BUZZERMEANS := 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST BUZZERMEANS
+
 (** 	end_if; **)
 		(* if - End *) 
 		ODK_END_IF_000000000000006:
@@ -881,6 +942,7 @@ END_VAR
 	ODK_SKIP_000000000000005_000000000000001:
 	ODK_END_IF_000000000000005:
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

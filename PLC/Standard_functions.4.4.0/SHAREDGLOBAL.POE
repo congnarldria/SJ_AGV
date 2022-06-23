@@ -42,7 +42,7 @@ VAR_GLOBAL
 	g_PowerOffFlag_Block: BOOL;
 	g_PowerOffFlag_Lost : BOOL;
 	g_PowerOffFlag_Error : BOOL;
-	
+	g_PowerOffFlag_OverV : BOOL;
 	(* Find Sync Flag *)
 	g_StartFindSync : BOOL;
 	g_FindSyncFlag : BOOL;
@@ -107,6 +107,7 @@ VAR_GLOBAL RETAIN		(* Values kept also during power off. *)
 	Milliseconds:Dint;
 	SecondLanguage:bool;
 END_VAR
+
 
 
 

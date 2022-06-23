@@ -8,7 +8,6 @@ END_VAR
 VAR_INPUT
 	FlexSlowdown,
 	LS2000Slowdown	: bool;
-	Failcode		: word;
 END_VAR
 
 VAR_OUTPUT
@@ -22,7 +21,6 @@ VAR
 	AutoInsert : AutoInsert_FB;
 	SlowDown : Slowdown_FB;
 	StartDelay : StartDelay_FB;
-	LoadStatus : LoadStatus_FB;
 	EStopFB : EStop_FB;
 	ResetButtonFB : ResetButton_FB;
 
@@ -69,7 +67,6 @@ AutoInsert();
 Slowdown(	FlexSlowdown := FlexSlowdown,
 			LS2000Slowdown := LS2000Slowdown); 			(* Slow down vehicle *)
 StartDelay();			(* Start delay after estop *)
-LoadStatus(Failcode:= Failcode);			(* Watch for unexpected load status change *)
 EStopFB();
 ResetButtonFB();
 
@@ -142,7 +139,13 @@ elsif not NDC8.VehicleControl.HaltRequest and StopHalt then
     StopHalt:= False; 
 end_if;
 
+(* G5 CHECK BATTERY OVER VOLTAGE *)
 
+if PLC_RX03_Bit_STwDisBMS1 <> 0 or PLC_RX03_Bit_STwDisBMS2 <> 0 then
+	if PLC_RX_Word16_BMS_BatV > 700 then
+		;
+	end_if;
+end_if;
 
 (**************************************************************************************)
 (* 			DEBUG handling *)
@@ -164,6 +167,8 @@ end_if;
 AutoinsertInProgress			:= Autoinsert.InProgress;
 AutoInsertNotInsideTargetSafety := AutoInsert.NotInsideTargetSafety;
 StartDelayStartWarning			:= StartDelay.StartWarning;
+
+
 
 
 

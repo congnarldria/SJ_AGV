@@ -14,7 +14,7 @@ END_VAR
 VAR
 	BMS_BatLowSel : INT;
 	BMS_BatLow : BOOL;
-	
+	BAT50LOWVOL : WORD;
 	TP_PB_NoSelTimer : TON;
 	
 	Debug_PB_Cont : BOOL := FALSE;
@@ -653,9 +653,9 @@ case BMS_BatLowSel of
 1:
 	BMS_BatLow := PLC_RX15_Bit_BMS_ChgRqL or PLC_RX15_Bit_BMS_ChgRqM or PLC_RX15_Bit_BMS_ChgRqH;
 end_case;
-
+BAT50LOWVOL := DINT_TO_WORD(NDC8.UserDefined.Integer32_50_BattLowVol);
 if NDC8.UserDefined.Integer32_50_BattLowVol = 0 or NDC8.UserDefined.Integer32_50_BattLowVol < 0 then
-	NDC8.UserDefined.Integer32_50_BattLowVol := 240;
+	NDC8.UserDefined.Integer32_50_BattLowVol := 420;
 end_if;
 
 if PLC_RX_Word16_BMS_BatV < DINT_TO_WORD(NDC8.UserDefined.Integer32_50_BattLowVol) then
@@ -664,7 +664,7 @@ else
 	BatLow:= FALSE;
 end_if;
  
-if (BMS_BatLow = TRUE or BatLow = TRUE)then
+if (*(BMS_BatLow = TRUE or *) BatLow = TRUE then
 	INPUT.LowBattery := TRUE;
 else
 	INPUT.LowBattery := FALSE;
@@ -996,6 +996,9 @@ if ComStart = true then
 	
 	
 end_if;
+
+
+
 
 
 

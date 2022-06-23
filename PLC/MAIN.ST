@@ -68,6 +68,8 @@ VAR
 (* Lost Power Off Check *)
 	LostPosPowOffTm : TON;
 	LostPosPowOffTmValue : TIME;
+
+(* Over Voltage ESTOP *)
 	
 (* Error Power Off Check *)
 	ErrorOccurFlag : BOOL;
@@ -392,7 +394,7 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 	MasterLinkR(CLK:= NDC8.Master.MasterLinkUp);
 	
 
-	if MasterLinkR.Q or g_AGV_ErrorReset or (NDC8.Mcd.Button8 = TRUE and INPUT.Manual = TRUE) then (* When Master Link up, Error Status need to be update again *)
+	if MasterLinkR.Q or g_AGV_ErrorReset or (NDC8.Mcd.Button8 = TRUE and INPUT.Manual = TRUE) THEN (* When Master Link up, Error Status need to be update again *)
 		g_ErrorCode := 0;
 		PLC_TX_Word13_STr_Err := 0;
 		OM_PLC_W2_Bit_SetEmgStop := FALSE;
@@ -402,6 +404,10 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 101;
 	elsif PLC_RX14_Bit_BMS_Over then 
 		g_ErrorCode := 102;
+	elsif PLC_RX03_Bit_STwDisBMS1 <> 0 or PLC_RX03_Bit_STwDisBMS2 <> 0 then (* G5 CHARGE OVER VOLTAGE ,HOWEVER WITH BMS ACTIVE ITS NO USE*)
+		if PLC_RX_Word16_BMS_BatV > 700 then
+			g_ErrorCode := 102;			
+		end_if;
 	elsif PLC_RX14_Bit_BMS_TempEr then 
 		g_ErrorCode := 103;
 	elsif PLC_RX14_Bit_BMS_LowV then 
@@ -564,7 +570,6 @@ if NavLevelDown_TM.Q = TRUE then
 	NavLevelDown_TmUp := TRUE;
 end_if;
  
-
 (* Lost Power Off Check *)
 LostPosPowOffTm(IN := NDC8.PLC_Application.TxStatusBit12_LostP, PT := LostPosPowOffTmValue);
 if NDC8.UserDefined.Boolean_11_LostPosPowOffEn = TRUE and PLC_TX01_Bit_HostMode = TRUE then
@@ -581,7 +586,7 @@ end_if;
 if g_ErrorCode <> 0 then
 	ErrorOccurFlag := TRUE;
 else
-	ErrorOccurFlag := FALSE;
+	ErrorOccurFlag := TRUE;
 end_if;
 
 ErrorPowOffTm(IN := ErrorOccurFlag, PT := t#600s);
@@ -596,7 +601,7 @@ else
 end_if;
 
 (* Battery Low OT *)
-if PLC_RX04_Bit_STw_LowOT then
+if PLC_RX04_Bit_STw_LowOT or g_ErrorCode = 102 then
 	StopBatLowOT := TRUE;
 	if VehicleMovingFlag = FALSE 
 		and  NDC8.LoadDocking.OnTarget = FALSE 
@@ -753,6 +758,10 @@ Display();
 OPTX2();
 
 DataUpdate();
+
+
+
+
 
 
 

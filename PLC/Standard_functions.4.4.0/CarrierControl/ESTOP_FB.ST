@@ -2,6 +2,7 @@ FUNCTION_BLOCK ESTOP_FB
 VAR_EXTERNAL
 	NDC8 : NDC8_T;
 	INPUT : INPUT_T;
+	
 END_VAR
 
 VAR_INPUT
@@ -16,6 +17,7 @@ VAR
 	EstopRT		 	: R_trig;
 	EstopFT		 	: R_trig;
 	EstopPBRT	 	: R_trig;
+	BlackBox : BlackBox_FB;
 END_VAR
 (**************************************************************************************)
 (* E-STOP BUTTONS: *)
@@ -34,7 +36,8 @@ if EStopPBRT.Q then
 end_if;
 
 
-(* Event  Estop ON * )
+(* Event  Estop ON *)
+
 
 EStopRT(CLK:=NDC8.VehicleControl.Estop);
 EStopFT(CLK:=NDC8.VehicleControl.Estop);
@@ -44,9 +47,12 @@ if EStopRT.Q then
 			Par2:=0,
 			Par3:=0,
 			Par4:=0);
+	NDC8.BlackBox.TrigReason:= 'E_STOP';
+	BlackBox();		
 	a:=TRACE_DINT('EventCode', EventQueue.EventCode);
 end_if;
-*)
+
+
 
 
 END_FUNCTION_BLOCK

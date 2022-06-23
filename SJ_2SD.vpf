@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vpf" FileRevision="479" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-06-15" ModificationTime="13:00:49.0160000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vpf" FileRevision="490" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2022-06-23" ModificationTime="12:42:06.5457955+08:00" ModifiedBy="arlen" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
   <ComponentList Name="P46164" TimeStamp="0">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
@@ -320,8 +320,8 @@
         <Property SymbolName="SensorStopEnable" Value="0" />
         <Property SymbolName="BrakeOutputSignal" Value="UserDefined.Braker_Signal" />
         <Property SymbolName="BrakeOutputPolarity" Value="0" />
-        <Property SymbolName="BrakeOnDelay" Value="250" />
-        <Property SymbolName="BrakeOffDelay" Value="250" />
+        <Property SymbolName="BrakeOnDelay" Value="2000" />
+        <Property SymbolName="BrakeOffDelay" Value="2000" />
         <Property SymbolName="EstopInputSignal" Value="SDIO.DigitalInput12_EMO" />
         <Property SymbolName="EstopInputPolarity" Value="1" />
         <Property SymbolName="HaltRequest" Value="0" />
@@ -706,56 +706,56 @@
         <Property SymbolName="Integer32_1" Value="0" PublicName="StopWord" Remark="Integer32_1" AliasName="StopWord" />
         <Property SymbolName="Integer32_2" Value="0" PublicName="Integer32_2" Remark="Integer32_2" />
         <Property SymbolName="Integer32_3" Value="0" PublicName="Integer32_3" Remark="Integer32_3" />
-        <Property SymbolName="Integer32_4" Value="1128529920" PublicName="Integer32_4" Remark="Integer32_4" />
-        <Property SymbolName="Integer32_5" Value="775315268" PublicName="Integer32_5" Remark="Integer32_5" />
-        <Property SymbolName="Integer32_6" Value="1098147155" PublicName="SlowDownDisable" Remark="Integer32_6" AliasName="SlowDownDisable" />
-        <Property SymbolName="Integer32_7" Value="1701603182" PublicName="PPAEnable" Remark="Integer32_7" AliasName="PPAEnable" />
+        <Property SymbolName="Integer32_4" Value="0" PublicName="Integer32_4" Remark="Integer32_4" />
+        <Property SymbolName="Integer32_5" Value="0" PublicName="Integer32_5" Remark="Integer32_5" />
+        <Property SymbolName="Integer32_6" Value="0" PublicName="SlowDownDisable" Remark="Integer32_6" AliasName="SlowDownDisable" />
+        <Property SymbolName="Integer32_7" Value="0" PublicName="PPAEnable" Remark="Integer32_7" AliasName="PPAEnable" />
         <Property SymbolName="Integer32_8" Value="0" PublicName="SafetyScannerTurnAngle" Remark="Integer32_8" AliasName="SafetyScannerTurnAngle" />
         <Property SymbolName="Integer32_9" Value="200" PublicName="NormalCreepDistance" Remark="Integer32_9" AliasName="NormalCreepDistance" />
         <Property SymbolName="Integer32_10" Value="0" PublicName="Integer32_10" Remark="Integer32_10" />
         <Property SymbolName="Integer32_11" Value="0" PublicName="Integer32_11" Remark="Integer32_11" />
         <Property SymbolName="Integer32_12" Value="0" PublicName="Integer32_12" Remark="Integer32_12" />
-        <Property SymbolName="Integer32_13" Value="1128529920" PublicName="Integer32_13" Remark="Integer32_13" />
-        <Property SymbolName="Integer32_14" Value="775249732" PublicName="Integer32_14" Remark="Integer32_14" />
-        <Property SymbolName="Integer32_15" Value="1650552389" PublicName="Integer32_15" Remark="Integer32_15" />
-        <Property SymbolName="Integer32_16" Value="1867539820" PublicName="Integer32_16" Remark="Integer32_16" />
-        <Property SymbolName="Integer32_17" Value="1400006007" PublicName="Integer32_17" Remark="Integer32_17" />
-        <Property SymbolName="Integer32_18" Value="1701273972" PublicName="Integer32_18" Remark="Integer32_18" />
+        <Property SymbolName="Integer32_13" Value="0" PublicName="Integer32_13" Remark="Integer32_13" />
+        <Property SymbolName="Integer32_14" Value="0" PublicName="Integer32_14" Remark="Integer32_14" />
+        <Property SymbolName="Integer32_15" Value="0" PublicName="Integer32_15" Remark="Integer32_15" />
+        <Property SymbolName="Integer32_16" Value="0" PublicName="Integer32_16" Remark="Integer32_16" />
+        <Property SymbolName="Integer32_17" Value="0" PublicName="Integer32_17" Remark="Integer32_17" />
+        <Property SymbolName="Integer32_18" Value="0" PublicName="Integer32_18" Remark="Integer32_18" />
         <Property SymbolName="Integer32_19" Value="0" PublicName="Integer32_19" Remark="Integer32_19" />
         <Property SymbolName="Integer32_20" Value="0" PublicName="Integer32_20" Remark="Integer32_20" />
         <Property SymbolName="Integer32_21" Value="0" PublicName="Integer32_21" Remark="Integer32_21" />
-        <Property SymbolName="Integer32_22" Value="1128529920" PublicName="Integer32_22" Remark="Integer32_22" />
-        <Property SymbolName="Integer32_23" Value="775315268" PublicName="Integer32_23" Remark="Integer32_23" />
-        <Property SymbolName="Integer32_24" Value="1650552389" PublicName="Integer32_24" Remark="Integer32_24" />
-        <Property SymbolName="Integer32_25" Value="1867539820" PublicName="Integer32_25" Remark="Integer32_25" />
-        <Property SymbolName="Integer32_26" Value="1400006007" PublicName="Integer32_26" Remark="Integer32_26" />
-        <Property SymbolName="Integer32_27" Value="1701273972" PublicName="Integer32_27" Remark="Integer32_27" />
+        <Property SymbolName="Integer32_22" Value="0" PublicName="Integer32_22" Remark="Integer32_22" />
+        <Property SymbolName="Integer32_23" Value="0" PublicName="Integer32_23" Remark="Integer32_23" />
+        <Property SymbolName="Integer32_24" Value="0" PublicName="Integer32_24" Remark="Integer32_24" />
+        <Property SymbolName="Integer32_25" Value="0" PublicName="Integer32_25" Remark="Integer32_25" />
+        <Property SymbolName="Integer32_26" Value="0" PublicName="Integer32_26" Remark="Integer32_26" />
+        <Property SymbolName="Integer32_27" Value="0" PublicName="Integer32_27" Remark="Integer32_27" />
         <Property SymbolName="Integer32_28" Value="0" PublicName="Integer32_28" Remark="Integer32_28" />
         <Property SymbolName="Integer32_29" Value="0" PublicName="Integer32_29" Remark="Integer32_29" />
         <Property SymbolName="Integer32_30" Value="0" PublicName="Integer32_30" Remark="Integer32_30" />
-        <Property SymbolName="Integer32_31" Value="1128529920" PublicName="Integer32_31" Remark="Integer32_31" />
-        <Property SymbolName="Integer32_32" Value="775249732" PublicName="Integer32_32" Remark="Integer32_32" />
-        <Property SymbolName="Integer32_33" Value="1986622020" PublicName="Integer32_33" Remark="Integer32_33" />
-        <Property SymbolName="Integer32_34" Value="1668171109" PublicName="Integer32_34" Remark="Integer32_34" />
-        <Property SymbolName="Integer32_35" Value="1701146707" PublicName="Integer32_35" Remark="Integer32_35" />
-        <Property SymbolName="Integer32_36" Value="100" PublicName="Integer32_36" Remark="Integer32_36" />
+        <Property SymbolName="Integer32_31" Value="0" PublicName="Integer32_31" Remark="Integer32_31" />
+        <Property SymbolName="Integer32_32" Value="0" PublicName="Integer32_32" Remark="Integer32_32" />
+        <Property SymbolName="Integer32_33" Value="0" PublicName="Integer32_33" Remark="Integer32_33" />
+        <Property SymbolName="Integer32_34" Value="0" PublicName="Integer32_34" Remark="Integer32_34" />
+        <Property SymbolName="Integer32_35" Value="0" PublicName="Integer32_35" Remark="Integer32_35" />
+        <Property SymbolName="Integer32_36" Value="0" PublicName="Integer32_36" Remark="Integer32_36" />
         <Property SymbolName="Integer32_37" Value="0" PublicName="Integer32_37" Remark="Integer32_37" />
         <Property SymbolName="Integer32_38" Value="0" PublicName="Integer32_38" Remark="Integer32_38" />
         <Property SymbolName="Integer32_39" Value="0" PublicName="Integer32_39" Remark="Integer32_39" />
-        <Property SymbolName="Integer32_40" Value="1128529920" PublicName="Integer32_40" Remark="Integer32_40" />
-        <Property SymbolName="Integer32_41" Value="775249732" PublicName="Integer32_41" Remark="Integer32_41" />
-        <Property SymbolName="Integer32_42" Value="1986622020" PublicName="Integer32_42" Remark="Integer32_42" />
-        <Property SymbolName="Integer32_43" Value="1668171109" PublicName="Integer32_43" Remark="Integer32_43" />
-        <Property SymbolName="Integer32_44" Value="1953720644" PublicName="Integer32_44" Remark="Integer32_44" />
+        <Property SymbolName="Integer32_40" Value="0" PublicName="Integer32_40" Remark="Integer32_40" />
+        <Property SymbolName="Integer32_41" Value="0" PublicName="Integer32_41" Remark="Integer32_41" />
+        <Property SymbolName="Integer32_42" Value="0" PublicName="Integer32_42" Remark="Integer32_42" />
+        <Property SymbolName="Integer32_43" Value="0" PublicName="Integer32_43" Remark="Integer32_43" />
+        <Property SymbolName="Integer32_44" Value="0" PublicName="Integer32_44" Remark="Integer32_44" />
         <Property SymbolName="Integer32_45" Value="0" PublicName="Integer32_45" Remark="Integer32_45" />
         <Property SymbolName="Integer32_46" Value="0" PublicName="Integer32_46" Remark="Integer32_46" />
         <Property SymbolName="Integer32_47" Value="0" PublicName="Integer32_47" Remark="" />
         <Property SymbolName="Integer32_48" Value="0" PublicName="Integer32_48" Remark="" />
-        <Property SymbolName="Integer32_49" Value="1128529920" PublicName="Integer32_49" Remark="" />
-        <Property SymbolName="Integer32_50" Value="245" PublicName="Integer32_50_BattLowVol" Remark="" AliasName="Integer32_50_BattLowVol" />
+        <Property SymbolName="Integer32_49" Value="0" PublicName="Integer32_49" Remark="" />
+        <Property SymbolName="Integer32_50" Value="420" PublicName="Integer32_50_BattLowVol" Remark="" AliasName="Integer32_50_BattLowVol" />
         <Property SymbolName="Integer32_51" Value="1" PublicName="Integer32_51_BattLowSel" Remark="1=L or M or H, 2=M or H, 3=H" AliasName="Integer32_51_BattLowSel" />
         <Property SymbolName="Integer32_52" Value="600000" PublicName="Integer32_52_PowOffTm" Remark="ms" AliasName="Integer32_52_PowOffTm" />
-        <Property SymbolName="Integer32_53" Value="25964" PublicName="Integer32_53" Remark="" />
+        <Property SymbolName="Integer32_53" Value="3" PublicName="Integer32_53_OverVESTOPTm" Remark="" AliasName="Integer32_53_OverVESTOPTm" />
         <Property SymbolName="Integer32_54" Value="0" PublicName="Integer32_54" Remark="" />
         <Property SymbolName="Integer32_55" Value="104809768" PublicName="Integer32_55_TravelDistance" Remark="" AliasName="Integer32_55_TravelDistance" />
         <Property SymbolName="Integer32_56" Value="0" PublicName="Integer32_56" Remark="" />
@@ -999,7 +999,7 @@
         <Property SymbolName="ActiveInSafeState" Value="0" />
         <Property SymbolName="NMTState" Value="" />
         <Property SymbolName="SdoBufferSize" Value="" />
-        <Property SymbolName="MotorCurrentRegP" Value="800" />
+        <Property SymbolName="MotorCurrentRegP" Value="1600" />
         <Property SymbolName="MotorCurrentRegI" Value="300" />
         <Property SymbolName="MaxCommandSpeed" Value="2000" />
         <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="210" />
@@ -1114,7 +1114,7 @@
         <Property SymbolName="ActiveInSafeState" Value="0" />
         <Property SymbolName="NMTState" Value="" />
         <Property SymbolName="SdoBufferSize" Value="" />
-        <Property SymbolName="MotorCurrentRegP" Value="800" />
+        <Property SymbolName="MotorCurrentRegP" Value="1600" />
         <Property SymbolName="MotorCurrentRegI" Value="300" />
         <Property SymbolName="MaxCommandSpeed" Value="2000" />
         <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="210" />
