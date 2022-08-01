@@ -685,7 +685,7 @@ end_if;
 
 (*Communication*)
 
-if ComStart = true then
+if ComStart = true AND NDC8.UserDefined.Integer32_10_PCLMODBUS = 1 then
 
 	if init = true then
 
@@ -771,7 +771,7 @@ if ComStart = true then
 		
 		case ComStep of
 		0:
-			;
+			ComStep := 0;
 		
 		10:
 			(*Send 16 Word Data-1*)
@@ -906,7 +906,6 @@ if ComStart = true then
 		
 			SendTempString := WORD_TO_STRING(PLC_TX_Word16_STr_BCD1);
 			Message := CONCAT(Message, SendTempString);
-		
 			to_bytes(str := Message);
 			MessageLen := Len(Message);
 		
@@ -996,6 +995,14 @@ if ComStart = true then
 	
 	
 end_if;
+
+
+
+
+
+
+
+
 
 
 

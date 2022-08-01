@@ -83,6 +83,8 @@ INPUT.SideSensorLeftForward		:= NDC8.. ;
 ;
 (* Button *)
 
+INPUT.Reset_PB			    	:=  NDC8.SDIO.DigitalInput2_BTN_RST;
+
 Input.ZeroSteerAngle_PB			:= 	NDC8.MCD.Button7;
 
 INPUT.TractionSpeed := NDC8.VehicleControl.SetSpeed;
@@ -181,6 +183,7 @@ INPUT.LoadOnBoard := PLC_RX01_Bit_Load_i;
 
 
 StopEstopButton := NDC8.SDIO.DigitalInput12_EMO;
+
 
 
 

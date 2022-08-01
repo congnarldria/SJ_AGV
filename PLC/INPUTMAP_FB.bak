@@ -121,13 +121,13 @@ else
 	INPUT.SteerEncSyncValid := FALSE;
 end_if;
 
-if NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L = TRUE or NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R = TRUE then
+if NOT NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L = TRUE or NOT NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R = TRUE then
 	NDC8.DCD_8.EndLimitSwitchPolarity := 1;
 else
 	NDC8.DCD_8.EndLimitSwitchPolarity := 0;
 end_if;
 
-if NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L = TRUE or NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R = TRUE then
+if NOT NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L = TRUE or NOT NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R = TRUE then
 	NDC8.DCD_6.EndLimitSwitchPolarity := 1;
 else
 	NDC8.DCD_6.EndLimitSwitchPolarity := 0;
@@ -181,6 +181,7 @@ INPUT.LoadOnBoard := PLC_RX01_Bit_Load_i;
 
 
 StopEstopButton := NDC8.SDIO.DigitalInput12_EMO;
+
 
 
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2020-06-16" CreationTime="14:17:27.2000000+08:00" CreatedBy="user" ModificationDate="2020-06-16" ModificationTime="14:17:27.2000000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2022-07-28" CreationTime="14:45:01.3580641+08:00" CreatedBy="arlen" ModificationDate="2022-07-28" ModificationTime="14:45:01.3580641+08:00" ModifiedBy="arlen" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
-  <ComponentList Name="P46164" TimeStamp="1592317059">
+  <ComponentList Name="P46164" TimeStamp="1659019513">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
       <Properties>
-        <Property SymbolName="Method" Value="2" Remark="Navigation init methods:&#xD;&#xA;0. NavAreaInit. The vehicle controller will search for a&#xD;&#xA;   position within the given navigation area. If navigation area is&#xD;&#xA;   set to 0 the vehicle controller will search the whole layout. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;1. PointInit. The vehicle controller will search for a position in an&#xD;&#xA;   area around the given NDC point. The size of the search area is&#xD;&#xA;   defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;2. SetPosition. The vehicle controller will set its position to that&#xD;&#xA;   of the given NDC point. The vehicle must be in manual or semi manual&#xD;&#xA;   mode and standing still.&#xD;&#xA;&#xD;&#xA;3. CoordinatesInit. The vehicle controller will search for a position&#xD;&#xA;   in an area around the given coordinates. The size of the search&#xD;&#xA;   area is defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;4. SetCoordinates. The vehicle controller will set its position to&#xD;&#xA;   that of the given given coordinates. The vehicle must be in manual&#xD;&#xA;   or semi manual mode and standing still." ParentName="NavInit" />
+        <Property SymbolName="Method" Value="1" Remark="Navigation init methods:&#xD;&#xA;0. NavAreaInit. The vehicle controller will search for a&#xD;&#xA;   position within the given navigation area. If navigation area is&#xD;&#xA;   set to 0 the vehicle controller will search the whole layout. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;1. PointInit. The vehicle controller will search for a position in an&#xD;&#xA;   area around the given NDC point. The size of the search area is&#xD;&#xA;   defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;2. SetPosition. The vehicle controller will set its position to that&#xD;&#xA;   of the given NDC point. The vehicle must be in manual or semi manual&#xD;&#xA;   mode and standing still.&#xD;&#xA;&#xD;&#xA;3. CoordinatesInit. The vehicle controller will search for a position&#xD;&#xA;   in an area around the given coordinates. The size of the search&#xD;&#xA;   area is defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;4. SetCoordinates. The vehicle controller will set its position to&#xD;&#xA;   that of the given given coordinates. The vehicle must be in manual&#xD;&#xA;   or semi manual mode and standing still." ParentName="NavInit" />
         <Property SymbolName="Target" Value="0" Remark="Target is point id in case of PointInit or SetPosition methods. For&#xD;&#xA;NavAreaInit it is the area id. Not used for other init methods." ParentName="NavInit" />
         <Property SymbolName="RequestEN" Value="0" Remark="Input valid" ParentName="NavInit" />
         <Property SymbolName="RequestENO" Value="0" Remark="Output valid" ParentName="NavInit" />
@@ -31,8 +31,8 @@
         <Property SymbolName="Button9" Value="0" Remark="Load1 down button" ParentName="Mcd" />
         <Property SymbolName="Button10" Value="0" Remark="Load2 left button" ParentName="Mcd" />
         <Property SymbolName="Button11" Value="0" Remark="Load2 right button" ParentName="Mcd" />
-        <Property SymbolName="McdHighSpeed" Value="500" Remark="Mcd high or max speed" ParentName="Mcd" />
-        <Property SymbolName="McdLowSpeed" Value="100" Remark="Mcd low speed" ParentName="Mcd" />
+        <Property SymbolName="McdHighSpeed" Value="300" Remark="Mcd high or max speed" ParentName="Mcd" />
+        <Property SymbolName="McdLowSpeed" Value="150" Remark="Mcd low speed" ParentName="Mcd" />
         <Property SymbolName="Valid" Value="0" Remark="Set when an MCD device is up and running" ParentName="Mcd" />
       </Properties>
       <References>
@@ -259,7 +259,7 @@
         <Property SymbolName="SensorStopEnable" Value="0" Remark="Enable / Disable of SensorStopInput 0=disable, 1=enable. The intention is to use this to stop the vehicle on a sensor, at an operation point on a flexible segment and in conjunction with the LoadDocking.Arrived function. Though, there are no limits to use it in other situations too. When enabled, the vehicle will stop and stand still, as long as the selected sensor, SensorStopInputSignal, is active, due to its polarity, SensorStopInputPolarity. When the signal is not active, the vehicle goes on driving (if commanded of course)" ParentName="VehicleControl" />
         <Property SymbolName="BrakeOutputSignal" Value="UserDefined.Braker_Signal" Remark="Symbolic name for digital output where brake is connected, to disable type NotUsed" ParentName="VehicleControl" IsSymbol="1" />
         <Property SymbolName="BrakeOutputPolarity" Value="0" Remark="Polarity setting for brake digital output" ParentName="VehicleControl" />
-        <Property SymbolName="BrakeOnDelay" Value="2000" Remark="Delay before the brakes are applied" ParentName="VehicleControl" />
+        <Property SymbolName="BrakeOnDelay" Value="250" Remark="Delay before the brakes are applied" ParentName="VehicleControl" />
         <Property SymbolName="BrakeOffDelay" Value="250" Remark="Delay before trying to move the vehicle after the brakes have been released. To allow for the brakes to mechanically release." ParentName="VehicleControl" />
         <Property SymbolName="EstopInputSignal" Value="SDIO.DigitalInput12_EMO" Remark="Symbolic name for digital input where Estop is connected, to disable type NotUsed. If you have not set this correct you can get emcy on the Can-Bus. This happens when the regulators try to move the wheels and there's no power on the servos." ParentName="VehicleControl" IsSymbol="1" />
         <Property SymbolName="EstopInputPolarity" Value="1" Remark="Polarity setting for estop digital input" ParentName="VehicleControl" />
@@ -535,7 +535,7 @@
         <Property SymbolName="Integer32_7" Value="0" Remark="Integer32_7" AliasName="PPAEnable" ParentName="UserDefined" />
         <Property SymbolName="Integer32_8" Value="0" Remark="Integer32_8" AliasName="SafetyScannerTurnAngle" ParentName="UserDefined" />
         <Property SymbolName="Integer32_9" Value="200" Remark="Integer32_9" AliasName="NormalCreepDistance" ParentName="UserDefined" />
-        <Property SymbolName="Integer32_10" Value="0" Remark="Integer32_10" ParentName="UserDefined" />
+        <Property SymbolName="Integer32_10" Value="0" Remark="Integer32_10" AliasName="Integer32_10_PCLMODBUS" ParentName="UserDefined" />
         <Property SymbolName="Integer32_11" Value="0" Remark="Integer32_11" ParentName="UserDefined" />
         <Property SymbolName="Integer32_12" Value="0" Remark="Integer32_12" ParentName="UserDefined" />
         <Property SymbolName="Integer32_13" Value="0" Remark="Integer32_13" ParentName="UserDefined" />
@@ -717,7 +717,7 @@
         <Property SymbolName="VehicleType" Value="QUAD" Remark="Vehicle type" ParentName="Vehicle" />
         <Property SymbolName="VehicleID" Value="0" Remark="Vehicle Identity in the NDC8 System. Configured in the vehicle web interface." ParentName="Vehicle" />
         <Property SymbolName="IndividualName" Value="" Remark="Name for this vehicle individual. Configured in the vehicle web interface. Only set when external individual parameter file is used." ParentName="Vehicle" />
-        <Property SymbolName="OptionClass" Value="2" Remark="Defines vehicle option class. Used when verifying options with the master computer." ParentName="Vehicle" />
+        <Property SymbolName="OptionClass" Value="1" Remark="Defines vehicle option class. Used when verifying options with the master computer." ParentName="Vehicle" />
         <Property SymbolName="MaxSpeed" Value="1000" Remark="This symbol defines the maximum speed for the vehicle defined in mm/s" ParentName="Vehicle" />
         <Property SymbolName="SimulationMode" Value="0" Remark="Vehicle simulation mode" ParentName="Vehicle" />
         <Property SymbolName="StopTolerance" Value="35" Remark="Distance before the stop point at which the speed is set to zero" ParentName="Vehicle" />
@@ -777,7 +777,7 @@
         <Property SymbolName="IgnoreAbnormalEncVal" Value="0" Remark="When enabled a single sample with abnormal encoder values will not cause position unknown. Instead previous encoder values are used to update position." ParentName="VehicleNavigator" />
         <Property SymbolName="RangeLogInhibit" Value="500" Remark="Minimal time between range scan sent to black box file and service tool. Only read on startup of vehicle controller." ParentName="VehicleNavigator" />
         <Property SymbolName="NavigationMethods" Value="65" Remark="Used by script to determine the navigation methods choosen, 1 = reflector, 2 = spot, 4 = magnetic wire, 8 = inductive wire, 16 = wall" ParentName="VehicleNavigator" />
-        <Property SymbolName="NavLevelEventLimit" Value="0" Remark="A system event will be sent if Position.NavLevel goes below NavLevelEventLimit when the vehicle is in Automatic mode. Set to 0 to disable." ParentName="VehicleNavigator" />
+        <Property SymbolName="NavLevelEventLimit" Value="50" Remark="A system event will be sent if Position.NavLevel goes below NavLevelEventLimit when the vehicle is in Automatic mode. Set to 0 to disable." ParentName="VehicleNavigator" />
         <Property SymbolName="SleepTime" Value="-1" Remark="No position updates from sensor data when the vehicle has been standing still this time or longer. If SleepTime is set to -1 then the position will always be updated." ParentName="VehicleNavigator" />
         <Property SymbolName="CorrectionX" Value="0" Remark="Accumulated correction in vehicle local coordinates, with 5 s exponential decay." ParentName="VehicleNavigator" />
         <Property SymbolName="CorrectionY" Value="0" Remark="Accumulated correction in vehicle local coordinates, with 5 s exponential decay." ParentName="VehicleNavigator" />
@@ -846,11 +846,11 @@
         <Property SymbolName="ActiveInSafeState" Value="0" Remark="Decides if the device will start up in safe state." ParentName="DCD_6" />
         <Property SymbolName="MotorCurrentRegP" Value="160" Remark="Motor Parameter: Proportional gain in the PI-parts of the current controller." ParentName="DCD_6" />
         <Property SymbolName="MotorCurrentRegI" Value="60" Remark="Motor Parameter: Integral gain in the PI-parts of the current controller." ParentName="DCD_6" />
-        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="42" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_6" />
-        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="42" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_6" />
+        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="30" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_6" />
+        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="30" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_6" />
         <Property SymbolName="MaxTorqueCurrentChange" Value="250" Remark="The maximum allowed change during 1 ms (i.e. derivate) of the Torque Current that is allowed. A too high derivate may for example introduce noise in the gear." ParentName="DCD_6" />
-        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="42" Remark="Maximum allowed torque current during forward braking/deceleration." ParentName="DCD_6" />
-        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="42" Remark="Maximum allowed torque current during reverse braking/deceleration." ParentName="DCD_6" />
+        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="30" Remark="Maximum allowed torque current during forward braking/deceleration." ParentName="DCD_6" />
+        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="30" Remark="Maximum allowed torque current during reverse braking/deceleration." ParentName="DCD_6" />
         <Property SymbolName="SpeedRegP" Value="3500" Remark="Proportional gain in the PI-parts of the speed controller." ParentName="DCD_6" />
         <Property SymbolName="SpeedRegI" Value="65" Remark="Integral gain in the PI-parts of the speed controller." ParentName="DCD_6" />
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="125" Remark="Current limit for supervision. Supervision is enabled when the requested torque current goes above this limit. (Regulator supervision 0x6210)" ParentName="DCD_6" />
@@ -864,8 +864,8 @@
         <Property SymbolName="SlowDownZone" Value="0" Remark="Speed limited zone approaching MaxWheelAngle." ParentName="DCD_6" />
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" Remark="Speed limit for the slow down zone." ParentName="DCD_6" />
         <Property SymbolName="EndLimitSwitchPolarity" Value="0" Remark="Polarity of end limit switch. Default is active high." ParentName="DCD_6" />
-        <Property SymbolName="SyncGate" Value="0" Remark="Set true to allow sync. Set to false to reject unwanted sync pulse in multi turn application." ParentName="DCD_6" />
-        <Property SymbolName="SyncFilter" Value="50" Remark="Window where we expect sync pulse to appear" ParentName="DCD_6" />
+        <Property SymbolName="SyncGate" Value="1" Remark="Set true to allow sync. Set to false to reject unwanted sync pulse in multi turn application." ParentName="DCD_6" />
+        <Property SymbolName="SyncFilter" Value="5" Remark="Window where we expect sync pulse to appear" ParentName="DCD_6" />
         <Property SymbolName="SyncEmergency" Value="1" Remark="Encoder Sync Emergency. 0 = Sync Emergency disabled. OBS! Disabling the sync emergency can be a serious safety issue!" ParentName="DCD_6" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" Remark="Set true to reverse encoder direction. Same effect as swapping A and B signals." ParentName="DCD_6" />
         <Property SymbolName="VoltageFeedback" Value="1" Remark="Set true to use motor voltage as speed feedback instead of encoder. (Speed scale: 1024 = 48 V)" ParentName="DCD_6" />
@@ -907,11 +907,11 @@
         <Property SymbolName="ActiveInSafeState" Value="0" Remark="Decides if the device will start up in safe state." ParentName="DCD_8" />
         <Property SymbolName="MotorCurrentRegP" Value="160" Remark="Motor Parameter: Proportional gain in the PI-parts of the current controller." ParentName="DCD_8" />
         <Property SymbolName="MotorCurrentRegI" Value="60" Remark="Motor Parameter: Integral gain in the PI-parts of the current controller." ParentName="DCD_8" />
-        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="42" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_8" />
-        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="42" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_8" />
+        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="30" Remark="Maximum allowed torque current during forward acceleration." ParentName="DCD_8" />
+        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="30" Remark="Maximum allowed torque current during reverse acceleration." ParentName="DCD_8" />
         <Property SymbolName="MaxTorqueCurrentChange" Value="250" Remark="The maximum allowed change during 1 ms (i.e. derivate) of the Torque Current that is allowed. A too high derivate may for example introduce noise in the gear." ParentName="DCD_8" />
-        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="42" Remark="Maximum allowed torque current during forward braking/deceleration." ParentName="DCD_8" />
-        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="42" Remark="Maximum allowed torque current during reverse braking/deceleration." ParentName="DCD_8" />
+        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="30" Remark="Maximum allowed torque current during forward braking/deceleration." ParentName="DCD_8" />
+        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="30" Remark="Maximum allowed torque current during reverse braking/deceleration." ParentName="DCD_8" />
         <Property SymbolName="SpeedRegP" Value="3500" Remark="Proportional gain in the PI-parts of the speed controller." ParentName="DCD_8" />
         <Property SymbolName="SpeedRegI" Value="65" Remark="Integral gain in the PI-parts of the speed controller." ParentName="DCD_8" />
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="125" Remark="Current limit for supervision. Supervision is enabled when the requested torque current goes above this limit. (Regulator supervision 0x6210)" ParentName="DCD_8" />
@@ -925,8 +925,8 @@
         <Property SymbolName="SlowDownZone" Value="0" Remark="Speed limited zone approaching MaxWheelAngle." ParentName="DCD_8" />
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" Remark="Speed limit for the slow down zone." ParentName="DCD_8" />
         <Property SymbolName="EndLimitSwitchPolarity" Value="0" Remark="Polarity of end limit switch. Default is active high." ParentName="DCD_8" />
-        <Property SymbolName="SyncGate" Value="0" Remark="Set true to allow sync. Set to false to reject unwanted sync pulse in multi turn application." ParentName="DCD_8" />
-        <Property SymbolName="SyncFilter" Value="50" Remark="Window where we expect sync pulse to appear" ParentName="DCD_8" />
+        <Property SymbolName="SyncGate" Value="1" Remark="Set true to allow sync. Set to false to reject unwanted sync pulse in multi turn application." ParentName="DCD_8" />
+        <Property SymbolName="SyncFilter" Value="5" Remark="Window where we expect sync pulse to appear" ParentName="DCD_8" />
         <Property SymbolName="SyncEmergency" Value="1" Remark="Encoder Sync Emergency. 0 = Sync Emergency disabled. OBS! Disabling the sync emergency can be a serious safety issue!" ParentName="DCD_8" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" Remark="Set true to reverse encoder direction. Same effect as swapping A and B signals." ParentName="DCD_8" />
         <Property SymbolName="VoltageFeedback" Value="1" Remark="Set true to use motor voltage as speed feedback instead of encoder. (Speed scale: 1024 = 48 V)" ParentName="DCD_8" />

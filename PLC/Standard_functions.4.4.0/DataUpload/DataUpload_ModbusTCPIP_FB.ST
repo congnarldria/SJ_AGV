@@ -1,4 +1,4 @@
-FUNCTION_BLOCK DataUpload_ModbusTCPIP_FB
+FUNCTION_BLOCK DATAUPLOAD_MODBUSTCPIP_FB
 VAR_EXTERNAL
 ndc8 : NDC8_T;
 
@@ -28,7 +28,6 @@ ConvBit14:BOOL;			(*	   4000 	*)
 ConvBit15:BOOL;         (*	   8000 	*)
 
 (*BeijerSetParameters:BeijerSetParameters_T;*)
-
 END_VAR
 
 VAR_INPUT
@@ -43,7 +42,7 @@ VAR
 serial_read : NDC8_SERIAL_READ;
 serial_write : NDC8_SERIAL_WRITE;
 init : BOOL := TRUE;
-
+TOTAL : DINT;
 tx_header_length : BYTE := 6;
 dummy : BOOL;
 tr_cmd : DINT;
@@ -84,7 +83,7 @@ UploadData_message : ARRAY[1..300] of BYTE;
 
 END_VAR
 (****************************************************************************)
-StartDelayTOF(IN:=StartDelay, PT:=t#20ms);
+(*StartDelayTOF(IN:=StartDelay, PT:=t#20ms);*)
 
 if init then
 	serial_read.port := 'COM6';
@@ -99,9 +98,9 @@ end_if;
 case ProcStep of
 0:
 	    StartDelay:=False; 
-		IF Not StartDelayTOF.Q THEN
+		(*IF Not StartDelayTOF.Q THEN*)
 		    ProcStep:=1;
-		END_IF;
+		(*END_IF; *)
 
 (****************************************************************************)	
 1:
@@ -146,12 +145,10 @@ case ProcStep of
 			serial_write.data[6] := UploadData_message[6]; 	(* Length, will be overwritten *)
 			serial_write.data[7] := UploadData_message[7]; 	(* Slave adress *)
 			serial_write.data[8] := UploadData_message[8]; 	(* Cmd *)
-		
 			(* Start adress to read *)
 			ConvByteH:= UploadData_message[9]; 
 			ConvByteL:= UploadData_message[10]; 
-			start_adress  := Word_TO_INT(ConvWord);
-			
+			start_adress  := Word_TO_INT(ConvWord) + 1;
 			ProcStep:=3;
 
 (****************************************************************************)			
@@ -252,34 +249,77 @@ case ProcStep of
 
 (****************************************************************************)			
 30:
-				(*Read register *)
-				(* Number of words *)
-				(* serial_read.data[11]; *)
-				num_words := BYTE_TO_DINT(UploadData_message[12]); 
-				
-					IF num_words > 11 THEN
-				   		num_words:=11;
-					END_IF;    
-			
-					Y:=start_adress; 
-					Z:=10;				
-					Serial_write.data[9] := DINT_TO_BYTE(num_words*2);
-				        
-					For Index:=1 to num_words BY 1 DO
+						(*Read register *)
+						(* Number of words *)		
+					UploadData_ModBus_ValueWord [46] := PLC_TX_Word1;
+					UploadData_ModBus_ValueWord [47] := PLC_TX_Word2;
+					UploadData_ModBus_ValueWord [48] := PLC_TX_Word3;
+					UploadData_ModBus_ValueWord [49] := PLC_TX_Word4;
+					UploadData_ModBus_ValueWord [50] := PLC_TX_Word5;
+					UploadData_ModBus_ValueWord [51] := PLC_TX_Word6;
+					UploadData_ModBus_ValueWord [52] := PLC_TX_Word7_STr_Vecl;
+					UploadData_ModBus_ValueWord [53] := PLC_TX_Word8_STr_Seg;
+					UploadData_ModBus_ValueWord [54] := PLC_TX_Word9_STr_Pnt;
+					UploadData_ModBus_ValueWord [55] := PLC_TX_Word10_STr_BatV;
+					UploadData_ModBus_ValueWord [56] := PLC_TX_Word11_STr_Temp;
+					UploadData_ModBus_ValueWord [57] := PLC_TX_Word12_STr_BatD;
+					UploadData_ModBus_ValueWord [58] := PLC_TX_Word13_STr_Err;
+					UploadData_ModBus_ValueWord [59] := PLC_TX_Word14_STr_BCD3;
+					UploadData_ModBus_ValueWord [60] := PLC_TX_Word15_STr_BCD2;
+					UploadData_ModBus_ValueWord [61] := PLC_TX_Word16_STr_BCD1;			
+					num_words := BYTE_TO_DINT(UploadData_message[12]); 				 
+					Total := num_words;
+					Y := start_adress;
+					(* Copy header *)
+					serial_write.data[1] := UploadData_message[1]; 
+					serial_write.data[2] := UploadData_message[2];
+					serial_write.data[3] := UploadData_message[3]; 
+					serial_write.data[4] := UploadData_message[4]; 
+					serial_write.data[5] := UploadData_message[5];
+					Z:= 1; (* Send first 9*)				
+					serial_write.data[6] := DINT_TO_BYTE(Total*2 + 3); (* lp *)
+					serial_write.data[7] := UploadData_message[7]; 	(* Slave adress *)
+					serial_write.data[8] := UploadData_message[8]; 	(* Cmd *)
+					serial_write.data[9] := DINT_TO_BYTE(Total*2); (* lp *)
+				    serial_write.length := 9;
+					serial_write();
+					if PLC_TX04_Bit_ChkCom_Tx = true then
+						PLC_TX04_Bit_ChkCom_Tx := false;
+					else
+						PLC_TX04_Bit_ChkCom_Tx := true;
+					end_if;
+					ProcStep:=31;															
+31:
+					IF Total >= 16 THEN
+						Total := Total - 16;
+					For Index:=1 to 16 BY 1 DO
 						ConvWord:=UploadData_ModBus_ValueWord [Y];
 						serial_write.data[Z]:=ConvByteH;
 						Z:=Z+1;
 						serial_write.data[Z]:=ConvByteL;
-						Y:=Y+1;
 						Z:=Z+1;
+						Y:=Y+1;								
 					END_FOR;
-					
-				
-					length := num_words * 2 + 3;
-					tx_length := DINT_TO_BYTE(length);
-					serial_write.data[6] := tx_length; (* lp *)
-					ProcStep:=10000;
-
+					serial_write.length := DINT_TO_INT(32); (*Will be max 32 bytes*)
+					serial_write();
+					Z := 1;								
+					ProcStep:=31;
+					ELSIF Total = 0 THEN		
+						ProcStep:=10001;
+					ELSE
+					For Index:=1 to (TOTAL) BY 1 DO
+						ConvWord:=UploadData_ModBus_ValueWord [Y];
+						serial_write.data[Z]:=ConvByteH;
+						Z:=Z+1;
+						serial_write.data[Z]:=ConvByteL;
+						Z:=Z+1;
+						Y:=Y+1;								
+					END_FOR;
+					serial_write.length := DINT_TO_INT(TOTAL*2);
+					serial_write();
+					Z := 1;					
+					ProcStep:=10001;
+					END_IF;			
 (****************************************************************************)			
 50:
 			(* Write single Coil *)
@@ -383,9 +423,9 @@ case ProcStep of
 				(* Multiple write *)
 				num_words:=Byte_TO_DInt(UploadData_message[12]); 
 				(* Check if message lenght outside the Buffer, if so do what ??? *)
-				IF num_words > 9 THEN
+			(*	IF num_words > 9 THEN
 				   num_words:=9;
-				END_IF;    
+				END_IF;    *)
 				Y:=start_adress;
 				X:=14;
 				End:= Byte_TO_Int(UploadData_message[12]); 
@@ -398,10 +438,49 @@ case ProcStep of
 					X:=X+1;
 					Y:=Y+1;
 				END_FOR;
-				
-				ProcStep:=999;				
-
-
+						(*Set Into Memory *)
+		PLC_RX_Word1 := UploadData_ModBus_ValueWord [94];
+		PLC_RX_Word2 := UploadData_ModBus_ValueWord [95];
+		PLC_RX_Word3 := UploadData_ModBus_ValueWord [96];
+		PLC_RX_Word4 := UploadData_ModBus_ValueWord [97];
+		PLC_RX_Word5 := UploadData_ModBus_ValueWord [98];
+		PLC_RX_Word6 := UploadData_ModBus_ValueWord [99];
+		PLC_RX_Word7_STw_BCD3 := UploadData_ModBus_ValueWord [100];
+		PLC_RX_Word8_STw_BCD2 := UploadData_ModBus_ValueWord [101];
+		PLC_RX_Word9_STw_BCD1 := UploadData_ModBus_ValueWord [102];
+		PLC_RX_Word10_STw_ILEr := UploadData_ModBus_ValueWord [103];
+		PLC_RX_Word11_Ins_Pno := UploadData_ModBus_ValueWord [104];
+		PLC_RX_Word12_STw_Pint := UploadData_ModBus_ValueWord [105];
+		PLC_RX_Word13_Ins_Ano := UploadData_ModBus_ValueWord [106];
+		PLC_RX_Word14_BMS_2 := UploadData_ModBus_ValueWord [107];
+		PLC_RX_Word15_BMS_3 := UploadData_ModBus_ValueWord [108];
+		PLC_RX_Word16_BMS_BatV := UploadData_ModBus_ValueWord [109];
+		PLC_RX_Word17_BMS_BatT := UploadData_ModBus_ValueWord [110];
+		PLC_RX_Word18_BMS_BatC := UploadData_ModBus_ValueWord [111];
+		PLC_RX_Word19_BMS_BatA := UploadData_ModBus_ValueWord [112];
+		PLC_RX_Word20_PLC_ErrD := UploadData_ModBus_ValueWord [113];
+		PLC_RX_Word21_BMS_Main := UploadData_ModBus_ValueWord [114];
+		PLC_RX_Word22_BMS_Chan := UploadData_ModBus_ValueWord [115];
+		PLC_RX_Word23_BMS_ID4L := UploadData_ModBus_ValueWord [116];
+		PLC_RX_Word24_BMS_ID4H := UploadData_ModBus_ValueWord [117];
+	PLC_RX_Word25 := UploadData_ModBus_ValueWord [118];
+				ProcStep:=998;				
+998: 
+				Serial_write.data[1] := UploadData_message[1];
+				Serial_write.data[2] := UploadData_message[2];
+				Serial_write.data[3] := UploadData_message[3];
+				Serial_write.data[4] := UploadData_message[4];
+				Serial_write.data[5] := UploadData_message[5];
+				Serial_write.data[6] := DINT_TO_BYTE(6);
+				Serial_write.data[7] := UploadData_message[7];
+				Serial_write.data[8] := UploadData_message[8];
+				Serial_write.data[9] := UploadData_message[9];
+				serial_write.data[10] := UploadData_message[10]; 
+				serial_write.data[11] := UploadData_message[11]; 
+				serial_write.data[12] := UploadData_message[12];  (*PLC_message[12];*)
+				serial_write.length := 12;
+				serial_write();	
+				ProcStep:=10001;
 (****************************************************************************)
 999:
 
@@ -432,8 +511,21 @@ case ProcStep of
 				ProcStep:=0;
 				DebugCounter := DebugCounter + 1;
 			End_IF;
-
+(****************************************************************************)					
+10001:
+			serial_write.length := 0; (*Using SendBuffer =1 length needs to be set to 0 for it to be sent*)
+			serial_write(); (*send*)
+			IF serial_write.sent<>0 or serial_write.error<>0 Then
+				ProcStep:=0;
+				DebugCounter := DebugCounter + 1;
+			End_IF;
+			ProcStep:=0;
 end_case;
+
+
+
+
+
 
 
 

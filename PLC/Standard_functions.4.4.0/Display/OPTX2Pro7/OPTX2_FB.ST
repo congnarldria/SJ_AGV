@@ -452,7 +452,7 @@ if ModBus_ValueBOOL [203] then
 end_if;
 
 (* Set Parameters *)
-if ModBus_ValueBOOL [209] = TRUE then
+if ModBus_ValueBOOL [209] then
 
 	ModBus_ValueBOOL [210] := NDC8.UserDefined.Boolean_20_OnlineOrderMode;
 	
@@ -721,6 +721,7 @@ OPTX2Communication();
 
 
 (****************************************************************************)
+
 
 
 

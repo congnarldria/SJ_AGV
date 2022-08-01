@@ -45,6 +45,7 @@ NavInit : NavInit_T;
     VehicleNavigator : VehicleNavigator_T;
     ReflectorNavigator : ReflectorNavigator_T;
     COM6 : LanSerialPort_T;
+    COM7 : LanSerialPort_T;
     DCD_5 : DCD_5_T;
     DCD_6 : DCD_6_T;
     DCD_7 : DCD_7_T;

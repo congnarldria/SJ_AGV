@@ -262,7 +262,7 @@ ModBus_ValueWord [6] := DINT_TO_WORD(NDC8.Manual.PlcSteerMode);
 
 (*System Manager connection, sent to Display*)
 ModBus_ValueBOOL [1]:= NDC8.Master.MasterLinkUp;
-
+          
 if NDC8.LayoutPosition.Point <> 0 or NDC8.LayoutPosition.Segment <> 0 then
 	ModBus_ValueBOOL [2] := true;
 else
@@ -452,7 +452,7 @@ if ModBus_ValueBOOL [203] then
 end_if;
 
 (* Set Parameters *)
-if ModBus_ValueBOOL [209] = TRUE then
+if (*ModBus_ValueBOOL [209] = *)FALSE then
 
 	ModBus_ValueBOOL [210] := NDC8.UserDefined.Boolean_20_OnlineOrderMode;
 	
@@ -721,6 +721,8 @@ OPTX2Communication();
 
 
 (****************************************************************************)
+
+
 
 
 

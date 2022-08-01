@@ -80,6 +80,8 @@ msg_index: INT;
 ix : INT;
 OPTX2_message : ARRAY[1..300] of BYTE;
 
+VAL : Byte;
+
 END_VAR
 
 (*Automatically declared*)
@@ -401,7 +403,6 @@ END_VAR
 		LD OPTX2_message[8]
 		ST serial_write.data[8]
 
-(** 		 **)
 (** 			{* Start adress to read *} **)
 (** 			ConvByteH:= OPTX2_message[9];  **)
 		(* assign - Stmt *)
@@ -2018,6 +2019,8 @@ END_VAR
 	ODK_SKIP_000000000000002_00000000000000C:
 	ODK_END_CASE_000000000000002:
 
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 

@@ -25,7 +25,7 @@ COUNT=3
 FILE1=\LIB\NDC8LIB.1.2.6\NDC8LIB.VAR
 FILE0=\LIB\PORTABILITY\PORTABILITY.VAR
 [ST_FUNCTIONBLOCK]
-FILE15=\Standard_functions.4.4.0\DataUpload\DataUpload_ModbusTCPIP_FB
+FILE15=\Standard_functions.4.4.0\DataUpload\DATAUPLOAD_MODBUSTCPIP_FB
 FILE3=\Standard_functions.4.4.0\CarrierControl\CARRIERCONTROL_FB
 FILE16=\Standard_functions.4.4.0\Display\OPTX2Pro7\OPTX2Communication_FB
 FILE2=\Standard_functions.4.4.0\CarrierControl\AutoInsert_FB
@@ -60,7 +60,7 @@ FILE12=\Standard_functions.4.4.0\Common\Timer_FB
 FILE28=\Standard_functions.4.4.0\SubFunctions\FourBytesToUDInt_FB
 FILE13=\Standard_functions.4.4.0\Common\TX_STATUS_FB
 FILE1=\Standard_functions.4.4.0\Autoload\OPERATIONFAIL_FB
-FILE14=\Standard_functions.4.4.0\DataUpload\DataUpload_FB
+FILE14=\Standard_functions.4.4.0\DataUpload\DATAUPLOAD_FB
 FILE0=\Standard_functions.4.4.0\Autoload\AUTOLOAD_FB
 [ST_PROGRAM]
 COUNT=1

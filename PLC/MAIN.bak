@@ -35,7 +35,6 @@ VAR
 	
 	VehicleMovingFlag : BOOL;
 
-
 (* Error Trigger BlackBox *)
 	Error_Set_Trig : BOOL;
 	Error_BB_TrigR : R_Trig;
@@ -160,16 +159,16 @@ elsif AllOK_R.Q and NDC8.SDIO.DigitalInput2_BTN_RST = TRUE then
 end_if;
 
 if NDC8.CAN_IO_3.DigitalInput5_LIMF_O = TRUE then
-	NDC8.DCD_6.SyncGate := FALSE;
-else
 	NDC8.DCD_6.SyncGate := TRUE;
+else
+	NDC8.DCD_6.SyncGate := FALSE;
 end_if;
 
 
 if NDC8.CAN_IO_3.DigitalInput6_LIMR_O = TRUE then
-	NDC8.DCD_8.SyncGate := FALSE;
-else
 	NDC8.DCD_8.SyncGate := TRUE;
+else
+	NDC8.DCD_8.SyncGate := FALSE;
 end_if;
 
 AllOK_Delay(IN:=g_StartFindSync, PT:=t#5s);
@@ -179,7 +178,7 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	0:
 	(* Steer Turn to 2000 *)
 	NDC8.Manual.PlcSelect := true;
-	NDC8.Manual.PLCAngle := 2000;
+	NDC8.Manual.PLCAngle := 9000;
 	NDC8.Manual.PlcSetOperationMode := 1;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
@@ -194,7 +193,7 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	1:
 	(* Steer Turn to -2000 *)
 	NDC8.Manual.PlcSelect := true;
-	NDC8.Manual.PLCAngle := -2000;
+	NDC8.Manual.PLCAngle := -9000;
 	NDC8.Manual.PlcSetOperationMode := 1;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
@@ -254,8 +253,7 @@ if NDC8.CanOpenMaster.NMTState = 5 and NDC8.CanOpenMaster.State = 0 then
 (* BMS Charger *)
 	BMS_CHG();
 
-	PLC_Communication();
-	
+    PLC_Communication();	
 end_if;
 
 (* These FB can be run also during startup and in safe state *)
@@ -405,7 +403,7 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 	MasterLinkR(CLK:= NDC8.Master.MasterLinkUp);
 	
 
-	if (*MasterLinkR.Q or g_AGV_ErrorReset or (NDC8.Mcd.Button8 = TRUE and INPUT.Manual = TRUE)*) True then (* When Master Link up, Error Status need to be update again *)
+	if  MasterLinkR.Q or g_AGV_ErrorReset or (NDC8.Mcd.Button8 = TRUE and INPUT.Manual = TRUE) then (* When Master Link up, Error Status need to be update again *)
 		g_ErrorCode := 0;
 		PLC_TX_Word13_STr_Err := 0;
 		OM_PLC_W2_Bit_SetEmgStop := FALSE;
@@ -542,7 +540,8 @@ else
 end_if;
 
 if (PLC_RX01_Bit_EnableLD_i = FALSE or Input.StartMode = FALSE) and Input.Auto then
-	StopRobotNotIdle := TRUE;
+	(*StopRobotNotIdle := TRUE; TEST*)
+	StopRobotNotIdle := FALSE;
 else
 	StopRobotNotIdle := FALSE;
 end_if;
@@ -765,6 +764,20 @@ Display();
 OPTX2();
 
 DataUpdate();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

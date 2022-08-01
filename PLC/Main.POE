@@ -35,7 +35,6 @@ VAR
 	
 	VehicleMovingFlag : BOOL;
 
-
 (* Error Trigger BlackBox *)
 	Error_Set_Trig : BOOL;
 	Error_BB_TrigR : R_Trig;
@@ -178,6 +177,7 @@ VAR_EXTERNAL
 	PLC_RX14_BIT_BMS_SHORT : BOOL;
 	PLC_RX01_BIT_CHKCOM_RX : BOOL;
 	STOPWORD : DWORD;
+	G_AGV_ERRORRESET : BOOL;
 	G_FINDSYNCFLAG : BOOL;
 	PLC_TX01_BIT_MANMODE : BOOL;
 	STOPBYCANERR_NODE8 : BOOL;
@@ -285,9 +285,9 @@ END_VAR
 
 		(* then - Stmts *)
 
-(** 	NDC8.DCD_6.SyncGate := FALSE; **)
+(** 	NDC8.DCD_6.SyncGate := TRUE; **)
 		(* assign - Stmt *)
-		LD FALSE
+		LD TRUE
 		ST NDC8.DCD_6.SyncGate
 
 		JMP ODK_END_IF_000000000000002
@@ -298,9 +298,9 @@ END_VAR
 
 		(* else - Stmts *)
 
-(** 	NDC8.DCD_6.SyncGate := TRUE; **)
+(** 	NDC8.DCD_6.SyncGate := FALSE; **)
 		(* assign - Stmt *)
-		LD TRUE
+		LD FALSE
 		ST NDC8.DCD_6.SyncGate
 
 (** end_if; **)
@@ -317,9 +317,9 @@ END_VAR
 
 		(* then - Stmts *)
 
-(** 	NDC8.DCD_8.SyncGate := FALSE; **)
+(** 	NDC8.DCD_8.SyncGate := TRUE; **)
 		(* assign - Stmt *)
-		LD FALSE
+		LD TRUE
 		ST NDC8.DCD_8.SyncGate
 
 		JMP ODK_END_IF_000000000000003
@@ -330,9 +330,9 @@ END_VAR
 
 		(* else - Stmts *)
 
-(** 	NDC8.DCD_8.SyncGate := TRUE; **)
+(** 	NDC8.DCD_8.SyncGate := FALSE; **)
 		(* assign - Stmt *)
-		LD TRUE
+		LD FALSE
 		ST NDC8.DCD_8.SyncGate
 
 (** end_if; **)
@@ -382,9 +382,9 @@ END_VAR
 			LD TRUE
 			ST NDC8.Manual.PlcSelect
 
-(** 	NDC8.Manual.PLCAngle := 2000; **)
+(** 	NDC8.Manual.PLCAngle := 9000; **)
 			(* assign - Stmt *)
-			LD 2000
+			LD 9000
 			ST NDC8.Manual.PLCAngle
 
 (** 	NDC8.Manual.PlcSetOperationMode := 1; **)
@@ -459,9 +459,9 @@ END_VAR
 			LD TRUE
 			ST NDC8.Manual.PlcSelect
 
-(** 	NDC8.Manual.PLCAngle := -2000; **)
+(** 	NDC8.Manual.PLCAngle := -9000; **)
 			(* assign - Stmt *)
-			LD -2000
+			LD -9000
 			ST NDC8.Manual.PLCAngle
 
 (** 	NDC8.Manual.PlcSetOperationMode := 1; **)
@@ -698,13 +698,12 @@ END_VAR
 		CAL BMS_CHG
 
 (**  **)
-(** 	PLC_Communication(); **)
+(**     PLC_Communication();	 **)
 		(* call - Stmt *)
 		CAL PLC_Communication
 
 		JMP ODK_END_IF_000000000000009
 
-(** 	 **)
 (** end_if; **)
 	(* if - End *) 
 	ODK_SKIP_000000000000009_000000000000001:
@@ -1260,9 +1259,16 @@ END_VAR
 
 (** 	 **)
 (**  **)
-(** 	if {*MasterLinkR.Q or g_AGV_ErrorReset or (NDC8.Mcd.Button8 = TRUE and INPUT.Manual = TRUE)*} True then {* When Master Link up, Error Status need to be update again *} **)
+(** 	if  MasterLinkR.Q or g_AGV_ErrorReset or (NDC8.Mcd.Button8 = TRUE and INPUT.Manual = TRUE) then {* When Master Link up, Error Status need to be update again *} **)
 		(* if - Cond *)
-		LD TRUE
+		LD MasterLinkR.Q
+		OR g_AGV_ErrorReset
+		OR ( NDC8.Mcd.Button8
+			EQ TRUE
+			AND ( INPUT.Manual
+				EQ TRUE
+			)
+		)
 		JMPCN ODK_SKIP_00000000000000L_000000000000001
 
 			(* then - Stmts *)
@@ -3216,6 +3222,20 @@ END_VAR
 	(* call - Stmt *)
 	CAL DataUpdate
 
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

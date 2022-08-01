@@ -15,7 +15,7 @@ VAR_GLOBAL
 	
 	UploadData_ModBus_ValueWord:ARRAY[1..500] OF Word;
 	UploadData_ModBus_ValueBOOL:ARRAY[1..400] OF BOOL;
-
+	PLC_Communication_ModBus_ValueWord:ARRAY[1..300] OF Word;
 	InStatus : bool;	(* Input for display. *)
 	Timer : Timer_FB;
 
@@ -101,6 +101,7 @@ VAR_GLOBAL
 	PLC_RX_Word24_BMS_ID4H		:WORD;
 	PLC_RX_Word25				:WORD;
 	g_Receive :string(200);
+	ISCOME : DINT;
 END_VAR
 
 VAR_GLOBAL RETAIN		(* Values kept also during power off. *)
@@ -108,6 +109,8 @@ VAR_GLOBAL RETAIN		(* Values kept also during power off. *)
 	Milliseconds:Dint;
 	SecondLanguage:bool;
 END_VAR
+
+
 
 
 

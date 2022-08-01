@@ -1557,10 +1557,9 @@ END_VAR
 
 (**  **)
 (** {* Set Parameters *} **)
-(** if ModBus_ValueBOOL [209] = TRUE then **)
+(** if ModBus_ValueBOOL [209] then **)
 	(* if - Cond *)
 	LD ModBus_ValueBOOL[209]
-	EQ true
 	JMPCN ODK_SKIP_00000000000000E_000000000000001
 
 		(* then - Stmts *)
@@ -2453,6 +2452,7 @@ END_VAR
 (**  **)
 (**  **)
 (** {****************************************************************************} **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

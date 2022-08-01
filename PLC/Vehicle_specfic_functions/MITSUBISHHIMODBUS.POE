@@ -1,0 +1,184 @@
+FUNCTION_BLOCK MITSUBISHHIMODBUS
+VAR_EXTERNAL
+
+pConvWord:WORD;			(*Sum of the two first bytes*)
+
+pConvByteL:Byte;			(*Low byte*)
+pConvByteH:Byte;			(*High byte*)
+END_VAR
+
+VAR_INPUT
+	ComStart : bool := TRUE; 
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+	BMS_BatLowSel : INT;
+	BMS_BatLow : BOOL;
+	
+	TP_PB_NoSelTimer : TON;
+	
+	Debug_PB_Cont : BOOL := FALSE;
+	Debug_PB_Finish : BOOL := FALSE;
+	Debug_PB_Cancel : BOOL := FALSE;
+	Debug_PB_Change : BOOL := FALSE;
+	
+	RST_Flag : BOOL;
+	RST_R : R_Trig;
+	
+	RST_Keep : BOOL;
+	RST_Keep_Timer : TON;
+	
+	BatLow : BOOL;
+	
+	
+	TempInt : int;
+	TempWord : word;
+	WordL :int;
+	WordH :int;
+	
+	FinalPnt : DINT;
+	
+	SwitchHostFlag : BOOL;
+	Host_R : R_Trig;
+	Host_R_Flag : BOOL;
+	
+	Host_R_Delay : TON;
+	
+	init  : bool := false;
+	ComStep : int := 0;
+	
+	serial_read : NDC8_SERIAL_READ;
+	serial_write : NDC8_SERIAL_WRITE;
+	
+	to_bytes 		: NDC8_STRING_TO_BYTES;
+	to_string		: NDC8_BYTES_TO_STRING; 
+	
+	PLC_LastHeartBeat : BOOL;
+	PLC_HeartBeatNoChange : BOOL;
+	
+	PLC_HeartBeatTimeout : TON;
+	
+	LoadDataSendFlag : BOOL;
+	UnloadDataSendFlag : BOOL;
+	
+	TestDataSend : BOOL;
+	
+	OrderMode:OrderMode_FB;
+	LocalOrder : LocalOrder_FB;
+	NavInit : NavInit_FB;
+	
+	STw_NewcmdR : R_Trig;
+	STw_Newcmd_Flag : BOOL;
+	
+	LocalManual : BOOL;
+	LocalManual_R : R_Trig;
+	SetToLocal : BOOL;
+	
+	Str_AckT : TON;
+	STr_AckR : BOOL;
+	
+	(*---------Rev Data ----------*)
+	Start : int;
+	StartOffset : int;
+	
+	DataIndex1 : Int;
+	DataIndex2 : Int;
+	DataIndex3 : Int;
+	DataIndex4 : Int;
+	DataIndex5 : Int;
+
+	
+	RevDataLength : int := 0;
+
+	TempString : string;
+	
+	HeaderString : string;
+	DecodeString : string(200);
+	DecodeString_RS : string(200);
+	DecodeString_WS : string(200);
+
+	TempData : ARRAY[1..32] OF BYTE;	
+
+	SendData_Req : ARRAY[1..32] OF BYTE;
+	
+	ReceiveData_Status : ARRAY[1..1074] OF BYTE;
+	(*--------------------------------------*)
+	
+	
+	(*Send 16 Word Data *)
+	EncoderStart : int;
+	EncoderStartOffset : int;
+	MessageLen : int;
+	
+	Message : string;
+	SendTempString : string;
+	
+	SendData_Status1 : ARRAY[1..32] OF BYTE;
+	SendData_Status2 : ARRAY[1..32] OF BYTE;
+	SendData_Status3 : ARRAY[1..32] OF BYTE;
+	SendData_Status4 : ARRAY[1..32] OF BYTE;
+		
+	(*--------------------------------------*)
+	
+	
+	(*Decode WS Data*)
+	DecodeStart_WS : int;
+	
+	DecodeString_WS_Data :string(200);
+	SplitString : string;
+	
+	SplitPos : int;
+	SplitPosOffset1 : int;
+	
+	DecodeDataArray : ARRAY[1..25] of WORD;
+	
+	(*---------------------------------------*)
+	tx_header_length : BYTE := 6;
+	dummy : BOOL;
+	tr_cmd : DINT;
+
+
+	start_adress : INT;
+
+	ReadCounter,
+	DebugCounter		: DINT;
+	StartDelayTOF	: TOF;
+	StartDelay 		: BOOL;
+	
+	X: INT;
+	Y: INT;
+	Z: INT;
+	End:INT;
+	Index:DINT;
+	debug1 :INT;
+	debug2 :INT;
+	tr_len : DINT;
+	num_words : DINT;
+	num_Byte : DINT;
+	num_Bit : DINT;
+	Extra:DINT;
+	length : DINT;
+	tx_length : BYTE;
+	ENDBIT:DINT;
+	debugByte :Byte;
+	dataindex : INT;
+	msg_index: INT;
+	ix : INT;
+	PLC_message : ARRAY[1..300] of BYTE;
+	lenght_send : DINT;
+	Send_message : ARRAY[1..32] of BYTE;
+	Counter : DINT;
+	DINTdataindex : DINT;
+END_VAR
+
+(*Automatically declared*)
+VAR_EXTERNAL
+END_VAR
+LD AWL_NOT_WRITTEN
+ST DUE_TO_SYNTAX_ERROR_IN_ST_SOURCE
+
+END_FUNCTION_BLOCK

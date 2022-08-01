@@ -780,7 +780,7 @@ TYPE UserDefined_T :
         PPAEnable : DINT ;   (* Integer32_7  *)
         SafetyScannerTurnAngle : DINT ;   (* Integer32_8  *)
         NormalCreepDistance : DINT ;   (* Integer32_9  *)
-        Integer32_10 : DINT ;   (* Integer32_10  *)
+        Integer32_10_PCLMODBUS : DINT ;   (* Integer32_10  *)
         Integer32_11 : DINT ;   (* Integer32_11  *)
         Integer32_12 : DINT ;   (* Integer32_12  *)
         Integer32_13 : DINT ;   (* Integer32_13  *)
@@ -1680,7 +1680,7 @@ END_TYPE
 
 (* PROJEKT PROTOTYPEN *)
 
-$INCLUDE "D:\SJ_2SD_G45_CVC700_FULLMOD_20220525\PLC\$GEN$\DISPLAYSTOPSTRING_FB.PTT"
+$INCLUDE "C:\USERS\ARLEN\ONEDRIVE\DESKTOP\CVC700\SJ_2SD_G45_CVC700_FULLMOD_20220525\PLC\$GEN$\DISPLAYSTOPSTRING_FB.PTT"
 
 
 (* EXTERNE POEs *)

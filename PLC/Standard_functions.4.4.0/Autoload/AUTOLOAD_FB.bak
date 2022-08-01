@@ -20,7 +20,6 @@ VAR
 	
 	TempBCD1_Int : Int;
 	TempBCD1 : Word;
-	
 
 	(* Load/Unload Process *)
 	LoadOpDone : LoadOpDone_FB;
@@ -91,8 +90,6 @@ END_VAR
 (* Set up variables to be used from NDC8 sources *)
 OperationCode 		:= dint_to_word(NDC8.LoadOperation.OperationCode);				(* Value is decimal in vehicle, but hex in Layout designer! *)
 
-
-
 if (NDC8.Automatic.CurrentOrderMode = 2 or NDC8.Automatic.CurrentOrderMode = 3) and AutoloadMainState <> 2000 then (*in Local mode Operation code need to calcuate for PLC*)
 		IN_OPCD_Bit_LT_Ang0		:= word_to_bool(OperationCode and 1);
 		IN_OPCD_Bit_LT_Ang90	:= word_to_bool(OperationCode and 2);
@@ -111,8 +108,8 @@ if (NDC8.Automatic.CurrentOrderMode = 2 or NDC8.Automatic.CurrentOrderMode = 3) 
 elsif NDC8.Automatic.CurrentOrderMode = 1 and AutoloadMainState <> 2000 then (*in Host mode Operation code need to calcuate for PLC*)
 		IN_OPCD_Bit_LT_Ang0		:= word_to_bool(OperationCode and 16);
 		IN_OPCD_Bit_LT_Ang90	:= word_to_bool(OperationCode and 32);
-		IN_OPCD_Bit_LT_Ang180	:= word_to_bool(OperationCode and 128);
-		IN_OPCD_Bit_LT_AngN90	:= word_to_bool(OperationCode and 64);
+		IN_OPCD_Bit_LT_Ang180	:= word_to_bool(OperationCode and 64);
+		IN_OPCD_Bit_LT_AngN90	:= word_to_bool(OperationCode and 128);
 
 		IN_OPCD_Bit_LT_Right	:= word_to_bool(OperationCode and 1);
 		IN_OPCD_Bit_LT_Left		:= word_to_bool(OperationCode and 2);
@@ -163,7 +160,9 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 		NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
 		
 	1: (*Clear BCD Req*)
-		StopByBCD := TRUE;
+		IF NDC8.Automatic.CurrentOrderMode = 1 THEN
+			StopByBCD := TRUE;
+		END_IF;
 		PLC_TX04_Bit_BCD_Clr := true;
 		PLC_TX04_Bit_BCD_Req := false;
 	
@@ -207,7 +206,7 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 				or PLC_RX06_Bit_BCRData_NG
 				or PLC_RX06_Bit_BCRInit_NG
 				or PLC_RX06_Bit_BCRComm_NG then
-			
+			ISCOME := 1;
 			if BCDReadTimes >= BCDRetryTimes then
 				OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 					OM_PLC_W2_Bit_Err_BCR := TRUE;
@@ -222,9 +221,9 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 	
 	
 	3: (*BCD Compare*)
-		TempBCD1_Int := WORD_TO_INT(PLC_RX_Word9_STw_BCD1) - 16#D00;
-		TempBCD1 := INT_TO_WORD(TempBCD1_Int);
-		
+		TempBCD1_Int := WORD_TO_INT(PLC_RX_Word9_STw_BCD1);
+		(*TempBCD1 := INT_TO_WORD(TempBCD1_Int);*)
+		TempBCD1 := INT_TO_WORD(TempBCD1_Int Mod 256);
 		BCDCompTimes := BCDCompTimes + 1;
 		
 		if 	PLC_TX_Word14_STr_BCD3 = PLC_RX_Word7_STw_BCD3
@@ -452,8 +451,9 @@ Case AutoloadMainState of
 				PLC_TX02_Bit_STr_DepoST := FALSE;
 				PLC_TX02_Bit_STr_ShutEQ := FALSE;
 				PLC_TX04_Bit_Cancel_ST := FALSE;
-				
-				StopByBCD := TRUE;
+				IF NDC8.Automatic.CurrentOrderMode = 1 THEN
+					StopByBCD := TRUE;
+				END_IF;
 				BCD_ReadReq := TRUE;
 				
 				AutoloadMainState := 1000;
@@ -979,6 +979,12 @@ end_if;
 
 
 (* OUTPUT *)
+
+
+
+
+
+
 
 
 

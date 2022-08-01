@@ -80,6 +80,8 @@ msg_index: INT;
 ix : INT;
 OPTX2_message : ARRAY[1..300] of BYTE;
 
+VAL : Byte;
+
 END_VAR
 (****************************************************************************)
 StartDelayTOF(IN:=StartDelay, PT:=t#20ms);
@@ -144,7 +146,6 @@ case OPTX2 of
 			serial_write.data[6] := OPTX2_message[6]; 	(* Length, will be overwritten *)
 			serial_write.data[7] := OPTX2_message[7]; 	(* Slave adress *)
 			serial_write.data[8] := OPTX2_message[8]; 	(* Cmd *)
-		
 			(* Start adress to read *)
 			ConvByteH:= OPTX2_message[9]; 
 			ConvByteL:= OPTX2_message[10]; 
@@ -432,6 +433,8 @@ case OPTX2 of
 			End_IF;
 
 end_case;
+
+
 
 
 

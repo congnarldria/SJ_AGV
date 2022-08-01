@@ -107,7 +107,7 @@ DisplayStopString(INStatus:=InStatus, StopString:=192, StopValue:=0);							(* m
 With the NDC8 2.7 release introduced new parameters, which can be used for detecting a spinning wheel from the PLC. *)
 
 WheelSpinning := ABS(NDC8.VehicleNavigator.CorrectionX) > 100;			(* If correcting above this value, for more than 10 seconds, *)	
-WheelSpinningTimer(IN:=WheelSpinning, PT:= t#10s);
+WheelSpinningTimer(IN:=WheelSpinning, PT:= t#1000s);
 
 SegmentChange := PreviousSegmentID <> NDC8.LayoutPosition.Segment;		(* ...or does not change segment ID after two minutes *)
 SegmentChangeTimer(IN:=SegmentChange, PT:= t#120s);
@@ -126,6 +126,7 @@ end_if;
 
 (* Display update *)
 DisplayStopString(INStatus:=StopSpinningWheel, StopString:=86, StopValue:=0);
+
 
 
 

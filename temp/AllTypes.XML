@@ -2108,7 +2108,7 @@
         </property>
         <property propname="NormalCreepDistance" propremark="Integer32_9" datatype="INTEGER32" symboladdress="Integer32_9">
         </property>
-        <property propname="Integer32_10" propremark="Integer32_10" datatype="INTEGER32" symboladdress="">
+        <property propname="Integer32_10_PCLMODBUS" propremark="Integer32_10" datatype="INTEGER32" symboladdress="Integer32_10">
         </property>
         <property propname="Integer32_11" propremark="Integer32_11" datatype="INTEGER32" symboladdress="">
         </property>

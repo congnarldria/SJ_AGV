@@ -1,4 +1,4 @@
-FUNCTION_BLOCK DataUpload_FB
+FUNCTION_BLOCK DATAUPLOAD_FB
 VAR_EXTERNAL
 ndc8 : NDC8_T;
 
@@ -402,42 +402,32 @@ END_VAR
 
 (**  **)
 (** {* Drive Current Diff*} **)
+(** {* **)
 (** UploadData_ModBus_ValueWord [46] := INT_TO_WORD(NDC8.DCD_5.TorqueCurrentReference - NDC8.DCD_7.TorqueCurrentReference); **)
-	(* assign - Stmt *)
-	LD NDC8.DCD_5.TorqueCurrentReference
-	SUB NDC8.DCD_7.TorqueCurrentReference
-	INT_TO_WORD 
-	ST UploadData_ModBus_ValueWord[46]
-
-(**  **)
+(** *} **)
 (** {* Steer Current Diff*} **)
+(** {* **)
 (** UploadData_ModBus_ValueWord [47] := INT_TO_WORD(NDC8.DCD_6.TorqueCurrentReference - NDC8.DCD_8.TorqueCurrentReference); **)
-	(* assign - Stmt *)
-	LD NDC8.DCD_6.TorqueCurrentReference
-	SUB NDC8.DCD_8.TorqueCurrentReference
-	INT_TO_WORD 
-	ST UploadData_ModBus_ValueWord[47]
-
-(** 	 **)
-(** 	 **)
+(** *} **)
+(**  **)
 (** {* Set Parameters *} **)
-(** if UploadData_ModBus_ValueBOOL [1] = TRUE then **)
+(** if UploadData_ModBus_ValueWord [71] <> 0 then **)
 	(* if - Cond *)
-	LD UploadData_ModBus_ValueBOOL[1]
-	EQ TRUE
+	LD UploadData_ModBus_ValueWord[71]
+	NE 0
 	JMPCN ODK_SKIP_000000000000001_000000000000001
 
 		(* then - Stmts *)
 
 (** 	{* Scanner_x *} **)
-(** 	ConvWord2 := UploadData_ModBus_ValueWord [52]; **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [73]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[52]
+		LD UploadData_ModBus_ValueWord[73]
 		ST ConvWord2
 
-(** 	ConvWord := UploadData_ModBus_ValueWord [51]; **)
+(** 	ConvWord := UploadData_ModBus_ValueWord [72]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[51]
+		LD UploadData_ModBus_ValueWord[72]
 		ST ConvWord
 
 (**  **)
@@ -448,14 +438,14 @@ END_VAR
 
 (** 	 **)
 (** 	{* Scanner_y *} **)
-(** 	ConvWord2 := UploadData_ModBus_ValueWord [54]; **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [75]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[54]
+		LD UploadData_ModBus_ValueWord[75]
 		ST ConvWord2
 
-(** 	ConvWord := UploadData_ModBus_ValueWord [53]; **)
+(** 	ConvWord := UploadData_ModBus_ValueWord [74]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[53]
+		LD UploadData_ModBus_ValueWord[74]
 		ST ConvWord
 
 (**  **)
@@ -466,14 +456,14 @@ END_VAR
 
 (** 	 **)
 (** 	{* Scanner_t *} **)
-(** 	ConvWord2 := UploadData_ModBus_ValueWord [56]; **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [77]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[56]
+		LD UploadData_ModBus_ValueWord[77]
 		ST ConvWord2
 
-(** 	ConvWord := UploadData_ModBus_ValueWord [55]; **)
+(** 	ConvWord := UploadData_ModBus_ValueWord [76]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[55]
+		LD UploadData_ModBus_ValueWord[76]
 		ST ConvWord
 
 (**  **)
@@ -499,14 +489,14 @@ END_VAR
 (** 	 **)
 (** 	 **)
 (** 	{* Max Speed *} **)
-(** 	ConvWord2 := UploadData_ModBus_ValueWord [58]; **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [79]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[58]
+		LD UploadData_ModBus_ValueWord[79]
 		ST ConvWord2
 
-(** 	ConvWord := UploadData_ModBus_ValueWord [57]; **)
+(** 	ConvWord := UploadData_ModBus_ValueWord [78]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[57]
+		LD UploadData_ModBus_ValueWord[78]
 		ST ConvWord
 
 (**  **)
@@ -518,14 +508,14 @@ END_VAR
 (** 	 **)
 (** 	 **)
 (** 	{* Enc1Scal *} **)
-(** 	ConvWord2 := UploadData_ModBus_ValueWord [60]; **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [81]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[60]
+		LD UploadData_ModBus_ValueWord[81]
 		ST ConvWord2
 
-(** 	ConvWord := UploadData_ModBus_ValueWord [59]; **)
+(** 	ConvWord := UploadData_ModBus_ValueWord [80]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[59]
+		LD UploadData_ModBus_ValueWord[80]
 		ST ConvWord
 
 (**  **)
@@ -536,14 +526,14 @@ END_VAR
 
 (** 	 **)
 (** 	{* Enc1Offs *} **)
-(** 	ConvWord2 := UploadData_ModBus_ValueWord [62]; **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [83]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[62]
+		LD UploadData_ModBus_ValueWord[83]
 		ST ConvWord2
 
-(** 	ConvWord := UploadData_ModBus_ValueWord [61]; **)
+(** 	ConvWord := UploadData_ModBus_ValueWord [82]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[61]
+		LD UploadData_ModBus_ValueWord[82]
 		ST ConvWord
 
 (**  **)
@@ -555,14 +545,14 @@ END_VAR
 
 (** 	 **)
 (** 	{* Enc3Scal *} **)
-(** 	ConvWord2 := UploadData_ModBus_ValueWord [64]; **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [85]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[64]
+		LD UploadData_ModBus_ValueWord[85]
 		ST ConvWord2
 
-(** 	ConvWord := UploadData_ModBus_ValueWord [63]; **)
+(** 	ConvWord := UploadData_ModBus_ValueWord [84]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[63]
+		LD UploadData_ModBus_ValueWord[84]
 		ST ConvWord
 
 (**  **)
@@ -573,14 +563,14 @@ END_VAR
 
 (** 	 **)
 (** 	{* Enc3Offs *} **)
-(** 	ConvWord2 := UploadData_ModBus_ValueWord [66]; **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [87]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[66]
+		LD UploadData_ModBus_ValueWord[87]
 		ST ConvWord2
 
-(** 	ConvWord := UploadData_ModBus_ValueWord [65]; **)
+(** 	ConvWord := UploadData_ModBus_ValueWord [86]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[65]
+		LD UploadData_ModBus_ValueWord[86]
 		ST ConvWord
 
 (**  **)
@@ -592,14 +582,14 @@ END_VAR
 
 (** 	 **)
 (** 	{* Enc2Scal *} **)
-(** 	ConvWord2 := UploadData_ModBus_ValueWord [68]; **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [89]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[68]
+		LD UploadData_ModBus_ValueWord[89]
 		ST ConvWord2
 
-(** 	ConvWord := UploadData_ModBus_ValueWord [67]; **)
+(** 	ConvWord := UploadData_ModBus_ValueWord [88]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[67]
+		LD UploadData_ModBus_ValueWord[88]
 		ST ConvWord
 
 (**  **)
@@ -610,14 +600,14 @@ END_VAR
 
 (** 	 **)
 (** 	{* Enc4Scal *} **)
-(** 	ConvWord2 := UploadData_ModBus_ValueWord [70]; **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [91]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[70]
+		LD UploadData_ModBus_ValueWord[91]
 		ST ConvWord2
 
-(** 	ConvWord := UploadData_ModBus_ValueWord [69]; **)
+(** 	ConvWord := UploadData_ModBus_ValueWord [90]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[69]
+		LD UploadData_ModBus_ValueWord[90]
 		ST ConvWord
 
 (**  **)
@@ -628,14 +618,14 @@ END_VAR
 
 (** 	 **)
 (** 	{* Batt Low Voltage *} **)
-(** 	ConvWord2 := UploadData_ModBus_ValueWord [72]; **)
+(** 	ConvWord2 := UploadData_ModBus_ValueWord [93]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[72]
+		LD UploadData_ModBus_ValueWord[93]
 		ST ConvWord2
 
-(** 	ConvWord := UploadData_ModBus_ValueWord [71]; **)
+(** 	ConvWord := UploadData_ModBus_ValueWord [92]; **)
 		(* assign - Stmt *)
-		LD UploadData_ModBus_ValueWord[71]
+		LD UploadData_ModBus_ValueWord[92]
 		ST ConvWord
 
 (**  **)
@@ -644,14 +634,10 @@ END_VAR
 		LD ConvDINT
 		ST NDC8.UserDefined.Integer32_50_BattLowVol
 
-(** 	 **)
-(** 	UploadData_ModBus_ValueBOOL [1] := FALSE; **)
-		(* assign - Stmt *)
-		LD FALSE
-		ST UploadData_ModBus_ValueBOOL[1]
-
 		JMP ODK_END_IF_000000000000001
 
+(**  **)
+(** 	{*UploadData_ModBus_ValueBOOL [1] := FALSE;*} **)
 (** end_if; **)
 	(* if - End *) 
 	ODK_SKIP_000000000000001_000000000000001:
@@ -668,6 +654,8 @@ END_VAR
 (**  **)
 (**  **)
 (** {****************************************************************************} **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

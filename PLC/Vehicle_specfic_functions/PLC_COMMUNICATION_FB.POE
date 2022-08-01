@@ -2643,10 +2643,13 @@ END_VAR
 (**  **)
 (** {*Communication*} **)
 (**  **)
-(** if ComStart = true then **)
+(** if ComStart = true AND NDC8.UserDefined.Integer32_10_PCLMODBUS = 1 then **)
 	(* if - Cond *)
 	LD ComStart
 	EQ true
+	AND ( NDC8.UserDefined.Integer32_10_PCLMODBUS
+		EQ 1
+	)
 	JMPCN ODK_SKIP_00000000000001Q_000000000000001
 
 		(* then - Stmts *)
@@ -3061,9 +3064,13 @@ END_VAR
 			(* case - Stmts *) 
 			ODK_CASE_000000000000020_000000000000001:
 
+(** 			ComStep := 0; **)
+				(* assign - Stmt *)
+				LD 0
+				ST ComStep
+
 				JMP ODK_END_CASE_000000000000020
 
-(** 			; **)
 (** 		 **)
 (** 		10: **)
 			(* case - Elm *) 
@@ -3766,7 +3773,6 @@ END_VAR
 				CONCAT SendTempString
 				ST Message
 
-(** 		 **)
 (** 			to_bytes(str := Message); **)
 				(* call - Stmt *)
 				CAL to_bytes (
@@ -4207,6 +4213,14 @@ END_VAR
 	ODK_SKIP_00000000000001Q_000000000000001:
 	ODK_END_IF_00000000000001Q:
 
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)
