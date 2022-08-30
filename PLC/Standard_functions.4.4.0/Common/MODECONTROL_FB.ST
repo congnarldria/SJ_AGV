@@ -143,7 +143,7 @@ if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then
 				
 				NDC8.Manual.PlcSelectMask 		:= 2#10111;(* Override operation mode, steer mode and set angle	*)
 			else
-				NDC8.Manual.PLCAngle 			:= NDC8.Mcd.Angle / 3;
+				NDC8.Manual.PLCAngle 			:= NDC8.Mcd.Angle / 2;
 				
 				if StopWord = 0 and StopWord2 = 0  then
 					NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed;
@@ -219,6 +219,8 @@ end_if;
 (* Update Display *)
 
 DisplayStopString(INStatus:=StopManual, StopString:=85, StopValue:=0);
+
+
 
 
 

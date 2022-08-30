@@ -7,12 +7,16 @@ VAR_GLOBAL
 (* The code below was auto-generated - do not change *)
 	NDC8: NDC8_T;
 (* The code above was auto-generated - do not change *)
-	
+	FORCECOUNT : DINT;
+	AUTOLOADDONE : Bool := False;
 END_VAR
 
 VAR_GLOBAL RETAIN
 	
 END_VAR
+
+
+
 
 
 

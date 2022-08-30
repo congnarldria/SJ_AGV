@@ -546,10 +546,10 @@ END_VAR
 
 					(* else - Stmts *)
 
-(** 				NDC8.Manual.PLCAngle 			:= NDC8.Mcd.Angle / 3; **)
+(** 				NDC8.Manual.PLCAngle 			:= NDC8.Mcd.Angle / 2; **)
 					(* assign - Stmt *)
 					LD NDC8.Mcd.Angle
-					DIV 3
+					DIV 2
 					ST NDC8.Manual.PLCAngle
 
 (** 				 **)
@@ -900,6 +900,8 @@ END_VAR
 		StopValue := 0
 	)
 
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

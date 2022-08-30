@@ -161,12 +161,11 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 		end_if;
 	
 		NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
-		
 	1: (*Clear BCD Req*)
 		StopByBCD := TRUE;
 		PLC_TX04_Bit_BCD_Clr := true;
 		PLC_TX04_Bit_BCD_Req := false;
-	
+				
 		OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 			OM_PLC_W2_Bit_BCD_setOK := FALSE;
 			OM_PLC_W2_Bit_Set_Result := FALSE;
@@ -188,7 +187,7 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 	2: (*Set BCD Req*)
 		PLC_TX04_Bit_BCD_Clr := false;
 		PLC_TX04_Bit_BCD_Req := true;
-
+		iBCD3 := 5;
 		BCDReadTimes := BCDReadTimes + 1;
 	
 		if PLC_RX06_Bit_BCD_OK 
@@ -197,7 +196,7 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 			and not PLC_RX06_Bit_BCRData_NG
 			and not PLC_RX06_Bit_BCRInit_NG
 			and not PLC_RX06_Bit_BCRComm_NG then
-			
+			iBCD1 := 1;
 			BCDReadTimes := 0;
 			
 			BCDProcState := 3;
@@ -214,6 +213,7 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 					OM_PLC_W2_Bit_Set_Result := TRUE;
 				NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
 				BCDProcState := 1000;
+				iBCD2 := 2;
 			else
 				BCDProcState := 1;
 			end_if;
@@ -222,16 +222,17 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 	
 	
 	3: (*BCD Compare*)
-		TempBCD1_Int := WORD_TO_INT(PLC_RX_Word9_STw_BCD1) - 16#D00;
+		TempBCD1_Int := WORD_TO_INT(PLC_RX_Word9_STw_BCD1);(* - 16#D00*);
 		TempBCD1 := INT_TO_WORD(TempBCD1_Int);
-		
+	
 		BCDCompTimes := BCDCompTimes + 1;
 		
 		if 	PLC_TX_Word14_STr_BCD3 = PLC_RX_Word7_STw_BCD3
 			and PLC_TX_Word15_STr_BCD2 = PLC_RX_Word8_STw_BCD2
-			and PLC_TX_Word16_STr_BCD1 = TempBCD1 then
+			and PLC_TX_Word16_STr_BCD1 = PLC_RX_Word9_STw_BCD1 then
 			BCDProcState := 4; (* Compare Complete *)
 			BCDCompTimes := 0;
+			
 		else
 		
 			if BCDCompTimes >= BCDReCompTimes then
@@ -452,8 +453,9 @@ Case AutoloadMainState of
 				PLC_TX02_Bit_STr_DepoST := FALSE;
 				PLC_TX02_Bit_STr_ShutEQ := FALSE;
 				PLC_TX04_Bit_Cancel_ST := FALSE;
-				
+			IF NDC8.Automatic.CurrentOrderMode = 1 THEN	
 				StopByBCD := TRUE;
+			END_IF;
 				BCD_ReadReq := TRUE;
 				
 				AutoloadMainState := 1000;
@@ -706,6 +708,8 @@ Case AutoloadMainState of
 		
 		PLC_TX04_Bit_ChrgCmdL_A := FALSE;
 		
+		PLC_TX04_Bit_ChrgCmdR_A := FALSE;
+		
 		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;
 		
 		NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;
@@ -918,12 +922,11 @@ Case AutoloadMainState of
 					AutoloadMainState:= 2000;	(* End autoload *)
 				end_if;
 			end_if;
-		end_if;
-					
+		end_if;					
 					
 (* Operation Complete *)
 	2000:
-	
+		AUTOLOADDONE := INPUT.AutoLoadDone;
 		if Debug_2000_F = FALSE then
 			if INPUT.AutoLoadDone = TRUE then
 				StartLoad 						:= false;
@@ -993,6 +996,12 @@ end_if;
 
 
 (* OUTPUT *)
+
+
+
+
+
+
 
 
 

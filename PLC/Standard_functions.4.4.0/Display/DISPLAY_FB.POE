@@ -177,6 +177,7 @@ END_VAR
 	)
 	ST InStatus
 
+(**  **)
 (** DisplayStopString(INStatus:=INStatus, StopString:=67, StopValue:=NDC8.BlockedInfo.Vehicle1); **)
 	(* call - Stmt *)
 	CAL DisplayStopString (
@@ -185,6 +186,7 @@ END_VAR
 		StopValue := NDC8.BlockedInfo.Vehicle1
 	)
 
+(** {* No comm. with stationary system *} **)
 (**  **)
 (** InStatus 	:= not NDC8.Master.MasterLinkUp and NDC8.Automatic.CurrentOrderMode <> 2 ;  **)
 	(* assign - Stmt *)
@@ -195,7 +197,7 @@ END_VAR
 	)
 	ST InStatus
 
-(** DisplayStopString(INStatus:=InStatus, StopString:=104, StopValue:=0);			{* No comm. with stationary system *} **)
+(** DisplayStopString(INStatus:=InStatus, StopString:=104, StopValue:=0);			 **)
 	(* call - Stmt *)
 	CAL DisplayStopString (
 		InStatus := InStatus,
@@ -204,12 +206,14 @@ END_VAR
 	)
 
 (**  **)
+(** {* Simulation Mode *} **)
+(**  **)
 (** InStatus 	:= (NDC8.Vehicle.SimulationMode);  **)
 	(* assign - Stmt *)
 	LD NDC8.Vehicle.SimulationMode
 	ST InStatus
 
-(** DisplayStopString(INStatus:=InStatus, StopString:=63, StopValue:=0);				{* Simulation Mode *}  **)
+(** DisplayStopString(INStatus:=InStatus, StopString:=63, StopValue:=0);				 **)
 	(* call - Stmt *)
 	CAL DisplayStopString (
 		InStatus := InStatus,
@@ -223,6 +227,7 @@ END_VAR
 (**  **)
 (** {*****************************************************************************************} **)
 (** {* Tiller arm lower position *} **)
+(**  **)
 (** DisplayStopString(INStatus:=INPUT.TillerArmLowerPos, StopString:=82, StopValue:=0); **)
 	(* call - Stmt *)
 	CAL DisplayStopString (
@@ -234,6 +239,7 @@ END_VAR
 (**  **)
 (** {*****************************************************************************************} **)
 (** {* PLATFORM *} **)
+(**  **)
 (** InStatus := INPUT.PlatformNotUpperPos and not Input.TillerArmDown; **)
 	(* assign - Stmt *)
 	LD INPUT.PlatformNotUpperPos
@@ -253,6 +259,7 @@ END_VAR
 (**  **)
 (** {*****************************************************************************************} **)
 (** {* GATE *} **)
+(**  **)
 (** InStatus := INPUT.GateOpen and not Input.TillerArmDown; **)
 	(* assign - Stmt *)
 	LD INPUT.GateOpen
@@ -310,8 +317,9 @@ END_VAR
 
 (**  **)
 (** {*************************************************************************************} **)
-(** {* System Manager options *} **)
-(** InStatus := (ndc8.VehicleOptions.StatusID = 1 and NDC8.Automatic.CurrentOrderMode <> 2);		{* Unknown *} **)
+(** {* System Manager options *}{* Unknown *}{* Invalid options *} **)
+(**  **)
+(** InStatus := (ndc8.VehicleOptions.StatusID = 1 and NDC8.Automatic.CurrentOrderMode <> 2);		 **)
 	(* assign - Stmt *)
 	LD NDC8.VehicleOptions.StatusID
 	EQ 1
@@ -329,7 +337,7 @@ END_VAR
 	)
 
 (**  **)
-(** InStatus := (ndc8.VehicleOptions.StatusID = 2 and NDC8.Automatic.CurrentOrderMode <> 2);		{* Invalid options *} **)
+(** InStatus := (ndc8.VehicleOptions.StatusID = 2 and NDC8.Automatic.CurrentOrderMode <> 2);		 **)
 	(* assign - Stmt *)
 	LD NDC8.VehicleOptions.StatusID
 	EQ 2
@@ -346,6 +354,9 @@ END_VAR
 		StopValue := NDC8.Vehicle.OptionClass
 	)
 
+(**  **)
+(**  **)
+(**  **)
 (**  **)
 
 END_FUNCTION_BLOCK

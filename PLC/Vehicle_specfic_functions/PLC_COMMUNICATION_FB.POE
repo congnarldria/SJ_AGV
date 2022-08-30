@@ -27,7 +27,7 @@ VAR
 	
 	RST_Keep : BOOL;
 	RST_Keep_Timer : TON;
-	
+	LTDelay : TOF;
 	BatLow : BOOL;
 	
 	
@@ -479,10 +479,13 @@ END_VAR
 
 			(* else - Stmts *)
 
-(** 		if NDC8.Automatic.CurrentOrderMode = 3 then **)
+(** 		{*if NDC8.Automatic.CurrentOrderMode = 3 then **)
+(** 			Host_R_Flag := FALSE; **)
+(** 		end_if;*} **)
+(** 			if NDC8.Automatic.CurrentOrderMode <> 1 then **)
 			(* if - Cond *)
 			LD NDC8.Automatic.CurrentOrderMode
-			EQ 3
+			NE 1
 			JMPCN ODK_SKIP_000000000000007_000000000000001
 
 				(* then - Stmts *)
@@ -499,11 +502,17 @@ END_VAR
 			ODK_SKIP_000000000000007_000000000000001:
 			ODK_END_IF_000000000000007:
 
-(** 	 **)
-(** 		if NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q then **)
+(** 		{*if NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q then **)
+(** 			NDC8.Automatic.SetOrderMode := 3; **)
+(** 			OrderMode(); **)
+(** 		elsif NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = FALSE then **)
+(** 			; **)
+(** 		end_if; **)
+(** 		*} **)
+(** 		if NDC8.Automatic.CurrentOrderMode = 1 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q then **)
 			(* if - Cond *)
 			LD NDC8.Automatic.CurrentOrderMode
-			NE 3
+			EQ 1
 			AND ( Host_R_Flag
 				EQ true
 			)
@@ -526,24 +535,9 @@ END_VAR
 
 				JMP ODK_END_IF_000000000000008
 
-(** 		elsif NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = FALSE then **)
-			(* elseif - Cond *) 
-			ODK_SKIP_000000000000008_000000000000001:
-			LD NDC8.Automatic.CurrentOrderMode
-			NE 3
-			AND ( Host_R_Flag
-				EQ false
-			)
-			JMPCN ODK_SKIP_000000000000008_000000000000002
-
-				(* elsif - Stmts *)
-
-				JMP ODK_END_IF_000000000000008
-
-(** 			; **)
-(** 		end_if; **)
+(** 		END_IF; **)
 			(* if - End *) 
-			ODK_SKIP_000000000000008_000000000000002:
+			ODK_SKIP_000000000000008_000000000000001:
 			ODK_END_IF_000000000000008:
 
 (** 	end_if; **)
@@ -1563,11 +1557,11 @@ END_VAR
 
 		(* then - Stmts *)
 
-(** 	RST_Keep_Timer(IN:= TRUE, PT := t#1.5s); **)
+(** 	RST_Keep_Timer(IN:= TRUE, PT := t#5s); **)
 		(* call - Stmt *)
 		CAL RST_Keep_Timer (
 			IN := true,
-			PT := t#1.5s
+			PT := t#5s
 		)
 
 		JMP ODK_END_IF_00000000000000W
@@ -2068,10 +2062,22 @@ END_VAR
 	ODK_END_IF_000000000000016:
 
 (**  **)
-(**  **)
+(** {* **)
 (** if (PLC_RX03_Bit_STw_Mod_LT and PLC_RX03_Bit_STw_Mod_NT) then **)
+(** 	NDC8.Automatic.SetOrderMode := 2; **)
+(** 	OrderMode(); **)
+(** end_if; **)
+(** *} **)
+(** LTDelay(IN := PLC_RX03_Bit_STw_Mod_LT , PT := t#1s); **)
+	(* call - Stmt *)
+	CAL LTDelay (
+		IN := PLC_RX03_Bit_STw_Mod_LT,
+		PT := t#1s
+	)
+
+(** if (LTDelay.Q and PLC_RX03_Bit_STw_Mod_NT) then **)
 	(* if - Cond *)
-	LD PLC_RX03_Bit_STw_Mod_LT
+	LD LTDelay.Q
 	AND PLC_RX03_Bit_STw_Mod_NT
 	JMPCN ODK_SKIP_000000000000018_000000000000001
 
@@ -2094,12 +2100,22 @@ END_VAR
 	ODK_END_IF_000000000000018:
 
 (**  **)
-(**  **)
-(**  **)
-(**  **)
+(** {* **)
 (** if PLC_RX03_Bit_STw_Mod_LT and PLC_RX03_Bit_STw_Mod_UT then **)
+(** 	NDC8.Automatic.SetOrderMode := 3; **)
+(** 	OrderMode(); **)
+(** 	 **)
+(** 	if OrderMode.Finished then **)
+(** 		PLC_TX01_Bit_STr_Mod_NT := FALSE; **)
+(** 		PLC_TX01_Bit_STr_Mod_UT := TRUE; **)
+(** 	end_if; **)
+(** end_if; **)
+(** *} **)
+(**  **)
+(** if NDC8.Automatic.SetOrderMode <> 1 and PLC_RX03_Bit_STw_Mod_UT then **)
 	(* if - Cond *)
-	LD PLC_RX03_Bit_STw_Mod_LT
+	LD NDC8.Automatic.SetOrderMode
+	NE 1
 	AND PLC_RX03_Bit_STw_Mod_UT
 	JMPCN ODK_SKIP_000000000000019_000000000000001
 
@@ -2249,6 +2265,7 @@ END_VAR
 
 (**  **)
 (** {* Set Local Order Data*} **)
+(**  **)
 (** STw_NewcmdR(CLK:= PLC_RX03_Bit_STw_Newcmd); **)
 	(* call - Stmt *)
 	CAL STw_NewcmdR (
@@ -2275,6 +2292,8 @@ END_VAR
 	ODK_SKIP_00000000000001E_000000000000001:
 	ODK_END_IF_00000000000001E:
 
+(**  **)
+(**  **)
 (**  **)
 (** if STw_Newcmd_Flag then **)
 	(* if - Cond *)
@@ -2558,11 +2577,14 @@ END_VAR
 	(* if - End *) 
 	ODK_END_IF_00000000000001M:
 
-(**   **)
-(** if {*(BMS_BatLow = TRUE or *} BatLow = TRUE then **)
+(**  **)
+(** if BMS_BatLow = TRUE or BatLow = TRUE then **)
 	(* if - Cond *)
-	LD BatLow
+	LD BMS_BatLow
 	EQ true
+	OR ( BatLow
+		EQ true
+	)
 	JMPCN ODK_SKIP_00000000000001N_000000000000001
 
 		(* then - Stmts *)
@@ -2647,10 +2669,13 @@ END_VAR
 (**  **)
 (** {*Communication*} **)
 (**  **)
-(** if ComStart = true then **)
+(** if ComStart = true AND NDC8.UserDefined.Integer32_10_PCLMODBUS = 1 then **)
 	(* if - Cond *)
 	LD ComStart
 	EQ true
+	AND ( NDC8.UserDefined.Integer32_10_PCLMODBUS
+		EQ 1
+	)
 	JMPCN ODK_SKIP_00000000000001Q_000000000000001
 
 		(* then - Stmts *)
@@ -4207,6 +4232,11 @@ END_VAR
 	ODK_SKIP_00000000000001Q_000000000000001:
 	ODK_END_IF_00000000000001Q:
 
+(**  **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

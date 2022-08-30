@@ -42,8 +42,6 @@ if INStatus XOR (DisplayStopStringA[StopString,0]<>0) then
 end_if;
 
 
-
-
 (* Select Stop String *)
 DisplayStopStringUpdateRT(CLK:=Timer.Display);
 if 	DisplayStopStringUpdateRT.Q 
@@ -63,6 +61,8 @@ end_if;
 (* setup return *)
 CurrentString	:= DisplayStopStringA[DisplayStopStringIx,0];
 CurrentValue	:= DisplayStopStringA[DisplayStopStringIx,1];
+
+
 
 
 END_FUNCTION_BLOCK

@@ -13,8 +13,8 @@ TYPE CAN_IO_3_T :
         DigitalInput2_SteerLimitF_R : BOOL ;   (* Digital Input 2 value  *)
         DigitalInput3_SteerLimitR_L : BOOL ;   (* Digital Input 3 value  *)
         DigitalInput4_SteerLimitR_R : BOOL ;   (* Digital Input 4 value  *)
-        DigitalInput5 : BOOL ;   (* Digital Input 5 value  *)
-        DigitalInput6 : BOOL ;   (* Digital Input 6 value  *)
+        DigitalInput5_LIMF_O : BOOL ;   (* Digital Input 5 value  *)
+        DigitalInput6_LIMR_O : BOOL ;   (* Digital Input 6 value  *)
         DigitalInput7 : BOOL ;   (* Digital Input 7 value  *)
         DigitalInput8 : BOOL ;   (* Digital Input 8 value  *)
         DigitalInput9_AreaF_IN1 : BOOL ;   (* Digital Input 9 value  *)
@@ -690,7 +690,7 @@ TYPE UserDefined_T :
         PPAEnable : DINT ;   (* Integer32_7  *)
         SafetyScannerTurnAngle : DINT ;   (* Integer32_8  *)
         NormalCreepDistance : DINT ;   (* Integer32_9  *)
-        Integer32_10 : DINT ;   (* Integer32_10  *)
+        Integer32_10_PCLMODBUS : DINT ;   (* Integer32_10  *)
         Integer32_11 : DINT ;   (* Integer32_11  *)
         Integer32_12 : DINT ;   (* Integer32_12  *)
         Integer32_13 : DINT ;   (* Integer32_13  *)
@@ -733,7 +733,7 @@ TYPE UserDefined_T :
         Integer32_50_BattLowVol : DINT ;   (*   *)
         Integer32_51_BattLowSel : DINT ;   (* 1=L or M or H, 2=M or H, 3=H  *)
         Integer32_52_PowOffTm : DINT ;   (* ms  *)
-        Integer32_53 : DINT ;   (*   *)
+        Integer32_53_OverVESTOPTm : DINT ;   (*   *)
         Integer32_54 : DINT ;   (*   *)
         Integer32_55_TravelDistance : DINT ;   (*   *)
         Integer32_56 : DINT ;   (*   *)
@@ -1613,12 +1613,12 @@ FUNCTION_BLOCK NDC8_STRING_TO_BYTES
 (* PROJEKT PROTOTYPEN *)
 
 $INCLUDE "C:\PROGRAMDATA\INFOTEAM SOFTWARE\OPENPCS2008\OPENPCS.520\LIB\NDC8LIB.1.2.8\$GEN$\BLACKBOX_FB.PTT"
-$INCLUDE "C:\USERS\ARLEN\ONEDRIVE\DESKTOP\SJ_2SD_G5_CVC700\PLC\$GEN$\ASCII_TO_DEC.PTT"
-$INCLUDE "C:\USERS\ARLEN\ONEDRIVE\DESKTOP\SJ_2SD_G5_CVC700\PLC\$GEN$\RESETBUTTON_FB.PTT"
-$INCLUDE "C:\USERS\ARLEN\ONEDRIVE\DESKTOP\SJ_2SD_G5_CVC700\PLC\$GEN$\ESTOP_FB.PTT"
-$INCLUDE "C:\USERS\ARLEN\ONEDRIVE\DESKTOP\SJ_2SD_G5_CVC700\PLC\$GEN$\STARTDELAY_FB.PTT"
-$INCLUDE "C:\USERS\ARLEN\ONEDRIVE\DESKTOP\SJ_2SD_G5_CVC700\PLC\$GEN$\SLOWDOWN_FB.PTT"
-$INCLUDE "C:\USERS\ARLEN\ONEDRIVE\DESKTOP\SJ_2SD_G5_CVC700\PLC\$GEN$\AUTOINSERT_FB.PTT"
+$INCLUDE "C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\$GEN$\ASCII_TO_DEC.PTT"
+$INCLUDE "C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\$GEN$\RESETBUTTON_FB.PTT"
+$INCLUDE "C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\$GEN$\ESTOP_FB.PTT"
+$INCLUDE "C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\$GEN$\STARTDELAY_FB.PTT"
+$INCLUDE "C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\$GEN$\SLOWDOWN_FB.PTT"
+$INCLUDE "C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\$GEN$\AUTOINSERT_FB.PTT"
 
 
 (* EXTERNE POEs *)

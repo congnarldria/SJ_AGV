@@ -165,29 +165,31 @@ UploadData_ModBus_ValueWord [44] := INT_TO_WORD(NDC8.DCD_7.TorqueCurrentReferenc
 UploadData_ModBus_ValueWord [45] := INT_TO_WORD(NDC8.DCD_8.TorqueCurrentReference);
 
 (* Drive Current Diff*)
+(*
 UploadData_ModBus_ValueWord [46] := INT_TO_WORD(NDC8.DCD_5.TorqueCurrentReference - NDC8.DCD_7.TorqueCurrentReference);
-
+*)
 (* Steer Current Diff*)
+(*
 UploadData_ModBus_ValueWord [47] := INT_TO_WORD(NDC8.DCD_6.TorqueCurrentReference - NDC8.DCD_8.TorqueCurrentReference);
-	
-	
+*)
+
 (* Set Parameters *)
-if UploadData_ModBus_ValueBOOL [1] = TRUE then
+if UploadData_ModBus_ValueWord [71] <> 0 then
 	(* Scanner_x *)
-	ConvWord2 := UploadData_ModBus_ValueWord [52];
-	ConvWord := UploadData_ModBus_ValueWord [51];
+	ConvWord2 := UploadData_ModBus_ValueWord [73];
+	ConvWord := UploadData_ModBus_ValueWord [72];
 
 	NDC8.LS2000.X := ConvDINT;
 	
 	(* Scanner_y *)
-	ConvWord2 := UploadData_ModBus_ValueWord [54];
-	ConvWord := UploadData_ModBus_ValueWord [53];
+	ConvWord2 := UploadData_ModBus_ValueWord [75];
+	ConvWord := UploadData_ModBus_ValueWord [74];
 
 	NDC8.LS2000.Y := ConvDINT;
 	
 	(* Scanner_t *)
-	ConvWord2 := UploadData_ModBus_ValueWord [56];
-	ConvWord := UploadData_ModBus_ValueWord [55];
+	ConvWord2 := UploadData_ModBus_ValueWord [77];
+	ConvWord := UploadData_ModBus_ValueWord [76];
 
 	Angle_DINT := ConvDINT;
 	
@@ -197,55 +199,55 @@ if UploadData_ModBus_ValueBOOL [1] = TRUE then
 	
 	
 	(* Max Speed *)
-	ConvWord2 := UploadData_ModBus_ValueWord [58];
-	ConvWord := UploadData_ModBus_ValueWord [57];
+	ConvWord2 := UploadData_ModBus_ValueWord [79];
+	ConvWord := UploadData_ModBus_ValueWord [78];
 
 	NDC8.Vehicle.MaxSpeed := ConvDINT;
 	
 	
 	(* Enc1Scal *)
-	ConvWord2 := UploadData_ModBus_ValueWord [60];
-	ConvWord := UploadData_ModBus_ValueWord [59];
+	ConvWord2 := UploadData_ModBus_ValueWord [81];
+	ConvWord := UploadData_ModBus_ValueWord [80];
 
 	NDC8.DCD_6.SteerEncScale := ConvUDINT;
 	
 	(* Enc1Offs *)
-	ConvWord2 := UploadData_ModBus_ValueWord [62];
-	ConvWord := UploadData_ModBus_ValueWord [61];
+	ConvWord2 := UploadData_ModBus_ValueWord [83];
+	ConvWord := UploadData_ModBus_ValueWord [82];
 
 	NDC8.DCD_6.SteerEncOffset := DINT_TO_INT(ConvDINT);
 	
 	(* Enc3Scal *)
-	ConvWord2 := UploadData_ModBus_ValueWord [64];
-	ConvWord := UploadData_ModBus_ValueWord [63];
+	ConvWord2 := UploadData_ModBus_ValueWord [85];
+	ConvWord := UploadData_ModBus_ValueWord [84];
 
 	NDC8.DCD_8.SteerEncScale := ConvUDINT;
 	
 	(* Enc3Offs *)
-	ConvWord2 := UploadData_ModBus_ValueWord [66];
-	ConvWord := UploadData_ModBus_ValueWord [65];
+	ConvWord2 := UploadData_ModBus_ValueWord [87];
+	ConvWord := UploadData_ModBus_ValueWord [86];
 
 	NDC8.DCD_8.SteerEncOffset := DINT_TO_INT(ConvDINT);
 	
 	(* Enc2Scal *)
-	ConvWord2 := UploadData_ModBus_ValueWord [68];
-	ConvWord := UploadData_ModBus_ValueWord [67];
+	ConvWord2 := UploadData_ModBus_ValueWord [89];
+	ConvWord := UploadData_ModBus_ValueWord [88];
 
 	NDC8.DCD_5.DriveEncScale := ConvUDINT;
 	
 	(* Enc4Scal *)
-	ConvWord2 := UploadData_ModBus_ValueWord [70];
-	ConvWord := UploadData_ModBus_ValueWord [69];
+	ConvWord2 := UploadData_ModBus_ValueWord [91];
+	ConvWord := UploadData_ModBus_ValueWord [90];
 
 	NDC8.DCD_7.DriveEncScale := ConvUDINT;
 	
 	(* Batt Low Voltage *)
-	ConvWord2 := UploadData_ModBus_ValueWord [72];
-	ConvWord := UploadData_ModBus_ValueWord [71];
+	ConvWord2 := UploadData_ModBus_ValueWord [93];
+	ConvWord := UploadData_ModBus_ValueWord [92];
 
 	NDC8.UserDefined.Integer32_50_BattLowVol := ConvDINT;
-	
-	UploadData_ModBus_ValueBOOL [1] := FALSE;
+
+	(*UploadData_ModBus_ValueBOOL [1] := FALSE;*)
 end_if;
 	
 (****************************************************************************)
@@ -255,12 +257,6 @@ DataUpload();
 
 
 (****************************************************************************)
-
-
-
-
-
-
 
 
 

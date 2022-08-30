@@ -1,0 +1,539 @@
+FUNCTION_BLOCK MITSUBISHIMODBUS_FB
+VAR_EXTERNAL
+
+	ConvWord:WORD;			(*Sum of the two first bytes*)
+
+	ConvByteL:Byte;			(*Low byte*)
+	ConvByteH:Byte;			(*High byte*)
+END_VAR
+
+VAR_INPUT
+	ComStart : bool := TRUE; 
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR
+	BMS_BatLowSel : INT;
+	BMS_BatLow : BOOL;
+	
+	TP_PB_NoSelTimer : TON;
+	
+	Debug_PB_Cont : BOOL := FALSE;
+	Debug_PB_Finish : BOOL := FALSE;
+	Debug_PB_Cancel : BOOL := FALSE;
+	Debug_PB_Change : BOOL := FALSE;
+	tempnum : int;
+	RST_Flag : BOOL;
+	RST_R : R_Trig;
+	
+	RST_Keep : BOOL;
+	RST_Keep_Timer : TON;
+	
+	BatLow : BOOL;
+	
+	
+	TempInt : int;
+	TempWord : word;
+	WordL :int;
+	WordH :int;
+	
+	FinalPnt : DINT;
+	
+	SwitchHostFlag : BOOL;
+	Host_R : R_Trig;
+	Host_R_Flag : BOOL;
+	
+	Host_R_Delay : TON;
+	
+	init  : bool := false;
+	ComStep : int := 0;
+	
+	serial_read : NDC8_SERIAL_READ;
+	serial_write : NDC8_SERIAL_WRITE;
+	
+	to_bytes 		: NDC8_STRING_TO_BYTES;
+	to_string		: NDC8_BYTES_TO_STRING; 
+	
+	PLC_LastHeartBeat : BOOL;
+	PLC_HeartBeatNoChange : BOOL;
+	
+	PLC_HeartBeatTimeout : TON;
+	
+	LoadDataSendFlag : BOOL;
+	UnloadDataSendFlag : BOOL;
+	
+	TestDataSend : BOOL;
+	
+	OrderMode:OrderMode_FB;
+	LocalOrder : LocalOrder_FB;
+	NavInit : NavInit_FB;
+	
+	STw_NewcmdR : R_Trig;
+	STw_Newcmd_Flag : BOOL;
+	
+	LocalManual : BOOL;
+	LocalManual_R : R_Trig;
+	SetToLocal : BOOL;
+	
+	Str_AckT : TON;
+	STr_AckR : BOOL;
+	
+	(*---------Rev Data ----------*)
+	Start : int;
+	StartOffset : int;
+	
+	DataIndex1 : Int;
+	DataIndex2 : Int;
+	DataIndex3 : Int;
+	DataIndex4 : Int;
+	DataIndex5 : Int;
+
+	
+	RevDataLength : int := 0;
+
+	TempString : string;
+	
+	HeaderString : string;
+	DecodeString : string(200);
+	DecodeString_RS : string(200);
+	DecodeString_WS : string(200);
+
+	TempData : ARRAY[1..32] OF BYTE;	
+
+	SendData_Req : ARRAY[1..32] OF BYTE;
+	
+	ReceiveData_Status : ARRAY[1..1074] OF BYTE;
+	(*--------------------------------------*)
+	
+	
+	(*Send 16 Word Data *)
+	EncoderStart : int;
+	EncoderStartOffset : int;
+	MessageLen : int;
+	
+	Message : string;
+	SendTempString : string;
+	
+	SendData_Status1 : ARRAY[1..32] OF BYTE;
+	SendData_Status2 : ARRAY[1..32] OF BYTE;
+	SendData_Status3 : ARRAY[1..32] OF BYTE;
+	SendData_Status4 : ARRAY[1..32] OF BYTE;
+		
+	(*--------------------------------------*)
+	
+	
+	(*Decode WS Data*)
+	DecodeStart_WS : int;
+	
+	DecodeString_WS_Data :string(200);
+	SplitString : string;
+	
+	SplitPos : int;
+	SplitPosOffset1 : int;
+	
+	DecodeDataArray : ARRAY[1..25] of WORD;
+	
+	(*---------------------------------------*)
+	tx_header_length : BYTE := 6;
+	dummy : BOOL;
+	tr_cmd : DINT;
+
+
+	start_adress : INT;
+
+	ReadCounter,
+	DebugCounter		: DINT;
+	StartDelayTOF	: TOF;
+	StartDelay 		: BOOL;
+	
+	X: INT;
+	Y: INT;
+	Z: INT;
+	End:INT;
+	Index:DINT;
+	debug1 :INT;
+	debug2 :INT;
+	tr_len : DINT;
+	num_words : DINT;
+	num_Byte : DINT;
+	num_Bit : DINT;
+	Extra:DINT;
+	length : DINT;
+	tx_length : BYTE;
+	ENDBIT:DINT;
+	debugByte :Byte;
+	dataindex : INT;
+	msg_index: INT;
+	ix : INT;
+	PLC_message : ARRAY[1..500] of BYTE;
+	lenght_send : DINT;
+	Send_message : ARRAY[1..32] of BYTE;
+	Counter : DINT;
+	DINTdataindex : DINT;
+	WRITENUM : INT;
+	
+END_VAR
+StartDelayTOF(IN:=StartDelay, PT:=t#20ms);
+if init = false then
+	serial_read.port := 'COM7';
+	serial_write.port := 'COM7';
+	init := true;	
+end_if;
+
+
+(*Communication*)
+
+(****************************************************************************)
+if ComStart = true then
+
+	if init = true then
+		case ComStep of
+		0:
+		StartDelay:=False; 
+		IF NOT StartDelayTOF.Q THEN
+			ComStep:=1;
+		END_IF;
+		(* no delay when PLC <--> CVC700*)
+		(****************************************************************************)	
+		1:
+			msg_index := 0;
+			serial_read();
+			
+			while serial_read.length > 0 do
+					(* Copy message to local buffer *)
+					for dataindex := 1 to serial_read.length by 1 do
+						ix := dataindex + msg_index;			
+						PLC_message[ix] := serial_read.data[dataindex];
+					end_for;
+					(* Point for next possible message *)
+					msg_index := msg_index + serial_read.length;
+			(*	if  PLC_message[8] = 16 and msg_index = 63  then
+					ComStep:=2;
+					exit;
+				elsif msg_index = 12 and PLC_message[8] = 3 then
+					ComStep:=2;
+					exit;
+				else		
+				   ;
+				end_if;	*)	
+				serial_read();
+			end_while;
+			if msg_index <> 0 then
+				ComStep:=2;
+			END_IF;
+			if msg_index = 0 then
+				ComStep:=0;
+			END_IF;
+		  	
+
+		(****************************************************************************)			
+		2:
+				    (* Parse *)
+					tr_cmd := BYTE_TO_DINT(PLC_message[8]); 
+					tr_len := BYTE_TO_DINT(PLC_message[6]);
+		
+					dummy := TRACE_DINT('Cmd', tr_cmd);
+					dummy := TRACE_DINT('Len', tr_len);
+		
+					(* Copy header *)
+					serial_write.data[1] := PLC_message[1]; 
+					serial_write.data[2] := PLC_message[2];
+					serial_write.data[3] := PLC_message[3]; 
+					serial_write.data[4] := PLC_message[4]; 
+					serial_write.data[5] := PLC_message[5];		(* Length, will be overwritten *)
+
+					serial_write.data[6] := PLC_message[6]; 	(* Length, will be overwritten *)
+					serial_write.data[7] := PLC_message[7]; 	(* Slave adress *)
+					serial_write.data[8] := PLC_message[8]; 	(* Cmd *)
+		
+					(* Start adress to read *)
+					ConvByteH:= PLC_message[9]; 
+					ConvByteL:= PLC_message[10]; 
+					start_adress  := Word_TO_INT(ConvWord) + 1;
+			
+					ComStep:=3;
+		(****************************************************************************)			
+		3:			
+					(*Check Function type *)							
+					case tr_cmd of  
+						6:	ComStep:=160;	(* Check if Write single register *)
+						16:	ComStep:=160; (* Check if write Multiple register *)
+						10: ComStep:=160;
+						3:	ComStep:=30;	(*Check if Read register *)
+					Else 	
+						ComStep:=0; 	(*Send Echo *)
+					end_case;
+		(****************************************************************************)			
+		30:
+						(*Read register *)
+						(* Number of words *)
+						(* serial_read.data[11]; *)
+						(*CVC700 -> PLC HandShake Data*)
+						PLC_Communication_ModBus_ValueWord [1] := PLC_TX_Word1;
+						PLC_Communication_ModBus_ValueWord [2] := PLC_TX_Word2;
+						PLC_Communication_ModBus_ValueWord [3] := PLC_TX_Word3;
+						PLC_Communication_ModBus_ValueWord [4] := PLC_TX_Word4;
+						PLC_Communication_ModBus_ValueWord [5] := PLC_TX_Word5;
+						PLC_Communication_ModBus_ValueWord [6] := PLC_TX_Word6;
+						PLC_Communication_ModBus_ValueWord [7] := PLC_TX_Word7_STr_Vecl;
+						PLC_Communication_ModBus_ValueWord [8] := PLC_TX_Word8_STr_Seg;
+						PLC_Communication_ModBus_ValueWord [9] := PLC_TX_Word9_STr_Pnt;
+						PLC_Communication_ModBus_ValueWord [10] := PLC_TX_Word10_STr_BatV;
+						PLC_Communication_ModBus_ValueWord [11] := PLC_TX_Word11_STr_Temp;
+						PLC_Communication_ModBus_ValueWord [12] := PLC_TX_Word12_STr_BatD;
+						PLC_Communication_ModBus_ValueWord [13] := PLC_TX_Word13_STr_Err;
+						PLC_Communication_ModBus_ValueWord [14] := PLC_TX_Word14_STr_BCD3;
+						PLC_Communication_ModBus_ValueWord [15] := PLC_TX_Word15_STr_BCD2;
+						PLC_Communication_ModBus_ValueWord [16] := PLC_TX_Word16_STr_BCD1;
+						num_words := BYTE_TO_DINT(PLC_message[12]); 
+				
+						IF num_words >21 THEN
+						   	num_words:=21;
+						END_IF;    
+					
+							(*Y:=start_adress;*)
+							Y := start_adress;
+							(* Copy header *)
+							serial_write.data[1] := PLC_message[1]; 
+							serial_write.data[2] := PLC_message[2];
+							serial_write.data[3] := PLC_message[3]; 
+							serial_write.data[4] := PLC_message[4]; 
+							serial_write.data[5] := PLC_message[5];
+							Z:= 1; (* Send first 9*)				
+							serial_write.data[6] := DINT_TO_BYTE(35); (* lp *)
+							serial_write.data[7] := PLC_message[7]; 	(* Slave adress *)
+							serial_write.data[8] := PLC_message[8]; 	(* Cmd *)
+							serial_write.data[9] := DINT_TO_BYTE(32); (* lp *)
+				        	serial_write.length := 9;
+							serial_write();
+							serial_write.length := 0; (*Using SendBuffer =1 length needs to be set to 0 for it to be sent*)
+							serial_write(); (*send*)
+								For Index:=1 to 16 BY 1 DO
+									ConvWord:=PLC_Communication_ModBus_ValueWord [Y];
+									serial_write.data[Z]:=ConvByteH;
+									Z:=Z+1;
+									serial_write.data[Z]:=ConvByteL;
+									Z:=Z+1;
+									Y:=Y+1;								
+								END_FOR;
+								serial_write.length := DINT_TO_INT(32); (*Will be max 32 bytes*)
+								serial_write();
+								serial_write.length := 0; (*Using SendBuffer =1 length needs to be set to 0 for it to be sent*)
+								serial_write(); (*send*)										
+							ComStep:=10001;	
+
+						
+		(****************************************************************************)				
+		160:
+					
+						(* Multiple write *)
+						num_words:=Byte_TO_DInt(PLC_message[12]); 
+						(* Check if message lenght outside the Buffer, if so do what ??? *)  
+						Y:=start_adress;
+						X:=14;  (*13 = 後面要寫?��?資�?位�?組數�?x08=?�進�???，寫8?��??��? , 忽略*)
+						End:= Byte_TO_Int(PLC_message[12]); 
+			
+						For Index:=1 to num_words BY 1 DO
+							ConvByteH:=PLC_message[X]; 
+							X:=X+1;
+							ConvByteL:=PLC_message[X]; 
+							PLC_Communication_ModBus_ValueWord [Y]:=ConvWord;
+							X:=X+1;
+							Y:=Y+1;
+						END_FOR;
+						(*Set Into Memory *)
+						PLC_RX_Word1 := PLC_Communication_ModBus_ValueWord [17];
+						PLC_RX_Word2 := PLC_Communication_ModBus_ValueWord [18];
+						PLC_RX_Word3 := PLC_Communication_ModBus_ValueWord [19];
+						PLC_RX_Word4 := PLC_Communication_ModBus_ValueWord [20];
+						PLC_RX_Word5 := PLC_Communication_ModBus_ValueWord [21];
+						PLC_RX_Word6 := PLC_Communication_ModBus_ValueWord [22];
+						PLC_RX_Word7_STw_BCD3 := PLC_Communication_ModBus_ValueWord [23];
+						PLC_RX_Word8_STw_BCD2 := PLC_Communication_ModBus_ValueWord [24];
+						PLC_RX_Word9_STw_BCD1 := PLC_Communication_ModBus_ValueWord [25];
+						PLC_RX_Word10_STw_ILEr := PLC_Communication_ModBus_ValueWord [26];
+						PLC_RX_Word11_Ins_Pno := PLC_Communication_ModBus_ValueWord [27];
+						PLC_RX_Word12_STw_Pint := PLC_Communication_ModBus_ValueWord [28];
+						PLC_RX_Word13_Ins_Ano := PLC_Communication_ModBus_ValueWord [29];
+						PLC_RX_Word14_BMS_2 := PLC_Communication_ModBus_ValueWord [30];
+						PLC_RX_Word15_BMS_3 := PLC_Communication_ModBus_ValueWord [31];
+						PLC_RX_Word16_BMS_BatV := PLC_Communication_ModBus_ValueWord [32];
+						PLC_RX_Word17_BMS_BatT := PLC_Communication_ModBus_ValueWord [33];
+						PLC_RX_Word18_BMS_BatC := PLC_Communication_ModBus_ValueWord [34];
+						PLC_RX_Word19_BMS_BatA := PLC_Communication_ModBus_ValueWord [35];
+						PLC_RX_Word20_PLC_ErrD := PLC_Communication_ModBus_ValueWord [36];
+						PLC_RX_Word21_BMS_Main := PLC_Communication_ModBus_ValueWord [37];
+						PLC_RX_Word22_BMS_Chan := PLC_Communication_ModBus_ValueWord [38];
+						PLC_RX_Word23_BMS_ID4L := PLC_Communication_ModBus_ValueWord [39];
+						PLC_RX_Word24_BMS_ID4H := PLC_Communication_ModBus_ValueWord [40];
+						PLC_RX_Word25 := PLC_Communication_ModBus_ValueWord [41];
+						ComStep := 999;
+		(****************************************************************************)
+		999:
+					Serial_write.data[1] := PLC_message[1];
+					Serial_write.data[2] := PLC_message[2];
+					Serial_write.data[3] := PLC_message[3];
+					Serial_write.data[4] := PLC_message[4];
+					Serial_write.data[5] := PLC_message[5];
+				    Serial_write.data[6] := DINT_TO_BYTE(57);
+					Serial_write.data[7] := PLC_message[7];
+					Serial_write.data[8] := PLC_message[8];
+					Serial_write.data[9] := PLC_message[9];
+					serial_write.data[10] := PLC_message[10]; 
+					serial_write.data[11] := PLC_message[11];
+					serial_write.data[12] := DINT_TO_BYTE(25);   (*PLC_message[12];*)
+					serial_write.length := 12;
+					serial_write();	
+					PLC_message[8] := 0;	
+					ComStep:=10001;
+					WRITENUM := WRITENUM + 1;
+		(****************************************************************************)					
+		10000:
+	
+					(*Send Data *)					
+
+					serial_write.length := 0;
+					serial_write();
+					IF serial_write.sent<>0 or serial_write.error<>0 Then
+						ComStep:=0;
+						DebugCounter := DebugCounter + 1;
+					End_IF;
+					ComStep:=0;
+		10001:
+					serial_write.length := 0; (*Using SendBuffer =1 length needs to be set to 0 for it to be sent*)
+					serial_write(); (*send*)
+					IF serial_write.sent<>0 or serial_write.error<>0 Then
+						ComStep:=0;
+						DebugCounter := DebugCounter + 1;
+					End_IF;
+					ComStep:=0;
+		end_case;
+
+	(*CVC700 -> PLC HandShake Data*)
+	(*PLC_Communication_ModBus_ValueWord [1] := PLC_TX_Word1;
+	PLC_Communication_ModBus_ValueWord [2] := PLC_TX_Word2;
+	PLC_Communication_ModBus_ValueWord [3] := PLC_TX_Word3;
+	PLC_Communication_ModBus_ValueWord [4] := PLC_TX_Word4;
+	PLC_Communication_ModBus_ValueWord [5] := PLC_TX_Word5;
+	PLC_Communication_ModBus_ValueWord [6] := PLC_TX_Word6;
+	PLC_Communication_ModBus_ValueWord [7] := PLC_TX_Word7_STr_Vecl;
+	PLC_Communication_ModBus_ValueWord [8] := PLC_TX_Word8_STr_Seg;
+	PLC_Communication_ModBus_ValueWord [9] := PLC_TX_Word9_STr_Pnt;
+	PLC_Communication_ModBus_ValueWord [10] := PLC_TX_Word10_STr_BatV;
+	PLC_Communication_ModBus_ValueWord [11] := PLC_TX_Word11_STr_Temp;
+	PLC_Communication_ModBus_ValueWord [12] := PLC_TX_Word12_STr_BatD;
+	PLC_Communication_ModBus_ValueWord [13] := PLC_TX_Word13_STr_Err;
+	PLC_Communication_ModBus_ValueWord [14] := PLC_TX_Word14_STr_BCD3;
+	PLC_Communication_ModBus_ValueWord [15] := PLC_TX_Word15_STr_BCD2;
+	PLC_Communication_ModBus_ValueWord [16] := PLC_TX_Word16_STr_BCD1;
+	*)
+
+	(*PLC -> CVC700 HandShake Data*)
+	(*PLC_RX_Word1 := PLC_Communication_ModBus_ValueWord [17];
+	PLC_RX_Word2 := PLC_Communication_ModBus_ValueWord [18];
+	PLC_RX_Word3 := PLC_Communication_ModBus_ValueWord [19];
+	PLC_RX_Word4 := PLC_Communication_ModBus_ValueWord [20];
+	PLC_RX_Word5 := PLC_Communication_ModBus_ValueWord [21];
+	PLC_RX_Word6 := PLC_Communication_ModBus_ValueWord [22];
+	PLC_RX_Word7_STw_BCD3 := PLC_Communication_ModBus_ValueWord [23];
+	PLC_RX_Word8_STw_BCD2 := PLC_Communication_ModBus_ValueWord [24];
+	PLC_RX_Word9_STw_BCD1 := PLC_Communication_ModBus_ValueWord [25];
+	PLC_RX_Word10_STw_ILEr := PLC_Communication_ModBus_ValueWord [26];
+	PLC_RX_Word11_Ins_Pno := PLC_Communication_ModBus_ValueWord [27];
+	PLC_RX_Word12_STw_Pint := PLC_Communication_ModBus_ValueWord [28];
+	PLC_RX_Word13_Ins_Ano := PLC_Communication_ModBus_ValueWord [29];
+	PLC_RX_Word14_BMS_2 := PLC_Communication_ModBus_ValueWord [30];
+	PLC_RX_Word15_BMS_3 := PLC_Communication_ModBus_ValueWord [31];
+	PLC_RX_Word16_BMS_BatV := PLC_Communication_ModBus_ValueWord [32];
+	PLC_RX_Word17_BMS_BatT := PLC_Communication_ModBus_ValueWord [33];
+	PLC_RX_Word18_BMS_BatC := PLC_Communication_ModBus_ValueWord [34];
+	PLC_RX_Word19_BMS_BatA := PLC_Communication_ModBus_ValueWord [35];
+	PLC_RX_Word20_PLC_ErrD := PLC_Communication_ModBus_ValueWord [36];
+	PLC_RX_Word21_BMS_Main := PLC_Communication_ModBus_ValueWord [37];
+	PLC_RX_Word22_BMS_Chan := PLC_Communication_ModBus_ValueWord [38];
+	PLC_RX_Word23_BMS_ID4L := PLC_Communication_ModBus_ValueWord [39];
+	PLC_RX_Word24_BMS_ID4H := PLC_Communication_ModBus_ValueWord [40];
+	PLC_RX_Word25 := PLC_Communication_ModBus_ValueWord [41];
+	*)
+	end_if;
+
+	
+end_if;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+END_FUNCTION_BLOCK

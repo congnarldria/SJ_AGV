@@ -60,7 +60,7 @@ case AutoChargeStep of
 	0:
 		
 		if (INPUT.Auto = TRUE and NDC8.Automatic.CurrentOrderMode = 1 and NDC8.Automatic.ExecDriveCommand = FALSE ) and 			
-			(PLC_RX01_Bit_ChrgEmg = FALSE and g_BMS_Error = FALSE) and
+			(PLC_RX01_Bit_ChrgEmg = FALSE and g_BMS_Error = FALSE) and (NDC8.PointTrigger.Bit9_Chrg_Right = TRUE or NDC8.PointTrigger.Bit10_Chrg_Left = TRUE) and
 			not (NDC8.LoadDocking.OnTarget = TRUE and PLC_RX15_Bit_BMS_NoChg = TRUE) then
 			AutoChargeStep := 70;
 			ChargePnt := NDC8.LayoutPosition.Point;
@@ -241,7 +241,7 @@ if NDC8.SDIO.DigitalInput2_BTN_RST = FALSE and
 end_if;
 
 
-if PLC_TX04_Bit_ChrgCmdL_A = TRUE then
+if PLC_TX04_Bit_ChrgCmdL_A = TRUE OR PLC_TX04_Bit_ChrgCmdR_A then
 	StopCharge := TRUE;
 end_if;
 
@@ -252,6 +252,9 @@ if not NDC8.VehicleControl.Estop then
 		;
 	end_if;
 end_if;
+
+
+
 
 
 

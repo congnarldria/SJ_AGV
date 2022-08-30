@@ -104,8 +104,6 @@ END_VAR
 
 (**  **)
 (**  **)
-(**  **)
-(**  **)
 (** {* Select Stop String *} **)
 (** DisplayStopStringUpdateRT(CLK:=Timer.Display); **)
 	(* call - Stmt *)
@@ -182,6 +180,8 @@ END_VAR
 	LD DisplayStopStringA[DisplayStopStringIx,1]
 	ST CurrentValue
 
+(**  **)
+(**  **)
 (**  **)
 
 END_FUNCTION_BLOCK

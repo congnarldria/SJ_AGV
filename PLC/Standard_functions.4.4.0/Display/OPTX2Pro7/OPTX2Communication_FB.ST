@@ -178,6 +178,7 @@ case OPTX2 of
 				num_Bit  := Word_TO_DINT(ConvWord);
 				num_Byte :=(num_Bit/8)+1;
 				ENDBIT:=(num_Bit/8);
+				
 				Extra:=num_Bit-ENDBIT;
 					Y:=start_adress; 
 					Z:=10;				
@@ -246,7 +247,9 @@ case OPTX2 of
 					tx_length := DINT_TO_BYTE(length);
 					serial_write.data[6] := tx_length; (* lp *)
 					OPTX2:=10000;	
-					
+				if DGB = 1 then
+					OPTX2 := 10;
+				end_if;
 
 (****************************************************************************)			
 30:
@@ -432,6 +435,8 @@ case OPTX2 of
 			End_IF;
 
 end_case;
+
+
 
 
 

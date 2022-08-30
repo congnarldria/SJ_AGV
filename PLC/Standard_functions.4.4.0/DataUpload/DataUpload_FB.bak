@@ -1,12 +1,9 @@
 FUNCTION_BLOCK DataUpload_FB
-VAR_GLOBAL
-UploadData_ModBus_ValueWord:ARRAY[1..500] OF Word;
-UploadData_ModBus_ValueBOOL:ARRAY[1..400] OF BOOL;
-END_VAR
-
-
 VAR_EXTERNAL
 ndc8 : NDC8_T;
+
+UploadData_ModBus_ValueWord:ARRAY[1..500] OF Word;
+UploadData_ModBus_ValueBOOL:ARRAY[1..400] OF BOOL;
 
 ConvWord:WORD;			(*Sum of the two first bytes*)
 

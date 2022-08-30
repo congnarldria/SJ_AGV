@@ -98,14 +98,6 @@ if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then
 	2:	NDC8.Manual.PlcSetOperationMode := 2;			(* Set semi mode *)
 		NDC8.Manual.PlcSelectMask 		:= 2#10010;	(* Override operation mode and steer mode (quad) *)
 			
-			
-		if StopWord = 0 and StopWord2 = 0  then
-			NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed;
-		elsif NDC8.Mcd.Button8 = FALSE then
-			NDC8.Manual.PlcSpeed			:= 0;
-		elsif NDC8.Mcd.Button8 = TRUE then
-			NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed;
-		end_if;
 		
 		(**** Exit this mode? ***)	
 		if NDC8.Mcd.Button1 or not NDC8.Mcd.Valid then		(* If disconnect the MCD or switch modes, to auto *)
@@ -151,7 +143,7 @@ if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then
 				
 				NDC8.Manual.PlcSelectMask 		:= 2#10111;(* Override operation mode, steer mode and set angle	*)
 			else
-				NDC8.Manual.PLCAngle 			:= NDC8.Mcd.Angle / 3;
+				NDC8.Manual.PLCAngle 			:= NDC8.Mcd.Angle;
 				
 				if StopWord = 0 and StopWord2 = 0  then
 					NDC8.Manual.PlcSpeed			:= NDC8.Mcd.Speed;
@@ -227,6 +219,8 @@ end_if;
 (* Update Display *)
 
 DisplayStopString(INStatus:=StopManual, StopString:=85, StopValue:=0);
+
+
 
 
 

@@ -27,7 +27,7 @@ VAR
 	
 	RST_Keep : BOOL;
 	RST_Keep_Timer : TON;
-	
+	LTDelay : TOF;
 	BatLow : BOOL;
 	
 	
@@ -187,16 +187,23 @@ if SwitchHostFlag then
 			;
 		end_if;
 	else
-		if NDC8.Automatic.CurrentOrderMode = 3 then
+		(*if NDC8.Automatic.CurrentOrderMode = 3 then
+			Host_R_Flag := FALSE;
+		end_if;*)
+			if NDC8.Automatic.CurrentOrderMode <> 1 then
 			Host_R_Flag := FALSE;
 		end_if;
-	
-		if NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q then
+		(*if NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q then
 			NDC8.Automatic.SetOrderMode := 3;
 			OrderMode();
 		elsif NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = FALSE then
 			;
 		end_if;
+		*)
+		if NDC8.Automatic.CurrentOrderMode = 1 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q then
+			NDC8.Automatic.SetOrderMode := 3;
+			OrderMode();
+		END_IF;
 	end_if;
 	
 else
@@ -437,7 +444,7 @@ if RST_R.Q then
 end_if;
 
 if RST_Keep = TRUE then
-	RST_Keep_Timer(IN:= TRUE, PT := t#1.5s);
+	RST_Keep_Timer(IN:= TRUE, PT := t#5s);
 end_if;
 
 if RST_Keep_Timer.Q then
@@ -566,16 +573,31 @@ if SetToLocal then
 	end_if;
 end_if;
 
-
+(*
 if (PLC_RX03_Bit_STw_Mod_LT and PLC_RX03_Bit_STw_Mod_NT) then
 	NDC8.Automatic.SetOrderMode := 2;
 	OrderMode();
 end_if;
+*)
+LTDelay(IN := PLC_RX03_Bit_STw_Mod_LT , PT := t#1s);
+if (LTDelay.Q and PLC_RX03_Bit_STw_Mod_NT) then
+	NDC8.Automatic.SetOrderMode := 2;
+	OrderMode();
+end_if;
 
-
-
-
+(*
 if PLC_RX03_Bit_STw_Mod_LT and PLC_RX03_Bit_STw_Mod_UT then
+	NDC8.Automatic.SetOrderMode := 3;
+	OrderMode();
+	
+	if OrderMode.Finished then
+		PLC_TX01_Bit_STr_Mod_NT := FALSE;
+		PLC_TX01_Bit_STr_Mod_UT := TRUE;
+	end_if;
+end_if;
+*)
+
+if NDC8.Automatic.SetOrderMode <> 1 and PLC_RX03_Bit_STw_Mod_UT then
 	NDC8.Automatic.SetOrderMode := 3;
 	OrderMode();
 	
@@ -607,11 +629,14 @@ if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then
 end_if;
 
 (* Set Local Order Data*)
+
 STw_NewcmdR(CLK:= PLC_RX03_Bit_STw_Newcmd);
 
 if STw_NewcmdR.Q then
 	STw_Newcmd_Flag := TRUE;
 end_if;
+
+
 
 if STw_Newcmd_Flag then
 	NDC8.LocalOrder.DestPoint := Word_To_DINT(PLC_RX_Word12_STw_Pint);
@@ -663,8 +688,8 @@ if PLC_RX_Word16_BMS_BatV < DINT_TO_WORD(NDC8.UserDefined.Integer32_50_BattLowVo
 else
 	BatLow:= FALSE;
 end_if;
- 
-if (*(BMS_BatLow = TRUE or *) BatLow = TRUE then
+
+if BMS_BatLow = TRUE or BatLow = TRUE then
 	INPUT.LowBattery := TRUE;
 else
 	INPUT.LowBattery := FALSE;
@@ -685,7 +710,7 @@ end_if;
 
 (*Communication*)
 
-if ComStart = true then
+if ComStart = true AND NDC8.UserDefined.Integer32_10_PCLMODBUS = 1 then
 
 	if init = true then
 
@@ -996,6 +1021,11 @@ if ComStart = true then
 	
 	
 end_if;
+
+
+
+
+
 
 
 

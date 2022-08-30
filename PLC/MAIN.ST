@@ -30,7 +30,6 @@ VAR
 	F_DriveSupervision : DRIVERSUPERVISION_FB;
 	R_SteerSupervision : DRIVERSUPERVISION_FB;
 	R_DriveSupervision : DRIVERSUPERVISION_FB;
-	
 	BMS_CHG : BMS_CHG_FB;
 	
 	VehicleMovingFlag : BOOL;
@@ -161,6 +160,19 @@ elsif AllOK_R.Q and NDC8.SDIO.DigitalInput2_BTN_RST = TRUE then
 	StopFindSync := FALSE;
 end_if;
 
+if NDC8.CAN_IO_3.DigitalInput5_LIMF_O = TRUE then
+	NDC8.DCD_6.SyncGate := TRUE;
+else
+	NDC8.DCD_6.SyncGate := FALSE;
+end_if;
+
+
+if NDC8.CAN_IO_3.DigitalInput6_LIMR_O = TRUE then
+	NDC8.DCD_8.SyncGate := TRUE;
+else
+	NDC8.DCD_8.SyncGate := FALSE;
+end_if;
+
 AllOK_Delay(IN:=g_StartFindSync, PT:=t#5s);
 
 if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST = FALSE then
@@ -168,12 +180,13 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	0:
 	(* Steer Turn to 2000 *)
 	NDC8.Manual.PlcSelect := true;
-	NDC8.Manual.PLCAngle := 2000;
+	NDC8.Manual.PLCAngle := -9000;
 	NDC8.Manual.PlcSetOperationMode := 1;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
+	PLC_RX_Word16_BMS_BatV := 600;(*Prevent Cold Start LowBat*)
 	
-	FindSyncDelay(IN:=TRUE, PT:=t#2s);
+	FindSyncDelay(IN:=TRUE, PT:=t#5s);
 	if FindSyncDelay.Q then
 		FindSyncStep := 1;
 		FindSyncDelay(IN:=FALSE);
@@ -182,12 +195,12 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	1:
 	(* Steer Turn to -2000 *)
 	NDC8.Manual.PlcSelect := true;
-	NDC8.Manual.PLCAngle := -2000;
+	NDC8.Manual.PLCAngle := 9000;
 	NDC8.Manual.PlcSetOperationMode := 1;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
 	
-	FindSyncDelay(IN:=TRUE, PT:=t#2s);
+	FindSyncDelay(IN:=TRUE, PT:=t#5s);
 	if FindSyncDelay.Q then
 		FindSyncStep := 2;
 		FindSyncDelay(IN:=FALSE);
@@ -201,7 +214,7 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
 	
-	FindSyncDelay(IN:=TRUE, PT:=t#2s);
+	FindSyncDelay(IN:=TRUE, PT:=t#5s);
 	if FindSyncDelay.Q then
 		FindSyncStep := 3;
 		FindSyncDelay(IN:=FALSE);
@@ -216,7 +229,9 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	
 end_if;
 
-
+IF INPUT.Reset_PB THEN
+	StopStartDelay := 0;
+END_IF;
 
 if NDC8.CanOpenMaster.NMTState = 5 and NDC8.CanOpenMaster.State = 0 then
 
@@ -243,7 +258,6 @@ if NDC8.CanOpenMaster.NMTState = 5 and NDC8.CanOpenMaster.State = 0 then
 	BMS_CHG();
 
 	PLC_Communication();
-	
 end_if;
 
 (* These FB can be run also during startup and in safe state *)
@@ -393,7 +407,6 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 
 	MasterLinkR(CLK:= NDC8.Master.MasterLinkUp);
 	
-
 	if MasterLinkR.Q or g_AGV_ErrorReset or (NDC8.Mcd.Button8 = TRUE and INPUT.Manual = TRUE) THEN (* When Master Link up, Error Status need to be update again *)
 		g_ErrorCode := 0;
 		PLC_TX_Word13_STr_Err := 0;
@@ -404,10 +417,10 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 101;
 	elsif PLC_RX14_Bit_BMS_Over then 
 		g_ErrorCode := 102;
-	elsif PLC_RX03_Bit_STwDisBMS1 <> 0 or PLC_RX03_Bit_STwDisBMS2 <> 0 then (* G5 CHARGE OVER VOLTAGE ,HOWEVER WITH BMS ACTIVE ITS NO USE*)
+(*	elsif PLC_RX03_Bit_STwDisBMS1 <> 0 or PLC_RX03_Bit_STwDisBMS2 <> 0 then  G5 CHARGE OVER VOLTAGE ,HOWEVER WITH BMS ACTIVE ITS NO USE
 		if PLC_RX_Word16_BMS_BatV > 700 then
 			g_ErrorCode := 102;			
-		end_if;
+		end_if;*)
 	elsif PLC_RX14_Bit_BMS_TempEr then 
 		g_ErrorCode := 103;
 	elsif PLC_RX14_Bit_BMS_LowV then 
@@ -430,7 +443,7 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 123;
 	elsif F_SteerSupervision.NotMovingFail = TRUE or R_SteerSupervision.NotMovingFail = TRUE or (NDC8.DCD_6.EncoderStatus = 0 or NDC8.DCD_8.EncoderStatus = 0)then
 		g_ErrorCode := 124;
-	elsif PLC_RX_Word16_BMS_BatV < 420 or g_BattLim_NG then
+	elsif g_BattLim_NG then
 		g_ErrorCode := 127;
 	(*elsif not NDC8.DCD_5.DigitalInput2_OverRelayFS or not NDC8.DCD_5.DigitalInput3_OverRelayFD or not NDC8.DCD_7.DigitalInput2_OverRelayRS or not NDC8.DCD_7.DigitalInput3_OverRelayRD then*)
 	elsif not NDC8.DCD_5.DigitalInput3_OverRelayFD or not NDC8.DCD_7.DigitalInput3_OverRelayRD then
@@ -451,7 +464,7 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 140;
 	elsif OM_PLC_W2_Bit_SetEmgStop = TRUE then
 		g_ErrorCode := 145;
-	elsif NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L or NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R or NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L or NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R then
+	elsif not NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L or not NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R or not NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L or not NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R then
 		g_ErrorCode := 161;
 	elsif (PLC_RX01_Bit_ChrgEmg and PLC_TX01_Bit_ManMode) or (PLC_RX01_Bit_ChrgEmg and not PLC_TX01_Bit_ManMode and NDC8.PLC_Application.TxStatusBit6_Charge) then
 		g_ErrorCode := 174;
@@ -586,7 +599,7 @@ end_if;
 if g_ErrorCode <> 0 then
 	ErrorOccurFlag := TRUE;
 else
-	ErrorOccurFlag := TRUE;
+	ErrorOccurFlag := FALSE;
 end_if;
 
 ErrorPowOffTm(IN := ErrorOccurFlag, PT := t#600s);
@@ -758,6 +771,20 @@ Display();
 OPTX2();
 
 DataUpdate();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -250,7 +250,7 @@ END_VAR
 
 (** 		 **)
 (** 		if (INPUT.Auto = TRUE and NDC8.Automatic.CurrentOrderMode = 1 and NDC8.Automatic.ExecDriveCommand = FALSE ) and 			 **)
-(** 			(PLC_RX01_Bit_ChrgEmg = FALSE and g_BMS_Error = FALSE) and **)
+(** 			(PLC_RX01_Bit_ChrgEmg = FALSE and g_BMS_Error = FALSE) and (NDC8.PointTrigger.Bit9_Chrg_Right = TRUE or NDC8.PointTrigger.Bit10_Chrg_Left = TRUE) and **)
 (** 			not (NDC8.LoadDocking.OnTarget = TRUE and PLC_RX15_Bit_BMS_NoChg = TRUE) then **)
 		(* if - Cond *)
 		LD INPUT.Auto
@@ -265,6 +265,12 @@ END_VAR
 			EQ FALSE
 			AND ( g_BMS_Error
 				EQ FALSE
+			)
+		)
+		AND ( NDC8.PointTrigger.Bit9_Chrg_Right
+			EQ TRUE
+			OR ( NDC8.PointTrigger.Bit10_Chrg_Left
+				EQ TRUE
 			)
 		)
 		AND ( NDC8.LoadDocking.OnTarget
@@ -1198,10 +1204,11 @@ END_VAR
 
 (**  **)
 (**  **)
-(** if PLC_TX04_Bit_ChrgCmdL_A = TRUE then **)
+(** if PLC_TX04_Bit_ChrgCmdL_A = TRUE OR PLC_TX04_Bit_ChrgCmdR_A then **)
 	(* if - Cond *)
 	LD PLC_TX04_Bit_ChrgCmdL_A
 	EQ TRUE
+	OR PLC_TX04_Bit_ChrgCmdR_A
 	JMPCN ODK_SKIP_00000000000000V_000000000000001
 
 		(* then - Stmts *)
@@ -1252,6 +1259,9 @@ END_VAR
 	ODK_SKIP_00000000000000W_000000000000001:
 	ODK_END_IF_00000000000000W:
 
+(**  **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 

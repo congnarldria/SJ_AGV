@@ -980,14 +980,14 @@ END_VAR
 	LD NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R
 	ST ModBus_ValueBOOL[144]
 
-(** ModBus_ValueBOOL [145] := NDC8.CAN_IO_3.DigitalInput5; **)
+(** ModBus_ValueBOOL [145] := NDC8.CAN_IO_3.DigitalInput5_LIMF_O; **)
 	(* assign - Stmt *)
-	LD NDC8.CAN_IO_3.DigitalInput5
+	LD NDC8.CAN_IO_3.DigitalInput5_LIMF_O
 	ST ModBus_ValueBOOL[145]
 
-(** ModBus_ValueBOOL [146] := NDC8.CAN_IO_3.DigitalInput6; **)
+(** ModBus_ValueBOOL [146] := NDC8.CAN_IO_3.DigitalInput6_LIMR_O; **)
 	(* assign - Stmt *)
-	LD NDC8.CAN_IO_3.DigitalInput6
+	LD NDC8.CAN_IO_3.DigitalInput6_LIMR_O
 	ST ModBus_ValueBOOL[146]
 
 (** ModBus_ValueBOOL [147] := NDC8.CAN_IO_3.DigitalInput7; **)
@@ -1117,9 +1117,10 @@ END_VAR
 		LD NDC8.SDIO.DigitalOutput16_RIGHTMGS
 		ST ModBus_ValueBOOL[317]
 
-(** 	ModBus_ValueBOOL [318] := NDC8.SDIO.DigitalOutput16_RIGHTMGS; **)
+(** 	ModBus_ValueBOOL [318] := NDC8.SDIO.DigitalOutput16_RIGHTMGS OR NDC8.SDIO.DigitalOutput12_LEFTMGS; **)
 		(* assign - Stmt *)
 		LD NDC8.SDIO.DigitalOutput16_RIGHTMGS
+		OR NDC8.SDIO.DigitalOutput12_LEFTMGS
 		ST ModBus_ValueBOOL[318]
 
 (**  **)
@@ -1145,6 +1146,7 @@ END_VAR
 
 		(* elsif - Stmts *)
 
+(**  **)
 (** 	 NDC8.SDIO.DigitalOutput2_LEDF_L :=  ModBus_ValueBOOL [302]; **)
 		(* assign - Stmt *)
 		LD ModBus_ValueBOOL[302]
@@ -1556,22 +1558,36 @@ END_VAR
 	ODK_END_IF_00000000000000C:
 
 (**  **)
-(** {* Set Parameters *} **)
-(** if ModBus_ValueBOOL [209] = TRUE then **)
+(** {*Special For 210*} **)
+(** IF NDC8.UserDefined.Boolean_20_OnlineOrderMode <> ModBus_ValueBOOL [210] THEN **)
 	(* if - Cond *)
-	LD ModBus_ValueBOOL[209]
-	EQ true
+	LD NDC8.UserDefined.Boolean_20_OnlineOrderMode
+	NE ModBus_ValueBOOL[210]
 	JMPCN ODK_SKIP_00000000000000E_000000000000001
 
 		(* then - Stmts *)
 
-(**  **)
-(** 	ModBus_ValueBOOL [210] := NDC8.UserDefined.Boolean_20_OnlineOrderMode; **)
+(** 	NDC8.UserDefined.Boolean_20_OnlineOrderMode := ModBus_ValueBOOL [210];	 **)
 		(* assign - Stmt *)
-		LD NDC8.UserDefined.Boolean_20_OnlineOrderMode
-		ST ModBus_ValueBOOL[210]
+		LD ModBus_ValueBOOL[210]
+		ST NDC8.UserDefined.Boolean_20_OnlineOrderMode
 
-(** 	 **)
+		JMP ODK_END_IF_00000000000000E
+
+(** END_IF; **)
+	(* if - End *) 
+	ODK_SKIP_00000000000000E_000000000000001:
+	ODK_END_IF_00000000000000E:
+
+(** {* Set Parameters *} **)
+(** if ModBus_ValueBOOL [209] = TRUE then	 **)
+	(* if - Cond *)
+	LD ModBus_ValueBOOL[209]
+	EQ true
+	JMPCN ODK_SKIP_00000000000000F_000000000000001
+
+		(* then - Stmts *)
+
 (** 	{* Scanner_x *} **)
 (** 	ConvDINT := NDC8.LS2000.X; **)
 		(* assign - Stmt *)
@@ -1803,27 +1819,21 @@ END_VAR
 		LD false
 		ST ModBus_ValueBOOL[209]
 
-		JMP ODK_END_IF_00000000000000E
+		JMP ODK_END_IF_00000000000000F
 
 (** end_if; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000E_000000000000001:
-	ODK_END_IF_00000000000000E:
+	ODK_SKIP_00000000000000F_000000000000001:
+	ODK_END_IF_00000000000000F:
 
 (**  **)
 (** if ModBus_ValueBOOL [208] = TRUE then **)
 	(* if - Cond *)
 	LD ModBus_ValueBOOL[208]
 	EQ true
-	JMPCN ODK_SKIP_00000000000000F_000000000000001
+	JMPCN ODK_SKIP_00000000000000G_000000000000001
 
 		(* then - Stmts *)
-
-(**  **)
-(** 	NDC8.UserDefined.Boolean_20_OnlineOrderMode := ModBus_ValueBOOL [210]; **)
-		(* assign - Stmt *)
-		LD ModBus_ValueBOOL[210]
-		ST NDC8.UserDefined.Boolean_20_OnlineOrderMode
 
 (** 	 **)
 (** 	{* Scanner_x *} **)
@@ -2067,20 +2077,20 @@ END_VAR
 		LD false
 		ST ModBus_ValueBOOL[208]
 
-		JMP ODK_END_IF_00000000000000F
+		JMP ODK_END_IF_00000000000000G
 
 (**  **)
 (** end_if; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000F_000000000000001:
-	ODK_END_IF_00000000000000F:
+	ODK_SKIP_00000000000000G_000000000000001:
+	ODK_END_IF_00000000000000G:
 
 (**  **)
 (** if ModBus_ValueBOOL [211] = TRUE then **)
 	(* if - Cond *)
 	LD ModBus_ValueBOOL[211]
 	EQ true
-	JMPCN ODK_SKIP_00000000000000G_000000000000001
+	JMPCN ODK_SKIP_00000000000000H_000000000000001
 
 		(* then - Stmts *)
 
@@ -2126,19 +2136,19 @@ END_VAR
 		LD false
 		ST ModBus_ValueBOOL[211]
 
-		JMP ODK_END_IF_00000000000000G
+		JMP ODK_END_IF_00000000000000H
 
 (** End_if; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000G_000000000000001:
-	ODK_END_IF_00000000000000G:
+	ODK_SKIP_00000000000000H_000000000000001:
+	ODK_END_IF_00000000000000H:
 
 (**  **)
 (** if ModBus_ValueBOOL [212] = TRUE then **)
 	(* if - Cond *)
 	LD ModBus_ValueBOOL[212]
 	EQ true
-	JMPCN ODK_SKIP_00000000000000H_000000000000001
+	JMPCN ODK_SKIP_00000000000000I_000000000000001
 
 		(* then - Stmts *)
 
@@ -2182,19 +2192,19 @@ END_VAR
 		LD false
 		ST ModBus_ValueBOOL[212]
 
-		JMP ODK_END_IF_00000000000000H
+		JMP ODK_END_IF_00000000000000I
 
 (** End_if; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000H_000000000000001:
-	ODK_END_IF_00000000000000H:
+	ODK_SKIP_00000000000000I_000000000000001:
+	ODK_END_IF_00000000000000I:
 
 (**  **)
 (** if ModBus_ValueBOOL [213] = TRUE then **)
 	(* if - Cond *)
 	LD ModBus_ValueBOOL[213]
 	EQ true
-	JMPCN ODK_SKIP_00000000000000I_000000000000001
+	JMPCN ODK_SKIP_00000000000000J_000000000000001
 
 		(* then - Stmts *)
 
@@ -2209,13 +2219,13 @@ END_VAR
 		LD false
 		ST ModBus_ValueBOOL[213]
 
-		JMP ODK_END_IF_00000000000000I
+		JMP ODK_END_IF_00000000000000J
 
 (**  **)
 (** End_if; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000I_000000000000001:
-	ODK_END_IF_00000000000000I:
+	ODK_SKIP_00000000000000J_000000000000001:
+	ODK_END_IF_00000000000000J:
 
 (**  **)
 (**  **)
@@ -2224,7 +2234,7 @@ END_VAR
 (** if ModBus_ValueBOOL [204] then **)
 	(* if - Cond *)
 	LD ModBus_ValueBOOL[204]
-	JMPCN ODK_SKIP_00000000000000J_000000000000001
+	JMPCN ODK_SKIP_00000000000000K_000000000000001
 
 		(* then - Stmts *)
 
@@ -2300,7 +2310,7 @@ END_VAR
 (** 	if LocalOrder.Finished then **)
 		(* if - Cond *)
 		LD LocalOrder.Finished
-		JMPCN ODK_SKIP_00000000000000K_000000000000001
+		JMPCN ODK_SKIP_00000000000000L_000000000000001
 
 			(* then - Stmts *)
 
@@ -2309,26 +2319,26 @@ END_VAR
 			LD 0
 			ST ModBus_ValueBOOL[204]
 
-			JMP ODK_END_IF_00000000000000K
+			JMP ODK_END_IF_00000000000000L
 
 (** 	end_if; **)
 		(* if - End *) 
-		ODK_SKIP_00000000000000K_000000000000001:
-		ODK_END_IF_00000000000000K:
+		ODK_SKIP_00000000000000L_000000000000001:
+		ODK_END_IF_00000000000000L:
 
-		JMP ODK_END_IF_00000000000000J
+		JMP ODK_END_IF_00000000000000K
 
 (** end_if; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000J_000000000000001:
-	ODK_END_IF_00000000000000J:
+	ODK_SKIP_00000000000000K_000000000000001:
+	ODK_END_IF_00000000000000K:
 
 (**  **)
 (** {*Nav area init*} **)
 (** if ModBus_ValueBOOL [205] then **)
 	(* if - Cond *)
 	LD ModBus_ValueBOOL[205]
-	JMPCN ODK_SKIP_00000000000000L_000000000000001
+	JMPCN ODK_SKIP_00000000000000M_000000000000001
 
 		(* then - Stmts *)
 
@@ -2365,7 +2375,7 @@ END_VAR
 (** 	if NavInit.Finished then **)
 		(* if - Cond *)
 		LD NavInit.Finished
-		JMPCN ODK_SKIP_00000000000000M_000000000000001
+		JMPCN ODK_SKIP_00000000000000N_000000000000001
 
 			(* then - Stmts *)
 
@@ -2374,26 +2384,26 @@ END_VAR
 			LD 0
 			ST ModBus_ValueBOOL[205]
 
-			JMP ODK_END_IF_00000000000000M
+			JMP ODK_END_IF_00000000000000N
 
 (** 	end_if; **)
 		(* if - End *) 
-		ODK_SKIP_00000000000000M_000000000000001:
-		ODK_END_IF_00000000000000M:
+		ODK_SKIP_00000000000000N_000000000000001:
+		ODK_END_IF_00000000000000N:
 
-		JMP ODK_END_IF_00000000000000L
+		JMP ODK_END_IF_00000000000000M
 
 (** end_if; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000L_000000000000001:
-	ODK_END_IF_00000000000000L:
+	ODK_SKIP_00000000000000M_000000000000001:
+	ODK_END_IF_00000000000000M:
 
 (**  **)
 (** {* Force Output Flag*} **)
 (** if INPUT.Auto then **)
 	(* if - Cond *)
 	LD Input.Auto
-	JMPCN ODK_SKIP_00000000000000N_000000000000001
+	JMPCN ODK_SKIP_00000000000000O_000000000000001
 
 		(* then - Stmts *)
 
@@ -2402,11 +2412,11 @@ END_VAR
 		LD ForceOutput
 		ST ModBus_ValueBOOL[206]
 
-		JMP ODK_END_IF_00000000000000N
+		JMP ODK_END_IF_00000000000000O
 
 (** else **)
 	(* else *) 
-	ODK_SKIP_00000000000000N_000000000000001:
+	ODK_SKIP_00000000000000O_000000000000001:
 
 		(* else - Stmts *)
 
@@ -2417,7 +2427,7 @@ END_VAR
 
 (** end_if; **)
 	(* if - End *) 
-	ODK_END_IF_00000000000000N:
+	ODK_END_IF_00000000000000O:
 
 (**  **)
 (** INPUT.BuzzerByPass := ModBus_ValueBOOL [207]; **)
@@ -2453,6 +2463,10 @@ END_VAR
 (**  **)
 (**  **)
 (** {****************************************************************************} **)
+(**  **)
+(**  **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

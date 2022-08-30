@@ -130,7 +130,7 @@ if g_FindSyncFlag = TRUE THEN
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;
-		BUZZERMEANS := 12
+		BUZZERMEANS := 12;
 	elsif g_ErrorCode <> 0 then (*Ch11*)
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := TRUE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := TRUE;
@@ -167,7 +167,7 @@ if g_FindSyncFlag = TRUE THEN
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := TRUE;
 		BUZZERMEANS := 9;
-	elsif NDC8.PLC_Application.TxStatusBit10_Blocked = TRUE then (*Ch8*)
+	elsif (*NDC8.PLC_Application.TxStatusBit10_Blocked =*) TRUE then (*Ch8*)
 		NDC8.CAN_IO_3.DigitalOutput1_BuzzerCh1 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput2_BuzzerCh2 := FALSE;
 		NDC8.CAN_IO_3.DigitalOutput3_BuzzerCh3 := FALSE;
@@ -229,6 +229,7 @@ if g_FindSyncFlag = TRUE THEN
 		BUZZERMEANS := 0;
 	end_if;
 end_if;
+
 
 
 

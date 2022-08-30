@@ -1,4 +1,4 @@
-FUNCTION_BLOCK DataUpload_ModbusTCPIP_FB
+FUNCTION_BLOCK DATAUPLOAD_MODBUSTCPIP_FB
 VAR_EXTERNAL
 ndc8 : NDC8_T;
 
@@ -26,9 +26,7 @@ ConvBit12:BOOL;			(*	   1000 	*)
 ConvBit13:BOOL;			(*	   2000 	*)
 ConvBit14:BOOL;			(*	   4000 	*)
 ConvBit15:BOOL;         (*	   8000 	*)
-
 (*BeijerSetParameters:BeijerSetParameters_T;*)
-
 END_VAR
 
 VAR_INPUT
@@ -43,7 +41,7 @@ VAR
 serial_read : NDC8_SERIAL_READ;
 serial_write : NDC8_SERIAL_WRITE;
 init : BOOL := TRUE;
-
+TOTAL : DINT;
 tx_header_length : BYTE := 6;
 dummy : BOOL;
 tr_cmd : DINT;
@@ -80,21 +78,61 @@ msg_index: INT;
 ix : INT;
 UploadData_message : ARRAY[1..300] of BYTE;
 
-
+TempHB1 : BOOL;
+TempHB2 : BOoL;
 
 END_VAR
 
 (*Automatically declared*)
 VAR_EXTERNAL
+	PLC_TX_WORD15_STR_BCD2 : WORD;
+	STOPCOM : BOOL;
+	PLC_RX_WORD12_STW_PINT : WORD;
+	PLC_RX_WORD18_BMS_BATC : WORD;
+	PLC_RX_WORD11_INS_PNO : WORD;
+	PLC_TX_WORD6 : WORD;
+	PLC_TX_WORD5 : WORD;
+	PLC_TX_WORD4 : WORD;
+	PLC_TX_WORD3 : WORD;
+	PLC_TX_WORD2 : WORD;
+	PLC_TX_WORD1 : WORD;
+	PLC_RX_WORD25 : WORD;
+	PLC_TX_WORD12_STR_BATD : WORD;
+	PLC_RX_WORD24_BMS_ID4H : WORD;
+	PLC_RX_WORD9_STW_BCD1 : WORD;
+	PLC_RX_WORD8_STW_BCD2 : WORD;
+	PLC_RX_WORD7_STW_BCD3 : WORD;
+	STARTENABLE : BOOL;
+	PLC_RX_WORD22_BMS_CHAN : WORD;
+	PLC_RX_WORD6 : WORD;
+	PLC_RX_WORD5 : WORD;
+	PLC_RX_WORD4 : WORD;
+	PLC_RX_WORD3 : WORD;
+	PLC_RX_WORD2 : WORD;
+	PLC_RX_WORD1 : WORD;
+	PLC_RX_WORD16_BMS_BATV : WORD;
+	PLC_TX_WORD13_STR_ERR : WORD;
+	PLC_TX_WORD8_STR_SEG : WORD;
+	PLC_TX_WORD7_STR_VECL : WORD;
+	PLC_RX_WORD10_STW_ILER : WORD;
+	PLC_RX_WORD14_BMS_2 : WORD;
+	PLC_TX_WORD16_STR_BCD1 : WORD;
+	PLC_TX04_BIT_CHKCOM_TX : BOOL;
+	PLC_RX_WORD19_BMS_BATA : WORD;
+	PLC_TX_WORD10_STR_BATV : WORD;
+	STARTCOUNTER : DINT;
+	PLC_RX_WORD23_BMS_ID4L : WORD;
+	PLC_RX_WORD21_BMS_MAIN : WORD;
+	PLC_RX_WORD17_BMS_BATT : WORD;
+	PLC_TX_WORD14_STR_BCD3 : WORD;
+	PLC_RX_WORD15_BMS_3 : WORD;
+	PLC_RX_WORD20_PLC_ERRD : WORD;
+	PLC_TX_WORD9_STR_PNT : WORD;
+	PLC_RX_WORD13_INS_ANO : WORD;
+	PLC_TX_WORD11_STR_TEMP : WORD;
 END_VAR
 (** {****************************************************************************} **)
-(** StartDelayTOF(IN:=StartDelay, PT:=t#20ms); **)
-	(* call - Stmt *)
-	CAL StartDelayTOF (
-		IN := StartDelay,
-		PT := t#20ms
-	)
-
+(** {*StartDelayTOF(IN:=StartDelay, PT:=t#20ms);*} **)
 (**  **)
 (** if init then **)
 	(* if - Cond *)
@@ -150,28 +188,15 @@ END_VAR
 		LD false
 		ST StartDelay
 
-(** 		IF Not StartDelayTOF.Q THEN **)
-		(* if - Cond *)
-		LD StartDelayTOF.Q
-		NOT
-		JMPCN ODK_SKIP_000000000000003_000000000000001
-
-			(* then - Stmts *)
-
+(** 		{*IF Not StartDelayTOF.Q THEN*} **)
 (** 		    ProcStep:=1; **)
-			(* assign - Stmt *)
-			LD 1
-			ST ProcStep
-
-			JMP ODK_END_IF_000000000000003
-
-(** 		END_IF; **)
-		(* if - End *) 
-		ODK_SKIP_000000000000003_000000000000001:
-		ODK_END_IF_000000000000003:
+		(* assign - Stmt *)
+		LD 1
+		ST ProcStep
 
 		JMP ODK_END_CASE_000000000000002
 
+(** 		{*END_IF; *} **)
 (**  **)
 (** {****************************************************************************}	 **)
 (** 1: **)
@@ -200,10 +225,10 @@ END_VAR
 
 (** 	while serial_read.length > 0 do **)
 		(* while - Cond *) 
-		ODK_WHILE_000000000000004:
+		ODK_WHILE_000000000000003:
 		LD serial_read.length
 		GT 0
-		JMPCN ODK_END_WHILE_000000000000004
+		JMPCN ODK_END_WHILE_000000000000003
 
 			(* while - Stmts *)
 
@@ -214,36 +239,36 @@ END_VAR
 			LD 1
 			ST dataindex
 			EQ serial_read.length
-			JMPC ODK_FOR_STMTS_000000000000005
+			JMPC ODK_FOR_STMTS_000000000000004
 
 			(* for - Cond *)
-			ODK_FOR_000000000000005:
+			ODK_FOR_000000000000004:
 
 			LD 1
 			GT serial_read.length
-			JMPC ODK_FOR_DOWN_000000000000005
+			JMPC ODK_FOR_DOWN_000000000000004
 
 			LD 0
 			GT 1
-			JMPC ODK_END_FOR_000000000000005
+			JMPC ODK_END_FOR_000000000000004
 
 			LD serial_read.length
 			LT dataindex
-			JMPC ODK_END_FOR_000000000000005
-			JMP ODK_FOR_STMTS_000000000000005
+			JMPC ODK_END_FOR_000000000000004
+			JMP ODK_FOR_STMTS_000000000000004
 
-			ODK_FOR_DOWN_000000000000005:
+			ODK_FOR_DOWN_000000000000004:
 
 			LD serial_read.length
 			GT dataindex
-			JMPC ODK_END_FOR_000000000000005
+			JMPC ODK_END_FOR_000000000000004
 
 			LD 0
 			LT 1
-			JMPC ODK_END_FOR_000000000000005
+			JMPC ODK_END_FOR_000000000000004
 
 				(* for - Stmts *)
-				ODK_FOR_STMTS_000000000000005:
+				ODK_FOR_STMTS_000000000000004:
 
 (** 			ix := dataindex + msg_index; **)
 				(* assign - Stmt *)
@@ -262,10 +287,10 @@ END_VAR
 			ST dataindex
 (** 		end_for; **)
 
-			JMP ODK_FOR_000000000000005
+			JMP ODK_FOR_000000000000004
 
 			(* for - End *) 
-			ODK_END_FOR_000000000000005:
+			ODK_END_FOR_000000000000004:
 
 (** 		{* Point for next possible message *} **)
 (** 		msg_index := msg_index + serial_read.length; **)
@@ -279,17 +304,17 @@ END_VAR
 			CAL serial_read
 
 (** 	end_while; **)
-			JMP ODK_WHILE_000000000000004
+			JMP ODK_WHILE_000000000000003
 
 		(* while - End *) 
-		ODK_END_WHILE_000000000000004:
+		ODK_END_WHILE_000000000000003:
 
 (** 	 **)
 (** 	IF msg_index <> 0 then **)
 		(* if - Cond *)
 		LD msg_index
 		NE 0
-		JMPCN ODK_SKIP_000000000000006_000000000000001
+		JMPCN ODK_SKIP_000000000000005_000000000000001
 
 			(* then - Stmts *)
 
@@ -298,11 +323,11 @@ END_VAR
 			LD 2
 			ST ProcStep
 
-			JMP ODK_END_IF_000000000000006
+			JMP ODK_END_IF_000000000000005
 
 (** 	Else  **)
 		(* else *) 
-		ODK_SKIP_000000000000006_000000000000001:
+		ODK_SKIP_000000000000005_000000000000001:
 
 			(* else - Stmts *)
 
@@ -313,7 +338,7 @@ END_VAR
 
 (** 	END_IF; **)
 		(* if - End *) 
-		ODK_END_IF_000000000000006:
+		ODK_END_IF_000000000000005:
 
 		JMP ODK_END_CASE_000000000000002
 
@@ -403,7 +428,6 @@ END_VAR
 		LD UploadData_message[8]
 		ST serial_write.data[8]
 
-(** 		 **)
 (** 			{* Start adress to read *} **)
 (** 			ConvByteH:= UploadData_message[9];  **)
 		(* assign - Stmt *)
@@ -415,13 +439,13 @@ END_VAR
 		LD UploadData_message[10]
 		ST ConvByteL
 
-(** 			start_adress  := Word_TO_INT(ConvWord); **)
+(** 			start_adress  := Word_TO_INT(ConvWord) + 1; **)
 		(* assign - Stmt *)
 		LD ConvWord
 		Word_TO_INT 
+		ADD 1
 		ST start_adress
 
-(** 			 **)
 (** 			ProcStep:=3; **)
 		(* assign - Stmt *)
 		LD 3
@@ -451,127 +475,127 @@ END_VAR
 (** 			case tr_cmd of   **)
 (** 				1: 	ProcStep:=10;	{* Check if Read Coils *} **)
 		(* case - Elm *) 
-		ODK_SKIP_000000000000007_000000000000000:
+		ODK_SKIP_000000000000006_000000000000000:
 
 		(* case - Cond *)
 		LD tr_cmd
 		EQ 1
-		JMPC ODK_CASE_000000000000007_000000000000001
+		JMPC ODK_CASE_000000000000006_000000000000001
 
-		JMP ODK_SKIP_000000000000007_000000000000001
+		JMP ODK_SKIP_000000000000006_000000000000001
 
 		(* case - Stmts *) 
-		ODK_CASE_000000000000007_000000000000001:
+		ODK_CASE_000000000000006_000000000000001:
 
 			(* assign - Stmt *)
 			LD 10
 			ST ProcStep
 
-			JMP ODK_END_CASE_000000000000007
+			JMP ODK_END_CASE_000000000000006
 
 (** 				5:	ProcStep:=50;	{* Check if Write single Coil *} **)
 		(* case - Elm *) 
-		ODK_SKIP_000000000000007_000000000000001:
+		ODK_SKIP_000000000000006_000000000000001:
 
 		(* case - Cond *)
 		LD tr_cmd
 		EQ 5
-		JMPC ODK_CASE_000000000000007_000000000000002
+		JMPC ODK_CASE_000000000000006_000000000000002
 
-		JMP ODK_SKIP_000000000000007_000000000000002
+		JMP ODK_SKIP_000000000000006_000000000000002
 
 		(* case - Stmts *) 
-		ODK_CASE_000000000000007_000000000000002:
+		ODK_CASE_000000000000006_000000000000002:
 
 			(* assign - Stmt *)
 			LD 50
 			ST ProcStep
 
-			JMP ODK_END_CASE_000000000000007
+			JMP ODK_END_CASE_000000000000006
 
 (** 				15:	ProcStep:=150;	{* Check if Write Multiple Coils *} **)
 		(* case - Elm *) 
-		ODK_SKIP_000000000000007_000000000000002:
+		ODK_SKIP_000000000000006_000000000000002:
 
 		(* case - Cond *)
 		LD tr_cmd
 		EQ 15
-		JMPC ODK_CASE_000000000000007_000000000000003
+		JMPC ODK_CASE_000000000000006_000000000000003
 
-		JMP ODK_SKIP_000000000000007_000000000000003
+		JMP ODK_SKIP_000000000000006_000000000000003
 
 		(* case - Stmts *) 
-		ODK_CASE_000000000000007_000000000000003:
+		ODK_CASE_000000000000006_000000000000003:
 
 			(* assign - Stmt *)
 			LD 150
 			ST ProcStep
 
-			JMP ODK_END_CASE_000000000000007
+			JMP ODK_END_CASE_000000000000006
 
 (** 				6:	ProcStep:=60;	{* Check if Write single register *} **)
 		(* case - Elm *) 
-		ODK_SKIP_000000000000007_000000000000003:
+		ODK_SKIP_000000000000006_000000000000003:
 
 		(* case - Cond *)
 		LD tr_cmd
 		EQ 6
-		JMPC ODK_CASE_000000000000007_000000000000004
+		JMPC ODK_CASE_000000000000006_000000000000004
 
-		JMP ODK_SKIP_000000000000007_000000000000004
+		JMP ODK_SKIP_000000000000006_000000000000004
 
 		(* case - Stmts *) 
-		ODK_CASE_000000000000007_000000000000004:
+		ODK_CASE_000000000000006_000000000000004:
 
 			(* assign - Stmt *)
 			LD 60
 			ST ProcStep
 
-			JMP ODK_END_CASE_000000000000007
+			JMP ODK_END_CASE_000000000000006
 
 (** 				16:	ProcStep:=160; {* Check if write Multiple register *} **)
 		(* case - Elm *) 
-		ODK_SKIP_000000000000007_000000000000004:
+		ODK_SKIP_000000000000006_000000000000004:
 
 		(* case - Cond *)
 		LD tr_cmd
 		EQ 16
-		JMPC ODK_CASE_000000000000007_000000000000005
+		JMPC ODK_CASE_000000000000006_000000000000005
 
-		JMP ODK_SKIP_000000000000007_000000000000005
+		JMP ODK_SKIP_000000000000006_000000000000005
 
 		(* case - Stmts *) 
-		ODK_CASE_000000000000007_000000000000005:
+		ODK_CASE_000000000000006_000000000000005:
 
 			(* assign - Stmt *)
 			LD 160
 			ST ProcStep
 
-			JMP ODK_END_CASE_000000000000007
+			JMP ODK_END_CASE_000000000000006
 
 (** 				3:	ProcStep:=30;	{*Check if Read register *} **)
 		(* case - Elm *) 
-		ODK_SKIP_000000000000007_000000000000005:
+		ODK_SKIP_000000000000006_000000000000005:
 
 		(* case - Cond *)
 		LD tr_cmd
 		EQ 3
-		JMPC ODK_CASE_000000000000007_000000000000006
+		JMPC ODK_CASE_000000000000006_000000000000006
 
-		JMP ODK_SKIP_000000000000007_000000000000006
+		JMP ODK_SKIP_000000000000006_000000000000006
 
 		(* case - Stmts *) 
-		ODK_CASE_000000000000007_000000000000006:
+		ODK_CASE_000000000000006_000000000000006:
 
 			(* assign - Stmt *)
 			LD 30
 			ST ProcStep
 
-			JMP ODK_END_CASE_000000000000007
+			JMP ODK_END_CASE_000000000000006
 
 (** 			Else 	 **)
 		(* else *) 
-		ODK_SKIP_000000000000007_000000000000006:
+		ODK_SKIP_000000000000006_000000000000006:
 
 			(* else - Statements *) 
 
@@ -582,7 +606,7 @@ END_VAR
 
 (** 			end_case; **)
 		(* case - End *) 
-		ODK_END_CASE_000000000000007:
+		ODK_END_CASE_000000000000006:
 
 		JMP ODK_END_CASE_000000000000002
 
@@ -661,7 +685,7 @@ END_VAR
 		(* if - Cond *)
 		LD ENDBIT
 		NE 0
-		JMPCN ODK_SKIP_000000000000008_000000000000001
+		JMPCN ODK_SKIP_000000000000007_000000000000001
 
 			(* then - Stmts *)
 
@@ -670,36 +694,36 @@ END_VAR
 			LD 1
 			ST Index
 			EQ ENDBIT
-			JMPC ODK_FOR_STMTS_000000000000009
+			JMPC ODK_FOR_STMTS_000000000000008
 
 			(* for - Cond *)
-			ODK_FOR_000000000000009:
+			ODK_FOR_000000000000008:
 
 			LD 1
 			GT ENDBIT
-			JMPC ODK_FOR_DOWN_000000000000009
+			JMPC ODK_FOR_DOWN_000000000000008
 
 			LD 0
 			GT 1
-			JMPC ODK_END_FOR_000000000000009
+			JMPC ODK_END_FOR_000000000000008
 
 			LD ENDBIT
 			LT Index
-			JMPC ODK_END_FOR_000000000000009
-			JMP ODK_FOR_STMTS_000000000000009
+			JMPC ODK_END_FOR_000000000000008
+			JMP ODK_FOR_STMTS_000000000000008
 
-			ODK_FOR_DOWN_000000000000009:
+			ODK_FOR_DOWN_000000000000008:
 
 			LD ENDBIT
 			GT Index
-			JMPC ODK_END_FOR_000000000000009
+			JMPC ODK_END_FOR_000000000000008
 
 			LD 0
 			LT 1
-			JMPC ODK_END_FOR_000000000000009
+			JMPC ODK_END_FOR_000000000000008
 
 				(* for - Stmts *)
-				ODK_FOR_STMTS_000000000000009:
+				ODK_FOR_STMTS_000000000000008:
 
 (** 					 **)
 (** 						ConvBit0:=UploadData_ModBus_ValueBOOL [Y]; **)
@@ -807,17 +831,17 @@ END_VAR
 			ST Index
 (** 					END_FOR; **)
 
-			JMP ODK_FOR_000000000000009
+			JMP ODK_FOR_000000000000008
 
 			(* for - End *) 
-			ODK_END_FOR_000000000000009:
+			ODK_END_FOR_000000000000008:
 
-			JMP ODK_END_IF_000000000000008
+			JMP ODK_END_IF_000000000000007
 
 (** 				END_IF; **)
 		(* if - End *) 
-		ODK_SKIP_000000000000008_000000000000001:
-		ODK_END_IF_000000000000008:
+		ODK_SKIP_000000000000007_000000000000001:
+		ODK_END_IF_000000000000007:
 
 (** 					 **)
 (** 				{*Fill in last Byte *} **)
@@ -825,7 +849,7 @@ END_VAR
 		(* if - Cond *)
 		LD Extra
 		NE 0
-		JMPCN ODK_SKIP_00000000000000A_000000000000001
+		JMPCN ODK_SKIP_000000000000009_000000000000001
 
 			(* then - Stmts *)
 
@@ -844,7 +868,7 @@ END_VAR
 			(* if - Cond *)
 			LD Extra
 			GT 1
-			JMPCN ODK_SKIP_00000000000000B_000000000000001
+			JMPCN ODK_SKIP_00000000000000A_000000000000001
 
 				(* then - Stmts *)
 
@@ -859,18 +883,18 @@ END_VAR
 				LD UploadData_ModBus_ValueBOOL[Y]
 				ST ConvBit1
 
-				JMP ODK_END_IF_00000000000000B
+				JMP ODK_END_IF_00000000000000A
 
 (** 					END_IF;   **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000B_000000000000001:
-			ODK_END_IF_00000000000000B:
+			ODK_SKIP_00000000000000A_000000000000001:
+			ODK_END_IF_00000000000000A:
 
 (** 					If Extra >2 Then 	 **)
 			(* if - Cond *)
 			LD Extra
 			GT 2
-			JMPCN ODK_SKIP_00000000000000C_000000000000001
+			JMPCN ODK_SKIP_00000000000000B_000000000000001
 
 				(* then - Stmts *)
 
@@ -885,18 +909,18 @@ END_VAR
 				LD UploadData_ModBus_ValueBOOL[Y]
 				ST ConvBit2
 
-				JMP ODK_END_IF_00000000000000C
+				JMP ODK_END_IF_00000000000000B
 
 (** 					END_IF;    **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000C_000000000000001:
-			ODK_END_IF_00000000000000C:
+			ODK_SKIP_00000000000000B_000000000000001:
+			ODK_END_IF_00000000000000B:
 
 (** 					If Extra >3 Then 	 **)
 			(* if - Cond *)
 			LD Extra
 			GT 3
-			JMPCN ODK_SKIP_00000000000000D_000000000000001
+			JMPCN ODK_SKIP_00000000000000C_000000000000001
 
 				(* then - Stmts *)
 
@@ -911,18 +935,18 @@ END_VAR
 				LD UploadData_ModBus_ValueBOOL[Y]
 				ST ConvBit3
 
-				JMP ODK_END_IF_00000000000000D
+				JMP ODK_END_IF_00000000000000C
 
 (** 					END_IF; **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000D_000000000000001:
-			ODK_END_IF_00000000000000D:
+			ODK_SKIP_00000000000000C_000000000000001:
+			ODK_END_IF_00000000000000C:
 
 (** 					If Extra >4 Then 	 **)
 			(* if - Cond *)
 			LD Extra
 			GT 4
-			JMPCN ODK_SKIP_00000000000000E_000000000000001
+			JMPCN ODK_SKIP_00000000000000D_000000000000001
 
 				(* then - Stmts *)
 
@@ -937,18 +961,18 @@ END_VAR
 				LD UploadData_ModBus_ValueBOOL[Y]
 				ST ConvBit4
 
-				JMP ODK_END_IF_00000000000000E
+				JMP ODK_END_IF_00000000000000D
 
 (** 					END_IF; **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000E_000000000000001:
-			ODK_END_IF_00000000000000E:
+			ODK_SKIP_00000000000000D_000000000000001:
+			ODK_END_IF_00000000000000D:
 
 (** 					If Extra >5 Then 	 **)
 			(* if - Cond *)
 			LD Extra
 			GT 5
-			JMPCN ODK_SKIP_00000000000000F_000000000000001
+			JMPCN ODK_SKIP_00000000000000E_000000000000001
 
 				(* then - Stmts *)
 
@@ -963,18 +987,18 @@ END_VAR
 				LD UploadData_ModBus_ValueBOOL[Y]
 				ST ConvBit5
 
-				JMP ODK_END_IF_00000000000000F
+				JMP ODK_END_IF_00000000000000E
 
 (** 					END_IF;         	    **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000F_000000000000001:
-			ODK_END_IF_00000000000000F:
+			ODK_SKIP_00000000000000E_000000000000001:
+			ODK_END_IF_00000000000000E:
 
 (** 					If Extra >6 Then 	 **)
 			(* if - Cond *)
 			LD Extra
 			GT 6
-			JMPCN ODK_SKIP_00000000000000G_000000000000001
+			JMPCN ODK_SKIP_00000000000000F_000000000000001
 
 				(* then - Stmts *)
 
@@ -989,26 +1013,26 @@ END_VAR
 				LD UploadData_ModBus_ValueBOOL[Y]
 				ST ConvBit6
 
-				JMP ODK_END_IF_00000000000000G
+				JMP ODK_END_IF_00000000000000F
 
 (** 					END_IF; **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000G_000000000000001:
-			ODK_END_IF_00000000000000G:
+			ODK_SKIP_00000000000000F_000000000000001:
+			ODK_END_IF_00000000000000F:
 
 (** 					serial_write.data[Z]:=ConvByteL; 	    **)
 			(* assign - Stmt *)
 			LD ConvByteL
 			ST serial_write.data[Z]
 
-			JMP ODK_END_IF_00000000000000A
+			JMP ODK_END_IF_000000000000009
 
 (** 						    **)
 (** 						    **)
 (** 				END_IF; **)
 		(* if - End *) 
-		ODK_SKIP_00000000000000A_000000000000001:
-		ODK_END_IF_00000000000000A:
+		ODK_SKIP_000000000000009_000000000000001:
+		ODK_END_IF_000000000000009:
 
 (** 					 **)
 (** 									 **)
@@ -1053,177 +1077,560 @@ END_VAR
 	(* case - Stmts *) 
 	ODK_CASE_000000000000002_000000000000006:
 
-(** 				{*Read register *} **)
-(** 				{* Number of words *} **)
-(** 				{* serial_read.data[11]; *} **)
-(** 				num_words := BYTE_TO_DINT(UploadData_message[12]);  **)
+(** 						{*Read register *} **)
+(** 						{* Number of words *}		 **)
+(** 					UploadData_ModBus_ValueWord [46] := PLC_TX_Word1; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word1
+		ST UploadData_ModBus_ValueWord[46]
+
+(** 					UploadData_ModBus_ValueWord [47] := PLC_TX_Word2; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word2
+		ST UploadData_ModBus_ValueWord[47]
+
+(** 					UploadData_ModBus_ValueWord [48] := PLC_TX_Word3; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word3
+		ST UploadData_ModBus_ValueWord[48]
+
+(** 					UploadData_ModBus_ValueWord [49] := PLC_TX_Word4; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word4
+		ST UploadData_ModBus_ValueWord[49]
+
+(** 					UploadData_ModBus_ValueWord [50] := PLC_TX_Word5; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word5
+		ST UploadData_ModBus_ValueWord[50]
+
+(** 					UploadData_ModBus_ValueWord [51] := PLC_TX_Word6; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word6
+		ST UploadData_ModBus_ValueWord[51]
+
+(** 					UploadData_ModBus_ValueWord [52] := PLC_TX_Word7_STr_Vecl; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word7_STr_Vecl
+		ST UploadData_ModBus_ValueWord[52]
+
+(** 					UploadData_ModBus_ValueWord [53] := PLC_TX_Word8_STr_Seg; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word8_STr_Seg
+		ST UploadData_ModBus_ValueWord[53]
+
+(** 					UploadData_ModBus_ValueWord [54] := PLC_TX_Word9_STr_Pnt; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word9_STr_Pnt
+		ST UploadData_ModBus_ValueWord[54]
+
+(** 					UploadData_ModBus_ValueWord [55] := PLC_TX_Word10_STr_BatV; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word10_STr_BatV
+		ST UploadData_ModBus_ValueWord[55]
+
+(** 					UploadData_ModBus_ValueWord [56] := PLC_TX_Word11_STr_Temp; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word11_STr_Temp
+		ST UploadData_ModBus_ValueWord[56]
+
+(** 					UploadData_ModBus_ValueWord [57] := PLC_TX_Word12_STr_BatD; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word12_STr_BatD
+		ST UploadData_ModBus_ValueWord[57]
+
+(** 					UploadData_ModBus_ValueWord [58] := PLC_TX_Word13_STr_Err; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word13_STr_Err
+		ST UploadData_ModBus_ValueWord[58]
+
+(** 					UploadData_ModBus_ValueWord [59] := PLC_TX_Word14_STr_BCD3; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word14_STr_BCD3
+		ST UploadData_ModBus_ValueWord[59]
+
+(** 					UploadData_ModBus_ValueWord [60] := PLC_TX_Word15_STr_BCD2; **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word15_STr_BCD2
+		ST UploadData_ModBus_ValueWord[60]
+
+(** 					UploadData_ModBus_ValueWord [61] := PLC_TX_Word16_STr_BCD1;			 **)
+		(* assign - Stmt *)
+		LD PLC_TX_Word16_STr_BCD1
+		ST UploadData_ModBus_ValueWord[61]
+
+(** 					num_words := BYTE_TO_DINT(UploadData_message[12]); 				  **)
 		(* assign - Stmt *)
 		LD UploadData_message[12]
 		BYTE_TO_DINT 
 		ST num_words
 
-(** 				 **)
-(** 					IF num_words > 11 THEN **)
-		(* if - Cond *)
+(** 					Total := num_words; **)
+		(* assign - Stmt *)
 		LD num_words
-		GT 11
-		JMPCN ODK_SKIP_00000000000000H_000000000000001
+		ST Total
 
-			(* then - Stmts *)
-
-(** 				   		num_words:=11; **)
-			(* assign - Stmt *)
-			LD 11
-			ST num_words
-
-			JMP ODK_END_IF_00000000000000H
-
-(** 					END_IF;     **)
-		(* if - End *) 
-		ODK_SKIP_00000000000000H_000000000000001:
-		ODK_END_IF_00000000000000H:
-
-(** 			 **)
-(** 					Y:=start_adress;  **)
+(** 					Y := start_adress; **)
 		(* assign - Stmt *)
 		LD start_adress
 		ST Y
 
-(** 					Z:=10;				 **)
+(** 					{* Copy header *} **)
+(** 					serial_write.data[1] := UploadData_message[1];  **)
 		(* assign - Stmt *)
-		LD 10
+		LD UploadData_message[1]
+		ST serial_write.data[1]
+
+(** 					serial_write.data[2] := UploadData_message[2]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[2]
+		ST serial_write.data[2]
+
+(** 					serial_write.data[3] := UploadData_message[3];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[3]
+		ST serial_write.data[3]
+
+(** 					serial_write.data[4] := UploadData_message[4];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[4]
+		ST serial_write.data[4]
+
+(** 					serial_write.data[5] := UploadData_message[5]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[5]
+		ST serial_write.data[5]
+
+(** 					Z:= 1; {* Send first 9*}				 **)
+		(* assign - Stmt *)
+		LD 1
 		ST Z
 
-(** 					Serial_write.data[9] := DINT_TO_BYTE(num_words*2); **)
+(** 					serial_write.data[6] := DINT_TO_BYTE(Total*2 + 3); {* lp *} **)
 		(* assign - Stmt *)
-		LD num_words
+		LD Total
+		MUL 2
+		ADD 3
+		DINT_TO_BYTE 
+		ST serial_write.data[6]
+
+(** 					serial_write.data[7] := UploadData_message[7]; 	{* Slave adress *} **)
+		(* assign - Stmt *)
+		LD UploadData_message[7]
+		ST serial_write.data[7]
+
+(** 					serial_write.data[8] := UploadData_message[8]; 	{* Cmd *} **)
+		(* assign - Stmt *)
+		LD UploadData_message[8]
+		ST serial_write.data[8]
+
+(** 					serial_write.data[9] := DINT_TO_BYTE(Total*2); {* lp *} **)
+		(* assign - Stmt *)
+		LD Total
 		MUL 2
 		DINT_TO_BYTE 
 		ST serial_write.data[9]
 
-(** 				         **)
-(** 					For Index:=1 to num_words BY 1 DO **)
-		(* for - Init *)
-		LD 1
-		ST Index
-		EQ num_words
-		JMPC ODK_FOR_STMTS_00000000000000I
-
-		(* for - Cond *)
-		ODK_FOR_00000000000000I:
-
-		LD 1
-		GT num_words
-		JMPC ODK_FOR_DOWN_00000000000000I
-
-		LD 0
-		GT 1
-		JMPC ODK_END_FOR_00000000000000I
-
-		LD num_words
-		LT Index
-		JMPC ODK_END_FOR_00000000000000I
-		JMP ODK_FOR_STMTS_00000000000000I
-
-		ODK_FOR_DOWN_00000000000000I:
-
-		LD num_words
-		GT Index
-		JMPC ODK_END_FOR_00000000000000I
-
-		LD 0
-		LT 1
-		JMPC ODK_END_FOR_00000000000000I
-
-			(* for - Stmts *)
-			ODK_FOR_STMTS_00000000000000I:
-
-(** 						ConvWord:=UploadData_ModBus_ValueWord [Y]; **)
-			(* assign - Stmt *)
-			LD UploadData_ModBus_ValueWord[Y]
-			ST ConvWord
-
-(** 						serial_write.data[Z]:=ConvByteH; **)
-			(* assign - Stmt *)
-			LD ConvByteH
-			ST serial_write.data[Z]
-
-(** 						Z:=Z+1; **)
-			(* assign - Stmt *)
-			LD Z
-			ADD 1
-			ST Z
-
-(** 						serial_write.data[Z]:=ConvByteL; **)
-			(* assign - Stmt *)
-			LD ConvByteL
-			ST serial_write.data[Z]
-
-(** 						Y:=Y+1; **)
-			(* assign - Stmt *)
-			LD Y
-			ADD 1
-			ST Y
-
-(** 						Z:=Z+1; **)
-			(* assign - Stmt *)
-			LD Z
-			ADD 1
-			ST Z
-
-		(* for - By *)
-		LD 1
-		ADD Index
-		ST Index
-(** 					END_FOR; **)
-
-		JMP ODK_FOR_00000000000000I
-
-		(* for - End *) 
-		ODK_END_FOR_00000000000000I:
-
-(** 					 **)
-(** 				 **)
-(** 					length := num_words * 2 + 3; **)
+(** 				    serial_write.length := 9; **)
 		(* assign - Stmt *)
-		LD num_words
-		MUL 2
-		ADD 3
-		ST length
+		LD 9
+		ST serial_write.length
 
-(** 					tx_length := DINT_TO_BYTE(length); **)
-		(* assign - Stmt *)
-		LD length
-		DINT_TO_BYTE 
-		ST tx_length
+(** 					serial_write(); **)
+		(* call - Stmt *)
+		CAL serial_write
 
-(** 					serial_write.data[6] := tx_length; {* lp *} **)
+(** 					TempHB1 := FALSE; **)
 		(* assign - Stmt *)
-		LD tx_length
-		ST serial_write.data[6]
+		LD false
+		ST TempHB1
 
-(** 					ProcStep:=10000; **)
+(** 					TempHB2 := FALSE; **)
 		(* assign - Stmt *)
-		LD 10000
+		LD false
+		ST TempHB2
+
+(** 					if PLC_TX04_Bit_ChkCom_Tx = true then **)
+		(* if - Cond *)
+		LD PLC_TX04_Bit_ChkCom_Tx
+		EQ true
+		JMPCN ODK_SKIP_00000000000000G_000000000000001
+
+			(* then - Stmts *)
+
+(** 						PLC_TX04_Bit_ChkCom_Tx := false; **)
+			(* assign - Stmt *)
+			LD false
+			ST PLC_TX04_Bit_ChkCom_Tx
+
+(** 						TempHB1 := false; **)
+			(* assign - Stmt *)
+			LD false
+			ST TempHB1
+
+			JMP ODK_END_IF_00000000000000G
+
+(** 					else **)
+		(* else *) 
+		ODK_SKIP_00000000000000G_000000000000001:
+
+			(* else - Stmts *)
+
+(** 						PLC_TX04_Bit_ChkCom_Tx := true; **)
+			(* assign - Stmt *)
+			LD true
+			ST PLC_TX04_Bit_ChkCom_Tx
+
+(** 						TempHB2 := true; **)
+			(* assign - Stmt *)
+			LD true
+			ST TempHB2
+
+(** 					end_if; **)
+		(* if - End *) 
+		ODK_END_IF_00000000000000G:
+
+(** 						IF TempHB1 <> TempHB2 THEN **)
+		(* if - Cond *)
+		LD TempHB1
+		NE TempHB2
+		JMPCN ODK_SKIP_00000000000000H_000000000000001
+
+			(* then - Stmts *)
+
+(** 					IF STARTCOUNTER < 100 THEN **)
+			(* if - Cond *)
+			LD STARTCOUNTER
+			LT 100
+			JMPCN ODK_SKIP_00000000000000I_000000000000001
+
+				(* then - Stmts *)
+
+(** 							STARTCOUNTER := STARTCOUNTER + 1; **)
+				(* assign - Stmt *)
+				LD STARTCOUNTER
+				ADD 1
+				ST STARTCOUNTER
+
+				JMP ODK_END_IF_00000000000000I
+
+(** 						END_IF; **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000I_000000000000001:
+			ODK_END_IF_00000000000000I:
+
+(** 						If STARTCOUNTER > 15 THEN **)
+			(* if - Cond *)
+			LD STARTCOUNTER
+			GT 15
+			JMPCN ODK_SKIP_00000000000000J_000000000000001
+
+				(* then - Stmts *)
+
+(** 							STARTENABLE := TRUE; **)
+				(* assign - Stmt *)
+				LD true
+				ST STARTENABLE
+
+(** 							STOPCOM := FALSE; **)
+				(* assign - Stmt *)
+				LD false
+				ST STOPCOM
+
+				JMP ODK_END_IF_00000000000000J
+
+(** 						END_IF;	 **)
+			(* if - End *) 
+			ODK_SKIP_00000000000000J_000000000000001:
+			ODK_END_IF_00000000000000J:
+
+			JMP ODK_END_IF_00000000000000H
+
+(** 					END_IF; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000H_000000000000001:
+		ODK_END_IF_00000000000000H:
+
+(** 					ProcStep:=31;															 **)
+		(* assign - Stmt *)
+		LD 31
 		ST ProcStep
 
 		JMP ODK_END_CASE_000000000000002
 
-(**  **)
-(** {****************************************************************************}			 **)
-(** 50: **)
+(** 31: **)
 	(* case - Elm *) 
 	ODK_SKIP_000000000000002_000000000000006:
 
 	(* case - Cond *)
 	LD ProcStep
-	EQ 50
+	EQ 31
 	JMPC ODK_CASE_000000000000002_000000000000007
 
 	JMP ODK_SKIP_000000000000002_000000000000007
 
 	(* case - Stmts *) 
 	ODK_CASE_000000000000002_000000000000007:
+
+(** 					IF Total >= 16 THEN **)
+		(* if - Cond *)
+		LD Total
+		GE 16
+		JMPCN ODK_SKIP_00000000000000K_000000000000001
+
+			(* then - Stmts *)
+
+(** 						Total := Total - 16; **)
+			(* assign - Stmt *)
+			LD Total
+			SUB 16
+			ST Total
+
+(** 					For Index:=1 to 16 BY 1 DO **)
+			(* for - Init *)
+			LD 1
+			ST Index
+			EQ 16
+			JMPC ODK_FOR_STMTS_00000000000000L
+
+			(* for - Cond *)
+			ODK_FOR_00000000000000L:
+
+			LD 1
+			GT 16
+			JMPC ODK_FOR_DOWN_00000000000000L
+
+			LD 0
+			GT 1
+			JMPC ODK_END_FOR_00000000000000L
+
+			LD 16
+			LT Index
+			JMPC ODK_END_FOR_00000000000000L
+			JMP ODK_FOR_STMTS_00000000000000L
+
+			ODK_FOR_DOWN_00000000000000L:
+
+			LD 16
+			GT Index
+			JMPC ODK_END_FOR_00000000000000L
+
+			LD 0
+			LT 1
+			JMPC ODK_END_FOR_00000000000000L
+
+				(* for - Stmts *)
+				ODK_FOR_STMTS_00000000000000L:
+
+(** 						ConvWord:=UploadData_ModBus_ValueWord [Y]; **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueWord[Y]
+				ST ConvWord
+
+(** 						serial_write.data[Z]:=ConvByteH; **)
+				(* assign - Stmt *)
+				LD ConvByteH
+				ST serial_write.data[Z]
+
+(** 						Z:=Z+1; **)
+				(* assign - Stmt *)
+				LD Z
+				ADD 1
+				ST Z
+
+(** 						serial_write.data[Z]:=ConvByteL; **)
+				(* assign - Stmt *)
+				LD ConvByteL
+				ST serial_write.data[Z]
+
+(** 						Z:=Z+1; **)
+				(* assign - Stmt *)
+				LD Z
+				ADD 1
+				ST Z
+
+(** 						Y:=Y+1;								 **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+			(* for - By *)
+			LD 1
+			ADD Index
+			ST Index
+(** 					END_FOR; **)
+
+			JMP ODK_FOR_00000000000000L
+
+			(* for - End *) 
+			ODK_END_FOR_00000000000000L:
+
+(** 					serial_write.length := DINT_TO_INT(32); {*Will be max 32 bytes*} **)
+			(* assign - Stmt *)
+			LD 32
+			DINT_TO_INT 
+			ST serial_write.length
+
+(** 					serial_write(); **)
+			(* call - Stmt *)
+			CAL serial_write
+
+(** 					Z := 1;								 **)
+			(* assign - Stmt *)
+			LD 1
+			ST Z
+
+(** 					ProcStep:=31; **)
+			(* assign - Stmt *)
+			LD 31
+			ST ProcStep
+
+			JMP ODK_END_IF_00000000000000K
+
+(** 					ELSIF Total = 0 THEN		 **)
+		(* elseif - Cond *) 
+		ODK_SKIP_00000000000000K_000000000000001:
+		LD Total
+		EQ 0
+		JMPCN ODK_SKIP_00000000000000K_000000000000002
+
+			(* elsif - Stmts *)
+
+(** 						ProcStep:=10001; **)
+			(* assign - Stmt *)
+			LD 10001
+			ST ProcStep
+
+			JMP ODK_END_IF_00000000000000K
+
+(** 					ELSE **)
+		(* else *) 
+		ODK_SKIP_00000000000000K_000000000000002:
+
+			(* else - Stmts *)
+
+(** 					For Index:=1 to (TOTAL) BY 1 DO **)
+			(* for - Init *)
+			LD 1
+			ST Index
+			EQ Total
+			JMPC ODK_FOR_STMTS_00000000000000M
+
+			(* for - Cond *)
+			ODK_FOR_00000000000000M:
+
+			LD 1
+			GT Total
+			JMPC ODK_FOR_DOWN_00000000000000M
+
+			LD 0
+			GT 1
+			JMPC ODK_END_FOR_00000000000000M
+
+			LD Total
+			LT Index
+			JMPC ODK_END_FOR_00000000000000M
+			JMP ODK_FOR_STMTS_00000000000000M
+
+			ODK_FOR_DOWN_00000000000000M:
+
+			LD Total
+			GT Index
+			JMPC ODK_END_FOR_00000000000000M
+
+			LD 0
+			LT 1
+			JMPC ODK_END_FOR_00000000000000M
+
+				(* for - Stmts *)
+				ODK_FOR_STMTS_00000000000000M:
+
+(** 						ConvWord:=UploadData_ModBus_ValueWord [Y]; **)
+				(* assign - Stmt *)
+				LD UploadData_ModBus_ValueWord[Y]
+				ST ConvWord
+
+(** 						serial_write.data[Z]:=ConvByteH; **)
+				(* assign - Stmt *)
+				LD ConvByteH
+				ST serial_write.data[Z]
+
+(** 						Z:=Z+1; **)
+				(* assign - Stmt *)
+				LD Z
+				ADD 1
+				ST Z
+
+(** 						serial_write.data[Z]:=ConvByteL; **)
+				(* assign - Stmt *)
+				LD ConvByteL
+				ST serial_write.data[Z]
+
+(** 						Z:=Z+1; **)
+				(* assign - Stmt *)
+				LD Z
+				ADD 1
+				ST Z
+
+(** 						Y:=Y+1;								 **)
+				(* assign - Stmt *)
+				LD Y
+				ADD 1
+				ST Y
+
+			(* for - By *)
+			LD 1
+			ADD Index
+			ST Index
+(** 					END_FOR; **)
+
+			JMP ODK_FOR_00000000000000M
+
+			(* for - End *) 
+			ODK_END_FOR_00000000000000M:
+
+(** 					serial_write.length := DINT_TO_INT(TOTAL*2); **)
+			(* assign - Stmt *)
+			LD Total
+			MUL 2
+			DINT_TO_INT 
+			ST serial_write.length
+
+(** 					serial_write(); **)
+			(* call - Stmt *)
+			CAL serial_write
+
+(** 					Z := 1;					 **)
+			(* assign - Stmt *)
+			LD 1
+			ST Z
+
+(** 					ProcStep:=10001; **)
+			(* assign - Stmt *)
+			LD 10001
+			ST ProcStep
+
+(** 					END_IF;			 **)
+		(* if - End *) 
+		ODK_END_IF_00000000000000K:
+
+		JMP ODK_END_CASE_000000000000002
+
+(** {****************************************************************************}			 **)
+(** 50: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_000000000000007:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 50
+	JMPC ODK_CASE_000000000000002_000000000000008
+
+	JMP ODK_SKIP_000000000000002_000000000000008
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_000000000000008:
 
 (** 			{* Write single Coil *} **)
 (** 	 **)
@@ -1255,17 +1662,17 @@ END_VAR
 (** 	{****************************************************************************}							 **)
 (** 60: **)
 	(* case - Elm *) 
-	ODK_SKIP_000000000000002_000000000000007:
+	ODK_SKIP_000000000000002_000000000000008:
 
 	(* case - Cond *)
 	LD ProcStep
 	EQ 60
-	JMPC ODK_CASE_000000000000002_000000000000008
+	JMPC ODK_CASE_000000000000002_000000000000009
 
-	JMP ODK_SKIP_000000000000002_000000000000008
+	JMP ODK_SKIP_000000000000002_000000000000009
 
 	(* case - Stmts *) 
-	ODK_CASE_000000000000002_000000000000008:
+	ODK_CASE_000000000000002_000000000000009:
 
 (** 				{* Write single register *}				 **)
 (** 				{* single write *} **)
@@ -1310,17 +1717,17 @@ END_VAR
 (** {****************************************************************************}			 **)
 (** 150: **)
 	(* case - Elm *) 
-	ODK_SKIP_000000000000002_000000000000008:
+	ODK_SKIP_000000000000002_000000000000009:
 
 	(* case - Cond *)
 	LD ProcStep
 	EQ 150
-	JMPC ODK_CASE_000000000000002_000000000000009
+	JMPC ODK_CASE_000000000000002_00000000000000A
 
-	JMP ODK_SKIP_000000000000002_000000000000009
+	JMP ODK_SKIP_000000000000002_00000000000000A
 
 	(* case - Stmts *) 
-	ODK_CASE_000000000000002_000000000000009:
+	ODK_CASE_000000000000002_00000000000000A:
 
 (** 					{*Write Multiple Coils  *} **)
 (** 					{* Number of Bits *} **)
@@ -1375,7 +1782,7 @@ END_VAR
 		(* if - Cond *)
 		LD ENDBIT
 		NE 0
-		JMPCN ODK_SKIP_00000000000000J_000000000000001
+		JMPCN ODK_SKIP_00000000000000N_000000000000001
 
 			(* then - Stmts *)
 
@@ -1384,36 +1791,36 @@ END_VAR
 			LD 1
 			ST Index
 			EQ ENDBIT
-			JMPC ODK_FOR_STMTS_00000000000000K
+			JMPC ODK_FOR_STMTS_00000000000000O
 
 			(* for - Cond *)
-			ODK_FOR_00000000000000K:
+			ODK_FOR_00000000000000O:
 
 			LD 1
 			GT ENDBIT
-			JMPC ODK_FOR_DOWN_00000000000000K
+			JMPC ODK_FOR_DOWN_00000000000000O
 
 			LD 0
 			GT 1
-			JMPC ODK_END_FOR_00000000000000K
+			JMPC ODK_END_FOR_00000000000000O
 
 			LD ENDBIT
 			LT Index
-			JMPC ODK_END_FOR_00000000000000K
-			JMP ODK_FOR_STMTS_00000000000000K
+			JMPC ODK_END_FOR_00000000000000O
+			JMP ODK_FOR_STMTS_00000000000000O
 
-			ODK_FOR_DOWN_00000000000000K:
+			ODK_FOR_DOWN_00000000000000O:
 
 			LD ENDBIT
 			GT Index
-			JMPC ODK_END_FOR_00000000000000K
+			JMPC ODK_END_FOR_00000000000000O
 
 			LD 0
 			LT 1
-			JMPC ODK_END_FOR_00000000000000K
+			JMPC ODK_END_FOR_00000000000000O
 
 				(* for - Stmts *)
-				ODK_FOR_STMTS_00000000000000K:
+				ODK_FOR_STMTS_00000000000000O:
 
 (** 					 **)
 (** 						ConvByteL:= UploadData_message[Z];  **)
@@ -1521,17 +1928,17 @@ END_VAR
 			ST Index
 (** 					END_FOR; **)
 
-			JMP ODK_FOR_00000000000000K
+			JMP ODK_FOR_00000000000000O
 
 			(* for - End *) 
-			ODK_END_FOR_00000000000000K:
+			ODK_END_FOR_00000000000000O:
 
-			JMP ODK_END_IF_00000000000000J
+			JMP ODK_END_IF_00000000000000N
 
 (** 				END_IF; **)
 		(* if - End *) 
-		ODK_SKIP_00000000000000J_000000000000001:
-		ODK_END_IF_00000000000000J:
+		ODK_SKIP_00000000000000N_000000000000001:
+		ODK_END_IF_00000000000000N:
 
 (** 				 **)
 (** 					 **)
@@ -1545,7 +1952,7 @@ END_VAR
 		(* if - Cond *)
 		LD Extra
 		NE 0
-		JMPCN ODK_SKIP_00000000000000L_000000000000001
+		JMPCN ODK_SKIP_00000000000000P_000000000000001
 
 			(* then - Stmts *)
 
@@ -1558,7 +1965,7 @@ END_VAR
 			(* if - Cond *)
 			LD Extra
 			GT 1
-			JMPCN ODK_SKIP_00000000000000M_000000000000001
+			JMPCN ODK_SKIP_00000000000000Q_000000000000001
 
 				(* then - Stmts *)
 
@@ -1573,18 +1980,18 @@ END_VAR
 				LD ConvBit1
 				ST UploadData_ModBus_ValueBOOL[Y]
 
-				JMP ODK_END_IF_00000000000000M
+				JMP ODK_END_IF_00000000000000Q
 
 (** 					END_IF;   **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000M_000000000000001:
-			ODK_END_IF_00000000000000M:
+			ODK_SKIP_00000000000000Q_000000000000001:
+			ODK_END_IF_00000000000000Q:
 
 (** 					If Extra >2 Then 	 **)
 			(* if - Cond *)
 			LD Extra
 			GT 2
-			JMPCN ODK_SKIP_00000000000000N_000000000000001
+			JMPCN ODK_SKIP_00000000000000R_000000000000001
 
 				(* then - Stmts *)
 
@@ -1599,18 +2006,18 @@ END_VAR
 				LD ConvBit2
 				ST UploadData_ModBus_ValueBOOL[Y]
 
-				JMP ODK_END_IF_00000000000000N
+				JMP ODK_END_IF_00000000000000R
 
 (** 					END_IF;    **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000N_000000000000001:
-			ODK_END_IF_00000000000000N:
+			ODK_SKIP_00000000000000R_000000000000001:
+			ODK_END_IF_00000000000000R:
 
 (** 					If Extra >3 Then 	 **)
 			(* if - Cond *)
 			LD Extra
 			GT 3
-			JMPCN ODK_SKIP_00000000000000O_000000000000001
+			JMPCN ODK_SKIP_00000000000000S_000000000000001
 
 				(* then - Stmts *)
 
@@ -1625,18 +2032,18 @@ END_VAR
 				LD ConvBit3
 				ST UploadData_ModBus_ValueBOOL[Y]
 
-				JMP ODK_END_IF_00000000000000O
+				JMP ODK_END_IF_00000000000000S
 
 (** 					END_IF; **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000O_000000000000001:
-			ODK_END_IF_00000000000000O:
+			ODK_SKIP_00000000000000S_000000000000001:
+			ODK_END_IF_00000000000000S:
 
 (** 					If Extra >4 Then 	 **)
 			(* if - Cond *)
 			LD Extra
 			GT 4
-			JMPCN ODK_SKIP_00000000000000P_000000000000001
+			JMPCN ODK_SKIP_00000000000000T_000000000000001
 
 				(* then - Stmts *)
 
@@ -1651,18 +2058,18 @@ END_VAR
 				LD ConvBit4
 				ST UploadData_ModBus_ValueBOOL[Y]
 
-				JMP ODK_END_IF_00000000000000P
+				JMP ODK_END_IF_00000000000000T
 
 (** 					END_IF; **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000P_000000000000001:
-			ODK_END_IF_00000000000000P:
+			ODK_SKIP_00000000000000T_000000000000001:
+			ODK_END_IF_00000000000000T:
 
 (** 					If Extra >5 Then 	 **)
 			(* if - Cond *)
 			LD Extra
 			GT 5
-			JMPCN ODK_SKIP_00000000000000Q_000000000000001
+			JMPCN ODK_SKIP_00000000000000U_000000000000001
 
 				(* then - Stmts *)
 
@@ -1677,18 +2084,18 @@ END_VAR
 				LD ConvBit5
 				ST UploadData_ModBus_ValueBOOL[Y]
 
-				JMP ODK_END_IF_00000000000000Q
+				JMP ODK_END_IF_00000000000000U
 
 (** 					END_IF;         	    **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000Q_000000000000001:
-			ODK_END_IF_00000000000000Q:
+			ODK_SKIP_00000000000000U_000000000000001:
+			ODK_END_IF_00000000000000U:
 
 (** 					If Extra >6 Then 	 **)
 			(* if - Cond *)
 			LD Extra
 			GT 6
-			JMPCN ODK_SKIP_00000000000000R_000000000000001
+			JMPCN ODK_SKIP_00000000000000V_000000000000001
 
 				(* then - Stmts *)
 
@@ -1703,20 +2110,20 @@ END_VAR
 				LD ConvBit6
 				ST UploadData_ModBus_ValueBOOL[Y]
 
-				JMP ODK_END_IF_00000000000000R
+				JMP ODK_END_IF_00000000000000V
 
 (** 					END_IF; **)
 			(* if - End *) 
-			ODK_SKIP_00000000000000R_000000000000001:
-			ODK_END_IF_00000000000000R:
+			ODK_SKIP_00000000000000V_000000000000001:
+			ODK_END_IF_00000000000000V:
 
-			JMP ODK_END_IF_00000000000000L
+			JMP ODK_END_IF_00000000000000P
 
 (** 									    **)
 (** 				END_IF; **)
 		(* if - End *) 
-		ODK_SKIP_00000000000000L_000000000000001:
-		ODK_END_IF_00000000000000L:
+		ODK_SKIP_00000000000000P_000000000000001:
+		ODK_END_IF_00000000000000P:
 
 (** 				ProcStep:=999; **)
 		(* assign - Stmt *)
@@ -1730,17 +2137,17 @@ END_VAR
 (** {****************************************************************************}				 **)
 (** 160: **)
 	(* case - Elm *) 
-	ODK_SKIP_000000000000002_000000000000009:
+	ODK_SKIP_000000000000002_00000000000000A:
 
 	(* case - Cond *)
 	LD ProcStep
 	EQ 160
-	JMPC ODK_CASE_000000000000002_00000000000000A
+	JMPC ODK_CASE_000000000000002_00000000000000B
 
-	JMP ODK_SKIP_000000000000002_00000000000000A
+	JMP ODK_SKIP_000000000000002_00000000000000B
 
 	(* case - Stmts *) 
-	ODK_CASE_000000000000002_00000000000000A:
+	ODK_CASE_000000000000002_00000000000000B:
 
 (** 				{* Multiple write *} **)
 (** 				num_words:=Byte_TO_DInt(UploadData_message[12]);  **)
@@ -1750,26 +2157,9 @@ END_VAR
 		ST num_words
 
 (** 				{* Check if message lenght outside the Buffer, if so do what ??? *} **)
-(** 				IF num_words > 9 THEN **)
-		(* if - Cond *)
-		LD num_words
-		GT 9
-		JMPCN ODK_SKIP_00000000000000S_000000000000001
-
-			(* then - Stmts *)
-
+(** 			{*	IF num_words > 9 THEN **)
 (** 				   num_words:=9; **)
-			(* assign - Stmt *)
-			LD 9
-			ST num_words
-
-			JMP ODK_END_IF_00000000000000S
-
-(** 				END_IF;     **)
-		(* if - End *) 
-		ODK_SKIP_00000000000000S_000000000000001:
-		ODK_END_IF_00000000000000S:
-
+(** 				END_IF;    *} **)
 (** 				Y:=start_adress; **)
 		(* assign - Stmt *)
 		LD start_adress
@@ -1792,36 +2182,36 @@ END_VAR
 		LD 1
 		ST Index
 		EQ num_words
-		JMPC ODK_FOR_STMTS_00000000000000T
+		JMPC ODK_FOR_STMTS_00000000000000W
 
 		(* for - Cond *)
-		ODK_FOR_00000000000000T:
+		ODK_FOR_00000000000000W:
 
 		LD 1
 		GT num_words
-		JMPC ODK_FOR_DOWN_00000000000000T
+		JMPC ODK_FOR_DOWN_00000000000000W
 
 		LD 0
 		GT 1
-		JMPC ODK_END_FOR_00000000000000T
+		JMPC ODK_END_FOR_00000000000000W
 
 		LD num_words
 		LT Index
-		JMPC ODK_END_FOR_00000000000000T
-		JMP ODK_FOR_STMTS_00000000000000T
+		JMPC ODK_END_FOR_00000000000000W
+		JMP ODK_FOR_STMTS_00000000000000W
 
-		ODK_FOR_DOWN_00000000000000T:
+		ODK_FOR_DOWN_00000000000000W:
 
 		LD num_words
 		GT Index
-		JMPC ODK_END_FOR_00000000000000T
+		JMPC ODK_END_FOR_00000000000000W
 
 		LD 0
 		LT 1
-		JMPC ODK_END_FOR_00000000000000T
+		JMPC ODK_END_FOR_00000000000000W
 
 			(* for - Stmts *)
-			ODK_FOR_STMTS_00000000000000T:
+			ODK_FOR_STMTS_00000000000000W:
 
 (** 					ConvByteH:=UploadData_message[X];  **)
 			(* assign - Stmt *)
@@ -1862,35 +2252,249 @@ END_VAR
 		ST Index
 (** 				END_FOR; **)
 
-		JMP ODK_FOR_00000000000000T
+		JMP ODK_FOR_00000000000000W
 
 		(* for - End *) 
-		ODK_END_FOR_00000000000000T:
+		ODK_END_FOR_00000000000000W:
 
-(** 				 **)
-(** 				ProcStep:=999;				 **)
+(** 						{*Set Into Memory *} **)
+(** 		PLC_RX_Word1 := UploadData_ModBus_ValueWord [94]; **)
 		(* assign - Stmt *)
-		LD 999
+		LD UploadData_ModBus_ValueWord[94]
+		ST PLC_RX_Word1
+
+(** 		PLC_RX_Word2 := UploadData_ModBus_ValueWord [95]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[95]
+		ST PLC_RX_Word2
+
+(** 		PLC_RX_Word3 := UploadData_ModBus_ValueWord [96]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[96]
+		ST PLC_RX_Word3
+
+(** 		PLC_RX_Word4 := UploadData_ModBus_ValueWord [97]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[97]
+		ST PLC_RX_Word4
+
+(** 		PLC_RX_Word5 := UploadData_ModBus_ValueWord [98]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[98]
+		ST PLC_RX_Word5
+
+(** 		PLC_RX_Word6 := UploadData_ModBus_ValueWord [99]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[99]
+		ST PLC_RX_Word6
+
+(** 		PLC_RX_Word7_STw_BCD3 := UploadData_ModBus_ValueWord [100]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[100]
+		ST PLC_RX_Word7_STw_BCD3
+
+(** 		PLC_RX_Word8_STw_BCD2 := UploadData_ModBus_ValueWord [101]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[101]
+		ST PLC_RX_Word8_STw_BCD2
+
+(** 		PLC_RX_Word9_STw_BCD1 := UploadData_ModBus_ValueWord [102]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[102]
+		ST PLC_RX_Word9_STw_BCD1
+
+(** 		PLC_RX_Word10_STw_ILEr := UploadData_ModBus_ValueWord [103]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[103]
+		ST PLC_RX_Word10_STw_ILEr
+
+(** 		PLC_RX_Word11_Ins_Pno := UploadData_ModBus_ValueWord [104]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[104]
+		ST PLC_RX_Word11_Ins_Pno
+
+(** 		PLC_RX_Word12_STw_Pint := UploadData_ModBus_ValueWord [105]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[105]
+		ST PLC_RX_Word12_STw_Pint
+
+(** 		PLC_RX_Word13_Ins_Ano := UploadData_ModBus_ValueWord [106]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[106]
+		ST PLC_RX_Word13_Ins_Ano
+
+(** 		PLC_RX_Word14_BMS_2 := UploadData_ModBus_ValueWord [107]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[107]
+		ST PLC_RX_Word14_BMS_2
+
+(** 		PLC_RX_Word15_BMS_3 := UploadData_ModBus_ValueWord [108]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[108]
+		ST PLC_RX_Word15_BMS_3
+
+(** 		PLC_RX_Word16_BMS_BatV := UploadData_ModBus_ValueWord [109]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[109]
+		ST PLC_RX_Word16_BMS_BatV
+
+(** 		PLC_RX_Word17_BMS_BatT := UploadData_ModBus_ValueWord [110]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[110]
+		ST PLC_RX_Word17_BMS_BatT
+
+(** 		PLC_RX_Word18_BMS_BatC := UploadData_ModBus_ValueWord [111]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[111]
+		ST PLC_RX_Word18_BMS_BatC
+
+(** 		PLC_RX_Word19_BMS_BatA := UploadData_ModBus_ValueWord [112]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[112]
+		ST PLC_RX_Word19_BMS_BatA
+
+(** 		PLC_RX_Word20_PLC_ErrD := UploadData_ModBus_ValueWord [113]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[113]
+		ST PLC_RX_Word20_PLC_ErrD
+
+(** 		PLC_RX_Word21_BMS_Main := UploadData_ModBus_ValueWord [114]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[114]
+		ST PLC_RX_Word21_BMS_Main
+
+(** 		PLC_RX_Word22_BMS_Chan := UploadData_ModBus_ValueWord [115]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[115]
+		ST PLC_RX_Word22_BMS_Chan
+
+(** 		PLC_RX_Word23_BMS_ID4L := UploadData_ModBus_ValueWord [116]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[116]
+		ST PLC_RX_Word23_BMS_ID4L
+
+(** 		PLC_RX_Word24_BMS_ID4H := UploadData_ModBus_ValueWord [117]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[117]
+		ST PLC_RX_Word24_BMS_ID4H
+
+(** 	PLC_RX_Word25 := UploadData_ModBus_ValueWord [118]; **)
+		(* assign - Stmt *)
+		LD UploadData_ModBus_ValueWord[118]
+		ST PLC_RX_Word25
+
+(** 				ProcStep:=998;				 **)
+		(* assign - Stmt *)
+		LD 998
 		ST ProcStep
 
 		JMP ODK_END_CASE_000000000000002
 
-(**  **)
-(**  **)
+(** 998:  **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_00000000000000B:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 998
+	JMPC ODK_CASE_000000000000002_00000000000000C
+
+	JMP ODK_SKIP_000000000000002_00000000000000C
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_00000000000000C:
+
+(** 				Serial_write.data[1] := UploadData_message[1]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[1]
+		ST serial_write.data[1]
+
+(** 				Serial_write.data[2] := UploadData_message[2]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[2]
+		ST serial_write.data[2]
+
+(** 				Serial_write.data[3] := UploadData_message[3]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[3]
+		ST serial_write.data[3]
+
+(** 				Serial_write.data[4] := UploadData_message[4]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[4]
+		ST serial_write.data[4]
+
+(** 				Serial_write.data[5] := UploadData_message[5]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[5]
+		ST serial_write.data[5]
+
+(** 				Serial_write.data[6] := DINT_TO_BYTE(6); **)
+		(* assign - Stmt *)
+		LD 6
+		DINT_TO_BYTE 
+		ST serial_write.data[6]
+
+(** 				Serial_write.data[7] := UploadData_message[7]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[7]
+		ST serial_write.data[7]
+
+(** 				Serial_write.data[8] := UploadData_message[8]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[8]
+		ST serial_write.data[8]
+
+(** 				Serial_write.data[9] := UploadData_message[9]; **)
+		(* assign - Stmt *)
+		LD UploadData_message[9]
+		ST serial_write.data[9]
+
+(** 				serial_write.data[10] := UploadData_message[10];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[10]
+		ST serial_write.data[10]
+
+(** 				serial_write.data[11] := UploadData_message[11];  **)
+		(* assign - Stmt *)
+		LD UploadData_message[11]
+		ST serial_write.data[11]
+
+(** 				serial_write.data[12] := UploadData_message[12];  {*PLC_message[12];*} **)
+		(* assign - Stmt *)
+		LD UploadData_message[12]
+		ST serial_write.data[12]
+
+(** 				serial_write.length := 12; **)
+		(* assign - Stmt *)
+		LD 12
+		ST serial_write.length
+
+(** 				serial_write();	 **)
+		(* call - Stmt *)
+		CAL serial_write
+
+(** 				ProcStep:=10001; **)
+		(* assign - Stmt *)
+		LD 10001
+		ST ProcStep
+
+		JMP ODK_END_CASE_000000000000002
+
 (** {****************************************************************************} **)
 (** 999: **)
 	(* case - Elm *) 
-	ODK_SKIP_000000000000002_00000000000000A:
+	ODK_SKIP_000000000000002_00000000000000C:
 
 	(* case - Cond *)
 	LD ProcStep
 	EQ 999
-	JMPC ODK_CASE_000000000000002_00000000000000B
+	JMPC ODK_CASE_000000000000002_00000000000000D
 
-	JMP ODK_SKIP_000000000000002_00000000000000B
+	JMP ODK_SKIP_000000000000002_00000000000000D
 
 	(* case - Stmts *) 
-	ODK_CASE_000000000000002_00000000000000B:
+	ODK_CASE_000000000000002_00000000000000D:
 
 (**  **)
 (** 				{*Send Echo *} **)
@@ -1942,17 +2546,17 @@ END_VAR
 (** {****************************************************************************}					 **)
 (** 10000: **)
 	(* case - Elm *) 
-	ODK_SKIP_000000000000002_00000000000000B:
+	ODK_SKIP_000000000000002_00000000000000D:
 
 	(* case - Cond *)
 	LD ProcStep
 	EQ 10000
-	JMPC ODK_CASE_000000000000002_00000000000000C
+	JMPC ODK_CASE_000000000000002_00000000000000E
 
-	JMP ODK_SKIP_000000000000002_00000000000000C
+	JMP ODK_SKIP_000000000000002_00000000000000E
 
 	(* case - Stmts *) 
-	ODK_CASE_000000000000002_00000000000000C:
+	ODK_CASE_000000000000002_00000000000000E:
 
 (** 	 **)
 (** 			{*Send Data *} **)
@@ -1989,7 +2593,7 @@ END_VAR
 		OR ( serial_write.error
 			NE 0
 		)
-		JMPCN ODK_SKIP_00000000000000U_000000000000001
+		JMPCN ODK_SKIP_00000000000000X_000000000000001
 
 			(* then - Stmts *)
 
@@ -2004,21 +2608,81 @@ END_VAR
 			ADD 1
 			ST DebugCounter
 
-			JMP ODK_END_IF_00000000000000U
+			JMP ODK_END_IF_00000000000000X
 
 (** 			End_IF; **)
 		(* if - End *) 
-		ODK_SKIP_00000000000000U_000000000000001:
-		ODK_END_IF_00000000000000U:
+		ODK_SKIP_00000000000000X_000000000000001:
+		ODK_END_IF_00000000000000X:
 
 		JMP ODK_END_CASE_000000000000002
 
-(**  **)
+(** {****************************************************************************}					 **)
+(** 10001: **)
+	(* case - Elm *) 
+	ODK_SKIP_000000000000002_00000000000000E:
+
+	(* case - Cond *)
+	LD ProcStep
+	EQ 10001
+	JMPC ODK_CASE_000000000000002_00000000000000F
+
+	JMP ODK_SKIP_000000000000002_00000000000000F
+
+	(* case - Stmts *) 
+	ODK_CASE_000000000000002_00000000000000F:
+
+(** 			serial_write.length := 0; {*Using SendBuffer =1 length needs to be set to 0 for it to be sent*} **)
+		(* assign - Stmt *)
+		LD 0
+		ST serial_write.length
+
+(** 			serial_write(); {*send*} **)
+		(* call - Stmt *)
+		CAL serial_write
+
+(** 			IF serial_write.sent<>0 or serial_write.error<>0 Then **)
+		(* if - Cond *)
+		LD serial_write.sent
+		NE 0
+		OR ( serial_write.error
+			NE 0
+		)
+		JMPCN ODK_SKIP_00000000000000Y_000000000000001
+
+			(* then - Stmts *)
+
+(** 				ProcStep:=0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST ProcStep
+
+(** 				DebugCounter := DebugCounter + 1; **)
+			(* assign - Stmt *)
+			LD DebugCounter
+			ADD 1
+			ST DebugCounter
+
+			JMP ODK_END_IF_00000000000000Y
+
+(** 			End_IF; **)
+		(* if - End *) 
+		ODK_SKIP_00000000000000Y_000000000000001:
+		ODK_END_IF_00000000000000Y:
+
+(** 			ProcStep:=0; **)
+		(* assign - Stmt *)
+		LD 0
+		ST ProcStep
+
+		JMP ODK_END_CASE_000000000000002
+
 (** end_case; **)
 	(* case - End *) 
-	ODK_SKIP_000000000000002_00000000000000C:
+	ODK_SKIP_000000000000002_00000000000000F:
 	ODK_END_CASE_000000000000002:
 
+(**  **)
 (**  **)
 (**  **)
 

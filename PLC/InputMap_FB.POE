@@ -90,28 +90,33 @@ END_VAR
 (** {* In the vehicle documentation, and the INPUTS.TYP, more examples of InputMap_FB is found. *} **)
 (** ; **)
 (** {* Button *} **)
+(** INPUT.Reset_PB := NDC8.SDIO.DigitalInput2_BTN_RST; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalInput2_BTN_RST
+	ST INPUT.Reset_PB
+
 (**  **)
 (** Input.ZeroSteerAngle_PB			:= 	NDC8.MCD.Button7; **)
 	(* assign - Stmt *)
 	LD NDC8.MCD.Button7
-	ST Input.ZeroSteerAngle_PB
+	ST INPUT.ZeroSteerAngle_PB
 
 (**  **)
 (** INPUT.TractionSpeed := NDC8.VehicleControl.SetSpeed; **)
 	(* assign - Stmt *)
 	LD NDC8.VehicleControl.SetSpeed
-	ST Input.TractionSpeed
+	ST INPUT.TractionSpeed
 
 (**  **)
 (** Input.ChangeSteerMode_PB	:= NDC8.MCD.Button10; **)
 	(* assign - Stmt *)
 	LD NDC8.MCD.Button10
-	ST Input.ChangeSteerMode_PB
+	ST INPUT.ChangeSteerMode_PB
 
 (** Input.ChangeSteerMode_PB2	:= NDC8.Mcd.Button11; **)
 	(* assign - Stmt *)
 	LD NDC8.MCD.Button11
-	ST Input.ChangeSteerMode_PB2
+	ST INPUT.ChangeSteerMode_PB2
 
 (**  **)
 (** if NDC8.SDIO.DigitalInput3_BMP_O1 = TRUE or NDC8.SDIO.DigitalInput4_BMP_O2 = TRUE then **)
@@ -157,7 +162,7 @@ END_VAR
 (**  **)
 (** if INPUT.StartMode = FALSE and StartSwitchRise.Q then **)
 	(* if - Cond *)
-	LD Input.StartMode
+	LD INPUT.StartMode
 	EQ FALSE
 	AND StartSwitchRise.Q
 	JMPCN ODK_SKIP_000000000000002_000000000000001
@@ -167,7 +172,7 @@ END_VAR
 (** 	INPUT.StartMode := TRUE; **)
 		(* assign - Stmt *)
 		LD TRUE
-		ST Input.StartMode
+		ST INPUT.StartMode
 
 		JMP ODK_END_IF_000000000000002
 
@@ -189,7 +194,7 @@ END_VAR
 (** 	INPUT.StartMode := FALSE; **)
 		(* assign - Stmt *)
 		LD FALSE
-		ST Input.StartMode
+		ST INPUT.StartMode
 
 		JMP ODK_END_IF_000000000000002
 
@@ -201,7 +206,7 @@ END_VAR
 (**  **)
 (** if INPUT.Manual = TRUE then **)
 	(* if - Cond *)
-	LD Input.Manual
+	LD INPUT.Manual
 	EQ TRUE
 	JMPCN ODK_SKIP_000000000000003_000000000000001
 
@@ -210,7 +215,7 @@ END_VAR
 (** 	INPUT.StartMode := FALSE; **)
 		(* assign - Stmt *)
 		LD FALSE
-		ST Input.StartMode
+		ST INPUT.StartMode
 
 		JMP ODK_END_IF_000000000000003
 
@@ -237,7 +242,7 @@ END_VAR
 (** 	Input.BuzzerByPass := FALSE; **)
 		(* assign - Stmt *)
 		LD FALSE
-		ST Input.BuzzerByPass
+		ST INPUT.BuzzerByPass
 
 		JMP ODK_END_IF_000000000000004
 
@@ -262,7 +267,7 @@ END_VAR
 (** 	INPUT.SteerEncSyncValid := TRUE; **)
 		(* assign - Stmt *)
 		LD TRUE
-		ST Input.SteerEncSyncValid
+		ST INPUT.SteerEncSyncValid
 
 		JMP ODK_END_IF_000000000000005
 
@@ -275,7 +280,7 @@ END_VAR
 (** 	INPUT.SteerEncSyncValid := FALSE; **)
 		(* assign - Stmt *)
 		LD FALSE
-		ST Input.SteerEncSyncValid
+		ST INPUT.SteerEncSyncValid
 
 (** end_if; **)
 	(* if - End *) 
@@ -356,7 +361,7 @@ END_VAR
 	LD NDC8.VehicleControl.SetSpeed
 	abs 
 	EQ NDC8.Vehicle.CreepSpeed
-	ST Input.CreepOn
+	ST INPUT.CreepOn
 
 (**  **)
 (** if  (NDC8.DCD_6.SetAngle > 500 and NDC8.DCD_6.SetAngle <= 8500 and NDC8.DCD_8.SetAngle > 500 and NDC8.DCD_8.SetAngle <= 8500) or  **)
@@ -392,7 +397,7 @@ END_VAR
 (** 	Input.SteerMode := 1; **)
 		(* assign - Stmt *)
 		LD 1
-		ST Input.SteerMode
+		ST INPUT.SteerMode
 
 		JMP ODK_END_IF_000000000000008
 
@@ -422,7 +427,7 @@ END_VAR
 (** 	Input.SteerMode := 2; **)
 		(* assign - Stmt *)
 		LD 2
-		ST Input.SteerMode
+		ST INPUT.SteerMode
 
 		JMP ODK_END_IF_000000000000008
 
@@ -435,7 +440,7 @@ END_VAR
 (** 	Input.SteerMode := 0; **)
 		(* assign - Stmt *)
 		LD 0
-		ST Input.SteerMode
+		ST INPUT.SteerMode
 
 (** end_if; **)
 	(* if - End *) 
@@ -450,13 +455,13 @@ END_VAR
 	(* assign - Stmt *)
 	LD NDC8.SegmentTrigger.Bit13_TurnRght_A
 	AND NDC8.VehicleControl.Moving
-	OR ( Input.SteerMode
+	OR ( INPUT.SteerMode
 		EQ 0
 		AND ( NDC8.DCD_6.SetAngle
 			LE -500
 		)
 	)
-	OR ( Input.SteerMode
+	OR ( INPUT.SteerMode
 		EQ 1
 		AND ( NDC8.VehicleControl.SetSpeed
 			GT 0
@@ -465,7 +470,7 @@ END_VAR
 			LT 0
 		)
 	)
-	OR ( Input.SteerMode
+	OR ( INPUT.SteerMode
 		EQ 1
 		AND ( NDC8.VehicleControl.SetSpeed
 			LT 0
@@ -475,7 +480,7 @@ END_VAR
 		)
 	)
 	AND NDC8.VehicleControl.Moving
-	ST Input.SD_Right
+	ST INPUT.SD_Right
 
 (** 			 **)
 (** Input.SD_Left :=  ((NDC8.SegmentTrigger.Bit12_TurnLeft_A and NDC8.VehicleControl.Moving) **)
@@ -486,13 +491,13 @@ END_VAR
 	(* assign - Stmt *)
 	LD NDC8.SegmentTrigger.Bit12_TurnLeft_A
 	AND NDC8.VehicleControl.Moving
-	OR ( Input.SteerMode
+	OR ( INPUT.SteerMode
 		EQ 0
 		AND ( NDC8.DCD_6.SetAngle
 			GE 500
 		)
 	)
-	OR ( Input.SteerMode
+	OR ( INPUT.SteerMode
 		EQ 1
 		AND ( NDC8.VehicleControl.SetSpeed
 			GT 0
@@ -501,7 +506,7 @@ END_VAR
 			GT 0
 		)
 	)
-	OR ( Input.SteerMode
+	OR ( INPUT.SteerMode
 		EQ 1
 		AND ( NDC8.VehicleControl.SetSpeed
 			LT 0
@@ -511,14 +516,14 @@ END_VAR
 		)
 	)
 	AND NDC8.VehicleControl.Moving
-	ST Input.SD_Left
+	ST INPUT.SD_Left
 
 (**  **)
 (**  **)
 (** Input.DD_Right := ((Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.DCD_6.SetAngle < 0) {* Diff Parallel Mode and Right, Just Check Front Wheel  *} **)
 (** 					or (Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.DCD_6.SetAngle > 0)); {* Diff Parallel Mode and Right, Just Check Front Wheel  *} **)
 	(* assign - Stmt *)
-	LD Input.SteerMode
+	LD INPUT.SteerMode
 	EQ 2
 	AND ( NDC8.VehicleControl.SetSpeed
 		LT 0
@@ -526,7 +531,7 @@ END_VAR
 	AND ( NDC8.DCD_6.SetAngle
 		LT 0
 	)
-	OR ( Input.SteerMode
+	OR ( INPUT.SteerMode
 		EQ 2
 		AND ( NDC8.VehicleControl.SetSpeed
 			GT 0
@@ -535,14 +540,14 @@ END_VAR
 			GT 0
 		)
 	)
-	ST Input.DD_Right
+	ST INPUT.DD_Right
 
 (** 				 **)
 (** 				 **)
 (** Input.DD_Left :=  ((Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.DCD_6.SetAngle > 0) {* Diff Parallel Mode and Right, Just Check Front Wheel  *} **)
 (** 					or (Input.SteerMode = 2 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.DCD_6.SetAngle < 0)); {* Diff Parallel Mode and Right, Just Check Front Wheel  *} **)
 	(* assign - Stmt *)
-	LD Input.SteerMode
+	LD INPUT.SteerMode
 	EQ 2
 	AND ( NDC8.VehicleControl.SetSpeed
 		LT 0
@@ -550,7 +555,7 @@ END_VAR
 	AND ( NDC8.DCD_6.SetAngle
 		GT 0
 	)
-	OR ( Input.SteerMode
+	OR ( INPUT.SteerMode
 		EQ 2
 		AND ( NDC8.VehicleControl.SetSpeed
 			GT 0
@@ -559,7 +564,7 @@ END_VAR
 			LT 0
 		)
 	)
-	ST Input.DD_Left
+	ST INPUT.DD_Left
 
 (** 		 **)
 (** 		 **)
@@ -567,7 +572,7 @@ END_VAR
 (** 					or (Input.SteerMode = 1 and NDC8.VehicleControl.SetSpeed > 0 and NDC8.VehicleControl.Moving = TRUE)) **)
 (** 					and (Input.SD_Right = FALSE and Input.SD_Left = FALSE and Input.DD_Right = FALSE and Input.DD_Left = FALSE); **)
 	(* assign - Stmt *)
-	LD Input.SteerMode
+	LD INPUT.SteerMode
 	EQ 0
 	AND ( NDC8.VehicleControl.SetSpeed
 		GT 0
@@ -575,7 +580,7 @@ END_VAR
 	AND ( NDC8.VehicleControl.Moving
 		EQ TRUE
 	)
-	OR ( Input.SteerMode
+	OR ( INPUT.SteerMode
 		EQ 1
 		AND ( NDC8.VehicleControl.SetSpeed
 			GT 0
@@ -584,19 +589,19 @@ END_VAR
 			EQ TRUE
 		)
 	)
-	AND ( Input.SD_Right
+	AND ( INPUT.SD_Right
 		EQ FALSE
-		AND ( Input.SD_Left
+		AND ( INPUT.SD_Left
 			EQ FALSE
 		)
-		AND ( Input.DD_Right
+		AND ( INPUT.DD_Right
 			EQ FALSE
 		)
-		AND ( Input.DD_Left
+		AND ( INPUT.DD_Left
 			EQ FALSE
 		)
 	)
-	ST Input.SD_Forward
+	ST INPUT.SD_Forward
 
 (** 				 **)
 (** 				 **)
@@ -604,7 +609,7 @@ END_VAR
 (** 					or (Input.SteerMode = 1 and NDC8.VehicleControl.SetSpeed < 0 and NDC8.VehicleControl.Moving = TRUE)) **)
 (** 					and (Input.SD_Right = FALSE and Input.SD_Left = FALSE and Input.DD_Right = FALSE and Input.DD_Left = FALSE); **)
 	(* assign - Stmt *)
-	LD Input.SteerMode
+	LD INPUT.SteerMode
 	EQ 0
 	AND ( NDC8.VehicleControl.SetSpeed
 		LT 0
@@ -612,7 +617,7 @@ END_VAR
 	AND ( NDC8.VehicleControl.Moving
 		EQ TRUE
 	)
-	OR ( Input.SteerMode
+	OR ( INPUT.SteerMode
 		EQ 1
 		AND ( NDC8.VehicleControl.SetSpeed
 			LT 0
@@ -621,26 +626,26 @@ END_VAR
 			EQ TRUE
 		)
 	)
-	AND ( Input.SD_Right
+	AND ( INPUT.SD_Right
 		EQ FALSE
-		AND ( Input.SD_Left
+		AND ( INPUT.SD_Left
 			EQ FALSE
 		)
-		AND ( Input.DD_Right
+		AND ( INPUT.DD_Right
 			EQ FALSE
 		)
-		AND ( Input.DD_Left
+		AND ( INPUT.DD_Left
 			EQ FALSE
 		)
 	)
-	ST Input.SD_Backward
+	ST INPUT.SD_Backward
 
 (** 		 **)
 (** 		 **)
 (** INPUT.LoadOnBoard := PLC_RX01_Bit_Load_i; **)
 	(* assign - Stmt *)
 	LD PLC_RX01_Bit_Load_i
-	ST Input.LoadOnBoard
+	ST INPUT.LoadOnBoard
 
 (**  **)
 (**  **)
@@ -649,6 +654,7 @@ END_VAR
 	LD NDC8.SDIO.DigitalInput12_EMO
 	ST StopEstopButton
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)
