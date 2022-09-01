@@ -1,4 +1,4 @@
-FUNCTION_BLOCK AutoInsert_FB
+FUNCTION_BLOCK AUTOINSERT_FB
 VAR_EXTERNAL
 	NDC8 : NDC8_T;
 	INPUT : INPUT_T;
@@ -56,5 +56,6 @@ else
 	;												(* Don't override MCD in semi mode. 			*)
 end_case;
 	
+
 
 END_FUNCTION_BLOCK

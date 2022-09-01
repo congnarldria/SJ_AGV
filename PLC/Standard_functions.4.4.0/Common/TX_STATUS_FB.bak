@@ -156,7 +156,7 @@ end_if;
 
 NDC8.PLC_Application.TxStatusBit4_LowBatt := (INPUT.LowBattery or NDC8.Userdefined.LowBatSim or OM_PLC_W1_Bit_SetLowBatt)and NDC8.PLC_Application.TxStatusBit5_WaitLow = FALSE ; (*Battery Low*)
 
-NDC8.PLC_Application.TxStatusBit6_Charge := NDC8.SDIO.DigitalOutput16_Charger; (*Charging*)
+NDC8.PLC_Application.TxStatusBit6_Charge := NDC8.SDIO.DigitalOutput16_RIGHTMGS OR NDC8.SDIO.DigitalOutput12_LEFTMGS; (*Charging*)
 
 (*
 if PLC_RX03_Bit_STw_FullCg = TRUE or PLC_RX15_Bit_BMS_ChgCmp = TRUE then
@@ -960,6 +960,7 @@ end_if;
 
 NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);
 NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
+
 
 
 

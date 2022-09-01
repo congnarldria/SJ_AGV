@@ -293,10 +293,10 @@ case ProcStep of
 						TempHB2 := true;
 					end_if;
 						IF TempHB1 <> TempHB2 THEN
-					IF STARTCOUNTER < 10 THEN
+					IF STARTCOUNTER < 100 THEN
 							STARTCOUNTER := STARTCOUNTER + 1;
 						END_IF;
-						If STARTCOUNTER > 5 THEN
+						If STARTCOUNTER > 15 THEN
 							STARTENABLE := TRUE;
 							STOPCOM := FALSE;
 						END_IF;	

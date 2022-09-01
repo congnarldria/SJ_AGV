@@ -58,7 +58,7 @@ VAR_GLOBAL
 	StopByCanErr_Node8 		AT %MX5.6:BOOL;		(* *)
 	StopByCanErr_Node9	 	AT %MX5.7:BOOL;		(* *)
 	StopByCanErr_Node10 	AT %MX6.0:BOOL;		(* *)
-	STOPCOM					AT %MX6.1:BOOL;		(* *)
+	Spare50					AT %MX6.1:BOOL;		(* *)
 	Spare51					AT %MX6.2:BOOL;		(* *)
 	Spare52 				AT %MX6.3:BOOL;		(* *)
 	Spare53					AT %MX6.4:BOOL;		(* *)
@@ -488,6 +488,7 @@ VAR_GLOBAL
 	
 	
 END_VAR
+
 
 
 

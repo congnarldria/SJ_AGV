@@ -298,7 +298,6 @@ case ProcStep of
 						END_IF;
 						If STARTCOUNTER > 15 THEN
 							STARTENABLE := TRUE;
-							STOPCOM := FALSE;
 						END_IF;	
 					END_IF;
 					ProcStep:=31;															
@@ -534,6 +533,7 @@ case ProcStep of
 			End_IF;
 			ProcStep:=0;
 end_case;
+
 
 
 

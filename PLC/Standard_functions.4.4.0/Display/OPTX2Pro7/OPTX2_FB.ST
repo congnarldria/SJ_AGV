@@ -684,15 +684,13 @@ if ModBus_ValueBOOL [204] then
 end_if;
 
 (*Nav area init*)
-if ModBus_ValueBOOL [205] then
-
+if ModBus_ValueBOOL [205] AND PLC_RX_Word11_Ins_Pno <> 0 then
+	
 	ConvWord2 := ModBus_ValueWord [312];
 	ConvWord := ModBus_ValueWord [311];
 	NDC8.NavInit.Target := ConvDINT;
-	
-	InitMethod := Word_TO_DINT(ModBus_ValueWord [203]);
-	
-	NavInit(Method:= InitMethod);
+	InitMethod := Word_TO_DINT(ModBus_ValueWord [203]);	
+	NavInit(Method := InitMethod);
 	if NavInit.Finished then
 		ModBus_ValueBOOL [205] := 0;
 	end_if;
@@ -721,6 +719,8 @@ OPTX2Communication();
 
 
 (****************************************************************************)
+
+
 
 
 

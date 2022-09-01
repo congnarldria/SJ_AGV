@@ -354,7 +354,7 @@ if 	INPUT.Auto = TRUE then
 	ModBus_ValueBOOL [315] := NDC8.SDIO.DigitalOutput13_PWR_OFF;
 	ModBus_ValueBOOL [316] := NDC8.SDIO.DigitalOutput14_LED_BRK;
 	ModBus_ValueBOOL [317] := NDC8.SDIO.DigitalOutput16_RIGHTMGS;
-	ModBus_ValueBOOL [318] := NDC8.SDIO.DigitalOutput16_RIGHTMGS;
+	ModBus_ValueBOOL [318] := NDC8.SDIO.DigitalOutput16_RIGHTMGS OR NDC8.SDIO.DigitalOutput12_LEFTMGS;
 
 	ModBus_ValueBOOL [330] := NDC8.DCD_5.DigitalOutput2_Braker;
 	ModBus_ValueBOOL [331] := NDC8.DCD_7.DigitalOutput2_Braker;
@@ -685,14 +685,12 @@ end_if;
 
 (*Nav area init*)
 if ModBus_ValueBOOL [205] then
-
+	
 	ConvWord2 := ModBus_ValueWord [312];
 	ConvWord := ModBus_ValueWord [311];
 	NDC8.NavInit.Target := ConvDINT;
-	
-	InitMethod := Word_TO_DINT(ModBus_ValueWord [203]);
-	
-	NavInit(Method:= InitMethod);
+	InitMethod := Word_TO_DINT(ModBus_ValueWord [203]);	
+	NavInit(Method := InitMethod);
 	if NavInit.Finished then
 		ModBus_ValueBOOL [205] := 0;
 	end_if;
@@ -721,6 +719,9 @@ OPTX2Communication();
 
 
 (****************************************************************************)
+
+
+
 
 
 

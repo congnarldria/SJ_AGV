@@ -615,10 +615,11 @@ end_if;
 
 
 (* Set Insert Point *)
+(*
 if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then
 	
 	NDC8.NavInit.Target := Word_To_DINT(PLC_RX_Word11_Ins_Pno);
-	NavInit(Method:= 1);
+	NavInit(Method:= 0);
 	if NavInit.Finished and NavInit.ErrorCode <> 0 then
 		PLC_TX04_Bit_STr_Ins_dn := TRUE;
 		PLC_TX04_Bit_STr_Ins_er := FALSE;
@@ -627,7 +628,7 @@ if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then
 		PLC_TX04_Bit_STr_Ins_er := TRUE;
 	end_if;
 end_if;
-
+*)
 (* Set Local Order Data*)
 
 STw_NewcmdR(CLK:= PLC_RX03_Bit_STw_Newcmd);
@@ -688,7 +689,7 @@ if PLC_RX_Word16_BMS_BatV < DINT_TO_WORD(NDC8.UserDefined.Integer32_50_BattLowVo
 else
 	BatLow:= FALSE;
 end_if;
- 
+
 if BMS_BatLow = TRUE or BatLow = TRUE then
 	INPUT.LowBattery := TRUE;
 else
@@ -1021,6 +1022,8 @@ if ComStart = true AND NDC8.UserDefined.Integer32_10_PCLMODBUS = 1 then
 	
 	
 end_if;
+
+
 
 
 

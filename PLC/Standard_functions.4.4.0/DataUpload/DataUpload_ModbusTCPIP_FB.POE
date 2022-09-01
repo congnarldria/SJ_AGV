@@ -86,7 +86,6 @@ END_VAR
 (*Automatically declared*)
 VAR_EXTERNAL
 	PLC_TX_WORD15_STR_BCD2 : WORD;
-	STOPCOM : BOOL;
 	PLC_RX_WORD12_STW_PINT : WORD;
 	PLC_RX_WORD18_BMS_BATC : WORD;
 	PLC_RX_WORD11_INS_PNO : WORD;
@@ -1331,11 +1330,6 @@ END_VAR
 				(* assign - Stmt *)
 				LD true
 				ST STARTENABLE
-
-(** 							STOPCOM := FALSE; **)
-				(* assign - Stmt *)
-				LD false
-				ST STOPCOM
 
 				JMP ODK_END_IF_00000000000000J
 
@@ -2682,6 +2676,7 @@ END_VAR
 	ODK_SKIP_000000000000002_00000000000000F:
 	ODK_END_CASE_000000000000002:
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

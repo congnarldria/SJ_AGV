@@ -1,7 +1,7 @@
 0/9	SegHardwareConfig	--	20
-0/10	Datasegment	0/11	4156	SHAREDGLOBAL
+0/10	Datasegment	0/11	3548	SHAREDGLOBAL
 0/11	Codesegment	0/12	7
-0/12	Initialsegment	0/44	4152
+0/12	Initialsegment	0/44	3544
 0/13	Datasegment	0/14	5380	GLOBAL
 0/14	Codesegment	0/15	7
 0/15	Initialsegment	0/45	5388
@@ -46,7 +46,7 @@
 0/54	Sourcesegment	--	64008
 0/55	Sourcesegment	--	64008
 0/56	Sourcesegment	--	64008
-0/57	Sourcesegment	--	17240
+0/57	Sourcesegment	--	10499
 1/54	Datasegment	1/55	600	MAIN
 1/55	Codesegment	1/56	4329
 1/56	Initialsegment	1/351	168
@@ -208,7 +208,7 @@
 1/212	Codesegment	1/213	1051
 1/213	Initialsegment	1/381	16
 1/214	Datasegment	1/215	372	MAIN.OPTX2
-1/215	Codesegment	1/216	6963
+1/215	Codesegment	1/216	6973
 1/216	Initialsegment	1/382	48
 1/217	Datasegment	1/70	20	MAIN.OPTX2.INTTODISPLAY
 1/218	Datasegment	1/70	20	MAIN.OPTX2.INTFROMDISPLAY
@@ -244,8 +244,8 @@
 1/248	Datasegment	1/249	36	MAIN.DEBUGFB
 1/249	Codesegment	1/250	397
 1/250	Initialsegment	1/391	16
-1/251	Datasegment	1/252	2996	MAIN.PLC_COMMUNICATION
-1/252	Codesegment	1/253	5775
+1/251	Datasegment	1/252	2888	MAIN.PLC_COMMUNICATION
+1/252	Codesegment	1/253	2762
 1/253	Initialsegment	1/392	2532
 1/254	Datasegment	1/64	36	MAIN.PLC_COMMUNICATION.TP_PB_NOSELTIMER
 1/255	Datasegment	1/70	20	MAIN.PLC_COMMUNICATION.RST_R
@@ -258,7 +258,7 @@
 1/262	Datasegment	1/205	87	MAIN.PLC_COMMUNICATION.TO_BYTES
 1/263	Datasegment	1/264	90	MAIN.PLC_COMMUNICATION.TO_STRING
 1/264	Codesegment	1/265	7
-1/265	Initialsegment	1/394	98
+1/265	Initialsegment	1/393	98
 1/266	Datasegment	1/64	36	MAIN.PLC_COMMUNICATION.PLC_HEARTBEATTIMEOUT
 1/267	Datasegment	1/224	28	MAIN.PLC_COMMUNICATION.ORDERMODE
 1/268	Datasegment	1/227	28	MAIN.PLC_COMMUNICATION.LOCALORDER
@@ -268,7 +268,7 @@
 1/272	Datasegment	1/64	36	MAIN.PLC_COMMUNICATION.STR_ACKT
 1/273	Datasegment	1/274	56	MAIN.F_STEERSUPERVISION
 1/274	Codesegment	1/275	234
-1/275	Initialsegment	1/395	44
+1/275	Initialsegment	1/394	44
 1/276	Datasegment	1/70	20	MAIN.F_STEERSUPERVISION.MOVINGR
 1/277	Datasegment	1/82	20	MAIN.F_STEERSUPERVISION.MOVINGF
 1/278	Datasegment	1/64	36	MAIN.F_STEERSUPERVISION.OVERRANGEFAILTIMERTON
@@ -290,7 +290,7 @@
 1/294	Datasegment	1/64	36	MAIN.R_DRIVESUPERVISION.NOTMOVINGFAILTIMERTON
 1/295	Datasegment	1/296	128	MAIN.BMS_CHG
 1/296	Codesegment	1/297	1468
-1/297	Initialsegment	1/396	24
+1/297	Initialsegment	1/395	24
 1/298	Datasegment	1/64	36	MAIN.BMS_CHG.STEPDELAY
 1/299	Datasegment	1/64	36	MAIN.BMS_CHG.CHAGETIMER
 1/300	Datasegment	1/70	20	MAIN.ERROR_BB_TRIGR
@@ -299,23 +299,23 @@
 1/303	Datasegment	1/70	20	MAIN.MASTERLINKR
 1/304	Datasegment	1/305	56	MAIN.INPUTMAP
 1/305	Codesegment	1/306	1433
-1/306	Initialsegment	1/397	24
+1/306	Initialsegment	1/396	24
 1/307	Datasegment	1/70	20	MAIN.INPUTMAP.STARTSWITCHRISE
 1/308	Datasegment	1/64	36	MAIN.INPUTMAP.STARTDELAY
 1/309	Datasegment	1/70	20	MAIN.INPUTMAP.MCDAUTOR
 1/310	Datasegment	1/224	28	MAIN.INPUTMAP.ORDERMODE
 1/311	Datasegment	1/312	56	MAIN.OUTPUTMAP
 1/312	Codesegment	1/313	1304
-1/313	Initialsegment	1/398	20
+1/313	Initialsegment	1/397	20
 1/314	Datasegment	1/315	64	MAIN.OUTPUTMAP.LAMPBLINK
 1/315	Codesegment	1/316	263
-1/316	Initialsegment	1/399	60
+1/316	Initialsegment	1/398	60
 1/317	Datasegment	1/318	16	MAIN.OUTPUTMAP.LAMPBLINK.TIME_TO_DINT
 1/318	Codesegment	1/319	7
-1/319	Initialsegment	1/400	24
+1/319	Initialsegment	1/399	24
 1/320	Datasegment	1/321	16	MAIN.OUTPUTMAP.LAMPBLINK.GETTIME
 1/321	Codesegment	1/322	7
-1/322	Initialsegment	1/401	24
+1/322	Initialsegment	1/400	24
 1/323	Datasegment	1/64	36	MAIN.OUTPUTMAP.POWEROFFEVTM
 1/324	Datasegment	1/64	36	MAIN.OUTPUTMAP.BUZZERSYNCTM
 1/325	Datasegment	1/64	36	MAIN.COMMCHECKTIMEUP
@@ -337,10 +337,10 @@
 1/341	Datasegment	1/70	20	MAIN.ERRORTRIGR
 1/342	Datasegment	1/343	124	MAIN.DATAUPDATE
 1/343	Codesegment	1/344	1590
-1/344	Initialsegment	1/402	24
-1/345	Datasegment	1/346	700	MAIN.DATAUPDATE.DATAUPLOAD
-1/346	Codesegment	1/347	5824
-1/347	Initialsegment	1/403	424
+1/344	Initialsegment	1/401	24
+1/345	Datasegment	1/346	696	MAIN.DATAUPDATE.DATAUPLOAD
+1/346	Codesegment	1/347	5820
+1/347	Initialsegment	1/402	424
 1/348	Datasegment	1/237	95	MAIN.DATAUPDATE.DATAUPLOAD.SERIAL_READ
 1/349	Datasegment	1/240	94	MAIN.DATAUPDATE.DATAUPLOAD.SERIAL_WRITE
 1/350	Datasegment	1/173	36	MAIN.DATAUPDATE.DATAUPLOAD.STARTDELAYTOF
@@ -376,7 +376,7 @@
 1/380	NativeCodeSegment	1/208	196
 1/381	NativeCodeSegment	1/212	8212
 1/382	NativeCodeSegment	1/383	64160
-1/383	NativeCodeSegment2	1/215	63532
+1/383	NativeCodeSegment2	1/215	63632
 1/384	NativeCodeSegment	1/224	820
 1/385	NativeCodeSegment	1/227	820
 1/386	NativeCodeSegment	1/230	832
@@ -385,16 +385,15 @@
 1/389	NativeCodeSegment	1/240	36
 1/390	NativeCodeSegment	1/244	2524
 1/391	NativeCodeSegment	1/249	6020
-1/392	NativeCodeSegment	1/393	64020
-1/393	NativeCodeSegment2	1/252	9524
-1/394	NativeCodeSegment	1/264	36
-1/395	NativeCodeSegment	1/274	1784
-1/396	NativeCodeSegment	1/296	13692
-1/397	NativeCodeSegment	1/305	10832
-1/398	NativeCodeSegment	1/312	11940
-1/399	NativeCodeSegment	1/315	2584
-1/400	NativeCodeSegment	1/318	36
-1/401	NativeCodeSegment	1/321	36
-1/402	NativeCodeSegment	1/343	25536
-1/403	NativeCodeSegment	1/404	64012
-1/404	NativeCodeSegment2	1/346	16132
+1/392	NativeCodeSegment	1/252	28000
+1/393	NativeCodeSegment	1/264	36
+1/394	NativeCodeSegment	1/274	1784
+1/395	NativeCodeSegment	1/296	13692
+1/396	NativeCodeSegment	1/305	10832
+1/397	NativeCodeSegment	1/312	11940
+1/398	NativeCodeSegment	1/315	2584
+1/399	NativeCodeSegment	1/318	36
+1/400	NativeCodeSegment	1/321	36
+1/401	NativeCodeSegment	1/343	25536
+1/402	NativeCodeSegment	1/403	64008
+1/403	NativeCodeSegment2	1/346	16044

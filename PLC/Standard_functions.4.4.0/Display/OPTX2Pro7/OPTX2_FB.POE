@@ -2335,14 +2335,17 @@ END_VAR
 
 (**  **)
 (** {*Nav area init*} **)
-(** if ModBus_ValueBOOL [205] then **)
+(** if ModBus_ValueBOOL [205] AND PLC_RX_Word11_Ins_Pno <> 0 then **)
 	(* if - Cond *)
 	LD ModBus_ValueBOOL[205]
+	AND ( PLC_RX_Word11_Ins_Pno
+		NE 0
+	)
 	JMPCN ODK_SKIP_00000000000000M_000000000000001
 
 		(* then - Stmts *)
 
-(**  **)
+(** 	 **)
 (** 	ConvWord2 := ModBus_ValueWord [312]; **)
 		(* assign - Stmt *)
 		LD ModBus_ValueWord[312]
@@ -2358,15 +2361,13 @@ END_VAR
 		LD ConvDINT
 		ST NDC8.NavInit.Target
 
-(** 	 **)
-(** 	InitMethod := Word_TO_DINT(ModBus_ValueWord [203]); **)
+(** 	InitMethod := Word_TO_DINT(ModBus_ValueWord [203]);	 **)
 		(* assign - Stmt *)
 		LD ModBus_ValueWord[203]
 		Word_TO_DINT 
 		ST InitMethod
 
-(** 	 **)
-(** 	NavInit(Method:= InitMethod); **)
+(** 	NavInit(Method := InitMethod); **)
 		(* call - Stmt *)
 		CAL NavInit (
 			Method := InitMethod
@@ -2463,6 +2464,8 @@ END_VAR
 (**  **)
 (**  **)
 (** {****************************************************************************} **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)
