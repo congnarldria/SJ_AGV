@@ -684,7 +684,7 @@ if ModBus_ValueBOOL [204] then
 end_if;
 
 (*Nav area init*)
-if ModBus_ValueBOOL [205] AND PLC_RX_Word11_Ins_Pno <> 0 then
+if ModBus_ValueBOOL [205] then
 	
 	ConvWord2 := ModBus_ValueWord [312];
 	ConvWord := ModBus_ValueWord [311];
@@ -719,6 +719,7 @@ OPTX2Communication();
 
 
 (****************************************************************************)
+
 
 
 

@@ -470,7 +470,7 @@ END_VAR
 		ODK_END_IF_000000000000009:
 
 (** 		 **)
-(** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE then **)
+(** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE or g_ErrorCode <> 0 then **)
 		(* if - Cond *)
 		LD PLC_RX01_Bit_ChrgEmg
 		EQ TRUE
@@ -479,6 +479,9 @@ END_VAR
 		)
 		OR ( g_ChargeOverTime
 			EQ TRUE
+		)
+		OR ( g_ErrorCode
+			NE 0
 		)
 		JMPCN ODK_SKIP_00000000000000A_000000000000001
 
@@ -1259,6 +1262,8 @@ END_VAR
 	ODK_SKIP_00000000000000W_000000000000001:
 	ODK_END_IF_00000000000000W:
 
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

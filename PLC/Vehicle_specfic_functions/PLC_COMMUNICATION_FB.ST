@@ -619,7 +619,7 @@ end_if;
 if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then
 	
 	NDC8.NavInit.Target := Word_To_DINT(PLC_RX_Word11_Ins_Pno);
-	NavInit(Method:= 0);
+	NavInit(Method:= 1);
 	if NavInit.Finished and NavInit.ErrorCode <> 0 then
 		PLC_TX04_Bit_STr_Ins_dn := TRUE;
 		PLC_TX04_Bit_STr_Ins_er := FALSE;
@@ -707,6 +707,7 @@ end_if;
 if g_PlcComLinkUp = TRUE then
 	g_PowerOffFlag_PLC := PLC_RX04_Bit_STw_LowOT;
 end_if;
+
 
 
 

@@ -2335,12 +2335,9 @@ END_VAR
 
 (**  **)
 (** {*Nav area init*} **)
-(** if ModBus_ValueBOOL [205] AND PLC_RX_Word11_Ins_Pno <> 0 then **)
+(** if ModBus_ValueBOOL [205] then **)
 	(* if - Cond *)
 	LD ModBus_ValueBOOL[205]
-	AND ( PLC_RX_Word11_Ins_Pno
-		NE 0
-	)
 	JMPCN ODK_SKIP_00000000000000M_000000000000001
 
 		(* then - Stmts *)
@@ -2464,6 +2461,7 @@ END_VAR
 (**  **)
 (**  **)
 (** {****************************************************************************} **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

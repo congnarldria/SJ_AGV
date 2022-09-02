@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vpf" FileRevision="513" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-08-29" ModificationTime="16:26:31.0693000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vpf" FileRevision="515" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-09-02" ModificationTime="08:34:23.6836000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
   <ComponentList Name="P46164" TimeStamp="0">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
       <Properties>
-        <Property SymbolName="Method" Value="2" />
+        <Property SymbolName="Method" Value="1" />
         <Property SymbolName="Target" Value="0" />
         <Property SymbolName="TargetX" Value="" />
         <Property SymbolName="TargetY" Value="" />
@@ -13,9 +13,9 @@
         <Property SymbolName="RequestEN" Value="0" />
         <Property SymbolName="RequestENO" Value="0" />
         <Property SymbolName="Error" Value="" />
-        <Property SymbolName="PointSearchLimit" Value="2000" />
-        <Property SymbolName="PointSearchAngleLimit" Value="15" />
-        <Property SymbolName="LostSearchLimit" Value="20000" />
+        <Property SymbolName="PointSearchLimit" Value="10000" />
+        <Property SymbolName="PointSearchAngleLimit" Value="30" />
+        <Property SymbolName="LostSearchLimit" Value="10000" />
       </Properties>
     </Component>
     <Component SymbolName="Mcd" DataType="MCD7P" Index="0x200C" FixedIndex="0">
@@ -851,16 +851,16 @@
         <Property SymbolName="Angle" Value="0" />
         <Property SymbolName="UpsideDown" Value="0" />
         <Property SymbolName="IP" Value="192.168.100.9" />
-        <Property SymbolName="Field1_X1" Value="-870" />
-        <Property SymbolName="Field1_X2" Value="-670" />
-        <Property SymbolName="Field1_Y1" Value="-100" />
-        <Property SymbolName="Field1_Y2" Value="100" />
+        <Property SymbolName="Field1_X1" Value="-770" />
+        <Property SymbolName="Field1_X2" Value="-770" />
+        <Property SymbolName="Field1_Y1" Value="0" />
+        <Property SymbolName="Field1_Y2" Value="0" />
         <Property SymbolName="Field1_Triggered" Value="0" />
         <Property SymbolName="Field1_Dist" Value="0" />
-        <Property SymbolName="Field2_X1" Value="-870" />
-        <Property SymbolName="Field2_X2" Value="-670" />
-        <Property SymbolName="Field2_Y1" Value="-100" />
-        <Property SymbolName="Field2_Y2" Value="100" />
+        <Property SymbolName="Field2_X1" Value="-770" />
+        <Property SymbolName="Field2_X2" Value="-770" />
+        <Property SymbolName="Field2_Y1" Value="0" />
+        <Property SymbolName="Field2_Y2" Value="0" />
         <Property SymbolName="Field2_Triggered" Value="0" />
         <Property SymbolName="Field2_Dist" Value="0" />
         <Property SymbolName="Sector1_Ignore" Value="0" />
@@ -1065,12 +1065,12 @@
         <Property SymbolName="SteerEncOffset" Value="-700" />
         <Property SymbolName="PosRegP" Value="25" />
         <Property SymbolName="PosRegI" Value="0" />
-        <Property SymbolName="LimOutMax" Value="1024" />
+        <Property SymbolName="LimOutMax" Value="512" />
         <Property SymbolName="MaxWheelAngle" Value="0" />
         <Property SymbolName="SlowDownZone" Value="0" />
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" />
         <Property SymbolName="EndLimitSwitchPolarity" Value="1" />
-        <Property SymbolName="SyncGate" Value="1" />
+        <Property SymbolName="SyncGate" Value="0" />
         <Property SymbolName="SyncFilter" Value="5" />
         <Property SymbolName="SyncEmergency" Value="1" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" />
@@ -1180,12 +1180,12 @@
         <Property SymbolName="SteerEncOffset" Value="0" />
         <Property SymbolName="PosRegP" Value="33" />
         <Property SymbolName="PosRegI" Value="0" />
-        <Property SymbolName="LimOutMax" Value="1024" />
+        <Property SymbolName="LimOutMax" Value="512" />
         <Property SymbolName="MaxWheelAngle" Value="0" />
         <Property SymbolName="SlowDownZone" Value="0" />
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" />
         <Property SymbolName="EndLimitSwitchPolarity" Value="1" />
-        <Property SymbolName="SyncGate" Value="1" />
+        <Property SymbolName="SyncGate" Value="0" />
         <Property SymbolName="SyncFilter" Value="5" />
         <Property SymbolName="SyncEmergency" Value="1" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" />

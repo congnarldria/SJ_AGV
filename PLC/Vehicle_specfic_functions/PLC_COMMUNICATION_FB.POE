@@ -2167,7 +2167,7 @@ END_VAR
 (** if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then **)
 (** 	 **)
 (** 	NDC8.NavInit.Target := Word_To_DINT(PLC_RX_Word11_Ins_Pno); **)
-(** 	NavInit(Method:= 0); **)
+(** 	NavInit(Method:= 1); **)
 (** 	if NavInit.Finished and NavInit.ErrorCode <> 0 then **)
 (** 		PLC_TX04_Bit_STr_Ins_dn := TRUE; **)
 (** 		PLC_TX04_Bit_STr_Ins_er := FALSE; **)
@@ -2578,6 +2578,7 @@ END_VAR
 	ODK_SKIP_00000000000001N_000000000000001:
 	ODK_END_IF_00000000000001N:
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)
