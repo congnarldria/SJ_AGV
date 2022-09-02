@@ -629,7 +629,7 @@ Case AutoloadMainState of
 				AutoloadMainState := 49;
 			end_if;
 		
-			if NDC8.PointTrigger.Bit9_Chrg_Right = TRUE and NDC8.PointTrigger.Bit10_Chrg_Left = FALSE  then
+			if NDC8.PointTrigger.Bit9_Chrg_Right = TRUE or NDC8.PointTrigger.Bit10_Chrg_Left = TRUE  then
 				StopCharge := TRUE;
 			
 				OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
@@ -996,6 +996,7 @@ end_if;
 
 
 (* OUTPUT *)
+
 
 
 

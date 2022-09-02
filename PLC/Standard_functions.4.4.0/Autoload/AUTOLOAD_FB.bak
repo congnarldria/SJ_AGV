@@ -161,19 +161,11 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 		end_if;
 	
 		NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
-		BCDProcState := 4;
 	1: (*Clear BCD Req*)
 		StopByBCD := TRUE;
 		PLC_TX04_Bit_BCD_Clr := true;
 		PLC_TX04_Bit_BCD_Req := false;
-		
-		PLC_TX_Word14_STr_BCD3 := 16689;
-		PLC_TX_Word15_STr_BCD2 := 13618;
-		PLC_TX_Word16_STr_BCD1 := 3379;
-		PLC_RX_Word9_STw_BCD1 := 3379;
-		PLC_RX_Word8_STw_BCD2 := 13618;
-		PLC_RX_Word7_STw_BCD3 := 16689;
-		
+				
 		OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 			OM_PLC_W2_Bit_BCD_setOK := FALSE;
 			OM_PLC_W2_Bit_Set_Result := FALSE;

@@ -3154,12 +3154,12 @@ END_VAR
 			ODK_END_IF_000000000000016:
 
 (** 		 **)
-(** 			if NDC8.PointTrigger.Bit9_Chrg_Right = TRUE and NDC8.PointTrigger.Bit10_Chrg_Left = FALSE  then **)
+(** 			if NDC8.PointTrigger.Bit9_Chrg_Right = TRUE or NDC8.PointTrigger.Bit10_Chrg_Left = TRUE  then **)
 			(* if - Cond *)
 			LD NDC8.PointTrigger.Bit9_Chrg_Right
 			EQ TRUE
-			AND ( NDC8.PointTrigger.Bit10_Chrg_Left
-				EQ FALSE
+			OR ( NDC8.PointTrigger.Bit10_Chrg_Left
+				EQ TRUE
 			)
 			JMPCN ODK_SKIP_000000000000017_000000000000001
 
@@ -5024,6 +5024,7 @@ END_VAR
 (**  **)
 (**  **)
 (** {* OUTPUT *} **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

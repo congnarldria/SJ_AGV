@@ -46,7 +46,7 @@
 0/54	Sourcesegment	--	64008
 0/55	Sourcesegment	--	64008
 0/56	Sourcesegment	--	64008
-0/57	Sourcesegment	--	10464
+0/57	Sourcesegment	--	10488
 1/54	Datasegment	1/55	600	MAIN
 1/55	Codesegment	1/56	4329
 1/56	Initialsegment	1/351	168
