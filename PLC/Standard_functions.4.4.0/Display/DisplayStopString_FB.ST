@@ -26,7 +26,7 @@ VAR
 END_VAR
 
 (* update if new status *)
-(*
+
 if INStatus XOR (DisplayStopStringA[StopString,0]<>0) then
 
 	if INStatus then
@@ -40,13 +40,13 @@ if INStatus XOR (DisplayStopStringA[StopString,0]<>0) then
 	end_if;
 
 end_if;
-*)
 
 
+(*
 		DisplayStopStringA[StopString,0]	:= 0;
 		DisplayStopStringA[StopString,1]	:= 0;
 		Count								:= Count-1;
-
+*)
 (* Select Stop String *)
 DisplayStopStringUpdateRT(CLK:=Timer.Display);
 if 	DisplayStopStringUpdateRT.Q 
@@ -66,6 +66,8 @@ end_if;
 (* setup return *)
 CurrentString	:= DisplayStopStringA[DisplayStopStringIx,0];
 CurrentValue	:= DisplayStopStringA[DisplayStopStringIx,1];
+
+
 
 
 

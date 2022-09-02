@@ -94,7 +94,7 @@ else
 	NDC8.SDIO.DigitalOutput8_LED_RST := FALSE;
 end_if;
 
-PowerOffEvTm(IN:= g_PowerOffFlag, PT:= t#600s);
+PowerOffEvTm(IN:= g_PowerOffFlag, PT:= t#10s);
 
 if PowerOffEvTm.Q then
 	NDC8.SDIO.DigitalOutput13_PWR_OFF := TRUE;
@@ -214,6 +214,7 @@ if g_FindSyncFlag = TRUE then
 		NDC8.CAN_IO_3.DigitalOutput4_BuzzerCh4 := FALSE;
 	end_if;
 end_if;
+
 
 
 

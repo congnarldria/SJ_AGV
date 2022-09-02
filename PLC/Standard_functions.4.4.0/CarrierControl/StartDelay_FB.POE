@@ -116,9 +116,13 @@ END_VAR
 			LD 10
 			ST StartDelayState
 
+(** 		StopStartDelay 	:= true; **)
+			(* assign - Stmt *)
+			LD true
+			ST StopStartDelay
+
 			JMP ODK_END_IF_000000000000003
 
-(** 		{*StopStartDelay 	:= true;*} **)
 (** 	end_if; **)
 		(* if - End *) 
 		ODK_SKIP_000000000000003_000000000000001:
@@ -230,5 +234,7 @@ END_VAR
 		StopValue := 0
 	)
 
+(**  **)
+(**  **)
 
 END_FUNCTION_BLOCK

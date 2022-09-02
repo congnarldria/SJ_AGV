@@ -16,7 +16,7 @@ VAR
 	BMS_BatLow : BOOL;
 	
 	TP_PB_NoSelTimer : TON;
-	
+	NTDelay : TOF;
 	Debug_PB_Cont : BOOL := FALSE;
 	Debug_PB_Finish : BOOL := FALSE;
 	Debug_PB_Cancel : BOOL := FALSE;
@@ -503,6 +503,7 @@ elsif PLC_TX01_Bit_HostMode then
 	end_if;
 end_if;	
 
+
 PLC_TX_Word9_STr_Pnt := DINT_TO_WORD(FinalPnt);
 
 (* D510 *)
@@ -566,12 +567,12 @@ if SetToLocal then
 	end_if;
 end_if;
 
+NTDelay(IN:= PLC_RX03_Bit_STw_Mod_LT , PT := t#1s);
 
-if (PLC_RX03_Bit_STw_Mod_LT and PLC_RX03_Bit_STw_Mod_NT) then
+if (NTDelay.Q and PLC_RX03_Bit_STw_Mod_NT) then
 	NDC8.Automatic.SetOrderMode := 2;
 	OrderMode();
 end_if;
-
 
 
 
@@ -593,7 +594,7 @@ end_if;
 
 
 (* Set Insert Point *)
-if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then
+(*if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then
 	
 	NDC8.NavInit.Target := Word_To_DINT(PLC_RX_Word11_Ins_Pno);
 	NavInit(Method:= 1);
@@ -604,7 +605,7 @@ if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then
 		PLC_TX04_Bit_STr_Ins_dn := FALSE;
 		PLC_TX04_Bit_STr_Ins_er := TRUE;
 	end_if;
-end_if;
+end_if;*)
 
 (* Set Local Order Data*)
 STw_NewcmdR(CLK:= PLC_RX03_Bit_STw_Newcmd);
@@ -995,6 +996,11 @@ if ComStart = true AND NDC8.UserDefined.Integer32_10_PCLMODBUS = 1 then
 	
 	
 end_if;
+
+
+
+
+
 
 
 

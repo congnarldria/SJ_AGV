@@ -31,40 +31,84 @@ VAR_EXTERNAL
 END_VAR
 (**  **)
 (** {* update if new status *} **)
-(** {* **)
+(**  **)
 (** if INStatus XOR (DisplayStopStringA[StopString,0]<>0) then **)
+	(* if - Cond *)
+	LD INStatus
+	XOR ( DisplayStopStringA[StopString,0]
+		NE 0
+	)
+	JMPCN ODK_SKIP_000000000000001_000000000000001
+
+		(* then - Stmts *)
+
 (**  **)
 (** 	if INStatus then **)
+		(* if - Cond *)
+		LD INStatus
+		JMPCN ODK_SKIP_000000000000002_000000000000001
+
+			(* then - Stmts *)
+
 (** 		DisplayStopStringA[StopString,0]	:= StopString; **)
+			(* assign - Stmt *)
+			LD StopString
+			ST DisplayStopStringA[StopString,0]
+
 (** 		DisplayStopStringA[StopString,1]	:= StopValue; **)
+			(* assign - Stmt *)
+			LD StopValue
+			ST DisplayStopStringA[StopString,1]
+
 (** 		Count								:= Count+1; **)
+			(* assign - Stmt *)
+			LD Count
+			ADD 1
+			ST Count
+
+			JMP ODK_END_IF_000000000000002
+
 (** 	else **)
+		(* else *) 
+		ODK_SKIP_000000000000002_000000000000001:
+
+			(* else - Stmts *)
+
 (** 		DisplayStopStringA[StopString,0]	:= 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST DisplayStopStringA[StopString,0]
+
 (** 		DisplayStopStringA[StopString,1]	:= 0; **)
+			(* assign - Stmt *)
+			LD 0
+			ST DisplayStopStringA[StopString,1]
+
 (** 		Count								:= Count-1; **)
+			(* assign - Stmt *)
+			LD Count
+			SUB 1
+			ST Count
+
 (** 	end_if; **)
+		(* if - End *) 
+		ODK_END_IF_000000000000002:
+
+		JMP ODK_END_IF_000000000000001
+
 (**  **)
 (** end_if; **)
-(** *} **)
+	(* if - End *) 
+	ODK_SKIP_000000000000001_000000000000001:
+	ODK_END_IF_000000000000001:
+
 (**  **)
 (**  **)
+(** {* **)
 (** 		DisplayStopStringA[StopString,0]	:= 0; **)
-	(* assign - Stmt *)
-	LD 0
-	ST DisplayStopStringA[StopString,0]
-
 (** 		DisplayStopStringA[StopString,1]	:= 0; **)
-	(* assign - Stmt *)
-	LD 0
-	ST DisplayStopStringA[StopString,1]
-
 (** 		Count								:= Count-1; **)
-	(* assign - Stmt *)
-	LD Count
-	SUB 1
-	ST Count
-
-(**  **)
+(** *} **)
 (** {* Select Stop String *} **)
 (** DisplayStopStringUpdateRT(CLK:=Timer.Display); **)
 	(* call - Stmt *)
@@ -80,7 +124,7 @@ END_VAR
 	AND ( DisplayStopStringA[DisplayStopStringNextIx,0]
 		NE 0
 	)
-	JMPCN ODK_SKIP_000000000000001_000000000000001
+	JMPCN ODK_SKIP_000000000000003_000000000000001
 
 		(* then - Stmts *)
 
@@ -96,12 +140,12 @@ END_VAR
 		MOD 255
 		ST DisplayStopStringNextIx
 
-		JMP ODK_END_IF_000000000000001
+		JMP ODK_END_IF_000000000000003
 
 (** end_if; **)
 	(* if - End *) 
-	ODK_SKIP_000000000000001_000000000000001:
-	ODK_END_IF_000000000000001:
+	ODK_SKIP_000000000000003_000000000000001:
+	ODK_END_IF_000000000000003:
 
 (**  **)
 (**  **)
@@ -110,7 +154,7 @@ END_VAR
 	(* if - Cond *)
 	LD DisplayStopStringA[DisplayStopStringNextIx,0]
 	EQ 0
-	JMPCN ODK_SKIP_000000000000002_000000000000001
+	JMPCN ODK_SKIP_000000000000004_000000000000001
 
 		(* then - Stmts *)
 
@@ -121,12 +165,12 @@ END_VAR
 		MOD 255
 		ST DisplayStopStringNextIx
 
-		JMP ODK_END_IF_000000000000002
+		JMP ODK_END_IF_000000000000004
 
 (** end_if; **)
 	(* if - End *) 
-	ODK_SKIP_000000000000002_000000000000001:
-	ODK_END_IF_000000000000002:
+	ODK_SKIP_000000000000004_000000000000001:
+	ODK_END_IF_000000000000004:
 
 (**  **)
 (**  **)
@@ -141,6 +185,8 @@ END_VAR
 	LD DisplayStopStringA[DisplayStopStringIx,1]
 	ST CurrentValue
 
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 

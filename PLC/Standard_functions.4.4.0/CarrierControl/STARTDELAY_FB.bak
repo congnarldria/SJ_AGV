@@ -39,7 +39,7 @@ end_if;
 
 case StartDelayState of
 0: 	(* When stand still on the home for more than 15 seconds. *)
-	StopStartDelay 	:= false;
+	(*StopStartDelay 	:= false;*)
 	if StartDelayInactivityTON.q then 
 		StartDelayState := 10;
 		(*StopStartDelay 	:= true;*)
@@ -49,12 +49,11 @@ case StartDelayState of
 		StartWarning 	:= true;
 		StartDelayState := 20;
 	end_if;
-	StartDelayState := 20;
 	
 20: 	(* Hold the vehicle, and beep, for two seconds before starting to drive. *)
 	if not StartDelayShortTOF.Q then								(* Stop bit set while on the home station and during the delay. *)
 		StartWarning 	:= false;
-		StopStartDelay 	:= false;
+		(*StopStartDelay 	:= false;*)
 		StartDelayState := 0;
 	end_if;
 		
@@ -62,5 +61,6 @@ end_case;
 		
 (* Indicate start delay is active when a drive command is recieved. *)
 DisplayStopString(INStatus:=StartWarning, StopString:=93, StopValue:=0);
+
 
 END_FUNCTION_BLOCK

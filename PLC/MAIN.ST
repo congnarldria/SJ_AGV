@@ -158,6 +158,7 @@ elsif AllOK_R.Q and NDC8.SDIO.DigitalInput2_BTN_RST = TRUE then
 	StopFindSync := FALSE;
 end_if;
 
+
 if NDC8.CAN_IO_3.DigitalInput5_LIMF_O = TRUE then
 	NDC8.DCD_6.SyncGate := TRUE;
 else
@@ -189,7 +190,9 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 		FindSyncDelay(IN:=FALSE);
 	end_if;
 	
-	
+	If NOT STARTENABLE THEN
+	   STOPCOM := TRUE;
+	END_IF;
 	1:
 	(* Steer Turn to -2000 *)
 	NDC8.Manual.PlcSelect := true;
@@ -234,13 +237,13 @@ if NDC8.CanOpenMaster.NMTState = 5 and NDC8.CanOpenMaster.State = 0 then
 (* INPUTS *)
 	InputMap();					(* Mapping inputs on devices to generic names *)
 
+
 (*Decisionmaking PLC:s*)
 
 
-	Autoload();	 (* Load handling 		*)		
-	
+	Autoload(); 			(* Load handling 		*)
 	LS2000();
-	
+	PLC_Communication();
 	CarrierControl(	LS2000Slowdown := LS2000.Slowdown);				
 	
 	if g_StartFindSync = FALSE then
@@ -253,7 +256,7 @@ if NDC8.CanOpenMaster.NMTState = 5 and NDC8.CanOpenMaster.State = 0 then
 (* BMS Charger *)
 	BMS_CHG();
 
-    PLC_Communication();	
+    	
 end_if;
 
 (* These FB can be run also during startup and in safe state *)
@@ -368,7 +371,7 @@ R_DriveSupervision(Command:= NDC8.DCD_7.SetSpeed,FeedBack:= NDC8.DCD_7.DriveEncS
 		CurSeg := NDC8.LayoutPosition.Segment;
 	end_if;
 	
-	NDC8.OMPLC.Cur_Pnt := DINT_TO_INT(CurPnt);
+	(*NDC8.OMPLC.Cur_Pnt := DINT_TO_INT(CurPnt);
 	NDC8.OMPLC.Cur_Seg := DINT_TO_INT(CurSeg);
 	
 	OM_PLC_Word7 := INT_TO_WORD(NDC8.OMPLC.Drv_Area);
@@ -378,7 +381,7 @@ R_DriveSupervision(Command:= NDC8.DCD_7.SetSpeed,FeedBack:= NDC8.DCD_7.DriveEncS
 	OM_PLC_W7_Bit_Area4 := NDC8.SegmentTrigger.Bit6_Area4_Seg;
 	OM_PLC_W7_Bit_Area8 := NDC8.SegmentTrigger.Bit7_Area8_Seg;
 	
-	NDC8.OMPLC.Drv_Area := WORD_TO_INT(OM_PLC_Word7);
+	NDC8.OMPLC.Drv_Area := WORD_TO_INT(OM_PLC_Word7);*)
 
 (* Alarm code *)
 
@@ -435,7 +438,7 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 123;
 	elsif F_SteerSupervision.NotMovingFail = TRUE or R_SteerSupervision.NotMovingFail = TRUE or (NDC8.DCD_6.EncoderStatus = 0 or NDC8.DCD_8.EncoderStatus = 0)then
 		g_ErrorCode := 124;
-	elsif PLC_RX_Word16_BMS_BatV < 220 or g_BattLim_NG then
+	elsif (PLC_RX_Word16_BMS_BatV < 220 or g_BattLim_NG) AND STARTENABLE then
 		g_ErrorCode := 127;
 	elsif not NDC8.DCD_5.DigitalInput2_OverRelayFS or not NDC8.DCD_5.DigitalInput3_OverRelayFD or not NDC8.DCD_7.DigitalInput2_OverRelayRS or not NDC8.DCD_7.DigitalInput3_OverRelayRD then
 		g_ErrorCode := 131;
@@ -539,9 +542,8 @@ else
 	StopByErrorCode := FALSE;
 end_if;
 
-if (PLC_RX01_Bit_EnableLD_i = FALSE or Input.StartMode = FALSE) and Input.Auto then
-	(*StopRobotNotIdle := TRUE; TEST*)
-	StopRobotNotIdle := FALSE;
+if (PLC_RX01_Bit_EnableLD_i = FALSE or Input.StartMode = FALSE or NDC8.SDIO.DigitalInput1_BTN_STR = TRUE) and Input.Auto then
+	StopRobotNotIdle := TRUE;
 else
 	StopRobotNotIdle := FALSE;
 end_if;
@@ -764,6 +766,15 @@ Display();
 OPTX2();
 
 DataUpdate();
+
+
+
+
+
+
+
+
+
 
 
 

@@ -226,11 +226,11 @@ END_VAR
 	ODK_END_IF_000000000000003:
 
 (**  **)
-(** PowerOffEvTm(IN:= g_PowerOffFlag, PT:= t#600s); **)
+(** PowerOffEvTm(IN:= g_PowerOffFlag, PT:= t#10s); **)
 	(* call - Stmt *)
 	CAL PowerOffEvTm (
 		IN := g_PowerOffFlag,
-		PT := t#600s
+		PT := t#10s
 	)
 
 (**  **)
@@ -876,6 +876,7 @@ END_VAR
 	ODK_SKIP_000000000000005_000000000000001:
 	ODK_END_IF_000000000000005:
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

@@ -452,7 +452,7 @@ if ModBus_ValueBOOL [203] then
 end_if;
 
 (* Set Parameters *)
-if (*ModBus_ValueBOOL [209] = *)FALSE then
+if ModBus_ValueBOOL [209] then
 
 	ModBus_ValueBOOL [210] := NDC8.UserDefined.Boolean_20_OnlineOrderMode;
 	
@@ -659,7 +659,7 @@ End_if;
 
 
 (*Local Order *)
-if ModBus_ValueBOOL [204] then
+if (*ModBus_ValueBOOL [204] AND STARTENABLE*) FALSE then
 	
 	ConvWord2 := ModBus_ValueWord [302];
 	ConvWord := ModBus_ValueWord [301];
@@ -684,7 +684,7 @@ if ModBus_ValueBOOL [204] then
 end_if;
 
 (*Nav area init*)
-if ModBus_ValueBOOL [205] then
+if (*ModBus_ValueBOOL [205] *) FALSE then
 
 	ConvWord2 := ModBus_ValueWord [312];
 	ConvWord := ModBus_ValueWord [311];
@@ -721,6 +721,9 @@ OPTX2Communication();
 
 
 (****************************************************************************)
+
+
+
 
 
 

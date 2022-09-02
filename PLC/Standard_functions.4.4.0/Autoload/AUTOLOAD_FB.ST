@@ -276,6 +276,9 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 	end_case;
 end_if;
 
+
+
+
 		
 Case AutoloadMainState of
 
@@ -294,7 +297,7 @@ Case AutoloadMainState of
 		if g_ErrorCode = 0 and PLC_RX01_Bit_EnableLD_i = TRUE then
 			if OperationCode > 0 then
 				AutoloadMainState := 10;
-			elsif NDC8.LocalOrder.OrderEN then
+			elsif NDC8.LocalOrder.OrderEN AND STARTENABLE then
 				AutoloadMainState := 10;
 			end_if;
 		end_if;
@@ -942,6 +945,8 @@ Case AutoloadMainState of
 		end_if;
 end_case;
 
+
+
 (*===============================================*)
 (* 		DEBUG #0x1  	Event 801				 *)
 
@@ -980,6 +985,9 @@ end_if;
 
 
 (* OUTPUT *)
+
+
+
 
 
 

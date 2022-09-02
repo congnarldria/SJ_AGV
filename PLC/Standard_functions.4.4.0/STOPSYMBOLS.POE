@@ -38,7 +38,7 @@ VAR_GLOBAL
 	StopForkTooHigh 		AT %MX3.5:BOOL;		(* 					Waiting for forks to go down.		*)
 	StopForkFarTooHigh		AT %MX3.6:BOOL;		(* 					Forks over the allowed height		*)
 	StopChargeStationMissing 				AT %MX3.7:BOOL;		(* *)
-
+	
 	StopWord2 AT 			%MX4.0:DWORD;		(*Sum of the stop bits*)
 												(*	   hex  dec   *)
 	StopByOM_PLC 			AT %MX4.0:BOOL;		(* *)
@@ -58,7 +58,7 @@ VAR_GLOBAL
 	StopByCanErr_Node8 		AT %MX5.6:BOOL;		(* *)
 	StopByCanErr_Node9	 	AT %MX5.7:BOOL;		(* *)
 	StopByCanErr_Node10 	AT %MX6.0:BOOL;		(* *)
-	Spare50					AT %MX6.1:BOOL;		(* *)
+	STOPCOM					AT %MX6.1:BOOL;		(* *)
 	Spare51					AT %MX6.2:BOOL;		(* *)
 	Spare52 				AT %MX6.3:BOOL;		(* *)
 	Spare53					AT %MX6.4:BOOL;		(* *)
@@ -488,6 +488,7 @@ VAR_GLOBAL
 	
 	
 END_VAR
+
 
 
 

@@ -42,7 +42,7 @@ case StartDelayState of
 	StopStartDelay 	:= false;
 	if StartDelayInactivityTON.q then 
 		StartDelayState := 10;
-		(*StopStartDelay 	:= true;*)
+		StopStartDelay 	:= true;
 	end_if;
 	
 10: if not StartDelayInactivity then		(* Wait for a new order. *)
@@ -61,5 +61,7 @@ end_case;
 		
 (* Indicate start delay is active when a drive command is recieved. *)
 DisplayStopString(INStatus:=StartWarning, StopString:=93, StopValue:=0);
+
+
 
 END_FUNCTION_BLOCK

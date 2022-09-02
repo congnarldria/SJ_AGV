@@ -26,7 +26,6 @@ ConvBit12:BOOL;			(*	   1000 	*)
 ConvBit13:BOOL;			(*	   2000 	*)
 ConvBit14:BOOL;			(*	   4000 	*)
 ConvBit15:BOOL;         (*	   8000 	*)
-
 (*BeijerSetParameters:BeijerSetParameters_T;*)
 END_VAR
 
@@ -79,7 +78,8 @@ msg_index: INT;
 ix : INT;
 UploadData_message : ARRAY[1..300] of BYTE;
 
-
+TempHB1 : BOOL;
+TempHB2 : BOoL;
 
 END_VAR
 (****************************************************************************)
@@ -283,11 +283,24 @@ case ProcStep of
 					serial_write.data[9] := DINT_TO_BYTE(Total*2); (* lp *)
 				    serial_write.length := 9;
 					serial_write();
+					TempHB1 := FALSE;
+					TempHB2 := FALSE;
 					if PLC_TX04_Bit_ChkCom_Tx = true then
 						PLC_TX04_Bit_ChkCom_Tx := false;
+						TempHB1 := false;
 					else
 						PLC_TX04_Bit_ChkCom_Tx := true;
+						TempHB2 := true;
 					end_if;
+					IF STARTCOUNTER < 100 THEN
+						IF TempHB1 <> TempHB2 THEN
+							STARTCOUNTER := STARTCOUNTER + 1;
+						END_IF;
+						If STARTCOUNTER > 50 THEN
+							STARTENABLE := TRUE;
+							STOPCOM := FALSE;
+						END_IF;	
+					END_IF;
 					ProcStep:=31;															
 31:
 					IF Total >= 16 THEN
@@ -521,6 +534,9 @@ case ProcStep of
 			End_IF;
 			ProcStep:=0;
 end_case;
+
+
+
 
 
 

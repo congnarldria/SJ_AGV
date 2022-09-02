@@ -276,6 +276,9 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 	end_case;
 end_if;
 
+
+
+
 		
 Case AutoloadMainState of
 
@@ -294,7 +297,7 @@ Case AutoloadMainState of
 		if g_ErrorCode = 0 and PLC_RX01_Bit_EnableLD_i = TRUE then
 			if OperationCode > 0 then
 				AutoloadMainState := 10;
-			elsif NDC8.LocalOrder.OrderEN then
+			elsif NDC8.LocalOrder.OrderEN AND STARTENABLE then
 				AutoloadMainState := 10;
 			end_if;
 		end_if;
@@ -413,6 +416,7 @@ Case AutoloadMainState of
 		
 	23:(*Wait PLC Processing*)
 		if g_ErrorCode <> 0 then
+		STOPINX := 1;
 			AutoloadMainState := 999;
 		else
 			if INPUT.Auto = FALSE then
@@ -422,7 +426,7 @@ Case AutoloadMainState of
 			elsif PLC_RX01_Bit_LDErr_i then 
 				AutoloadMainState := 148;
 			elsif PLC_RX_Word10_STw_ILEr <> 0 then (* Interlock (8I/8O) Proc *)
-			
+			STOPINX := 2;
 				OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 			
 				case PLC_RX_Word10_STw_ILEr of
@@ -455,7 +459,7 @@ Case AutoloadMainState of
 					StopByBCD := TRUE;
 				END_IF;
 				BCD_ReadReq := TRUE;
-				
+				STOPINX := 3;
 				AutoloadMainState := 1000;
 			end_if;
 		end_if;
@@ -597,6 +601,7 @@ Case AutoloadMainState of
 				PLC_TX02_Bit_STr_ShutEQ := FALSE;
 				PLC_TX04_Bit_Cancel_ST := FALSE;
 				AutoloadMainState := 1000;
+				STOPINX := 1;
 			end_if;
 		end_if;
 
@@ -881,7 +886,6 @@ Case AutoloadMainState of
 	999:
 		
 		Fail := TRUE;
-		
 		StepDelay(IN := TRUE, PT := t#1s);
 		
 		if StepDelay.Q then
@@ -941,6 +945,8 @@ Case AutoloadMainState of
 		end_if;
 end_case;
 
+
+
 (*===============================================*)
 (* 		DEBUG #0x1  	Event 801				 *)
 
@@ -979,6 +985,9 @@ end_if;
 
 
 (* OUTPUT *)
+
+
+
 
 
 

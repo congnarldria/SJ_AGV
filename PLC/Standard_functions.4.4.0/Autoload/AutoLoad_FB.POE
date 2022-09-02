@@ -121,6 +121,7 @@ VAR_EXTERNAL
 	PLC_RX_WORD7_STW_BCD3 : WORD;
 	PLC_TX02_BIT_STR_DEPOST : BOOL;
 	STOPCHARGE : BOOL;
+	STARTENABLE : BOOL;
 	PLC_RX06_BIT_NOREAD_NG : BOOL;
 	STOPINX : INT;
 	IN_OPCD_BIT_CMD_ENAEMG : BOOL;
@@ -1141,6 +1142,9 @@ END_VAR
 	ODK_END_IF_000000000000003:
 
 (**  **)
+(**  **)
+(**  **)
+(**  **)
 (** 		 **)
 (** Case AutoloadMainState of **)
 (**  **)
@@ -1221,10 +1225,11 @@ END_VAR
 
 				JMP ODK_END_IF_00000000000000G
 
-(** 			elsif NDC8.LocalOrder.OrderEN then **)
+(** 			elsif NDC8.LocalOrder.OrderEN AND STARTENABLE then **)
 			(* elseif - Cond *) 
 			ODK_SKIP_00000000000000G_000000000000001:
 			LD NDC8.LocalOrder.OrderEN
+			AND STARTENABLE
 			JMPCN ODK_SKIP_00000000000000G_000000000000002
 
 				(* elsif - Stmts *)
@@ -4805,6 +4810,8 @@ END_VAR
 	ODK_END_CASE_00000000000000E:
 
 (**  **)
+(**  **)
+(**  **)
 (** {*===============================================*} **)
 (** {* 		DEBUG #0x1  	Event 801				 *} **)
 (**  **)
@@ -4959,6 +4966,9 @@ END_VAR
 (**  **)
 (**  **)
 (** {* OUTPUT *} **)
+(**  **)
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)
