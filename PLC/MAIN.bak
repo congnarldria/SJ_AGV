@@ -542,7 +542,7 @@ else
 	StopByErrorCode := FALSE;
 end_if;
 
-if (PLC_RX01_Bit_EnableLD_i = FALSE or Input.StartMode = FALSE) and Input.Auto then
+if (PLC_RX01_Bit_EnableLD_i = FALSE or Input.StartMode = FALSE or NDC8.SDIO.DigitalInput1_BTN_STR = TRUE) and Input.Auto then
 	StopRobotNotIdle := TRUE;
 else
 	StopRobotNotIdle := FALSE;

@@ -178,6 +178,7 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	case FindSyncStep of
 	0:
 	(* Steer Turn to 2000 *)
+	PLC_RX_Word16_BMS_BatV := 250;
 	NDC8.Manual.PlcSelect := true;
 	NDC8.Manual.PLCAngle := 9000;
 	NDC8.Manual.PlcSetOperationMode := 1;
@@ -766,6 +767,7 @@ Display();
 OPTX2();
 
 DataUpdate();
+
 
 
 

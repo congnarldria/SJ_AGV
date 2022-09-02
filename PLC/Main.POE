@@ -379,6 +379,11 @@ END_VAR
 		ODK_CASE_000000000000005_000000000000001:
 
 (** 	{* Steer Turn to 2000 *} **)
+(** 	PLC_RX_Word16_BMS_BatV := 250; **)
+			(* assign - Stmt *)
+			LD 250
+			ST PLC_RX_Word16_BMS_BatV
+
 (** 	NDC8.Manual.PlcSelect := true; **)
 			(* assign - Stmt *)
 			LD TRUE
@@ -3210,6 +3215,7 @@ END_VAR
 	(* call - Stmt *)
 	CAL DataUpdate
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

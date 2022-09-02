@@ -46,9 +46,9 @@
 0/54	Sourcesegment	--	64008
 0/55	Sourcesegment	--	64008
 0/56	Sourcesegment	--	64008
-0/57	Sourcesegment	--	14609
+0/57	Sourcesegment	--	14689
 1/54	Datasegment	1/55	600	MAIN
-1/55	Codesegment	1/56	4255
+1/55	Codesegment	1/56	4261
 1/56	Initialsegment	1/350	168
 1/57	Datasegment	1/58	16	MAIN.DINT_TO_TIME
 1/58	Codesegment	1/59	7
@@ -287,8 +287,8 @@
 1/291	Datasegment	1/82	20	MAIN.R_DRIVESUPERVISION.MOVINGF
 1/292	Datasegment	1/64	36	MAIN.R_DRIVESUPERVISION.OVERRANGEFAILTIMERTON
 1/293	Datasegment	1/64	36	MAIN.R_DRIVESUPERVISION.NOTMOVINGFAILTIMERTON
-1/294	Datasegment	1/295	116	MAIN.BMS_CHG
-1/295	Codesegment	1/296	1139
+1/294	Datasegment	1/295	120	MAIN.BMS_CHG
+1/295	Codesegment	1/296	1149
 1/296	Initialsegment	1/395	24
 1/297	Datasegment	1/64	36	MAIN.BMS_CHG.STEPDELAY
 1/298	Datasegment	1/64	36	MAIN.BMS_CHG.CHAGETIMER
@@ -343,7 +343,7 @@
 1/347	Datasegment	1/236	95	MAIN.DATAUPDATE.DATAUPLOAD.SERIAL_READ
 1/348	Datasegment	1/239	94	MAIN.DATAUPDATE.DATAUPLOAD.SERIAL_WRITE
 1/349	Datasegment	1/173	36	MAIN.DATAUPDATE.DATAUPLOAD.STARTDELAYTOF
-1/350	NativeCodeSegment	1/55	37596
+1/350	NativeCodeSegment	1/55	37636
 1/351	NativeCodeSegment	1/58	36
 1/352	NativeCodeSegment	1/61	11772
 1/353	NativeCodeSegment	1/64	36
@@ -388,7 +388,7 @@
 1/392	NativeCodeSegment2	1/251	8900
 1/393	NativeCodeSegment	1/263	36
 1/394	NativeCodeSegment	1/273	1784
-1/395	NativeCodeSegment	1/295	9864
+1/395	NativeCodeSegment	1/295	9964
 1/396	NativeCodeSegment	1/304	10880
 1/397	NativeCodeSegment	1/311	11708
 1/398	NativeCodeSegment	1/314	2584

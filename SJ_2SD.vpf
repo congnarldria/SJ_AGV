@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vpf" FileRevision="512" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-08-16" ModificationTime="15:34:46.2630000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vpf" FileRevision="513" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-09-01" ModificationTime="15:54:35.2436000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
   <ComponentList Name="P46164" TimeStamp="0">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
@@ -13,9 +13,9 @@
         <Property SymbolName="RequestEN" Value="0" />
         <Property SymbolName="RequestENO" Value="0" />
         <Property SymbolName="Error" Value="" />
-        <Property SymbolName="PointSearchLimit" Value="2000" />
-        <Property SymbolName="PointSearchAngleLimit" Value="15" />
-        <Property SymbolName="LostSearchLimit" Value="2000" />
+        <Property SymbolName="PointSearchLimit" Value="10000" />
+        <Property SymbolName="PointSearchAngleLimit" Value="30" />
+        <Property SymbolName="LostSearchLimit" Value="10000" />
       </Properties>
     </Component>
     <Component SymbolName="Mcd" DataType="MCD7P" Index="0x200C" FixedIndex="0">
@@ -36,7 +36,7 @@
         <Property SymbolName="Button10" Value="0" PublicName="Button10" Remark="Load2 left button" />
         <Property SymbolName="Button11" Value="0" PublicName="Button11" Remark="Load2 right button" />
         <Property SymbolName="McdHighSpeed" Value="300" />
-        <Property SymbolName="McdLowSpeed" Value="150" />
+        <Property SymbolName="McdLowSpeed" Value="100" />
         <Property SymbolName="Valid" Value="0" />
       </Properties>
       <References>
@@ -320,8 +320,8 @@
         <Property SymbolName="SensorStopEnable" Value="0" />
         <Property SymbolName="BrakeOutputSignal" Value="UserDefined.Braker_Signal" />
         <Property SymbolName="BrakeOutputPolarity" Value="0" />
-        <Property SymbolName="BrakeOnDelay" Value="250" />
-        <Property SymbolName="BrakeOffDelay" Value="250" />
+        <Property SymbolName="BrakeOnDelay" Value="1000" />
+        <Property SymbolName="BrakeOffDelay" Value="1000" />
         <Property SymbolName="EstopInputSignal" Value="SDIO.DigitalInput12_EMO" />
         <Property SymbolName="EstopInputPolarity" Value="1" />
         <Property SymbolName="HaltRequest" Value="0" />
@@ -681,20 +681,20 @@
         <Property SymbolName="Boolean_6" Value="0" PublicName="Boolean_6" Remark="Boolean_6" />
         <Property SymbolName="Boolean_7" Value="0" PublicName="Boolean_7" Remark="Boolean_7" />
         <Property SymbolName="Boolean_8" Value="0" PublicName="Boolean_8" Remark="Boolean_8" />
-        <Property SymbolName="Boolean_9" Value="0" PublicName="Boolean_9" Remark="Boolean_9" />
+        <Property SymbolName="Boolean_9" Value="1" PublicName="Boolean_9" Remark="Boolean_9" />
         <Property SymbolName="Boolean_10" Value="0" PublicName="Boolean_10_BlockPowOffEn" Remark="Boolean_10" AliasName="Boolean_10_BlockPowOffEn" />
         <Property SymbolName="Boolean_11" Value="0" PublicName="Boolean_11_LostPosPowOffEn" Remark="" AliasName="Boolean_11_LostPosPowOffEn" />
-        <Property SymbolName="Boolean_12" Value="0" PublicName="Boolean_12" Remark="" />
-        <Property SymbolName="Boolean_13" Value="0" PublicName="Boolean_13" Remark="" />
-        <Property SymbolName="Boolean_14" Value="0" PublicName="Boolean_14" Remark="" />
-        <Property SymbolName="Boolean_15" Value="0" PublicName="Boolean_15" Remark="" />
-        <Property SymbolName="Boolean_16" Value="0" PublicName="Boolean_16" Remark="" />
-        <Property SymbolName="Boolean_17" Value="0" PublicName="Boolean_17" Remark="" />
-        <Property SymbolName="Boolean_18" Value="0" PublicName="Boolean_18" Remark="" />
-        <Property SymbolName="Boolean_19" Value="0" PublicName="Boolean_19" Remark="" />
+        <Property SymbolName="Boolean_12" Value="1" PublicName="Boolean_12" Remark="" />
+        <Property SymbolName="Boolean_13" Value="1" PublicName="Boolean_13" Remark="" />
+        <Property SymbolName="Boolean_14" Value="1" PublicName="Boolean_14" Remark="" />
+        <Property SymbolName="Boolean_15" Value="1" PublicName="Boolean_15" Remark="" />
+        <Property SymbolName="Boolean_16" Value="1" PublicName="Boolean_16" Remark="" />
+        <Property SymbolName="Boolean_17" Value="1" PublicName="Boolean_17" Remark="" />
+        <Property SymbolName="Boolean_18" Value="1" PublicName="Boolean_18" Remark="" />
+        <Property SymbolName="Boolean_19" Value="1" PublicName="Boolean_19" Remark="" />
         <Property SymbolName="Boolean_20" Value="0" PublicName="Boolean_20_OnlineOrderMode" Remark="1 = Local Mode; 0 = Host Mode" AliasName="Boolean_20_OnlineOrderMode" />
-        <Property SymbolName="Boolean_21" Value="0" PublicName="Boolean_21" Remark="" />
-        <Property SymbolName="Boolean_22" Value="0" PublicName="Boolean_22" Remark="" />
+        <Property SymbolName="Boolean_21" Value="1" PublicName="Boolean_21" Remark="" />
+        <Property SymbolName="Boolean_22" Value="1" PublicName="Boolean_22" Remark="" />
         <Property SymbolName="Boolean_23" Value="0" PublicName="Boolean_23" Remark="" />
         <Property SymbolName="Boolean_24" Value="0" PublicName="Boolean_24" Remark="" />
         <Property SymbolName="Boolean_25" Value="0" PublicName="Boolean_25" Remark="" />
@@ -703,7 +703,7 @@
         <Property SymbolName="Boolean_28" Value="0" PublicName="Boolean_28" Remark="" />
         <Property SymbolName="Boolean_29" Value="0" PublicName="Boolean_29" Remark="" />
         <Property SymbolName="Boolean_30" Value="0" PublicName="Boolean_30" Remark="" />
-        <Property SymbolName="Integer32_1" Value="0" PublicName="StopWord" Remark="Integer32_1" AliasName="StopWord" />
+        <Property SymbolName="Integer32_1" Value="16" PublicName="StopWord" Remark="Integer32_1" AliasName="StopWord" />
         <Property SymbolName="Integer32_2" Value="0" PublicName="Integer32_2" Remark="Integer32_2" />
         <Property SymbolName="Integer32_3" Value="0" PublicName="Integer32_3" Remark="Integer32_3" />
         <Property SymbolName="Integer32_4" Value="0" PublicName="Integer32_4" Remark="Integer32_4" />
@@ -794,8 +794,8 @@
     <Component SymbolName="FrontWheel" DataType="WheelSD" Index="0x2033" FixedIndex="0">
       <Properties>
         <Property SymbolName="MaxAngularSpeed" Value="120" />
-        <Property SymbolName="MinSteerAngle" Value="-105" />
-        <Property SymbolName="MaxSteerAngle" Value="105" />
+        <Property SymbolName="MinSteerAngle" Value="-150" />
+        <Property SymbolName="MaxSteerAngle" Value="150" />
         <Property SymbolName="X" Value="628" />
         <Property SymbolName="Y" Value="0" />
         <Property SymbolName="SetSpeedRef" Value="DCD_5.SetSpeed" />
@@ -815,8 +815,8 @@
     <Component SymbolName="RearWheel" DataType="WheelSD" Index="0x2034" FixedIndex="0">
       <Properties>
         <Property SymbolName="MaxAngularSpeed" Value="120" />
-        <Property SymbolName="MinSteerAngle" Value="-105" />
-        <Property SymbolName="MaxSteerAngle" Value="105" />
+        <Property SymbolName="MinSteerAngle" Value="-150" />
+        <Property SymbolName="MaxSteerAngle" Value="150" />
         <Property SymbolName="X" Value="-628" />
         <Property SymbolName="Y" Value="0" />
         <Property SymbolName="SetSpeedRef" Value="DCD_7.SetSpeed" />
@@ -851,16 +851,16 @@
         <Property SymbolName="Angle" Value="0" />
         <Property SymbolName="UpsideDown" Value="0" />
         <Property SymbolName="IP" Value="192.168.100.9" />
-        <Property SymbolName="Field1_X1" Value="-770" />
-        <Property SymbolName="Field1_X2" Value="-770" />
-        <Property SymbolName="Field1_Y1" Value="0" />
-        <Property SymbolName="Field1_Y2" Value="0" />
+        <Property SymbolName="Field1_X1" Value="-870" />
+        <Property SymbolName="Field1_X2" Value="-670" />
+        <Property SymbolName="Field1_Y1" Value="-100" />
+        <Property SymbolName="Field1_Y2" Value="100" />
         <Property SymbolName="Field1_Triggered" Value="0" />
         <Property SymbolName="Field1_Dist" Value="0" />
-        <Property SymbolName="Field2_X1" Value="-770" />
-        <Property SymbolName="Field2_X2" Value="-770" />
-        <Property SymbolName="Field2_Y1" Value="0" />
-        <Property SymbolName="Field2_Y2" Value="0" />
+        <Property SymbolName="Field2_X1" Value="-870" />
+        <Property SymbolName="Field2_X2" Value="-670" />
+        <Property SymbolName="Field2_Y1" Value="-100" />
+        <Property SymbolName="Field2_Y2" Value="100" />
         <Property SymbolName="Field2_Triggered" Value="0" />
         <Property SymbolName="Field2_Dist" Value="0" />
         <Property SymbolName="Sector1_Ignore" Value="0" />
@@ -999,7 +999,7 @@
         <Property SymbolName="ActiveInSafeState" Value="0" />
         <Property SymbolName="NMTState" Value="" />
         <Property SymbolName="SdoBufferSize" Value="" />
-        <Property SymbolName="MotorCurrentRegP" Value="800" />
+        <Property SymbolName="MotorCurrentRegP" Value="3200" />
         <Property SymbolName="MotorCurrentRegI" Value="300" />
         <Property SymbolName="MaxCommandSpeed" Value="2000" />
         <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
@@ -1050,27 +1050,27 @@
         <Property SymbolName="ActiveInSafeState" Value="0" />
         <Property SymbolName="NMTState" Value="" />
         <Property SymbolName="SdoBufferSize" Value="" />
-        <Property SymbolName="MotorCurrentRegP" Value="160" />
+        <Property SymbolName="MotorCurrentRegP" Value="320" />
         <Property SymbolName="MotorCurrentRegI" Value="60" />
-        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="30" />
-        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="30" />
+        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="42" />
+        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="42" />
         <Property SymbolName="MaxTorqueCurrentChange" Value="250" />
-        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="30" />
-        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="30" />
-        <Property SymbolName="SpeedRegP" Value="3500" />
-        <Property SymbolName="SpeedRegI" Value="65" />
+        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="42" />
+        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="42" />
+        <Property SymbolName="SpeedRegP" Value="1800" />
+        <Property SymbolName="SpeedRegI" Value="60" />
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="125" />
         <Property SymbolName="RegSupervisionFailureDelay" Value="1000" />
         <Property SymbolName="SteerEncScale" Value="2052" />
         <Property SymbolName="SteerEncOffset" Value="0" />
         <Property SymbolName="PosRegP" Value="80" />
         <Property SymbolName="PosRegI" Value="0" />
-        <Property SymbolName="LimOutMax" Value="512" />
+        <Property SymbolName="LimOutMax" Value="1024" />
         <Property SymbolName="MaxWheelAngle" Value="0" />
         <Property SymbolName="SlowDownZone" Value="0" />
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" />
-        <Property SymbolName="EndLimitSwitchPolarity" Value="0" />
-        <Property SymbolName="SyncGate" Value="0" />
+        <Property SymbolName="EndLimitSwitchPolarity" Value="1" />
+        <Property SymbolName="SyncGate" Value="1" />
         <Property SymbolName="SyncFilter" Value="5" />
         <Property SymbolName="SyncEmergency" Value="1" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" />
@@ -1114,7 +1114,7 @@
         <Property SymbolName="ActiveInSafeState" Value="0" />
         <Property SymbolName="NMTState" Value="" />
         <Property SymbolName="SdoBufferSize" Value="" />
-        <Property SymbolName="MotorCurrentRegP" Value="800" />
+        <Property SymbolName="MotorCurrentRegP" Value="3200" />
         <Property SymbolName="MotorCurrentRegI" Value="300" />
         <Property SymbolName="MaxCommandSpeed" Value="2000" />
         <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
@@ -1165,27 +1165,27 @@
         <Property SymbolName="ActiveInSafeState" Value="0" />
         <Property SymbolName="NMTState" Value="" />
         <Property SymbolName="SdoBufferSize" Value="" />
-        <Property SymbolName="MotorCurrentRegP" Value="160" />
+        <Property SymbolName="MotorCurrentRegP" Value="320" />
         <Property SymbolName="MotorCurrentRegI" Value="60" />
-        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="30" />
-        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="30" />
+        <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="42" />
+        <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="42" />
         <Property SymbolName="MaxTorqueCurrentChange" Value="250" />
-        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="30" />
-        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="30" />
-        <Property SymbolName="SpeedRegP" Value="3500" />
-        <Property SymbolName="SpeedRegI" Value="65" />
+        <Property SymbolName="ForwardMaxBrakeTorqueCurrent" Value="42" />
+        <Property SymbolName="ReverseMaxBrakeTorqueCurrent" Value="42" />
+        <Property SymbolName="SpeedRegP" Value="1800" />
+        <Property SymbolName="SpeedRegI" Value="60" />
         <Property SymbolName="RegSupervisionCheckOutHysteresis" Value="125" />
         <Property SymbolName="RegSupervisionFailureDelay" Value="1000" />
         <Property SymbolName="SteerEncScale" Value="2052" />
         <Property SymbolName="SteerEncOffset" Value="0" />
         <Property SymbolName="PosRegP" Value="80" />
         <Property SymbolName="PosRegI" Value="0" />
-        <Property SymbolName="LimOutMax" Value="512" />
+        <Property SymbolName="LimOutMax" Value="1024" />
         <Property SymbolName="MaxWheelAngle" Value="0" />
         <Property SymbolName="SlowDownZone" Value="0" />
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" />
-        <Property SymbolName="EndLimitSwitchPolarity" Value="0" />
-        <Property SymbolName="SyncGate" Value="0" />
+        <Property SymbolName="EndLimitSwitchPolarity" Value="1" />
+        <Property SymbolName="SyncGate" Value="1" />
         <Property SymbolName="SyncFilter" Value="5" />
         <Property SymbolName="SyncEmergency" Value="1" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" />
@@ -1270,8 +1270,8 @@
         <Property SymbolName="AnInp3_Scale" Value="1000" PublicName="AnInp3_Scale" Remark="Analog Input 3 Scale, pin #B10" />
         <Property SymbolName="AnInp4_Scale" Value="1000" PublicName="AnInp4_Scale" Remark="Analog Input 4 Scale, pin #B18" />
         <Property SymbolName="AnInp5_Scale" Value="1000" PublicName="AnInp5_Scale" Remark="Analog Input 5 Scale, pin #B11" />
-        <Property SymbolName="AnInp6_Scale" Value="1000" PublicName="AnInp6_Scale" Remark="Analog Input 6 Scale, pin #B19" />
-        <Property SymbolName="AnInp7_Scale" Value="1000" PublicName="AnInp7_Scale" Remark="Analog Input 7 Scale, pin #B12" />
+        <Property SymbolName="AnInp6_Scale" Value="66536" PublicName="AnInp6_Scale" Remark="Analog Input 6 Scale, pin #B19" />
+        <Property SymbolName="AnInp7_Scale" Value="1001" PublicName="AnInp7_Scale" Remark="Analog Input 7 Scale, pin #B12" />
         <Property SymbolName="AnInp8_Scale" Value="1000" PublicName="AnInp8_Scale" Remark="Analog Input 8 Scale, pin #B20" />
         <Property SymbolName="AnInp9_Scale" Value="1000" PublicName="AnInp9_Scale" Remark="Analog Input 9 Scale, pin #B13" />
         <Property SymbolName="AnInp10_Scale" Value="1000" PublicName="AnInp10_Scale" Remark="Analog Input 10 Scale, pin #B21" />

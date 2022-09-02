@@ -44,6 +44,7 @@ VAR_EXTERNAL
 	PLC_RX14_BIT_BMS_TEMPER : BOOL;
 	NDC8 : NDC8_T;
 	PLC_TX04_BIT_CHRGCMDL_A : BOOL;
+	G_ERRORCODE : WORD;
 END_VAR
 (** {* Check BMS Error *} **)
 (**  **)
@@ -375,7 +376,7 @@ END_VAR
 		ODK_END_IF_000000000000008:
 
 (** 		 **)
-(** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE then **)
+(** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE or g_ErrorCode <> 0 then **)
 		(* if - Cond *)
 		LD PLC_RX01_Bit_ChrgEmg
 		EQ TRUE
@@ -384,6 +385,9 @@ END_VAR
 		)
 		OR ( g_ChargeOverTime
 			EQ TRUE
+		)
+		OR ( g_ErrorCode
+			NE 0
 		)
 		JMPCN ODK_SKIP_000000000000009_000000000000001
 
@@ -975,6 +979,8 @@ END_VAR
 	ODK_SKIP_00000000000000O_000000000000001:
 	ODK_END_IF_00000000000000O:
 
+(**  **)
+(**  **)
 (**  **)
 
 END_FUNCTION_BLOCK

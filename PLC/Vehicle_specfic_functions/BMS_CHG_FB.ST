@@ -85,7 +85,7 @@ case AutoChargeStep of
 			AutoChargeStep := 72;
 		end_if;
 		
-		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE then
+		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE or g_ErrorCode <> 0 then
 			AutoChargeStep := 999;
 		end_if;
 		
@@ -207,6 +207,8 @@ end_if;
 if PLC_TX04_Bit_ChrgCmdL_A = TRUE then
 	StopCharge := TRUE;
 end_if;
+
+
 
 
 END_FUNCTION_BLOCK
