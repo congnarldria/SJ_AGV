@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vpf" FileRevision="515" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-09-02" ModificationTime="08:34:23.6836000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vpf" FileRevision="516" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-09-02" ModificationTime="15:48:29.4556500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
   <ComponentList Name="P46164" TimeStamp="0">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
@@ -1339,7 +1339,7 @@
         <Property SymbolName="PWMOutput3" Value="0" PublicName="PWMOutput3" Remark="PWM Output 3 value, pin #A11. The value is the duty cycle of the output." />
         <Property SymbolName="Reg1Output" Value="" />
         <Property SymbolName="Reg2Output" Value="" />
-        <Property SymbolName="GroundFaultEvent" Value="1" />
+        <Property SymbolName="GroundFaultEvent" Value="0" />
         <Property SymbolName="GroundFaultActive" Value="" />
         <Property SymbolName="Temperature" Value="" />
         <Property SymbolName="XV_Out" Value="" />

@@ -3289,14 +3289,14 @@ END_VAR
 
 				(* then - Stmts *)
 
-(** 				PLC_TX04_Bit_ChrgCmdR_A := FALSE; **)
-				(* assign - Stmt *)
-				LD FALSE
-				ST PLC_TX04_Bit_ChrgCmdR_A
-
-(** 				PLC_TX04_Bit_ChrgCmdL_A := TRUE; **)
+(** 				PLC_TX04_Bit_ChrgCmdR_A := TRUE; **)
 				(* assign - Stmt *)
 				LD TRUE
+				ST PLC_TX04_Bit_ChrgCmdR_A
+
+(** 				PLC_TX04_Bit_ChrgCmdL_A := FALSE; **)
+				(* assign - Stmt *)
+				LD FALSE
 				ST PLC_TX04_Bit_ChrgCmdL_A
 
 (** 				NDC8.SDIO.DigitalOutput16_RIGHTMGS := TRUE; **)
@@ -3323,14 +3323,14 @@ END_VAR
 
 				(* then - Stmts *)
 
-(** 				PLC_TX04_Bit_ChrgCmdL_A := FALSE; **)
-				(* assign - Stmt *)
-				LD FALSE
-				ST PLC_TX04_Bit_ChrgCmdL_A
-
-(** 				PLC_TX04_Bit_ChrgCmdR_A := TRUE; **)
+(** 				PLC_TX04_Bit_ChrgCmdL_A := TRUE; **)
 				(* assign - Stmt *)
 				LD TRUE
+				ST PLC_TX04_Bit_ChrgCmdL_A
+
+(** 				PLC_TX04_Bit_ChrgCmdR_A := FALSE; **)
+				(* assign - Stmt *)
+				LD FALSE
 				ST PLC_TX04_Bit_ChrgCmdR_A
 
 (** 				NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE; **)

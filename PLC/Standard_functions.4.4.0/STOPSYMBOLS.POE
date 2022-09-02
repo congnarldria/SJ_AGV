@@ -143,8 +143,8 @@ VAR_GLOBAL
 		PLC_TX04_Bit_BCD_Clr 			AT %MX17.1:BOOL;
 		PLC_TX04_Bit_Shut_OpTxR 		AT %MX17.2:BOOL;
 		PLC_TX04_Bit_Shut_OpTxL 		AT %MX17.3:BOOL;
-		PLC_TX04_Bit_ChrgCmdL_A 		AT %MX17.4:BOOL;
-		PLC_TX04_Bit_ChrgCmdR_A 		AT %MX17.5:BOOL;
+		PLC_TX04_Bit_ChrgCmdR_A 		AT %MX17.4:BOOL;
+		PLC_TX04_Bit_ChrgCmdL_A 		AT %MX17.5:BOOL;
 		PLC_TX04_Bit_ChkCom_Tx 			AT %MX17.6:BOOL;
 		PLC_TX04_Bit_16 				AT %MX17.7:BOOL;
 		
@@ -488,7 +488,6 @@ VAR_GLOBAL
 	
 	
 END_VAR
-
 
 
 

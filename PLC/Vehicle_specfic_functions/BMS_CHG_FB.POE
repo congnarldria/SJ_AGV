@@ -517,10 +517,10 @@ END_VAR
 			LD FALSE
 			ST PLC_TX04_Bit_ChrgCmdR_A
 
-(** 			NDC8.SDIO.DigitalOutput16_RIGHTMGS := TRUE; **)
+(** 			NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE; **)
 			(* assign - Stmt *)
 			LD TRUE
-			ST NDC8.SDIO.DigitalOutput16_RIGHTMGS
+			ST NDC8.SDIO.DigitalOutput12_LEFTMGS
 
 			JMP ODK_END_IF_00000000000000B
 
@@ -548,10 +548,10 @@ END_VAR
 			LD FALSE
 			ST PLC_TX04_Bit_ChrgCmdL_A
 
-(** 			NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE; **)
+(** 			NDC8.SDIO.DigitalOutput16_RIGHTMGS := TRUE; **)
 			(* assign - Stmt *)
 			LD TRUE
-			ST NDC8.SDIO.DigitalOutput12_LEFTMGS
+			ST NDC8.SDIO.DigitalOutput16_RIGHTMGS
 
 			JMP ODK_END_IF_00000000000000C
 
@@ -679,6 +679,12 @@ END_VAR
 		(* assign - Stmt *)
 		LD FALSE
 		ST PLC_TX04_Bit_ChrgCmdL_A
+
+(** 		 **)
+(** 		PLC_TX04_Bit_ChrgCmdR_A := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST PLC_TX04_Bit_ChrgCmdR_A
 
 (** 			 **)
 (** 		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE; **)
@@ -958,6 +964,12 @@ END_VAR
 		(* assign - Stmt *)
 		LD FALSE
 		ST PLC_TX04_Bit_ChrgCmdL_A
+
+(** 		 **)
+(** 		PLC_TX04_Bit_ChrgCmdR_A := FALSE; **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST PLC_TX04_Bit_ChrgCmdR_A
 
 (** 			 **)
 (** 		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE; **)
@@ -1262,6 +1274,7 @@ END_VAR
 	ODK_SKIP_00000000000000W_000000000000001:
 	ODK_END_IF_00000000000000W:
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

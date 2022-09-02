@@ -103,13 +103,13 @@ case AutoChargeStep of
 		IF NDC8.PointTrigger.Bit10_Chrg_Left = TRUE THEN
 			PLC_TX04_Bit_ChrgCmdL_A := TRUE;
 			PLC_TX04_Bit_ChrgCmdR_A := FALSE;
-			NDC8.SDIO.DigitalOutput16_RIGHTMGS := TRUE;
+			NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE;
 		END_IF;
 		
 		IF NDC8.PointTrigger.Bit9_Chrg_Right = TRUE THEN
 			PLC_TX04_Bit_ChrgCmdR_A := TRUE;
 			PLC_TX04_Bit_ChrgCmdL_A := FALSE;
-			NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE;
+			NDC8.SDIO.DigitalOutput16_RIGHTMGS := TRUE;
 		END_IF;
 		
 		OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
@@ -132,6 +132,8 @@ case AutoChargeStep of
 		end_if;
 		
 		PLC_TX04_Bit_ChrgCmdL_A := FALSE;
+		
+		PLC_TX04_Bit_ChrgCmdR_A := FALSE;
 			
 		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;
 		
@@ -182,6 +184,8 @@ case AutoChargeStep of
 		
 	999:
 		PLC_TX04_Bit_ChrgCmdL_A := FALSE;
+		
+		PLC_TX04_Bit_ChrgCmdR_A := FALSE;
 			
 		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;
 		
@@ -252,6 +256,7 @@ if not NDC8.VehicleControl.Estop then
 		;
 	end_if;
 end_if;
+
 
 
 

@@ -1112,15 +1112,14 @@ END_VAR
 		LD NDC8.SDIO.DigitalOutput14_LED_BRK
 		ST ModBus_ValueBOOL[316]
 
-(** 	ModBus_ValueBOOL [317] := NDC8.SDIO.DigitalOutput16_RIGHTMGS; **)
+(** 	ModBus_ValueBOOL [317] := NDC8.SDIO.DigitalOutput15; **)
 		(* assign - Stmt *)
-		LD NDC8.SDIO.DigitalOutput16_RIGHTMGS
+		LD NDC8.SDIO.DigitalOutput15
 		ST ModBus_ValueBOOL[317]
 
-(** 	ModBus_ValueBOOL [318] := NDC8.SDIO.DigitalOutput16_RIGHTMGS OR NDC8.SDIO.DigitalOutput12_LEFTMGS; **)
+(** 	ModBus_ValueBOOL [318] := NDC8.SDIO.DigitalOutput16_RIGHTMGS; **)
 		(* assign - Stmt *)
 		LD NDC8.SDIO.DigitalOutput16_RIGHTMGS
-		OR NDC8.SDIO.DigitalOutput12_LEFTMGS
 		ST ModBus_ValueBOOL[318]
 
 (**  **)
@@ -1200,10 +1199,10 @@ END_VAR
 		LD ModBus_ValueBOOL[316]
 		ST NDC8.SDIO.DigitalOutput14_LED_BRK
 
-(** 	 NDC8.SDIO.DigitalOutput16_RIGHTMGS :=  ModBus_ValueBOOL [317]; **)
+(** 	 NDC8.SDIO.DigitalOutput15 :=  ModBus_ValueBOOL [317]; **)
 		(* assign - Stmt *)
 		LD ModBus_ValueBOOL[317]
-		ST NDC8.SDIO.DigitalOutput16_RIGHTMGS
+		ST NDC8.SDIO.DigitalOutput15
 
 (** 	 NDC8.SDIO.DigitalOutput16_RIGHTMGS :=  ModBus_ValueBOOL [318]; **)
 		(* assign - Stmt *)
@@ -2461,6 +2460,7 @@ END_VAR
 (**  **)
 (**  **)
 (** {****************************************************************************} **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

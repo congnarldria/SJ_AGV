@@ -10,9 +10,9 @@
         </property>
         <property propname="DigitalInput4_SteerLimitR_R" propremark="Digital Input 4 value" datatype="BOOLEAN" symboladdress="DigitalInput4">
         </property>
-        <property propname="DigitalInput5" propremark="Digital Input 5 value" datatype="BOOLEAN" symboladdress="">
+        <property propname="DigitalInput5_LIMF_O" propremark="Digital Input 5 value" datatype="BOOLEAN" symboladdress="DigitalInput5">
         </property>
-        <property propname="DigitalInput6" propremark="Digital Input 6 value" datatype="BOOLEAN" symboladdress="">
+        <property propname="DigitalInput6_LIMR_O" propremark="Digital Input 6 value" datatype="BOOLEAN" symboladdress="DigitalInput6">
         </property>
         <property propname="DigitalInput7" propremark="Digital Input 7 value" datatype="BOOLEAN" symboladdress="">
         </property>

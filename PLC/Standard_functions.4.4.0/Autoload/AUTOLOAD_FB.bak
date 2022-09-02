@@ -651,14 +651,14 @@ Case AutoloadMainState of
 				AutoloadMainState := 49;
 			end_if;
 			IF NDC8.PointTrigger.Bit9_Chrg_Right = TRUE and NDC8.PointTrigger.Bit10_Chrg_Left = FALSE  then
-				PLC_TX04_Bit_ChrgCmdR_A := FALSE;
-				PLC_TX04_Bit_ChrgCmdL_A := TRUE;
+				PLC_TX04_Bit_ChrgCmdR_A := TRUE;
+				PLC_TX04_Bit_ChrgCmdL_A := FALSE;
 				NDC8.SDIO.DigitalOutput16_RIGHTMGS := TRUE;
 			END_IF;
 			
 			IF NDC8.PointTrigger.Bit9_Chrg_Right = FALSE and NDC8.PointTrigger.Bit10_Chrg_Left = TRUE  then
-				PLC_TX04_Bit_ChrgCmdL_A := FALSE;
-				PLC_TX04_Bit_ChrgCmdR_A := TRUE;
+				PLC_TX04_Bit_ChrgCmdL_A := TRUE;
+				PLC_TX04_Bit_ChrgCmdR_A := FALSE;
 				NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE;
 			END_IF;
 		
@@ -996,6 +996,7 @@ end_if;
 
 
 (* OUTPUT *)
+
 
 
 

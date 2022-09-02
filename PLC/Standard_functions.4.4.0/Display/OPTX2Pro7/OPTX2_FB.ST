@@ -353,8 +353,8 @@ if 	INPUT.Auto = TRUE then
 	ModBus_ValueBOOL [314] := NDC8.SDIO.DigitalOutput12_LEFTMGS;
 	ModBus_ValueBOOL [315] := NDC8.SDIO.DigitalOutput13_PWR_OFF;
 	ModBus_ValueBOOL [316] := NDC8.SDIO.DigitalOutput14_LED_BRK;
-	ModBus_ValueBOOL [317] := NDC8.SDIO.DigitalOutput16_RIGHTMGS;
-	ModBus_ValueBOOL [318] := NDC8.SDIO.DigitalOutput16_RIGHTMGS OR NDC8.SDIO.DigitalOutput12_LEFTMGS;
+	ModBus_ValueBOOL [317] := NDC8.SDIO.DigitalOutput15;
+	ModBus_ValueBOOL [318] := NDC8.SDIO.DigitalOutput16_RIGHTMGS;
 
 	ModBus_ValueBOOL [330] := NDC8.DCD_5.DigitalOutput2_Braker;
 	ModBus_ValueBOOL [331] := NDC8.DCD_7.DigitalOutput2_Braker;
@@ -374,7 +374,7 @@ elsif ForceOutput = TRUE then
 	 NDC8.SDIO.DigitalOutput12_LEFTMGS :=  ModBus_ValueBOOL [314];
 	 NDC8.SDIO.DigitalOutput13_PWR_OFF :=  ModBus_ValueBOOL [315];
 	 NDC8.SDIO.DigitalOutput14_LED_BRK :=  ModBus_ValueBOOL [316];
-	 NDC8.SDIO.DigitalOutput16_RIGHTMGS :=  ModBus_ValueBOOL [317];
+	 NDC8.SDIO.DigitalOutput15 :=  ModBus_ValueBOOL [317];
 	 NDC8.SDIO.DigitalOutput16_RIGHTMGS :=  ModBus_ValueBOOL [318];
     
 	 NDC8.DCD_5.DigitalOutput2_Braker :=  ModBus_ValueBOOL [330];
@@ -719,6 +719,7 @@ OPTX2Communication();
 
 
 (****************************************************************************)
+
 
 
 

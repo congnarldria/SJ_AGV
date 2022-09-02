@@ -2108,7 +2108,7 @@
         </property>
         <property propname="NormalCreepDistance" propremark="Integer32_9" datatype="INTEGER32" symboladdress="Integer32_9">
         </property>
-        <property propname="Integer32_10" propremark="Integer32_10" datatype="INTEGER32" symboladdress="">
+        <property propname="Integer32_10_PCLMODBUS" propremark="Integer32_10" datatype="INTEGER32" symboladdress="Integer32_10">
         </property>
         <property propname="Integer32_11" propremark="Integer32_11" datatype="INTEGER32" symboladdress="">
         </property>
@@ -2194,7 +2194,7 @@
         </property>
         <property propname="Integer32_52_PowOffTm" propremark="ms" datatype="INTEGER32" symboladdress="Integer32_52">
         </property>
-        <property propname="Integer32_53" propremark="" datatype="INTEGER32" symboladdress="">
+        <property propname="Integer32_53_OverVESTOPTm" propremark="" datatype="INTEGER32" symboladdress="Integer32_53">
         </property>
         <property propname="Integer32_54" propremark="" datatype="INTEGER32" symboladdress="">
         </property>
@@ -2343,8 +2343,8 @@
         <property propname="DigitalInput2_SteerLimitF_R" propremark="Digital Input 2 value" datatype="BOOLEAN" symboladdress="DigitalInput2" />
         <property propname="DigitalInput3_SteerLimitR_L" propremark="Digital Input 3 value" datatype="BOOLEAN" symboladdress="DigitalInput3" />
         <property propname="DigitalInput4_SteerLimitR_R" propremark="Digital Input 4 value" datatype="BOOLEAN" symboladdress="DigitalInput4" />
-        <property propname="DigitalInput5" propremark="Digital Input 5 value" datatype="BOOLEAN" symboladdress="" />
-        <property propname="DigitalInput6" propremark="Digital Input 6 value" datatype="BOOLEAN" symboladdress="" />
+        <property propname="DigitalInput5_LIMF_O" propremark="Digital Input 5 value" datatype="BOOLEAN" symboladdress="DigitalInput5" />
+        <property propname="DigitalInput6_LIMR_O" propremark="Digital Input 6 value" datatype="BOOLEAN" symboladdress="DigitalInput6" />
         <property propname="DigitalInput7" propremark="Digital Input 7 value" datatype="BOOLEAN" symboladdress="" />
         <property propname="DigitalInput8" propremark="Digital Input 8 value" datatype="BOOLEAN" symboladdress="" />
         <property propname="DigitalInput9_AreaF_IN1" propremark="Digital Input 9 value" datatype="BOOLEAN" symboladdress="DigitalInput9" />
