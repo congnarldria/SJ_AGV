@@ -1,0 +1,24 @@
+<File xmlns="urn:NDC8DeviceConfigurationFile">
+  <FileInfo FileType="dc" FileRevision="1" FileFormat="40" Description="NDC8 Device Configuration File" CreationDate="2003-06-30" CreationTime="14:00:00" CreatedBy="HE" ModificationDate="2013-08-26" ModificationTime="12:00:00" ModifiedBy="MBJ" ModifiedWith="" ModifiedWithSerial="" />
+  <Configuration Protocol="CANopen" BusId="1" NodeId="2" Optional="false" Remark="Generic IO module">
+    <Guarding Type="NodeGuarding" Timeout="500" />
+    <Identification DeviceType="0x00000191" DeviceTypeMask="0x0000FFFF" ArticleNumber="P41748V111" ArticleNumberMatch="P41748V11???" />
+    <ReadParameters>
+      <ReadParameter Property="DeviceType" Index="0x1000" SubIndex="0" DataType="UNSIGNED32" />
+      <ReadParameter Property="VendorID" Index="0x1018" SubIndex="1" DataType="UNSIGNED32" ValueRepresentation="Hex" />
+    </ReadParameters>
+    <SetupValues>
+    </SetupValues>
+    <TxPdos>
+    </TxPdos>
+    <RxPdos>
+    </RxPdos>
+    <ComponentSubType Name="CAN_IO_2" BaseType="GenericCanDevice">
+      <Interfaces>
+        <Interface Name="CAN_IO" />
+      </Interfaces>
+      <Properties>
+      </Properties>
+    </ComponentSubType>
+  </Configuration>
+</File>

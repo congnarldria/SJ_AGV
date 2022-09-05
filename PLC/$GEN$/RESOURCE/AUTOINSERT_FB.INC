@@ -96,9 +96,9 @@ TYPE CAN_IO_3_T :
         DigitalInput2_SteerLimitF_R : BOOL ;   (* Digital Input 2 value  *)
         DigitalInput3_SteerLimitR_L : BOOL ;   (* Digital Input 3 value  *)
         DigitalInput4_SteerLimitR_R : BOOL ;   (* Digital Input 4 value  *)
-        DigitalInput5_LIMF_O : BOOL ;   (* Digital Input 5 value  *)
-        DigitalInput6_LIMR_O : BOOL ;   (* Digital Input 6 value  *)
-        DigitalInput7 : BOOL ;   (* Digital Input 7 value  *)
+        DigitalInput5_BatTmp25_i : BOOL ;   (* Digital Input 5 value  *)
+        DigitalInput6_BatTmp40_i : BOOL ;   (* Digital Input 6 value  *)
+        DigitalInput7_BatTmp55_i : BOOL ;   (* Digital Input 7 value  *)
         DigitalInput8 : BOOL ;   (* Digital Input 8 value  *)
         DigitalInput9_AreaF_IN1 : BOOL ;   (* Digital Input 9 value  *)
         DigitalInput10_AreaF_IN2 : BOOL ;   (* Digital Input 10 value  *)
@@ -501,41 +501,6 @@ TYPE DCD_5_T :
    END_STRUCT;
 END_TYPE
 
-TYPE LanSerialPort_T :
-    STRUCT 
-        Protocol : DINT ;   (* Protocol used for IP communication.  *)
-        IP : STRING ;   (* In case of Protocol set to UDP client or TCP client this should be set
-to the IP address of the UDP/TCP server that the PLC connects to. With
-Protocol set to UDP server or TCP server this specify the IP address of
-the vehicle controller which clients should use.
-
-In the case of Protocol set to UDP server or TCP server, the special
-value "LAN" means that connections are only allowed on the
-LAN interface and the special value "ANY" allows connections
-on both the LAN interface and the WLAN interface.
-
-Changing the address from the PLC will result in the connection being
-closed. The new IP address will be used in the next PLC loop serial
-read/write.  Note! It is not possible to change the address for a
-range sensor connected using a LAN-serial-adapter.  *)
-        Port : DINT ;   (* In case of Protocol set to UDP client or TCP client this should be set
-to the port of the UDP/TCP server that the PLC connects to. With
-Protocol set to UDP server or TCP server this specify the port on the
-vehicle controller that the PLC opens for connections.
-
-Changing the port from the PLC will result in the connection being
-closed. The new port will be used in the next PLC loop serial
-read/write.  Note! It is not possible to change the port for a range
-sensor connected using a LAN-serial-adapter.  *)
-        SendBuffer : BOOL ;   (* With SendBuffer set, outgoing data is sent over IP when the PLC
-function block NDC_SERIAL_WRITE is called with argument
-LENGTH=0. Without SendBuffer set, data is sent immediately but each IP
-packet will contain at most 32 bytes data with more IP traffic as a
-result.  *)
-        
-   END_STRUCT;
-END_TYPE
-
 TYPE ReflectorNavigator_T :
     STRUCT 
         RefStatValid : BOOL ;   (* Reflector statistics file is valid  *)
@@ -623,6 +588,41 @@ Note that this slope is not normally used when the EStop button is pressed.  *)
         Blocked : BOOL ;   (* Blocked at the end of the last segment.  *)
         CarrierType : DINT ;   (* Defines vehicle carriertype 1 to 8 (0 means any). Used in conjunction with segment carriertypes in the layout  *)
         WaitForWheelTurnMaxAngle : DINT ;   (* Maximum difference between actual (enc) wheel angle and new (set) wheel angle to make vehicle start driving. In manual and semi-manual mode this function is applied only once each time entering the mode. Hence, if writing a new value to the parameter, it will not have effect until next time entering manual or semimanual-mode.  *)
+        
+   END_STRUCT;
+END_TYPE
+
+TYPE LanSerialPort_T :
+    STRUCT 
+        Protocol : DINT ;   (* Protocol used for IP communication.  *)
+        IP : STRING ;   (* In case of Protocol set to UDP client or TCP client this should be set
+to the IP address of the UDP/TCP server that the PLC connects to. With
+Protocol set to UDP server or TCP server this specify the IP address of
+the vehicle controller which clients should use.
+
+In the case of Protocol set to UDP server or TCP server, the special
+value "LAN" means that connections are only allowed on the
+LAN interface and the special value "ANY" allows connections
+on both the LAN interface and the WLAN interface.
+
+Changing the address from the PLC will result in the connection being
+closed. The new IP address will be used in the next PLC loop serial
+read/write.  Note! It is not possible to change the address for a
+range sensor connected using a LAN-serial-adapter.  *)
+        Port : DINT ;   (* In case of Protocol set to UDP client or TCP client this should be set
+to the port of the UDP/TCP server that the PLC connects to. With
+Protocol set to UDP server or TCP server this specify the port on the
+vehicle controller that the PLC opens for connections.
+
+Changing the port from the PLC will result in the connection being
+closed. The new port will be used in the next PLC loop serial
+read/write.  Note! It is not possible to change the port for a range
+sensor connected using a LAN-serial-adapter.  *)
+        SendBuffer : BOOL ;   (* With SendBuffer set, outgoing data is sent over IP when the PLC
+function block NDC_SERIAL_WRITE is called with argument
+LENGTH=0. Without SendBuffer set, data is sent immediately but each IP
+packet will contain at most 32 bytes data with more IP traffic as a
+result.  *)
         
    END_STRUCT;
 END_TYPE
@@ -753,7 +753,7 @@ TYPE UserDefined_T :
         Boolean_17 : BOOL ;   (*   *)
         Boolean_18 : BOOL ;   (*   *)
         Boolean_19 : BOOL ;   (*   *)
-        Boolean_20_OnlineOrderMode : BOOL ;   (* 1 = Local Mode; 0 = Host Mode  *)
+        Boolean_20_OnlineOrderMode : BOOL ;   (* 0: Host Mode 1: LocalMode  *)
         Boolean_21 : BOOL ;   (*   *)
         Boolean_22 : BOOL ;   (*   *)
         Boolean_23 : BOOL ;   (*   *)
@@ -798,25 +798,25 @@ TYPE UserDefined_T :
         Integer32_32 : DINT ;   (* Integer32_32  *)
         Integer32_33 : DINT ;   (* Integer32_33  *)
         Integer32_34 : DINT ;   (* Integer32_34  *)
-        Integer32_35 : DINT ;   (* Integer32_35  *)
-        Integer32_36 : DINT ;   (* Integer32_36  *)
-        Integer32_37 : DINT ;   (* Integer32_37  *)
-        Integer32_38 : DINT ;   (* Integer32_38  *)
-        Integer32_39 : DINT ;   (* Integer32_39  *)
-        Integer32_40 : DINT ;   (* Integer32_40  *)
-        Integer32_41 : DINT ;   (* Integer32_41  *)
-        Integer32_42 : DINT ;   (* Integer32_42  *)
-        Integer32_43 : DINT ;   (* Integer32_43  *)
-        Integer32_44 : DINT ;   (* Integer32_44  *)
-        Integer32_45 : DINT ;   (* Integer32_45  *)
-        Integer32_46 : DINT ;   (* Integer32_46  *)
+        Integer32_35_Battery_Cap : DINT ;   (* Integer32_35  *)
+        Integer32_36_Battery_IniCap : DINT ;   (* Integer32_36  *)
+        Integer32_37_Battery_AlarmCap : DINT ;   (* Integer32_37  *)
+        Integer32_38_Rapit_ChargeAdd : DINT ;   (* Integer32_38  *)
+        Integer32_39_CurrentBatCap : DINT ;   (* Integer32_39  *)
+        Integer32_40_ChgComV1 : DINT ;   (* Integer32_40, BatTmp25 = FALSE, BatTmp40 = FALSE, BatTmp55= FALSE  *)
+        Integer32_41_ChgComV2 : DINT ;   (* Integer32_41, BatTmp25 =TRUE, BatTmp40 = FALSE, BatTmp55= FALSE  *)
+        Integer32_42_ChgComV3 : DINT ;   (* Integer32_42, BatTmp25 = TRUE, BatTmp40 = TRUE, BatTmp55= FALSE  *)
+        Integer32_43_Current_Moving : DINT ;   (* Integer32_43  *)
+        Integer32_44_Current_Transfer : DINT ;   (* Integer32_44  *)
+        Integer32_45_Current_Idel : DINT ;   (* Integer32_45  *)
+        Integer32_46_Current_Charge : DINT ;   (* Integer32_46  *)
         Integer32_47 : DINT ;   (*   *)
-        Integer32_48 : DINT ;   (*   *)
-        Integer32_49 : DINT ;   (*   *)
+        Integer32_48_BatLimTm : DINT ;   (*   *)
+        Integer32_49_BatLowTm : DINT ;   (*   *)
         Integer32_50_BattLowVol : DINT ;   (*   *)
-        Integer32_51_BattLowSel : DINT ;   (* 1=L or M or H, 2=M or H, 3=H  *)
+        Integer32_51_BattNgVol : DINT ;   (* Integer32_51  *)
         Integer32_52_PowOffTm : DINT ;   (* ms  *)
-        Integer32_53 : DINT ;   (*   *)
+        Integer32_53_BattChg : DINT ;   (*   *)
         Integer32_54 : DINT ;   (*   *)
         Integer32_55_TravelDistance : DINT ;   (*   *)
         Integer32_56 : DINT ;   (*   *)
@@ -932,9 +932,9 @@ TYPE OMPLC_T :
         R_BCD2 : INT ;   (*   *)
         R_BCD3 : INT ;   (*   *)
         Cur_Pnt : INT ;   (*   *)
-        Drv_Area : INT ;   (*   *)
+        Data7 : INT ;   (*   *)
         Cur_Seg : INT ;   (*   *)
-        Data9 : INT ;   (*   *)
+        Round_om : INT ;   (*   *)
         IKEY : INT ;   (* Data10  *)
         Phase : INT ;   (* Data11  *)
         Fetch : INT ;   (* Data12  *)
@@ -1131,7 +1131,7 @@ TYPE PLC_Application_T :
         TxStatusBit12_LostP : BOOL ;   (* Application status bit to Master  *)
         TxStatusBit13 : BOOL ;   (* Application status bit to Master  *)
         TxStatusBit14 : BOOL ;   (* Application status bit to Master  *)
-        TxStatusBit15 : BOOL ;   (* Application status bit to Master  *)
+        TxStatusBit15_ON_OFF : BOOL ;   (* Application status bit to Master  *)
         UserEventEN : BOOL ;   (* Set this flag to send a User Event. Clear when ENO is set  *)
         UserEventENO : BOOL ;   (* Response to PLC User Event is executed. Clear when EN is cleared  *)
         UserEventCode : DINT ;   (* User Event code  *)
@@ -1290,14 +1290,14 @@ TYPE PointTrigger_T :
         Value : DINT ;   (* Point attribute value  *)
         Value2 : DINT ;   (* Point attribute value  *)
         Bit0_DepoST_Att : BOOL ;   (* Point attribute bit  *)
-        Bit1_ShutEQ_Att : BOOL ;   (* Point attribute bit  *)
+        Bit1 : BOOL ;   (* Point attribute bit  *)
         Bit2 : BOOL ;   (* Point attribute bit  *)
         Bit3 : BOOL ;   (* Point attribute bit  *)
-        Bit4_Area1_Pnt : BOOL ;   (* Point attribute bit  *)
-        Bit5_Area2_Pnt : BOOL ;   (* Point attribute bit  *)
-        Bit6_Area4_Pnt : BOOL ;   (* Point attribute bit  *)
-        Bit7_Area8_Pnt : BOOL ;   (* Point attribute bit  *)
-        Bit8_HP_Pnt : BOOL ;   (* Point attribute bit  *)
+        Bit4 : BOOL ;   (* Point attribute bit  *)
+        Bit5 : BOOL ;   (* Point attribute bit  *)
+        Bit6 : BOOL ;   (* Point attribute bit  *)
+        Bit7 : BOOL ;   (* Point attribute bit  *)
+        Bit8 : BOOL ;   (* Point attribute bit  *)
         Bit9_Chrg_Right : BOOL ;   (* Point attribute bit  *)
         Bit10_Chrg_Left : BOOL ;   (* Point attribute bit  *)
         Bit11 : BOOL ;   (* Point attribute bit  *)
@@ -1317,14 +1317,14 @@ TYPE SegmentTrigger_T :
         Bit1 : BOOL ;   (* Segment attribute bit  *)
         Bit2 : BOOL ;   (* Segment attribute bit  *)
         Bit3 : BOOL ;   (* Segment attribute bit  *)
-        Bit4_Area1_Seg : BOOL ;   (* Segment attribute bit  *)
-        Bit5_Area2_Seg : BOOL ;   (* Segment attribute bit  *)
-        Bit6_Area4_Seg : BOOL ;   (* Segment attribute bit  *)
-        Bit7_Area8_Seg : BOOL ;   (* Segment attribute bit  *)
+        Bit4 : BOOL ;   (* Segment attribute bit  *)
+        Bit5 : BOOL ;   (* Segment attribute bit  *)
+        Bit6 : BOOL ;   (* Segment attribute bit  *)
+        Bit7 : BOOL ;   (* Segment attribute bit  *)
         Bit8 : BOOL ;   (* Segment attribute bit  *)
         Bit9 : BOOL ;   (* Segment attribute bit  *)
-        Bit10_DDLeft_A : BOOL ;   (* Segment attribute bit  *)
-        Bit11_DDRight_A : BOOL ;   (* Segment attribute bit  *)
+        Bit10 : BOOL ;   (* Segment attribute bit  *)
+        Bit11 : BOOL ;   (* Segment attribute bit  *)
         Bit12_TurnLeft_A : BOOL ;   (* Segment attribute bit  *)
         Bit13_TurnRght_A : BOOL ;   (* Segment attribute bit  *)
         Bit14_DisIrSlow : BOOL ;   (* Segment attribute bit  *)
@@ -1648,12 +1648,12 @@ TYPE NDC8_T :
 	    RearWheel : WheelSD_T;
 	    COM5 : LanSerialPort_T;
 	    LS2000 : LS2000Scanner_T;
+	    COM6 : LanSerialPort_T;
 	    Vehicle : Vehicle_T;
 	    ReflectorInit : ReflectorInit_T;
 	    NaturalNavigator : NaturalNavigator_T;
 	    VehicleNavigator : VehicleNavigator_T;
 	    ReflectorNavigator : ReflectorNavigator_T;
-	    COM6 : LanSerialPort_T;
 	    DCD_5 : DCD_5_T;
 	    DCD_6 : DCD_6_T;
 	    DCD_7 : DCD_7_T;
