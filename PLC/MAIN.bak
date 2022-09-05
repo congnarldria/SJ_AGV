@@ -184,7 +184,7 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	NDC8.Manual.PlcSetOperationMode := 1;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
-	PLC_RX_Word16_BMS_BatV := 1000;(*Prevent Cold Start LowBat*)
+	PLC_RX_Word16_BMS_BatV := 600;(*Prevent Cold Start LowBat*)
 	
 	FindSyncDelay(IN:=TRUE, PT:=t#5s);
 	if FindSyncDelay.Q then
@@ -411,6 +411,7 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 0;
 		PLC_TX_Word13_STr_Err := 0;
 		OM_PLC_W2_Bit_SetEmgStop := FALSE;
+		g_ChargeOverTime := 0;
 	elsif PLC_RX_Word20_PLC_ErrD <> 0 and g_ErrorCode = 0 then 
 		g_ErrorCode := PLC_RX_Word20_PLC_ErrD;
 	elsif PLC_RX14_Bit_BMS_Short then 
@@ -771,6 +772,7 @@ Display();
 OPTX2();
 
 DataUpdate();
+
 
 
 

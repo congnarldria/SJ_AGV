@@ -17,6 +17,7 @@ VAR
 	 ChageTimer : TON;
 	 AutoChargeStep : INT := 0;
 	 ChargePnt : DINT := 0;
+	 ChargeOuput : BOOL;
 END_VAR
 
 (*Automatically declared*)
@@ -57,6 +58,7 @@ END_VAR
 (** 				PLC_RX14_Bit_BMS_CT or **)
 (** 				PLC_RX14_Bit_BMS_Couple or **)
 (** 				PLC_RX14_Bit_BMS_Bat or **)
+(** 				PLC_RX14_Bit_BMS_NG or **)
 	(* assign - Stmt *)
 	LD PLC_RX14_Bit_BMS_Short
 	OR PLC_RX14_Bit_BMS_Over
@@ -66,9 +68,12 @@ END_VAR
 	OR PLC_RX14_Bit_BMS_Couple
 	OR PLC_RX14_Bit_BMS_Bat
 	OR PLC_RX14_Bit_BMS_NG
+	OR ( g_ErrorCode
+(** 				g_ErrorCode <> 0;{*All Error Stop Charge*} **)
+		NE 0
+	)
 	ST g_BMS_Error
 
-(** 				PLC_RX14_Bit_BMS_NG; **)
 (**  **)
 (** {* Check Manual Charge *} **)
 (**  **)
@@ -470,7 +475,7 @@ END_VAR
 		ODK_END_IF_000000000000009:
 
 (** 		 **)
-(** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE or g_ErrorCode <> 0 then **)
+(** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE then **)
 		(* if - Cond *)
 		LD PLC_RX01_Bit_ChrgEmg
 		EQ TRUE
@@ -479,9 +484,6 @@ END_VAR
 		)
 		OR ( g_ChargeOverTime
 			EQ TRUE
-		)
-		OR ( g_ErrorCode
-			NE 0
 		)
 		JMPCN ODK_SKIP_00000000000000A_000000000000001
 
@@ -1033,138 +1035,64 @@ END_VAR
 
 (**  **)
 (** {* Charge Over Time Check *} **)
-(** IF PLC_TX04_Bit_ChrgCmdR_A = TRUE and PLC_TX04_Bit_ChrgCmdL_A = FALSE THEN **)
-	(* if - Cond *)
-	LD PLC_TX04_Bit_ChrgCmdR_A
-	EQ TRUE
-	AND ( PLC_TX04_Bit_ChrgCmdL_A
-		EQ FALSE
+(** 	ChargeOuput := NDC8.SDIO.DigitalOutput16_RIGHTMGS or NDC8.SDIO.DigitalOutput12_LEFTMGS; **)
+	(* assign - Stmt *)
+	LD NDC8.SDIO.DigitalOutput16_RIGHTMGS
+	OR NDC8.SDIO.DigitalOutput12_LEFTMGS
+	ST ChargeOuput
+
+(** 	ChageTimer(IN:= ChargeOuput , PT:=t#1800s); **)
+	(* call - Stmt *)
+	CAL ChageTimer (
+		IN := ChargeOuput,
+		PT := t#1800s
 	)
+
+(** 	 **)
+(** 	if ChageTimer.Q then **)
+	(* if - Cond *)
+	LD ChageTimer.Q
 	JMPCN ODK_SKIP_00000000000000O_000000000000001
 
 		(* then - Stmts *)
 
-(** 	ChageTimer(IN:= NDC8.SDIO.DigitalOutput16_RIGHTMGS, PT:=t#1800s); **)
-		(* call - Stmt *)
-		CAL ChageTimer (
-			IN := NDC8.SDIO.DigitalOutput16_RIGHTMGS,
-			PT := t#1800s
-		)
-
-(** 	 **)
-(** 	if ChageTimer.Q then **)
-		(* if - Cond *)
-		LD ChageTimer.Q
-		JMPCN ODK_SKIP_00000000000000P_000000000000001
-
-			(* then - Stmts *)
-
 (** 		g_ChargeOverTime := TRUE; **)
-			(* assign - Stmt *)
-			LD TRUE
-			ST g_ChargeOverTime
-
-			JMP ODK_END_IF_00000000000000P
-
-(** 	end_if; **)
-		(* if - End *) 
-		ODK_SKIP_00000000000000P_000000000000001:
-		ODK_END_IF_00000000000000P:
-
-(** 	 **)
-(** 	if NDC8.SDIO.DigitalOutput16_RIGHTMGS = FALSE then **)
-		(* if - Cond *)
-		LD NDC8.SDIO.DigitalOutput16_RIGHTMGS
-		EQ FALSE
-		JMPCN ODK_SKIP_00000000000000Q_000000000000001
-
-			(* then - Stmts *)
-
-(** 		g_ChargeOverTime := FALSE; **)
-			(* assign - Stmt *)
-			LD FALSE
-			ST g_ChargeOverTime
-
-			JMP ODK_END_IF_00000000000000Q
-
-(** 	end_if; **)
-		(* if - End *) 
-		ODK_SKIP_00000000000000Q_000000000000001:
-		ODK_END_IF_00000000000000Q:
+		(* assign - Stmt *)
+		LD TRUE
+		ST g_ChargeOverTime
 
 		JMP ODK_END_IF_00000000000000O
 
-(** END_IF; **)
+(** 	end_if; **)
 	(* if - End *) 
 	ODK_SKIP_00000000000000O_000000000000001:
 	ODK_END_IF_00000000000000O:
 
-(** IF PLC_TX04_Bit_ChrgCmdR_A = FALSE and PLC_TX04_Bit_ChrgCmdL_A = TRUE THEN **)
+(** 	 **)
+(** 	if NDC8.SDIO.DigitalOutput16_RIGHTMGS = FALSE AND NDC8.SDIO.DigitalOutput12_LEFTMGS = FALSE then **)
 	(* if - Cond *)
-	LD PLC_TX04_Bit_ChrgCmdR_A
+	LD NDC8.SDIO.DigitalOutput16_RIGHTMGS
 	EQ FALSE
-	AND ( PLC_TX04_Bit_ChrgCmdL_A
-		EQ TRUE
+	AND ( NDC8.SDIO.DigitalOutput12_LEFTMGS
+		EQ FALSE
 	)
-	JMPCN ODK_SKIP_00000000000000R_000000000000001
+	JMPCN ODK_SKIP_00000000000000P_000000000000001
 
 		(* then - Stmts *)
 
-(** 	ChageTimer(IN:= NDC8.SDIO.DigitalOutput12_LEFTMGS, PT:=t#1800s); **)
-		(* call - Stmt *)
-		CAL ChageTimer (
-			IN := NDC8.SDIO.DigitalOutput12_LEFTMGS,
-			PT := t#1800s
-		)
-
-(** 	 **)
-(** 	if ChageTimer.Q then **)
-		(* if - Cond *)
-		LD ChageTimer.Q
-		JMPCN ODK_SKIP_00000000000000S_000000000000001
-
-			(* then - Stmts *)
-
-(** 		g_ChargeOverTime := TRUE; **)
-			(* assign - Stmt *)
-			LD TRUE
-			ST g_ChargeOverTime
-
-			JMP ODK_END_IF_00000000000000S
-
-(** 	end_if; **)
-		(* if - End *) 
-		ODK_SKIP_00000000000000S_000000000000001:
-		ODK_END_IF_00000000000000S:
-
-(** 	 **)
-(** 	if NDC8.SDIO.DigitalOutput12_LEFTMGS = FALSE then **)
-		(* if - Cond *)
-		LD NDC8.SDIO.DigitalOutput12_LEFTMGS
-		EQ FALSE
-		JMPCN ODK_SKIP_00000000000000T_000000000000001
-
-			(* then - Stmts *)
-
 (** 		g_ChargeOverTime := FALSE; **)
-			(* assign - Stmt *)
-			LD FALSE
-			ST g_ChargeOverTime
+		(* assign - Stmt *)
+		LD FALSE
+		ST g_ChargeOverTime
 
-			JMP ODK_END_IF_00000000000000T
+		JMP ODK_END_IF_00000000000000P
 
 (** 	end_if; **)
-		(* if - End *) 
-		ODK_SKIP_00000000000000T_000000000000001:
-		ODK_END_IF_00000000000000T:
-
-		JMP ODK_END_IF_00000000000000R
-
-(** END_IF; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000R_000000000000001:
-	ODK_END_IF_00000000000000R:
+	ODK_SKIP_00000000000000P_000000000000001:
+	ODK_END_IF_00000000000000P:
 
+(**  **)
 (** 	 **)
 (** 	 **)
 (** {* Check BMS Error Status *} **)
@@ -1186,7 +1114,7 @@ END_VAR
 		)
 		OR g_ChargeOverTime
 	)
-	JMPCN ODK_SKIP_00000000000000U_000000000000001
+	JMPCN ODK_SKIP_00000000000000Q_000000000000001
 
 		(* then - Stmts *)
 
@@ -1210,12 +1138,12 @@ END_VAR
 		LD FALSE
 		ST NDC8.SDIO.DigitalOutput16_RIGHTMGS
 
-		JMP ODK_END_IF_00000000000000U
+		JMP ODK_END_IF_00000000000000Q
 
 (** end_if; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000U_000000000000001:
-	ODK_END_IF_00000000000000U:
+	ODK_SKIP_00000000000000Q_000000000000001:
+	ODK_END_IF_00000000000000Q:
 
 (**  **)
 (**  **)
@@ -1224,7 +1152,7 @@ END_VAR
 	LD PLC_TX04_Bit_ChrgCmdL_A
 	EQ TRUE
 	OR PLC_TX04_Bit_ChrgCmdR_A
-	JMPCN ODK_SKIP_00000000000000V_000000000000001
+	JMPCN ODK_SKIP_00000000000000R_000000000000001
 
 		(* then - Stmts *)
 
@@ -1233,12 +1161,12 @@ END_VAR
 		LD TRUE
 		ST StopCharge
 
-		JMP ODK_END_IF_00000000000000V
+		JMP ODK_END_IF_00000000000000R
 
 (** end_if; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000V_000000000000001:
-	ODK_END_IF_00000000000000V:
+	ODK_SKIP_00000000000000R_000000000000001:
+	ODK_END_IF_00000000000000R:
 
 (**  **)
 (** {* G5 ACC70 CGERRORCNT.NPU  *} **)
@@ -1247,7 +1175,7 @@ END_VAR
 	(* if - Cond *)
 	LD NDC8.VehicleControl.Estop
 	NOT
-	JMPCN ODK_SKIP_00000000000000W_000000000000001
+	JMPCN ODK_SKIP_00000000000000S_000000000000001
 
 		(* then - Stmts *)
 
@@ -1255,25 +1183,27 @@ END_VAR
 		(* if - Cond *)
 		LD g_ErrorCode
 		NE 174
-		JMPCN ODK_SKIP_00000000000000X_000000000000001
+		JMPCN ODK_SKIP_00000000000000T_000000000000001
 
 			(* then - Stmts *)
 
-			JMP ODK_END_IF_00000000000000X
+			JMP ODK_END_IF_00000000000000T
 
 (** 		; **)
 (** 	end_if; **)
 		(* if - End *) 
-		ODK_SKIP_00000000000000X_000000000000001:
-		ODK_END_IF_00000000000000X:
+		ODK_SKIP_00000000000000T_000000000000001:
+		ODK_END_IF_00000000000000T:
 
-		JMP ODK_END_IF_00000000000000W
+		JMP ODK_END_IF_00000000000000S
 
 (** end_if; **)
 	(* if - End *) 
-	ODK_SKIP_00000000000000W_000000000000001:
-	ODK_END_IF_00000000000000W:
+	ODK_SKIP_00000000000000S_000000000000001:
+	ODK_END_IF_00000000000000S:
 
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

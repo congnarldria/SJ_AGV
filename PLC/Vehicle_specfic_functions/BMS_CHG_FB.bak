@@ -17,6 +17,7 @@ VAR
 	 ChageTimer : TON;
 	 AutoChargeStep : INT := 0;
 	 ChargePnt : DINT := 0;
+	 ChargeOuput : BOOL;
 END_VAR
 (* Check BMS Error *)
 
@@ -27,7 +28,8 @@ g_BMS_Error := PLC_RX14_Bit_BMS_Short or
 				PLC_RX14_Bit_BMS_CT or
 				PLC_RX14_Bit_BMS_Couple or
 				PLC_RX14_Bit_BMS_Bat or
-				PLC_RX14_Bit_BMS_NG;
+				PLC_RX14_Bit_BMS_NG or
+				g_ErrorCode <> 0;
 
 (* Check Manual Charge *)
 
@@ -97,7 +99,7 @@ case AutoChargeStep of
 			AutoChargeStep := 72;
 		end_if;
 		
-		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE or g_ErrorCode <> 0 then
+		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE then
 			AutoChargeStep := 999;
 		end_if;
 		IF NDC8.PointTrigger.Bit10_Chrg_Left = TRUE THEN
@@ -132,6 +134,8 @@ case AutoChargeStep of
 		end_if;
 		
 		PLC_TX04_Bit_ChrgCmdL_A := FALSE;
+		
+		PLC_TX04_Bit_ChrgCmdR_A := FALSE;
 			
 		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;
 		
@@ -206,28 +210,17 @@ case AutoChargeStep of
 end_case;
 
 (* Charge Over Time Check *)
-IF PLC_TX04_Bit_ChrgCmdR_A = TRUE and PLC_TX04_Bit_ChrgCmdL_A = FALSE THEN
-	ChageTimer(IN:= NDC8.SDIO.DigitalOutput16_RIGHTMGS, PT:=t#1800s);
+	ChargeOuput := NDC8.SDIO.DigitalOutput16_RIGHTMGS or NDC8.SDIO.DigitalOutput12_LEFTMGS;
+	ChageTimer(IN:= ChargeOuput , PT:=t#1800s);
 	
 	if ChageTimer.Q then
 		g_ChargeOverTime := TRUE;
 	end_if;
 	
-	if NDC8.SDIO.DigitalOutput16_RIGHTMGS = FALSE then
+	if NDC8.SDIO.DigitalOutput16_RIGHTMGS = FALSE AND NDC8.SDIO.DigitalOutput12_LEFTMGS = FALSE then
 		g_ChargeOverTime := FALSE;
 	end_if;
-END_IF;
-IF PLC_TX04_Bit_ChrgCmdR_A = FALSE and PLC_TX04_Bit_ChrgCmdL_A = TRUE THEN
-	ChageTimer(IN:= NDC8.SDIO.DigitalOutput12_LEFTMGS, PT:=t#1800s);
-	
-	if ChageTimer.Q then
-		g_ChargeOverTime := TRUE;
-	end_if;
-	
-	if NDC8.SDIO.DigitalOutput12_LEFTMGS = FALSE then
-		g_ChargeOverTime := FALSE;
-	end_if;
-END_IF;
+
 	
 	
 (* Check BMS Error Status *)
@@ -254,6 +247,8 @@ if not NDC8.VehicleControl.Estop then
 		;
 	end_if;
 end_if;
+
+
 
 
 
