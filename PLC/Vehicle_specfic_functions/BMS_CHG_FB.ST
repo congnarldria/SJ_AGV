@@ -27,7 +27,8 @@ g_BMS_Error := PLC_RX14_Bit_BMS_Short or
 				PLC_RX14_Bit_BMS_CT or
 				PLC_RX14_Bit_BMS_Couple or
 				PLC_RX14_Bit_BMS_Bat or
-				PLC_RX14_Bit_BMS_NG;
+				PLC_RX14_Bit_BMS_NG or
+				g_ErrorCode <> 0; (*All Error Stop Charge*)
 
 (* Check Manual Charge *)
 
@@ -85,7 +86,7 @@ case AutoChargeStep of
 			AutoChargeStep := 72;
 		end_if;
 		
-		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE or g_ErrorCode <> 0 then
+		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE then
 			AutoChargeStep := 999;
 		end_if;
 		
@@ -207,6 +208,7 @@ end_if;
 if PLC_TX04_Bit_ChrgCmdL_A = TRUE then
 	StopCharge := TRUE;
 end_if;
+
 
 
 
