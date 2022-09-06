@@ -23,7 +23,7 @@ VAR
 	OPTX2  : OPTX2_FB;
 	LS2000 : LS2000_FB;
 	DebugFB : Debug_FB;
-	
+	NavInit : NavInit_FB;
 	PLC_Communication : PLC_Communication_FB;
 	
 	F_SteerSupervision : DRIVERSUPERVISION_FB;
@@ -170,6 +170,7 @@ VAR_EXTERNAL
 	G_POWEROFFFLAG : BOOL;
 	PLC_RX03_BIT_STW_ENACHG : BOOL;
 	STOPWORD2 : DWORD;
+	FORCECOUNT : DINT;
 	OM_PLC_W7_BIT_AREA8 : BOOL;
 	OM_PLC_W2_BIT_SETEMGSTOP : BOOL;
 	PLC_RX14_BIT_BMS_OVER : BOOL;
@@ -267,7 +268,7 @@ END_VAR
 		LD TRUE
 		ST g_FindSyncFlag
 
-(** 	StopFindSync := FALSE; **)
+(** 	StopFindSync := FALSE;	 **)
 		(* assign - Stmt *)
 		LD FALSE
 		ST StopFindSync
@@ -404,6 +405,11 @@ END_VAR
 			(* assign - Stmt *)
 			LD 2#10101
 			ST NDC8.Manual.PlcSelectMask
+
+(** 	INPUT.Manual := TRUE; **)
+			(* assign - Stmt *)
+			LD TRUE
+			ST INPUT.Manual
 
 (** 	PLC_RX_Word16_BMS_BatV := 600;{*Prevent Cold Start LowBat*} **)
 			(* assign - Stmt *)
@@ -1312,6 +1318,12 @@ END_VAR
 			(* assign - Stmt *)
 			LD FALSE
 			ST OM_PLC_W2_Bit_SetEmgStop
+
+(** 		FORCECOUNT := FORCECOUNT + 1; **)
+			(* assign - Stmt *)
+			LD FORCECOUNT
+			ADD 1
+			ST FORCECOUNT
 
 			JMP ODK_END_IF_00000000000000M
 
@@ -3248,6 +3260,8 @@ END_VAR
 	(* call - Stmt *)
 	CAL DataUpdate
 
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

@@ -23,7 +23,7 @@ VAR
 	OPTX2  : OPTX2_FB;
 	LS2000 : LS2000_FB;
 	DebugFB : Debug_FB;
-	
+	NavInit : NavInit_FB;
 	PLC_Communication : PLC_Communication_FB;
 	
 	F_SteerSupervision : DRIVERSUPERVISION_FB;
@@ -157,7 +157,7 @@ if AllOK_R.Q and NDC8.SDIO.DigitalInput2_BTN_RST = FALSE then
 elsif AllOK_R.Q and NDC8.SDIO.DigitalInput2_BTN_RST = TRUE then
 	g_StartFindSync := FALSE;
 	g_FindSyncFlag := TRUE;
-	StopFindSync := FALSE;
+	StopFindSync := FALSE;	
 end_if;
 
 if NDC8.CAN_IO_3.DigitalInput5_LIMF_O = TRUE then
@@ -411,7 +411,7 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 0;
 		PLC_TX_Word13_STr_Err := 0;
 		OM_PLC_W2_Bit_SetEmgStop := FALSE;
-		g_ChargeOverTime := 0;
+		FORCECOUNT := FORCECOUNT + 1;
 	elsif PLC_RX_Word20_PLC_ErrD <> 0 and g_ErrorCode = 0 then 
 		g_ErrorCode := PLC_RX_Word20_PLC_ErrD;
 	elsif PLC_RX14_Bit_BMS_Short then 
@@ -772,6 +772,9 @@ Display();
 OPTX2();
 
 DataUpdate();
+
+
+
 
 
 

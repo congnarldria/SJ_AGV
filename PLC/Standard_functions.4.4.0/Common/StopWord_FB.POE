@@ -585,6 +585,7 @@ END_VAR
 	)
 	ST NDC8.VehicleControl.Stop
 
+(** 								{*NDC8.Mcd.Button8 = FALSE and ((DWORD_TO_BOOL(StopWord) or DWORD_TO_BOOL(StopWord2)));*} **)
 (** NDC8.UserDefined.StopWord	:=	DWORD_TO_DINT(StopWord); **)
 	(* assign - Stmt *)
 	LD StopWord
@@ -641,6 +642,7 @@ END_VAR
 (** 	EventQueue(EventCode:=101,Par1:=NDC8.Vehicle.VehicleID,Par2:=0,Par3:=0,Par4:=0); **)
 (** end_if; **)
 (** *} **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

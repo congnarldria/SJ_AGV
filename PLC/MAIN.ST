@@ -23,7 +23,7 @@ VAR
 	OPTX2  : OPTX2_FB;
 	LS2000 : LS2000_FB;
 	DebugFB : Debug_FB;
-	
+	NavInit : NavInit_FB;
 	PLC_Communication : PLC_Communication_FB;
 	
 	F_SteerSupervision : DRIVERSUPERVISION_FB;
@@ -157,7 +157,7 @@ if AllOK_R.Q and NDC8.SDIO.DigitalInput2_BTN_RST = FALSE then
 elsif AllOK_R.Q and NDC8.SDIO.DigitalInput2_BTN_RST = TRUE then
 	g_StartFindSync := FALSE;
 	g_FindSyncFlag := TRUE;
-	StopFindSync := FALSE;
+	StopFindSync := FALSE;	
 end_if;
 
 if NDC8.CAN_IO_3.DigitalInput5_LIMF_O = TRUE then
@@ -184,6 +184,7 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	NDC8.Manual.PlcSetOperationMode := 1;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
+	INPUT.Manual := TRUE;
 	PLC_RX_Word16_BMS_BatV := 600;(*Prevent Cold Start LowBat*)
 	
 	FindSyncDelay(IN:=TRUE, PT:=t#5s);
@@ -411,6 +412,7 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 0;
 		PLC_TX_Word13_STr_Err := 0;
 		OM_PLC_W2_Bit_SetEmgStop := FALSE;
+		FORCECOUNT := FORCECOUNT + 1;
 	elsif PLC_RX_Word20_PLC_ErrD <> 0 and g_ErrorCode = 0 then 
 		g_ErrorCode := PLC_RX_Word20_PLC_ErrD;
 	elsif PLC_RX14_Bit_BMS_Short then 
@@ -771,6 +773,8 @@ Display();
 OPTX2();
 
 DataUpdate();
+
+
 
 
 
