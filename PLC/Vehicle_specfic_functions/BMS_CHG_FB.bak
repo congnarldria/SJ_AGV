@@ -29,7 +29,7 @@ g_BMS_Error := PLC_RX14_Bit_BMS_Short or
 				PLC_RX14_Bit_BMS_Couple or
 				PLC_RX14_Bit_BMS_Bat or
 				PLC_RX14_Bit_BMS_NG or
-				g_ErrorCode <> 0;
+				g_ErrorCode <> 0;(*All Error Stop Charge*)
 
 (* Check Manual Charge *)
 
@@ -56,14 +56,13 @@ elsif ((PLC_RX03_Bit_ChrgReqL_A = FALSE and PLC_RX03_Bit_ChrgReqR_A = FALSE) or 
 	StopCharge := FALSE;
 end_if;
 
-
 case AutoChargeStep of
 
 	0:
 		
 		if (INPUT.Auto = TRUE and NDC8.Automatic.CurrentOrderMode = 1 and NDC8.Automatic.ExecDriveCommand = FALSE ) and 			
 			(PLC_RX01_Bit_ChrgEmg = FALSE and g_BMS_Error = FALSE) and (NDC8.PointTrigger.Bit9_Chrg_Right = TRUE or NDC8.PointTrigger.Bit10_Chrg_Left = TRUE) and
-			not (NDC8.LoadDocking.OnTarget = TRUE and PLC_RX15_Bit_BMS_NoChg = TRUE) then
+			not (NDC8.LoadDocking.OnTarget = TRUE and PLC_RX15_Bit_BMS_NoChg = TRUE) THEN
 			AutoChargeStep := 70;
 			ChargePnt := NDC8.LayoutPosition.Point;
 		end_if;
@@ -88,8 +87,7 @@ case AutoChargeStep of
 			if StepDelay.Q then
 				StepDelay(IN:=FALSE);
 				AutoChargeStep := 71;
-			end_if;
-		
+			end_if;		
 		end_if;
 		
 		
@@ -127,8 +125,7 @@ case AutoChargeStep of
 			end_if;
 		end_if;
 		
-	72:
-	
+	72:	
 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE then
 			AutoChargeStep := 999;
 		end_if;
@@ -139,16 +136,12 @@ case AutoChargeStep of
 			
 		NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;
 		
-		NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;
+		NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;		
 		
 		NDC8.PLC_Application.TxStatusBit7_ChgComp := TRUE;
-	
-		OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
-
+        OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
 		OM_PLC_W1_Bit_SetLowBatt := FALSE;
-
 		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);
-	
 		StepDelay(IN:=TRUE, PT:=t#5s);
 		if StepDelay.Q then
 			StepDelay(IN:=FALSE);
@@ -160,7 +153,6 @@ case AutoChargeStep of
 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE then
 			AutoChargeStep := 999;
 		end_if;
-		
 		if PLC_RX01_Bit_ChrgIdle then 
 			StepDelay(IN:=TRUE, PT:=t#1s);
 			if StepDelay.Q then
@@ -170,19 +162,44 @@ case AutoChargeStep of
 			end_if;
 		end_if;
 		
-	74:
+	74:		
 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE then
 			AutoChargeStep := 999;
 		end_if;
-		
 		if INPUT.Auto = FALSE or NDC8.Automatic.CurrentOrderMode <> 1 then
 			AutoChargeStep := 0;
 		end_if;
-		
 		if NDC8.LayoutPosition.Point <> ChargePnt or NDC8.PLC_Application.TxStatusBit4_LowBatt = TRUE then
-			AutoChargeStep := 0;
+			AutoChargeStep := 0;	
 		end_if;
 		
+        (*OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
+		OM_PLC_W1_Bit_SetLowBatt := FALSE;
+		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);*)
+		
+(*USER DEFINE Boolean_17_MGSONOFF = 1 Active*)
+		IF NDC8.UserDefined.Boolean_17_MGSONOFF = TRUE THEN
+			IF NDC8.PointTrigger.Bit10_Chrg_Left = TRUE THEN
+				NDC8.SDIO.DigitalOutput12_LEFTMGS := TRUE;
+				StopCharge := TRUE;
+			END_IF;
+		
+			IF NDC8.PointTrigger.Bit9_Chrg_Right = TRUE THEN
+				NDC8.SDIO.DigitalOutput16_RIGHTMGS := TRUE;
+				StopCharge := TRUE;
+			END_IF;
+		END_IF;
+
+		IF NDC8.Automatic.ExecDriveCommand = TRUE AND NDC8.UserDefined.Boolean_17_MGSONOFF = TRUE then
+			NDC8.SDIO.DigitalOutput16_RIGHTMGS := FALSE;
+			NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;
+			StepDelay(IN:=TRUE, PT:=t#9s);
+			if StepDelay.Q then
+				StepDelay(IN:=FALSE);				
+				StopCharge := FALSE;
+				AutoChargeStep := 0;
+			end_if;			
+		END_IF;
 		
 	999:
 		PLC_TX04_Bit_ChrgCmdL_A := FALSE;
@@ -247,6 +264,9 @@ if not NDC8.VehicleControl.Estop then
 		;
 	end_if;
 end_if;
+
+
+
 
 
 

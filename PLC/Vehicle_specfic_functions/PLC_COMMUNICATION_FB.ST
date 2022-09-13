@@ -681,7 +681,7 @@ case BMS_BatLowSel of
 end_case;
 BAT50LOWVOL := DINT_TO_WORD(NDC8.UserDefined.Integer32_50_BattLowVol);
 if NDC8.UserDefined.Integer32_50_BattLowVol = 0 or NDC8.UserDefined.Integer32_50_BattLowVol < 0 then
-	NDC8.UserDefined.Integer32_50_BattLowVol := 420;
+	NDC8.UserDefined.Integer32_50_BattLowVol := 450;
 end_if;
 
 if PLC_RX_Word16_BMS_BatV < DINT_TO_WORD(NDC8.UserDefined.Integer32_50_BattLowVol) then
@@ -707,6 +707,7 @@ end_if;
 if g_PlcComLinkUp = TRUE then
 	g_PowerOffFlag_PLC := PLC_RX04_Bit_STw_LowOT;
 end_if;
+
 
 
 

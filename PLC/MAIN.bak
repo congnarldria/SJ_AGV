@@ -184,6 +184,7 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	NDC8.Manual.PlcSetOperationMode := 1;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
+	INPUT.Manual := TRUE;
 	PLC_RX_Word16_BMS_BatV := 600;(*Prevent Cold Start LowBat*)
 	
 	FindSyncDelay(IN:=TRUE, PT:=t#5s);
@@ -223,8 +224,14 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 		g_StartFindSync := FALSE;
 		StopFindSync := FALSE;
 	end_if;
-	
-
+	3:
+	(* Check Encoder Status *)
+	IF NDC8.DCD_6.EncoderStatus = 0 OR NDC8.DCD_8.EncoderStatus = 0 THEN
+			FindSyncStep := 0;			
+	ELSE
+	 		FindSyncStep := 4;
+	end_if;
+	END_IF;
 	end_case;
 	
 end_if;
@@ -772,6 +779,8 @@ Display();
 OPTX2();
 
 DataUpdate();
+
+
 
 
 

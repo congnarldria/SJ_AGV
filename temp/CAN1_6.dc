@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="1" xmlns="urn:NDC8DeviceConfigurationFile">
-  <FileInfo FileType="dc" FileRevision="1" FileFormat="40" Description="NDC8 Device Configuration File" CreationDate="2011-11-21" CreationTime="12:00:00.0000000+08:00" CreatedBy="MBJ" ModificationDate="2020-09-05" ModificationTime="14:20:34.6796500+08:00" ModifiedBy="MBJ" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="dc" FileRevision="1" FileFormat="40" Description="NDC8 Device Configuration File" CreationDate="2011-11-21" CreationTime="12:00:00.0000000+08:00" CreatedBy="MBJ" ModificationDate="2020-09-13" ModificationTime="12:40:44.5794500+08:00" ModifiedBy="MBJ" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Configuration Protocol="CANopen" BusId="1" NodeId="6" Optional="false" Remark="DCD 50" GenericBoolCondition="DCD_6.ReadyToSwitchOn=1">
     <Guarding Type="PdoGuarding" Timeout="500" />
     <Identification DeviceType="0x01000000" ArticleNumber="69A21050C03" ArticleNumberMatch="69A21050C0????" />

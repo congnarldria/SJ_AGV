@@ -353,6 +353,7 @@ end_if;
 (* User Event 5: Charging ON*)
 ChargingR(CLK:= NDC8.PLC_Application.TxStatusBit6_Charge);
 if ChargingR.Q and NDC8.Master.MasterLinkUp then
+	CHARGECOUNT := CHARGECOUNT + 1;
 	EventQueue(EventCode:=5,
 		Par1:=NDC8.LayoutPosition.Segment,
 		Par2:=0,
@@ -960,6 +961,8 @@ end_if;
 
 NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);
 NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
+
+
 
 
 

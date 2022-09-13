@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="71" xmlns="urn:NDC8VehicleApplicationFile">
-  <FileInfo FileType="vaf" FileRevision="517" FileFormat="71" Description="NDC8 Vehicle Application File" CreationDate="2019-09-24" CreationTime="23:15:58.2383554+08:00" CreatedBy="haoin" ModificationDate="2020-09-05" ModificationTime="14:20:34.2151500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vaf" FileRevision="523" FileFormat="71" Description="NDC8 Vehicle Application File" CreationDate="2019-09-24" CreationTime="23:15:58.2383554+08:00" CreatedBy="haoin" ModificationDate="2020-09-13" ModificationTime="12:40:44.4264500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <VehicleApplication Type="AGV" Password="" />
   <Links>
     <Link Type="vpf" FileName="SJ_2SD" FilePath="" />
@@ -149,12 +149,12 @@
         <Connection Name="CVC700.CANBus1" />
         <Parameters>
           <Parameter Name="Port1_SendXonXoff" Value="0" />
-          <Parameter Name="Port2_RecXonXoff" Value="0" />
           <Parameter Name="Port4_Speed" Value="6" />
           <Parameter Name="Port3_TerminalNo" Value="3" />
           <Parameter Name="Port2_TerminalNo" Value="2" />
-          <Parameter Name="Port1_Speed" Value="6" />
+          <Parameter Name="Port1_DataPar" Value="3" />
           <Parameter Name="Port3_Type" Value="0" />
+          <Parameter Name="Port1_Speed" Value="6" />
           <Parameter Name="Port3_StopBits" Value="0" />
           <Parameter Name="Port2_Speed" Value="6" />
           <Parameter Name="Port4_Type" Value="0" />
@@ -178,7 +178,7 @@
           <Parameter Name="Port4_TerminalNo" Value="4" />
           <Parameter Name="Port3_RecXonXoff" Value="0" />
           <Parameter Name="Port1_StopBits" Value="0" />
-          <Parameter Name="Port1_DataPar" Value="3" />
+          <Parameter Name="Port2_RecXonXoff" Value="0" />
           <Parameter Name="Port3_Speed" Value="6" />
           <Parameter Name="Port2_StopBits" Value="0" />
           <Parameter Name="Port4_RecXonXoff" Value="0" />

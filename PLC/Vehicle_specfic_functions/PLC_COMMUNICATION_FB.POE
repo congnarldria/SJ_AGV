@@ -2445,9 +2445,9 @@ END_VAR
 
 		(* then - Stmts *)
 
-(** 	NDC8.UserDefined.Integer32_50_BattLowVol := 420; **)
+(** 	NDC8.UserDefined.Integer32_50_BattLowVol := 450; **)
 		(* assign - Stmt *)
-		LD 420
+		LD 450
 		ST NDC8.UserDefined.Integer32_50_BattLowVol
 
 		JMP ODK_END_IF_00000000000001J
@@ -2578,6 +2578,7 @@ END_VAR
 	ODK_SKIP_00000000000001N_000000000000001:
 	ODK_END_IF_00000000000001N:
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

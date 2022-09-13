@@ -224,8 +224,13 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 		g_StartFindSync := FALSE;
 		StopFindSync := FALSE;
 	end_if;
-	
-
+	3:
+	(* Check Encoder Status *)
+	IF NDC8.DCD_6.EncoderStatus = 0 OR NDC8.DCD_8.EncoderStatus = 0 THEN
+		FindSyncStep := 0;			
+	ELSE
+	 	FindSyncStep := 4;
+	END_IF;
 	end_case;
 	
 end_if;
@@ -773,6 +778,8 @@ Display();
 OPTX2();
 
 DataUpdate();
+
+
 
 
 

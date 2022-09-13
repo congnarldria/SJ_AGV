@@ -2,9 +2,9 @@
 0/10	Datasegment	0/11	3548	SHAREDGLOBAL
 0/11	Codesegment	0/12	7
 0/12	Initialsegment	0/44	3544
-0/13	Datasegment	0/14	5380	GLOBAL
+0/13	Datasegment	0/14	5384	GLOBAL
 0/14	Codesegment	0/15	7
-0/15	Initialsegment	0/45	5388
+0/15	Initialsegment	0/45	5392
 0/16	Datasegment	0/17	2480	SHAREDGLOBAL.DISPLAYSTOPSTRING
 0/17	Codesegment	0/18	429
 0/18	Initialsegment	0/46	2476
@@ -46,9 +46,9 @@
 0/54	Sourcesegment	--	64008
 0/55	Sourcesegment	--	64008
 0/56	Sourcesegment	--	64008
-0/57	Sourcesegment	--	10495
+0/57	Sourcesegment	--	11905
 1/54	Datasegment	1/55	608	MAIN
-1/55	Codesegment	1/56	4349
+1/55	Codesegment	1/56	4471
 1/56	Initialsegment	1/352	168
 1/57	Datasegment	1/58	16	MAIN.DINT_TO_TIME
 1/58	Codesegment	1/59	7
@@ -87,8 +87,8 @@
 1/91	Datasegment	1/70	20	MAIN.STOPWORDFB.STOP_RT
 1/92	Datasegment	1/82	20	MAIN.STOPWORDFB.STOP_FT
 1/93	Datasegment	1/64	36	MAIN.STOPWORDFB.STOPTON
-1/94	Datasegment	1/95	404	MAIN.TX_STATUS
-1/95	Codesegment	1/96	8678
+1/94	Datasegment	1/95	412	MAIN.TX_STATUS
+1/95	Codesegment	1/96	8698
 1/96	Initialsegment	1/362	88
 1/97	Datasegment	1/98	52	MAIN.TX_STATUS.TRACE_DINT
 1/98	Codesegment	1/99	7
@@ -345,7 +345,7 @@
 1/349	Datasegment	1/237	95	MAIN.DATAUPDATE.DATAUPLOAD.SERIAL_READ
 1/350	Datasegment	1/240	94	MAIN.DATAUPDATE.DATAUPLOAD.SERIAL_WRITE
 1/351	Datasegment	1/173	36	MAIN.DATAUPDATE.DATAUPLOAD.STARTDELAYTOF
-1/352	NativeCodeSegment	1/55	38424
+1/352	NativeCodeSegment	1/55	39320
 1/353	NativeCodeSegment	1/58	36
 1/354	NativeCodeSegment	1/61	11772
 1/355	NativeCodeSegment	1/64	36
@@ -355,8 +355,8 @@
 1/359	NativeCodeSegment	1/79	820
 1/360	NativeCodeSegment	1/82	36
 1/361	NativeCodeSegment	1/89	14328
-1/362	NativeCodeSegment	1/363	64016
-1/363	NativeCodeSegment2	1/95	11880
+1/362	NativeCodeSegment	1/363	64004
+1/363	NativeCodeSegment2	1/95	12084
 1/364	NativeCodeSegment	1/98	36
 1/365	NativeCodeSegment	1/137	10500
 1/366	NativeCodeSegment	1/140	948

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vpf" FileRevision="517" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-09-05" ModificationTime="14:20:34.2661500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vpf" FileRevision="523" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-09-13" ModificationTime="12:40:44.4369500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
   <ComponentList Name="P46164" TimeStamp="0">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
@@ -689,7 +689,7 @@
         <Property SymbolName="Boolean_14" Value="1" PublicName="Boolean_14" Remark="" />
         <Property SymbolName="Boolean_15" Value="1" PublicName="Boolean_15" Remark="" />
         <Property SymbolName="Boolean_16" Value="1" PublicName="Boolean_16" Remark="" />
-        <Property SymbolName="Boolean_17" Value="1" PublicName="Boolean_17" Remark="" />
+        <Property SymbolName="Boolean_17" Value="1" PublicName="Boolean_17_MGSONOFF" Remark="" AliasName="Boolean_17_MGSONOFF" />
         <Property SymbolName="Boolean_18" Value="1" PublicName="Boolean_18" Remark="" />
         <Property SymbolName="Boolean_19" Value="1" PublicName="Boolean_19" Remark="" />
         <Property SymbolName="Boolean_20" Value="0" PublicName="Boolean_20_OnlineOrderMode" Remark="1 = Local Mode; 0 = Host Mode" AliasName="Boolean_20_OnlineOrderMode" />
@@ -1071,7 +1071,7 @@
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" />
         <Property SymbolName="EndLimitSwitchPolarity" Value="1" />
         <Property SymbolName="SyncGate" Value="0" />
-        <Property SymbolName="SyncFilter" Value="5" />
+        <Property SymbolName="SyncFilter" Value="25" />
         <Property SymbolName="SyncEmergency" Value="1" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" />
         <Property SymbolName="VoltageFeedback" Value="1" />
@@ -1186,7 +1186,7 @@
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" />
         <Property SymbolName="EndLimitSwitchPolarity" Value="1" />
         <Property SymbolName="SyncGate" Value="0" />
-        <Property SymbolName="SyncFilter" Value="5" />
+        <Property SymbolName="SyncFilter" Value="25" />
         <Property SymbolName="SyncEmergency" Value="1" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" />
         <Property SymbolName="VoltageFeedback" Value="1" />

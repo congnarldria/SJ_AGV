@@ -2062,7 +2062,7 @@
         </property>
         <property propname="Boolean_16" propremark="" datatype="BOOLEAN" symboladdress="">
         </property>
-        <property propname="Boolean_17" propremark="" datatype="BOOLEAN" symboladdress="">
+        <property propname="Boolean_17_MGSONOFF" propremark="" datatype="BOOLEAN" symboladdress="Boolean_17">
         </property>
         <property propname="Boolean_18" propremark="" datatype="BOOLEAN" symboladdress="">
         </property>

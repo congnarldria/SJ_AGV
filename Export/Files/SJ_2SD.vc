@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2020-09-05" CreationTime="14:20:41.8556500+08:00" CreatedBy="user" ModificationDate="2020-09-05" ModificationTime="14:20:41.8556500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vc" FileRevision="1" FileFormat="100" Description="NDC8 Vehicle Component File" CreationDate="2020-09-13" CreationTime="12:40:51.7624500+08:00" CreatedBy="user" ModificationDate="2020-09-13" ModificationTime="12:40:51.7624500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
-  <ComponentList Name="P46164" TimeStamp="1599315657">
+  <ComponentList Name="P46164" TimeStamp="1600000868">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
       <Properties>
         <Property SymbolName="Method" Value="1" Remark="Navigation init methods:&#xD;&#xA;0. NavAreaInit. The vehicle controller will search for a&#xD;&#xA;   position within the given navigation area. If navigation area is&#xD;&#xA;   set to 0 the vehicle controller will search the whole layout. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;1. PointInit. The vehicle controller will search for a position in an&#xD;&#xA;   area around the given NDC point. The size of the search area is&#xD;&#xA;   defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;2. SetPosition. The vehicle controller will set its position to that&#xD;&#xA;   of the given NDC point. The vehicle must be in manual or semi manual&#xD;&#xA;   mode and standing still.&#xD;&#xA;&#xD;&#xA;3. CoordinatesInit. The vehicle controller will search for a position&#xD;&#xA;   in an area around the given coordinates. The size of the search&#xD;&#xA;   area is defined by PointSearchLimit and PointAngleSearchLimit. Only&#xD;&#xA;   supported by laser (reflector) navigation and natural navigation.&#xD;&#xA;&#xD;&#xA;4. SetCoordinates. The vehicle controller will set its position to&#xD;&#xA;   that of the given given coordinates. The vehicle must be in manual&#xD;&#xA;   or semi manual mode and standing still." ParentName="NavInit" />
@@ -512,7 +512,7 @@
         <Property SymbolName="Boolean_14" Value="1" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_15" Value="1" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_16" Value="1" Remark="" ParentName="UserDefined" />
-        <Property SymbolName="Boolean_17" Value="1" Remark="" ParentName="UserDefined" />
+        <Property SymbolName="Boolean_17" Value="1" Remark="" AliasName="Boolean_17_MGSONOFF" ParentName="UserDefined" />
         <Property SymbolName="Boolean_18" Value="1" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_19" Value="1" Remark="" ParentName="UserDefined" />
         <Property SymbolName="Boolean_20" Value="0" Remark="1 = Local Mode; 0 = Host Mode" AliasName="Boolean_20_OnlineOrderMode" ParentName="UserDefined" />
@@ -865,7 +865,7 @@
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" Remark="Speed limit for the slow down zone." ParentName="DCD_6" />
         <Property SymbolName="EndLimitSwitchPolarity" Value="1" Remark="Polarity of end limit switch. Default is active high." ParentName="DCD_6" />
         <Property SymbolName="SyncGate" Value="0" Remark="Set true to allow sync. Set to false to reject unwanted sync pulse in multi turn application." ParentName="DCD_6" />
-        <Property SymbolName="SyncFilter" Value="5" Remark="Window where we expect sync pulse to appear" ParentName="DCD_6" />
+        <Property SymbolName="SyncFilter" Value="25" Remark="Window where we expect sync pulse to appear" ParentName="DCD_6" />
         <Property SymbolName="SyncEmergency" Value="1" Remark="Encoder Sync Emergency. 0 = Sync Emergency disabled. OBS! Disabling the sync emergency can be a serious safety issue!" ParentName="DCD_6" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" Remark="Set true to reverse encoder direction. Same effect as swapping A and B signals." ParentName="DCD_6" />
         <Property SymbolName="VoltageFeedback" Value="1" Remark="Set true to use motor voltage as speed feedback instead of encoder. (Speed scale: 1024 = 48 V)" ParentName="DCD_6" />
@@ -926,7 +926,7 @@
         <Property SymbolName="LimOutMaxSlowDownZone" Value="0" Remark="Speed limit for the slow down zone." ParentName="DCD_8" />
         <Property SymbolName="EndLimitSwitchPolarity" Value="1" Remark="Polarity of end limit switch. Default is active high." ParentName="DCD_8" />
         <Property SymbolName="SyncGate" Value="0" Remark="Set true to allow sync. Set to false to reject unwanted sync pulse in multi turn application." ParentName="DCD_8" />
-        <Property SymbolName="SyncFilter" Value="5" Remark="Window where we expect sync pulse to appear" ParentName="DCD_8" />
+        <Property SymbolName="SyncFilter" Value="25" Remark="Window where we expect sync pulse to appear" ParentName="DCD_8" />
         <Property SymbolName="SyncEmergency" Value="1" Remark="Encoder Sync Emergency. 0 = Sync Emergency disabled. OBS! Disabling the sync emergency can be a serious safety issue!" ParentName="DCD_8" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" Remark="Set true to reverse encoder direction. Same effect as swapping A and B signals." ParentName="DCD_8" />
         <Property SymbolName="VoltageFeedback" Value="1" Remark="Set true to use motor voltage as speed feedback instead of encoder. (Speed scale: 1024 = 48 V)" ParentName="DCD_8" />

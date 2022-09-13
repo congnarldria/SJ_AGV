@@ -1486,7 +1486,7 @@ TYPE
         Boolean_14 : BOOL ;   (*   *)
         Boolean_15 : BOOL ;   (*   *)
         Boolean_16 : BOOL ;   (*   *)
-        Boolean_17 : BOOL ;   (*   *)
+        Boolean_17_MGSONOFF : BOOL ;   (*   *)
         Boolean_18 : BOOL ;   (*   *)
         Boolean_19 : BOOL ;   (*   *)
         Boolean_20_OnlineOrderMode : BOOL ;   (* 1 = Local Mode; 0 = Host Mode  *)
