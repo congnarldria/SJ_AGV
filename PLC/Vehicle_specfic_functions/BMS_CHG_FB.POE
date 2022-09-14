@@ -703,9 +703,25 @@ END_VAR
 		LD TRUE
 		ST NDC8.PLC_Application.TxStatusBit7_ChgComp
 
-(**         {*OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM); **)
+(** 		 **)
+(**         OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM); **)
+		(* assign - Stmt *)
+		LD NDC8.OMPLC.ChargeOM
+		INT_TO_WORD 
+		ST OM_PLC_Word1
+
 (** 		OM_PLC_W1_Bit_SetLowBatt := FALSE; **)
-(** 		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);*} **)
+		(* assign - Stmt *)
+		LD FALSE
+		ST OM_PLC_W1_Bit_SetLowBatt
+
+(** 		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1); **)
+		(* assign - Stmt *)
+		LD OM_PLC_Word1
+		WORD_TO_INT 
+		ST NDC8.OMPLC.ChargeOM
+
+(** 		{* Report to NT7000 and Wait Charge Cylinder Home *} **)
 (** 		StepDelay(IN:=TRUE, PT:=t#5s); **)
 		(* call - Stmt *)
 		CAL StepDelay (
@@ -915,28 +931,10 @@ END_VAR
 
 			JMP ODK_END_IF_00000000000000N
 
-(** 		end_if; **)
+(** 		end_if;			 **)
 		(* if - End *) 
 		ODK_SKIP_00000000000000N_000000000000001:
 		ODK_END_IF_00000000000000N:
-
-(** 		 **)
-(**         OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM); **)
-		(* assign - Stmt *)
-		LD NDC8.OMPLC.ChargeOM
-		INT_TO_WORD 
-		ST OM_PLC_Word1
-
-(** 		OM_PLC_W1_Bit_SetLowBatt := FALSE; **)
-		(* assign - Stmt *)
-		LD FALSE
-		ST OM_PLC_W1_Bit_SetLowBatt
-
-(** 		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);		 **)
-		(* assign - Stmt *)
-		LD OM_PLC_Word1
-		WORD_TO_INT 
-		ST NDC8.OMPLC.ChargeOM
 
 		JMP ODK_END_CASE_000000000000003
 
@@ -1195,6 +1193,8 @@ END_VAR
 	ODK_SKIP_00000000000000S_000000000000001:
 	ODK_END_IF_00000000000000S:
 
+(**  **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)

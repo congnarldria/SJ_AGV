@@ -43,7 +43,7 @@ WaitingForSteerWheelTurn := NDC8.Automatic.ExecDriveCommand
 
 DisplayStopString(InStatus:=WaitingForSteerWheelTurn, StopString:=138, StopValue:=0);
 
-StopSteerSync	:= not INPUT.SteerEncSyncValid;
+(*StopSteerSync	:= not INPUT.SteerEncSyncValid;*)
 DisplayStopString(InStatus:=StopSteerSync, StopString:=181, StopValue:=0);
 
 
@@ -126,6 +126,7 @@ if Stop_FT.q then
 	EventQueue(EventCode:=101,Par1:=NDC8.Vehicle.VehicleID,Par2:=0,Par3:=0,Par4:=0);
 end_if;
 *)
+
 
 
 

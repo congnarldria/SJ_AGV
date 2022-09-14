@@ -139,9 +139,11 @@ case AutoChargeStep of
 		NDC8.SDIO.DigitalOutput12_LEFTMGS := FALSE;		
 		
 		NDC8.PLC_Application.TxStatusBit7_ChgComp := TRUE;
-        (*OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
+		
+        OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
 		OM_PLC_W1_Bit_SetLowBatt := FALSE;
-		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);*)
+		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);
+		(* Report to NT7000 and Wait Charge Cylinder Home *)
 		StepDelay(IN:=TRUE, PT:=t#5s);
 		if StepDelay.Q then
 			StepDelay(IN:=FALSE);
@@ -171,11 +173,7 @@ case AutoChargeStep of
 		end_if;
 		if NDC8.LayoutPosition.Point <> ChargePnt or NDC8.PLC_Application.TxStatusBit4_LowBatt = TRUE then
 			AutoChargeStep := 0;	
-		end_if;
-		
-        OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
-		OM_PLC_W1_Bit_SetLowBatt := FALSE;
-		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);		
+		end_if;			
 		
 	999:
 		PLC_TX04_Bit_ChrgCmdL_A := FALSE;
@@ -240,6 +238,8 @@ if not NDC8.VehicleControl.Estop then
 		;
 	end_if;
 end_if;
+
+
 
 
 

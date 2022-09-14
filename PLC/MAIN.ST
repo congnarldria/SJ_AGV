@@ -219,10 +219,12 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	if FindSyncDelay.Q then
 		FindSyncStep := 3;
 		FindSyncDelay(IN:=FALSE);
-		g_FindSyncFlag := TRUE;
-		NDC8.Manual.PlcSelectMask := 0;
-		g_StartFindSync := FALSE;
-		StopFindSync := FALSE;
+		IF NDC8.DCD_6.EncoderStatus = 1 AND NDC8.DCD_8.EncoderStatus = 1 THEN
+			g_FindSyncFlag := TRUE;		
+			NDC8.Manual.PlcSelectMask := 0;
+			g_StartFindSync := FALSE;
+			StopFindSync := FALSE;
+		END_IF;
 	end_if;
 	3:
 	(* Check Encoder Status *)
@@ -448,7 +450,7 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 122;
 	elsif R_DriveSupervision.NotMovingFail = TRUE then
 		g_ErrorCode := 123;
-	elsif F_SteerSupervision.NotMovingFail = TRUE or R_SteerSupervision.NotMovingFail = TRUE or (NDC8.DCD_6.EncoderStatus = 0 or NDC8.DCD_8.EncoderStatus = 0)then
+	elsif (F_SteerSupervision.NotMovingFail = TRUE or R_SteerSupervision.NotMovingFail = TRUE) AND g_StartFindSync or (NDC8.DCD_6.EncoderStatus = 0 or NDC8.DCD_8.EncoderStatus = 0) AND g_StartFindSync THEN
 		g_ErrorCode := 124;
 	elsif g_BattLim_NG then
 		g_ErrorCode := 127;
@@ -778,6 +780,7 @@ Display();
 OPTX2();
 
 DataUpdate();
+
 
 
 

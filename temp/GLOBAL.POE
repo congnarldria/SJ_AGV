@@ -9,12 +9,15 @@ VAR_GLOBAL
 (* The code above was auto-generated - do not change *)
 	FORCECOUNT : DINT;
 	AUTOLOADDONE : Bool := False;
-	
+	CHARGEONCOUNT : INT;
+	CHARGEOFFCOUNT : INT;
 END_VAR
 
 VAR_GLOBAL RETAIN
 	
 END_VAR
+
+
 
 
 
