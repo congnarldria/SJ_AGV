@@ -553,6 +553,7 @@ PLC_TX_Word16_STr_BCD1 := TempWord;
 
 
 (* Set Insert Point *)
+(* 
 if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then
 	
 	NDC8.NavInit.Target := Word_To_DINT(PLC_RX_Word11_Ins_Pno);
@@ -565,7 +566,8 @@ if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then
 		PLC_TX04_Bit_STr_Ins_er := TRUE;
 	end_if;
 end_if;
-
+ *)
+ 
 (* Set Local Order Data*)
 STw_NewcmdR(CLK:= PLC_RX03_Bit_STw_Newcmd);
 
@@ -1005,6 +1007,8 @@ if ComStart = true then
 	
 	
 end_if;
+
+
 
 
 

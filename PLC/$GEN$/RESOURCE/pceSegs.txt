@@ -43,52 +43,52 @@
 0/51	NativeCodeSegment	0/32	36
 0/52	NativeCodeSegment	0/35	36
 0/53	NativeCodeSegment	0/38	36
-1/54	Datasegment	1/55	624	MAIN
-1/55	Codesegment	1/56	5202
-1/56	Initialsegment	1/367	216
+1/54	Datasegment	1/55	640	MAIN
+1/55	Codesegment	1/56	5369
+1/56	Initialsegment	1/369	224
 1/57	Datasegment	1/58	16	MAIN.DINT_TO_TIME
 1/58	Codesegment	1/59	7
-1/59	Initialsegment	1/368	24
+1/59	Initialsegment	1/370	24
 1/60	Datasegment	1/61	104	MAIN.INDICATORS
 1/61	Codesegment	1/62	1298
-1/62	Initialsegment	1/369	40
+1/62	Initialsegment	1/371	40
 1/63	Datasegment	1/64	36	MAIN.INDICATORS.MODEAUTOTON
 1/64	Codesegment	1/65	7
-1/65	Initialsegment	1/370	44
+1/65	Initialsegment	1/372	44
 1/66	Datasegment	1/67	84	MAIN.MODE
 1/67	Codesegment	1/68	1318
-1/68	Initialsegment	1/371	28
+1/68	Initialsegment	1/373	28
 1/69	Datasegment	1/70	20	MAIN.MODE.STEERMODERT
 1/70	Codesegment	1/71	7
-1/71	Initialsegment	1/372	28
+1/71	Initialsegment	1/374	28
 1/72	Datasegment	1/70	20	MAIN.MODE.STEERMODERT2
 1/73	Datasegment	1/64	36	MAIN.MODE.STEPDELAY
 1/74	Datasegment	1/64	36	MAIN.MODE.NOMCDTIMER
 1/75	Datasegment	1/76	68	MAIN.NAVIGATION
 1/76	Codesegment	1/77	1017
-1/77	Initialsegment	1/373	32
+1/77	Initialsegment	1/375	32
 1/78	Datasegment	1/79	28	MAIN.NAVIGATION.NAVMETHOD
 1/79	Codesegment	1/80	182
-1/80	Initialsegment	1/374	32
+1/80	Initialsegment	1/376	32
 1/81	Datasegment	1/82	20	MAIN.NAVIGATION.NAVLEVELTRIGGER_RT
 1/82	Codesegment	1/83	7
-1/83	Initialsegment	1/375	28
+1/83	Initialsegment	1/377	28
 1/84	Datasegment	1/82	20	MAIN.NAVIGATION.POSITIONKNOWN_RT
 1/85	Datasegment	1/82	20	MAIN.NAVIGATION.POSITIONKNOWN_FT
 1/86	Datasegment	1/64	36	MAIN.NAVIGATION.WHEELSPINNINGTIMER
 1/87	Datasegment	1/64	36	MAIN.NAVIGATION.SEGMENTCHANGETIMER
 1/88	Datasegment	1/89	248	MAIN.STOPWORDFB
-1/89	Codesegment	1/90	1922
-1/90	Initialsegment	1/376	24
+1/89	Codesegment	1/90	1910
+1/90	Initialsegment	1/378	24
 1/91	Datasegment	1/70	20	MAIN.STOPWORDFB.STOP_RT
 1/92	Datasegment	1/82	20	MAIN.STOPWORDFB.STOP_FT
 1/93	Datasegment	1/64	36	MAIN.STOPWORDFB.STOPTON
 1/94	Datasegment	1/95	440	MAIN.TX_STATUS
 1/95	Codesegment	1/96	7808
-1/96	Initialsegment	1/377	96
+1/96	Initialsegment	1/379	96
 1/97	Datasegment	1/98	52	MAIN.TX_STATUS.TRACE_DINT
 1/98	Codesegment	1/99	7
-1/99	Initialsegment	1/379	60
+1/99	Initialsegment	1/381	60
 1/100	Datasegment	1/82	20	MAIN.TX_STATUS.LOAD_F
 1/101	Datasegment	1/64	36	MAIN.TX_STATUS.LOAD_F_TIMER
 1/102	Datasegment	1/82	20	MAIN.TX_STATUS.BCD_COMPARE_R
@@ -128,34 +128,34 @@
 1/136	Datasegment	1/70	20	MAIN.TX_STATUS.TX_LOAD_R
 1/137	Datasegment	1/138	64	MAIN.TX_STATUS.BLINK_1_HZ
 1/138	Codesegment	1/139	263
-1/139	Initialsegment	1/380	60
+1/139	Initialsegment	1/382	60
 1/140	Datasegment	1/141	16	MAIN.TX_STATUS.BLINK_1_HZ.TIME_TO_DINT
 1/141	Codesegment	1/142	7
-1/142	Initialsegment	1/381	24
+1/142	Initialsegment	1/383	24
 1/143	Datasegment	1/144	16	MAIN.TX_STATUS.BLINK_1_HZ.GETTIME
 1/144	Codesegment	1/145	7
-1/145	Initialsegment	1/382	24
+1/145	Initialsegment	1/384	24
 1/146	Datasegment	1/147	48	MAIN.EVENTHANDLER
 1/147	Codesegment	1/148	903
-1/148	Initialsegment	1/383	44
+1/148	Initialsegment	1/385	44
 1/149	Datasegment	1/150	44	MAIN.EVENTHANDLER.SENDEV
 1/150	Codesegment	1/151	222
-1/151	Initialsegment	1/384	48
+1/151	Initialsegment	1/386	48
 1/152	Datasegment	1/153	484	MAIN.AUTOLOAD
 1/153	Codesegment	1/154	6443
-1/154	Initialsegment	1/385	128
+1/154	Initialsegment	1/387	128
 1/155	Datasegment	1/156	48	MAIN.AUTOLOAD.TRACE_STRING
 1/156	Codesegment	1/157	7
-1/157	Initialsegment	1/386	56
+1/157	Initialsegment	1/388	56
 1/158	Datasegment	1/159	52	MAIN.AUTOLOAD.TRACE_BOOL
 1/159	Codesegment	1/160	7
-1/160	Initialsegment	1/387	56
+1/160	Initialsegment	1/389	56
 1/161	Datasegment	1/162	32	MAIN.AUTOLOAD.LOADOPDONE
 1/162	Codesegment	1/163	285
-1/163	Initialsegment	1/388	36
+1/163	Initialsegment	1/390	36
 1/164	Datasegment	1/165	28	MAIN.AUTOLOAD.OPERATIONFAIL
 1/165	Codesegment	1/166	209
-1/166	Initialsegment	1/389	28
+1/166	Initialsegment	1/391	28
 1/167	Datasegment	1/162	32	MAIN.AUTOLOAD.OPERATIONFAIL.LOADOPDONE
 1/168	Datasegment	1/82	20	MAIN.AUTOLOAD.BBXTRIG_FT
 1/169	Datasegment	1/70	20	MAIN.AUTOLOAD.EXECDRIVECOMMAND_RT
@@ -165,32 +165,32 @@
 1/173	Datasegment	1/64	36	MAIN.AUTOLOAD.CHARGEDELAY
 1/174	Datasegment	1/175	144	MAIN.CARRIERCONTROL
 1/175	Codesegment	1/176	688
-1/176	Initialsegment	1/390	72
+1/176	Initialsegment	1/392	72
 1/177	Datasegment	1/178	20	MAIN.CARRIERCONTROL.AUTOINSERT
 1/178	Codesegment	1/179	225
-1/179	Initialsegment	1/391	20
+1/179	Initialsegment	1/393	20
 1/180	Datasegment	1/181	44	MAIN.CARRIERCONTROL.SLOWDOWN
 1/181	Codesegment	1/182	227
-1/182	Initialsegment	1/392	36
+1/182	Initialsegment	1/394	36
 1/183	Datasegment	1/184	36	MAIN.CARRIERCONTROL.SLOWDOWN.SLOWDOWNTOF
 1/184	Codesegment	1/185	7
-1/185	Initialsegment	1/393	44
+1/185	Initialsegment	1/395	44
 1/186	Datasegment	1/187	56	MAIN.CARRIERCONTROL.STARTDELAY
 1/187	Codesegment	1/188	280
-1/188	Initialsegment	1/394	32
+1/188	Initialsegment	1/396	32
 1/189	Datasegment	1/184	36	MAIN.CARRIERCONTROL.STARTDELAY.STARTDELAYSHORTTOF
 1/190	Datasegment	1/184	36	MAIN.CARRIERCONTROL.STARTDELAY.STARTDELAYWARNINGTOF
 1/191	Datasegment	1/184	36	MAIN.CARRIERCONTROL.STARTDELAY.STARTDELAYLONGTOF
 1/192	Datasegment	1/64	36	MAIN.CARRIERCONTROL.STARTDELAY.STARTDELAYINACTIVITYTON
 1/193	Datasegment	1/194	44	MAIN.CARRIERCONTROL.ESTOPFB
 1/194	Codesegment	1/195	96
-1/195	Initialsegment	1/395	16
+1/195	Initialsegment	1/397	16
 1/196	Datasegment	1/70	20	MAIN.CARRIERCONTROL.ESTOPFB.ESTOPRT
 1/197	Datasegment	1/70	20	MAIN.CARRIERCONTROL.ESTOPFB.ESTOPFT
 1/198	Datasegment	1/70	20	MAIN.CARRIERCONTROL.ESTOPFB.ESTOPPBRT
 1/199	Datasegment	1/200	48	MAIN.CARRIERCONTROL.RESETBUTTONFB
 1/200	Codesegment	1/201	253
-1/201	Initialsegment	1/396	16
+1/201	Initialsegment	1/398	16
 1/202	Datasegment	1/70	20	MAIN.CARRIERCONTROL.RESETBUTTONFB.STOPRESETRT
 1/203	Datasegment	1/70	20	MAIN.CARRIERCONTROL.RESETBUTTONFB.RESETBUTTONRT
 1/204	Datasegment	1/82	20	MAIN.CARRIERCONTROL.RESETBUTTONFB.ESTOPFT
@@ -203,19 +203,19 @@
 1/211	Datasegment	1/82	20	MAIN.CARRIERCONTROL.MASTERLINK_FT
 1/212	Datasegment	1/213	87	MAIN.CARRIERCONTROL.TO_BYTES
 1/213	Codesegment	1/214	7
-1/214	Initialsegment	1/397	95
+1/214	Initialsegment	1/399	95
 1/215	Datasegment	1/216	32	MAIN.CARRIERCONTROL.TO_DEC
 1/216	Codesegment	1/217	75
-1/217	Initialsegment	1/398	40
+1/217	Initialsegment	1/400	40
 1/218	Datasegment	1/219	28	MAIN.CARRIERCONTROL.BLACKBOXFB
 1/219	Codesegment	1/220	172
-1/220	Initialsegment	1/399	32
+1/220	Initialsegment	1/401	32
 1/221	Datasegment	1/222	24	MAIN.DISPLAY
 1/222	Codesegment	1/223	1051
-1/223	Initialsegment	1/400	16
+1/223	Initialsegment	1/402	16
 1/224	Datasegment	1/225	372	MAIN.OPTX2
 1/225	Codesegment	1/226	7804
-1/226	Initialsegment	1/401	48
+1/226	Initialsegment	1/403	48
 1/227	Datasegment	1/70	20	MAIN.OPTX2.INTTODISPLAY
 1/228	Datasegment	1/70	20	MAIN.OPTX2.INTFROMDISPLAY
 1/229	Datasegment	1/70	20	MAIN.OPTX2.DINTFROMDISPLAY
@@ -224,35 +224,35 @@
 1/232	Datasegment	1/219	28	MAIN.OPTX2.BLACKBOX
 1/233	Datasegment	1/234	28	MAIN.OPTX2.ORDERMODE
 1/234	Codesegment	1/235	182
-1/235	Initialsegment	1/404	32
+1/235	Initialsegment	1/406	32
 1/236	Datasegment	1/237	28	MAIN.OPTX2.LOCALORDER
 1/237	Codesegment	1/238	182
-1/238	Initialsegment	1/405	32
+1/238	Initialsegment	1/407	32
 1/239	Datasegment	1/240	32	MAIN.OPTX2.NAVINIT
 1/240	Codesegment	1/241	204
-1/241	Initialsegment	1/406	36
+1/241	Initialsegment	1/408	36
 1/242	Datasegment	1/79	28	MAIN.OPTX2.NAVMETHOD
 1/243	Datasegment	1/244	508	MAIN.OPTX2.OPTX2COMMUNICATION
 1/244	Codesegment	1/245	3886
-1/245	Initialsegment	1/407	412
+1/245	Initialsegment	1/409	412
 1/246	Datasegment	1/247	95	MAIN.OPTX2.OPTX2COMMUNICATION.SERIAL_READ
 1/247	Codesegment	1/248	7
-1/248	Initialsegment	1/408	103
+1/248	Initialsegment	1/410	103
 1/249	Datasegment	1/250	94	MAIN.OPTX2.OPTX2COMMUNICATION.SERIAL_WRITE
 1/250	Codesegment	1/251	7
-1/251	Initialsegment	1/409	102
+1/251	Initialsegment	1/411	102
 1/252	Datasegment	1/184	36	MAIN.OPTX2.OPTX2COMMUNICATION.STARTDELAYTOF
 1/253	Datasegment	1/254	40	MAIN.LS2000
 1/254	Codesegment	1/255	464
-1/255	Initialsegment	1/410	20
+1/255	Initialsegment	1/412	20
 1/256	Datasegment	1/64	36	MAIN.LS2000.LS2000FIELD1TON
 1/257	Datasegment	1/64	36	MAIN.LS2000.LS2000FIELD2TON
 1/258	Datasegment	1/259	36	MAIN.DEBUGFB
 1/259	Codesegment	1/260	397
-1/260	Initialsegment	1/411	16
-1/261	Datasegment	1/262	3080	MAIN.PLC_COMMUNICATION
-1/262	Codesegment	1/263	5805
-1/263	Initialsegment	1/412	2616
+1/260	Initialsegment	1/413	16
+1/261	Datasegment	1/262	3076	MAIN.PLC_COMMUNICATION
+1/262	Codesegment	1/263	5713
+1/263	Initialsegment	1/414	2616
 1/264	Datasegment	1/64	36	MAIN.PLC_COMMUNICATION.COMSTARTDELAY
 1/265	Datasegment	1/64	36	MAIN.PLC_COMMUNICATION.MESSAGEDELAY
 1/266	Datasegment	1/64	36	MAIN.PLC_COMMUNICATION.TP_PB_NOSELTIMER
@@ -267,7 +267,7 @@
 1/275	Datasegment	1/213	87	MAIN.PLC_COMMUNICATION.TO_BYTES
 1/276	Datasegment	1/277	90	MAIN.PLC_COMMUNICATION.TO_STRING
 1/277	Codesegment	1/278	7
-1/278	Initialsegment	1/414	98
+1/278	Initialsegment	1/416	98
 1/279	Datasegment	1/64	36	MAIN.PLC_COMMUNICATION.PLC_HEARTBEATTIMEOUT
 1/280	Datasegment	1/234	28	MAIN.PLC_COMMUNICATION.ORDERMODE
 1/281	Datasegment	1/237	28	MAIN.PLC_COMMUNICATION.LOCALORDER
@@ -277,7 +277,7 @@
 1/285	Datasegment	1/64	36	MAIN.PLC_COMMUNICATION.STR_ACKT
 1/286	Datasegment	1/287	56	MAIN.F_STEERSUPERVISION
 1/287	Codesegment	1/288	234
-1/288	Initialsegment	1/415	44
+1/288	Initialsegment	1/417	44
 1/289	Datasegment	1/70	20	MAIN.F_STEERSUPERVISION.MOVINGR
 1/290	Datasegment	1/82	20	MAIN.F_STEERSUPERVISION.MOVINGF
 1/291	Datasegment	1/64	36	MAIN.F_STEERSUPERVISION.OVERRANGEFAILTIMERTON
@@ -299,7 +299,7 @@
 1/307	Datasegment	1/64	36	MAIN.R_DRIVESUPERVISION.NOTMOVINGFAILTIMERTON
 1/308	Datasegment	1/309	160	MAIN.BMS_CHG
 1/309	Codesegment	1/310	2387
-1/310	Initialsegment	1/416	32
+1/310	Initialsegment	1/418	32
 1/311	Datasegment	1/64	36	MAIN.BMS_CHG.STEPDELAY
 1/312	Datasegment	1/64	36	MAIN.BMS_CHG.MANUALSTEPDELAY
 1/313	Datasegment	1/64	36	MAIN.BMS_CHG.CHECKCHARGEDONESTEPDELAY
@@ -311,14 +311,14 @@
 1/319	Datasegment	1/70	20	MAIN.MASTERLINKR
 1/320	Datasegment	1/321	56	MAIN.INPUTMAP
 1/321	Codesegment	1/322	1485
-1/322	Initialsegment	1/417	24
+1/322	Initialsegment	1/419	24
 1/323	Datasegment	1/70	20	MAIN.INPUTMAP.STARTSWITCHRISE
 1/324	Datasegment	1/64	36	MAIN.INPUTMAP.STARTDELAY
 1/325	Datasegment	1/70	20	MAIN.INPUTMAP.MCDAUTOR
 1/326	Datasegment	1/234	28	MAIN.INPUTMAP.ORDERMODE
 1/327	Datasegment	1/328	52	MAIN.OUTPUTMAP
 1/328	Codesegment	1/329	1220
-1/329	Initialsegment	1/418	16
+1/329	Initialsegment	1/420	16
 1/330	Datasegment	1/138	64	MAIN.OUTPUTMAP.LAMPBLINK
 1/331	Datasegment	1/64	36	MAIN.OUTPUTMAP.POWEROFFEVTM
 1/332	Datasegment	1/64	36	MAIN.OUTPUTMAP.BUZZERSYNCTM
@@ -339,10 +339,10 @@
 1/347	Datasegment	1/70	20	MAIN.ERRORTRIGR
 1/348	Datasegment	1/349	124	MAIN.DATAUPDATE
 1/349	Codesegment	1/350	1679
-1/350	Initialsegment	1/419	24
+1/350	Initialsegment	1/421	24
 1/351	Datasegment	1/352	508	MAIN.DATAUPDATE.DATAUPLOAD
 1/352	Codesegment	1/353	3882
-1/353	Initialsegment	1/420	412
+1/353	Initialsegment	1/422	412
 1/354	Datasegment	1/247	95	MAIN.DATAUPDATE.DATAUPLOAD.SERIAL_READ
 1/355	Datasegment	1/250	94	MAIN.DATAUPDATE.DATAUPLOAD.SERIAL_WRITE
 1/356	Datasegment	1/184	36	MAIN.DATAUPDATE.DATAUPLOAD.STARTDELAYTOF
@@ -356,57 +356,59 @@
 1/364	Datasegment	1/70	20	MAIN.CHARGEDONER
 1/365	Datasegment	1/70	20	MAIN.LOWVOLTAGER
 1/366	Datasegment	1/64	36	MAIN.BATCHECKTIMER
-1/367	NativeCodeSegment	1/55	43224
-1/368	NativeCodeSegment	1/58	36
-1/369	NativeCodeSegment	1/61	11772
-1/370	NativeCodeSegment	1/64	36
-1/371	NativeCodeSegment	1/67	7664
-1/372	NativeCodeSegment	1/70	36
-1/373	NativeCodeSegment	1/76	7592
-1/374	NativeCodeSegment	1/79	820
-1/375	NativeCodeSegment	1/82	36
-1/376	NativeCodeSegment	1/89	14328
-1/377	NativeCodeSegment	1/378	64004
-1/378	NativeCodeSegment2	1/95	8456
-1/379	NativeCodeSegment	1/98	36
-1/380	NativeCodeSegment	1/138	2584
-1/381	NativeCodeSegment	1/141	36
-1/382	NativeCodeSegment	1/144	36
-1/383	NativeCodeSegment	1/147	10472
-1/384	NativeCodeSegment	1/150	948
-1/385	NativeCodeSegment	1/153	50920
-1/386	NativeCodeSegment	1/156	36
-1/387	NativeCodeSegment	1/159	36
-1/388	NativeCodeSegment	1/162	1548
-1/389	NativeCodeSegment	1/165	808
-1/390	NativeCodeSegment	1/175	7184
-1/391	NativeCodeSegment	1/178	1216
-1/392	NativeCodeSegment	1/181	1356
-1/393	NativeCodeSegment	1/184	36
-1/394	NativeCodeSegment	1/187	1660
-1/395	NativeCodeSegment	1/194	896
-1/396	NativeCodeSegment	1/200	2276
-1/397	NativeCodeSegment	1/213	36
-1/398	NativeCodeSegment	1/216	196
-1/399	NativeCodeSegment	1/219	788
-1/400	NativeCodeSegment	1/222	8212
-1/401	NativeCodeSegment	1/402	64092
-1/402	NativeCodeSegment2	1/403	64016
-1/403	NativeCodeSegment2	1/225	14072
-1/404	NativeCodeSegment	1/234	820
-1/405	NativeCodeSegment	1/237	820
-1/406	NativeCodeSegment	1/240	832
-1/407	NativeCodeSegment	1/244	44948
-1/408	NativeCodeSegment	1/247	36
-1/409	NativeCodeSegment	1/250	36
-1/410	NativeCodeSegment	1/254	2524
-1/411	NativeCodeSegment	1/259	6020
-1/412	NativeCodeSegment	1/413	64124
-1/413	NativeCodeSegment2	1/262	8480
-1/414	NativeCodeSegment	1/277	36
-1/415	NativeCodeSegment	1/287	1784
-1/416	NativeCodeSegment	1/309	22156
-1/417	NativeCodeSegment	1/321	10844
-1/418	NativeCodeSegment	1/328	11708
-1/419	NativeCodeSegment	1/349	26968
-1/420	NativeCodeSegment	1/352	44924
+1/367	Datasegment	1/64	36	MAIN.Z_PHASE_REALLY_NG_T
+1/368	Datasegment	1/82	20	MAIN.MOVINGDONELT
+1/369	NativeCodeSegment	1/55	44488
+1/370	NativeCodeSegment	1/58	36
+1/371	NativeCodeSegment	1/61	11772
+1/372	NativeCodeSegment	1/64	36
+1/373	NativeCodeSegment	1/67	7664
+1/374	NativeCodeSegment	1/70	36
+1/375	NativeCodeSegment	1/76	7592
+1/376	NativeCodeSegment	1/79	820
+1/377	NativeCodeSegment	1/82	36
+1/378	NativeCodeSegment	1/89	14188
+1/379	NativeCodeSegment	1/380	64004
+1/380	NativeCodeSegment2	1/95	8456
+1/381	NativeCodeSegment	1/98	36
+1/382	NativeCodeSegment	1/138	2584
+1/383	NativeCodeSegment	1/141	36
+1/384	NativeCodeSegment	1/144	36
+1/385	NativeCodeSegment	1/147	10472
+1/386	NativeCodeSegment	1/150	948
+1/387	NativeCodeSegment	1/153	50920
+1/388	NativeCodeSegment	1/156	36
+1/389	NativeCodeSegment	1/159	36
+1/390	NativeCodeSegment	1/162	1548
+1/391	NativeCodeSegment	1/165	808
+1/392	NativeCodeSegment	1/175	7184
+1/393	NativeCodeSegment	1/178	1216
+1/394	NativeCodeSegment	1/181	1356
+1/395	NativeCodeSegment	1/184	36
+1/396	NativeCodeSegment	1/187	1660
+1/397	NativeCodeSegment	1/194	896
+1/398	NativeCodeSegment	1/200	2276
+1/399	NativeCodeSegment	1/213	36
+1/400	NativeCodeSegment	1/216	196
+1/401	NativeCodeSegment	1/219	788
+1/402	NativeCodeSegment	1/222	8212
+1/403	NativeCodeSegment	1/404	64092
+1/404	NativeCodeSegment2	1/405	64016
+1/405	NativeCodeSegment2	1/225	14072
+1/406	NativeCodeSegment	1/234	820
+1/407	NativeCodeSegment	1/237	820
+1/408	NativeCodeSegment	1/240	832
+1/409	NativeCodeSegment	1/244	44948
+1/410	NativeCodeSegment	1/247	36
+1/411	NativeCodeSegment	1/250	36
+1/412	NativeCodeSegment	1/254	2524
+1/413	NativeCodeSegment	1/259	6020
+1/414	NativeCodeSegment	1/415	64048
+1/415	NativeCodeSegment2	1/262	7704
+1/416	NativeCodeSegment	1/277	36
+1/417	NativeCodeSegment	1/287	1784
+1/418	NativeCodeSegment	1/309	22156
+1/419	NativeCodeSegment	1/321	10844
+1/420	NativeCodeSegment	1/328	11708
+1/421	NativeCodeSegment	1/349	26968
+1/422	NativeCodeSegment	1/352	44924

@@ -88,6 +88,16 @@ DisplayStopString(InStatus:=StopForkTooHigh, 		StopString:=239, StopValue:=0);
 DisplayStopString(InStatus:=StopForkFarTooHigh, 	StopString:=240, StopValue:=0);
 DisplayStopString(InStatus:=StopChargeStationMissing, StopString:=241, StopValue:=0);
 
+DisplayStopString(InStatus:=StopByCanErr_Node1, StopString:=244, StopValue:=0);
+DisplayStopString(InStatus:=StopByCanErr_Node2, StopString:=245, StopValue:=0);
+DisplayStopString(InStatus:=StopByCanErr_Node3, StopString:=246, StopValue:=0);
+DisplayStopString(InStatus:=StopByCanErr_Node4, StopString:=247, StopValue:=0);
+DisplayStopString(InStatus:=StopByCanErr_Node5, StopString:=248, StopValue:=0);
+DisplayStopString(InStatus:=StopByCanErr_Node6, StopString:=249, StopValue:=0);
+DisplayStopString(InStatus:=StopByCanErr_Node7, StopString:=250, StopValue:=0);
+DisplayStopString(InStatus:=StopByCanErr_Node8, StopString:=251, StopValue:=0);
+DisplayStopString(InStatus:=StopByCanErr_Node9, StopString:=252, StopValue:=0);
+DisplayStopString(InStatus:=StopByCanErr_Node10, StopString:=253, StopValue:=0);
 
 (**************************************************************************************)
 (* QUICK STOP  (Stop with emergency deceleration ramp) 								  *)
@@ -115,6 +125,7 @@ if Stop_FT.q then
 	EventQueue(EventCode:=101,Par1:=NDC8.Vehicle.VehicleID,Par2:=0,Par3:=0,Par4:=0);
 end_if;
 *)
+
 
 
 

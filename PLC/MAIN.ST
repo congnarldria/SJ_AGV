@@ -178,6 +178,12 @@ VAR
  LowVoltageR : R_TRIG;
  
  BatCheckTimer : TON;
+ 
+ (* Check Steering Sync State  *)
+	SteerEncoderNormalStatus : BOOL;
+	Z_PHASE_REALLY_NG_T : TON;
+	MovingDoneLT : F_Trig;
+	ChanceToSyncFailCount : DINT := 0;
 	 
 END_VAR
 (*
@@ -279,7 +285,23 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	
 end_if;
 
+(* Check Steering Sync State  *)
 
+SteerEncoderNormalStatus := NDC8.DCD_6.EncoderStatus = 1 AND NDC8.DCD_8.EncoderStatus = 1;
+
+IF NDC8.UserDefined.Integer32_10_ChanceToSyncFailLimit = 0 THEN
+	NDC8.UserDefined.Integer32_10_ChanceToSyncFailLimit := 10;
+END_IF;
+
+MovingDoneLT(CLK := NDC8.Automatic.ExecDriveCommand);
+
+IF MovingDoneLT.Q = TRUE AND SteerEncoderNormalStatus = FALSE THEN
+	ChanceToSyncFailCount := ChanceToSyncFailCount + 1;
+END_IF;
+
+IF MovingDoneLT.Q = TRUE AND SteerEncoderNormalStatus = TRUE THEN
+	ChanceToSyncFailCount := 0;
+END_IF;
 
 if NDC8.CanOpenMaster.NMTState = 5 and NDC8.CanOpenMaster.State = 0 then
 
@@ -473,7 +495,9 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 122;
 	elsif R_DriveSupervision.NotMovingFail = TRUE or StopSpinningWheel then
 		g_ErrorCode := 123;
-	elsif F_SteerSupervision.NotMovingFail = TRUE or R_SteerSupervision.NotMovingFail = TRUE or (NDC8.DCD_6.EncoderStatus = 0 or NDC8.DCD_8.EncoderStatus = 0)then
+	elsif (F_SteerSupervision.NotMovingFail = TRUE or R_SteerSupervision.NotMovingFail = TRUE) AND g_StartFindSync or (NDC8.DCD_6.EncoderStatus= 0 or NDC8.DCD_8.EncoderStatus = 0) AND g_StartFindSync then
+		g_ErrorCode := 124;
+	elsif ChanceToSyncFailCount > NDC8.UserDefined.Integer32_10_ChanceToSyncFailLimit THEN
 		g_ErrorCode := 124;
 	elsif PLC_TX_Word10_STr_BatV < 190 or g_BattLim_NG then
 		g_ErrorCode := 127;
@@ -909,6 +933,8 @@ if BatCheckTimer.Q and g_FindSyncFlag = TRUE then
 	PLC_TX_Word12_STr_BatD := DINT_TO_WORD(NDC8.UserDefined.Integer32_39_CurrentBatCap);
 	
 end_if;
+
+
 
 
 

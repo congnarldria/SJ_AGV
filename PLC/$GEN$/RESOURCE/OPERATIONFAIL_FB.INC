@@ -690,7 +690,7 @@ TYPE UserDefined_T :
         PPAEnable : DINT ;   (* Integer32_7  *)
         SafetyScannerTurnAngle : DINT ;   (* Integer32_8  *)
         NormalCreepDistance : DINT ;   (* Integer32_9  *)
-        Integer32_10 : DINT ;   (* Integer32_10  *)
+        Integer32_10_ChanceToSyncFailLimit : DINT ;   (* Integer32_10_ChanceToSyncFailLimit  *)
         Integer32_11 : DINT ;   (* Integer32_11  *)
         Integer32_12 : DINT ;   (* Integer32_12  *)
         Integer32_13 : DINT ;   (* Integer32_13  *)
@@ -1590,7 +1590,7 @@ END_TYPE
 
 (* PROJEKT PROTOTYPEN *)
 
-$INCLUDE "D:\SJ_2SD_G35_CVC700\PLC\$GEN$\LOADOPDONE_FB.PTT"
+$INCLUDE "D:\T3\SJ_2SD_G35_CVC700_20220914\SJ_2SD_G35_CVC700\PLC\$GEN$\LOADOPDONE_FB.PTT"
 
 
 (* EXTERNE POEs *)
