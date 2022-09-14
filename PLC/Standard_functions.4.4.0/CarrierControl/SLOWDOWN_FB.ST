@@ -15,6 +15,7 @@ VAR_OUTPUT
 END_VAR
 
 VAR
+	SlowDownSpeed : DINT;
 	CurrentVehicleSpeed : DINT; 
 	VehicleSlowDownSpeed : DINT;
 	SlowDownTOF : TOF;
@@ -23,9 +24,14 @@ END_VAR
 (*************************************************************************************
  		SLOW DOWN 
 **************************************************************************************)
-CurrentVehicleSpeed := abs(NDC8.VehicleControl.SetSpeed);
+SlowDownSpeed := NDC8.Vehicle.MaxSpeed / 2;
 
-CurrentVehicleSpeed := CurrentVehicleSpeed / 2;
+
+if abs(NDC8.VehicleControl.SetSpeed) < SlowDownSpeed then
+	SlowDownSpeed := abs(NDC8.VehicleControl.SetSpeed);
+end_if;
+
+CurrentVehicleSpeed := SlowDownSpeed;
 
 if CurrentVehicleSpeed < 100 then
 	CurrentVehicleSpeed := 100;
@@ -56,6 +62,7 @@ NDC8.VehicleControl.SlowDown := SlowDownTOF.Q;
 
 
 (* Generate events here for System Statistics KPI, to find places with frequent slow downs. *)
+
 
 
 

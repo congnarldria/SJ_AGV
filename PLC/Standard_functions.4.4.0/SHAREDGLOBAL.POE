@@ -37,11 +37,12 @@ VAR_GLOBAL
 	(* Power Off Flag *)
 	g_PowerOffFlag 		: BOOL;
 	g_PowerOffFlag_PLC	: BOOL;	
-	g_PowerOffFlag_OMPLC: BOOL;
+	
 	g_PowerOffFlag_OP	: BOOL;
 	g_PowerOffFlag_Block: BOOL;
 	g_PowerOffFlag_Lost : BOOL;
-	g_PowerOffFlag_Error : BOOL;
+	
+	g_UnloadPointArrived_OMPLC: BOOL;
 	
 	(* Find Sync Flag *)
 	g_StartFindSync : BOOL;
@@ -49,15 +50,26 @@ VAR_GLOBAL
 	
 	g_AGV_ErrorReset : BOOL;
 	
+	(* Charge Done Flag *)
+	g_ChargeDone : BOOL;
+	
+	(* Charge Temp Error Flag *)
+	g_ChargeTempErr : BOOL;
+	
 	(* Charge Over Time Flag*)
 	g_ChargeOverTime : BOOL;
 	
-	(* BMS Error *)
-	g_BMS_Error : BOOL;
-	
-	
 	(* CAN Restart Flag *)
 	g_CanRestartFalg : BOOL;
+	
+	(* global Battery Voltage *)
+	g_BatteryVoltage : DINT;
+	
+	(* IL Err *)
+	
+	(* Navi Error Monitor Start *)
+	g_PositionValidMonitorStart : BOOL := FALSE;
+	g_InSystemMonitorStart : BOOL := FALSE;
 	
 	(* Power Off Setting *)
 	EnaPoweOf	: BOOL := 1;
@@ -79,26 +91,24 @@ VAR_GLOBAL
 	PLC_TX_Word8_STr_Seg		:WORD;
 	PLC_TX_Word9_STr_Pnt		:WORD;
 	PLC_TX_Word10_STr_BatV		:WORD;
-	PLC_TX_Word11_STr_Temp		:WORD;
 	PLC_TX_Word12_STr_BatD		:WORD;
 	PLC_TX_Word13_STr_Err		:WORD;
 	
-	
-	
-	PLC_RX_Word10_STw_ILEr		:WORD;
 	PLC_RX_Word11_Ins_Pno		:WORD;
 	PLC_RX_Word12_STw_Pint		:WORD;
 	PLC_RX_Word13_Ins_Ano		:WORD;
+	PLC_RX_Word14				:WORD;
+	PLC_RX_Word15				:WORD;
 	
-	PLC_RX_Word16_BMS_BatV		:WORD;
-	PLC_RX_Word17_BMS_BatT		:WORD;
-	PLC_RX_Word18_BMS_BatC		:WORD;
-	PLC_RX_Word19_BMS_BatA		:WORD;
-	PLC_RX_Word20_PLC_ErrD		:WORD;
-	PLC_RX_Word21_BMS_Main		:WORD;
-	PLC_RX_Word22_BMS_Chan		:WORD;
-	PLC_RX_Word23_BMS_ID4L		:WORD;
-	PLC_RX_Word24_BMS_ID4H		:WORD;
+	PLC_RX_Word16				:WORD;
+	PLC_RX_Word17				:WORD;
+	PLC_RX_Word18				:WORD;
+	PLC_RX_Word19				:WORD;
+	PLC_RX_Word20				:WORD;
+	PLC_RX_Word21				:WORD;
+	PLC_RX_Word22				:WORD;
+	PLC_RX_Word23				:WORD;
+	PLC_RX_Word24				:WORD;
 	PLC_RX_Word25				:WORD;
 END_VAR
 
@@ -107,6 +117,10 @@ VAR_GLOBAL RETAIN		(* Values kept also during power off. *)
 	Milliseconds:Dint;
 	SecondLanguage:bool;
 END_VAR
+
+
+
+
 
 
 

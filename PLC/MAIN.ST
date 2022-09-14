@@ -68,14 +68,7 @@ VAR
 (* Lost Power Off Check *)
 	LostPosPowOffTm : TON;
 	LostPosPowOffTmValue : TIME;
-	
-(* Error Power Off Check *)
-	ErrorOccurFlag : BOOL;
-	ErrorPowOffTm : TON;
-	ErrorPowOffTmValue : TIME;
-	
-(* Battery Low OT *)
-	BatLowTm : TON;
+
 	
 (* Display Error String *)
 	FailCodeDint : dint;
@@ -137,6 +130,61 @@ VAR
 (* Update Data *)
 	DataUpdate : DataUpload_FB;
 	
+(* DD <-> SD Mode Change Check Delay *)
+	SteerModeChangeDelay : TON;
+	SteerModeChange_SD_DD_Flag : BOOL;
+	SteerModeChange_DD_SD_Flag : BOOL;
+	SteerModeChange_Rrig : R_Trig;
+	SteerModeChange_Flag : BOOL;
+	LastSteerMode : DINT;
+	
+	SteerModeChangeErr_SD_DD : BOOL;
+	SteerModeChangeErr_DD_SD : BOOL;
+	
+	Steer_F_ABS_Angle : INT;
+	Steer_R_ABS_Angle : INT;
+	
+(* MAX Speed Detect *)
+	EncSpeed_ABS_DCD5 : INT;
+	EncSpeed_ABS_DCD7 : INT;
+	EncSpeed_MAX : INT;
+	EncOverSpeedFlag : BOOL;
+	EncOverSpeedTm : TON;
+	
+	
+(* Navi Monitor Start Check *)
+	PositionValidDelay : TON;
+	InSystemDelay : TON;
+	
+	
+	
+	OurSystemDelay : TON;
+	
+	
+(* SOC Cal *)
+ FindSyncFlag_Rrig : R_TRIG;
+ FullBattery_Cap : Real;
+ Battery_Cap : Real;
+ 
+ Current_Idel : Real;
+ Current_Moving : Real;
+ Current_Transfer : Real;
+ Current_Charge : Real;
+ 
+ CurrentUsing : Real;
+ 
+ ChargeDoneR : R_TRIG;
+ 
+ LowVoltageR : R_TRIG;
+ 
+ BatCheckTimer : TON;
+ 
+ (* Check Steering Sync State  *)
+	SteerEncoderNormalStatus : BOOL;
+	Z_PHASE_REALLY_NG_T : TON;
+	MovingDoneLT : F_Trig;
+	ChanceToSyncFailCount : DINT := 0;
+	 
 END_VAR
 (*
 
@@ -159,40 +207,62 @@ elsif AllOK_R.Q and NDC8.SDIO.DigitalInput2_BTN_RST = TRUE then
 	StopFindSync := FALSE;
 end_if;
 
-AllOK_Delay(IN:=g_StartFindSync, PT:=t#5s);
+AllOK_Delay(IN:=g_StartFindSync, PT:=t#1s);
 
 if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST = FALSE then
 	case FindSyncStep of
+	
 	0:
-	(* Steer Turn to 2000 *)
+	NDC8.FrontWheel.MaxAngularSpeed := 60;
+	NDC8.RearWheel.MaxAngularSpeed := 60;
 	NDC8.Manual.PlcSelect := true;
-	NDC8.Manual.PLCAngle := 2000;
+	NDC8.Manual.PLCAngle := 0;
 	NDC8.Manual.PlcSetOperationMode := 1;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
 	
-	FindSyncDelay(IN:=TRUE, PT:=t#2s);
+	FindSyncDelay(IN:=TRUE, PT:=t#4s);
 	if FindSyncDelay.Q then
 		FindSyncStep := 1;
 		FindSyncDelay(IN:=FALSE);
 	end_if;
 	
 	1:
-	(* Steer Turn to -2000 *)
+	(* Steer Turn to 18000 *)
+	NDC8.FrontWheel.MaxAngularSpeed := 60;
+	NDC8.RearWheel.MaxAngularSpeed := 60;
 	NDC8.Manual.PlcSelect := true;
-	NDC8.Manual.PLCAngle := -2000;
+	NDC8.Manual.PLCAngle := 9000;
 	NDC8.Manual.PlcSetOperationMode := 1;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
 	
-	FindSyncDelay(IN:=TRUE, PT:=t#2s);
+	FindSyncDelay(IN:=TRUE, PT:=t#4s);
 	if FindSyncDelay.Q then
 		FindSyncStep := 2;
 		FindSyncDelay(IN:=FALSE);
 	end_if;
 	
 	2:
+	(* Steer Turn to -2000 *)
+	NDC8.FrontWheel.MaxAngularSpeed := 60;
+	NDC8.RearWheel.MaxAngularSpeed := 60;
+	NDC8.Manual.PlcSelect := true;
+	NDC8.Manual.PLCAngle := -9000;
+	NDC8.Manual.PlcSetOperationMode := 1;
+	NDC8.Manual.PLCSteerMode := 0;
+	NDC8.Manual.PlcSelectMask 		:= 2#10101;
+	
+	FindSyncDelay(IN:=TRUE, PT:=t#4s);
+	if FindSyncDelay.Q then
+		FindSyncStep := 3;
+		FindSyncDelay(IN:=FALSE);
+	end_if;
+	
+	3:
 	(* Steer Turn to 0 *)
+	NDC8.FrontWheel.MaxAngularSpeed := 120;
+	NDC8.RearWheel.MaxAngularSpeed := 120;
 	NDC8.Manual.PlcSelect := true;
 	NDC8.Manual.PLCAngle := 0;
 	NDC8.Manual.PlcSetOperationMode := 0;
@@ -201,7 +271,7 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	
 	FindSyncDelay(IN:=TRUE, PT:=t#2s);
 	if FindSyncDelay.Q then
-		FindSyncStep := 3;
+		FindSyncStep := 4;
 		FindSyncDelay(IN:=FALSE);
 		g_FindSyncFlag := TRUE;
 		NDC8.Manual.PlcSelectMask := 0;
@@ -209,12 +279,29 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 		StopFindSync := FALSE;
 	end_if;
 	
-
+	4:
+	;
 	end_case;
 	
 end_if;
 
+(* Check Steering Sync State  *)
 
+SteerEncoderNormalStatus := NDC8.DCD_6.EncoderStatus = 1 AND NDC8.DCD_8.EncoderStatus = 1;
+
+IF NDC8.UserDefined.Integer32_10_ChanceToSyncFailLimit = 0 THEN
+	NDC8.UserDefined.Integer32_10_ChanceToSyncFailLimit := 10;
+END_IF;
+
+MovingDoneLT(CLK := NDC8.Automatic.ExecDriveCommand);
+
+IF MovingDoneLT.Q = TRUE AND SteerEncoderNormalStatus = FALSE THEN
+	ChanceToSyncFailCount := ChanceToSyncFailCount + 1;
+END_IF;
+
+IF MovingDoneLT.Q = TRUE AND SteerEncoderNormalStatus = TRUE THEN
+	ChanceToSyncFailCount := 0;
+END_IF;
 
 if NDC8.CanOpenMaster.NMTState = 5 and NDC8.CanOpenMaster.State = 0 then
 
@@ -224,7 +311,8 @@ if NDC8.CanOpenMaster.NMTState = 5 and NDC8.CanOpenMaster.State = 0 then
 (*Decisionmaking PLC:s*)
 
 
-	Autoload();	 (* Load handling 		*)		
+	Autoload();
+		 (* Load handling 		*)		
 	
 	LS2000();
 	
@@ -315,7 +403,7 @@ R_DriveSupervision(Command:= NDC8.DCD_7.SetSpeed,FeedBack:= NDC8.DCD_7.DriveEncS
 	(*OM_PLC_W2_Bit_Err_BCR			:= FALSE;*)
 	(*OM_PLC_W2_Bit_SetT10Terr		:= FALSE;*)
 
-	g_PowerOffFlag_OMPLC := OM_PLC_W2_Bit_PowerOffOm;
+	g_UnloadPointArrived_OMPLC := OM_PLC_W2_Bit_Unload_PT;
 
 	(*OM_PLC_W2_Bit_SetCondErr		:= FALSE;*)
 	(*OM_PLC_W2_Bit_SetT30TErr		:= FALSE;*)
@@ -339,12 +427,6 @@ R_DriveSupervision(Command:= NDC8.DCD_7.SetSpeed,FeedBack:= NDC8.DCD_7.DriveEncS
 	(*OM_PLC_W2_Bit_SetHOErr			:= FALSE;*)
 
 
-	OM_PLC_W7_Bit_Area1 := NDC8.SegmentTrigger.Bit4_Area1_Seg;
-	OM_PLC_W7_Bit_Area2 := NDC8.SegmentTrigger.Bit5_Area2_Seg;
-	OM_PLC_W7_Bit_Area4 := NDC8.SegmentTrigger.Bit6_Area4_Seg;
-	OM_PLC_W7_Bit_Area8 := NDC8.SegmentTrigger.Bit7_Area8_Seg;
-
-
 	(* OM-PLC Word*)
 	NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);
 	NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
@@ -359,15 +441,6 @@ R_DriveSupervision(Command:= NDC8.DCD_7.SetSpeed,FeedBack:= NDC8.DCD_7.DriveEncS
 	
 	NDC8.OMPLC.Cur_Pnt := DINT_TO_INT(CurPnt);
 	NDC8.OMPLC.Cur_Seg := DINT_TO_INT(CurSeg);
-	
-	OM_PLC_Word7 := INT_TO_WORD(NDC8.OMPLC.Drv_Area);
-	
-	OM_PLC_W7_Bit_Area1 := NDC8.SegmentTrigger.Bit4_Area1_Seg;
-	OM_PLC_W7_Bit_Area2 := NDC8.SegmentTrigger.Bit5_Area2_Seg;
-	OM_PLC_W7_Bit_Area4 := NDC8.SegmentTrigger.Bit6_Area4_Seg;
-	OM_PLC_W7_Bit_Area8 := NDC8.SegmentTrigger.Bit7_Area8_Seg;
-	
-	NDC8.OMPLC.Drv_Area := WORD_TO_INT(OM_PLC_Word7);
 
 (* Alarm code *)
 
@@ -383,6 +456,24 @@ else
 end_if;
 
 
+
+(* Navi Error Monitor Start check *)
+PositionValidDelay(IN := NDC8.Position.Valid, PT:= t#2s);
+InSystemDelay(IN := NDC8.LayoutPosition.InSystem, PT:= t#2s);
+
+if PositionValidDelay.Q = TRUE then
+	g_PositionValidMonitorStart := TRUE;
+end_if;
+
+if InSystemDelay.Q = TRUE then
+	g_InSystemMonitorStart := TRUE;
+end_if;
+
+
+
+
+g_PlcComLinkUp := TRUE;
+
 if g_FindSyncFlag = TRUE then
 
 OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
@@ -396,35 +487,19 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 0;
 		PLC_TX_Word13_STr_Err := 0;
 		OM_PLC_W2_Bit_SetEmgStop := FALSE;
-	elsif PLC_RX_Word20_PLC_ErrD <> 0 and g_ErrorCode = 0 then 
-		g_ErrorCode := PLC_RX_Word20_PLC_ErrD;
-	elsif PLC_RX14_Bit_BMS_Short then 
-		g_ErrorCode := 101;
-	elsif PLC_RX14_Bit_BMS_Over then 
-		g_ErrorCode := 102;
-	elsif PLC_RX14_Bit_BMS_TempEr then 
-		g_ErrorCode := 103;
-	elsif PLC_RX14_Bit_BMS_LowV then 
-		g_ErrorCode := 104;
-	elsif PLC_RX14_Bit_BMS_Ch_Err and PLC_RX03_Bit_STw_EnaChg then
-		g_ErrorCode := 105;
-	elsif PLC_RX14_Bit_BMS_Thermi then
-		g_ErrorCode := 106;
-	elsif PLC_RX14_Bit_BMS_CT then
-		g_ErrorCode := 107;
-	elsif PLC_RX14_Bit_BMS_Couple then
-		g_ErrorCode := 108;
-	elsif PLC_RX14_Bit_BMS_Bat then
-		g_ErrorCode := 109;
-	elsif PLC_RX14_Bit_BMS_NG then
-		g_ErrorCode := 110;
-	elsif F_DriveSupervision.NotMovingFail = TRUE then
+	elsif PLC_RX_Word4_PLC_ErrD <> 0 and g_ErrorCode = 0 then 
+		g_ErrorCode := PLC_RX_Word4_PLC_ErrD;
+	elsif NDC8.SDIO.GroundFaultActive = TRUE then
+		g_ErrorCode := 118;
+	elsif F_DriveSupervision.NotMovingFail = TRUE or StopSpinningWheel then
 		g_ErrorCode := 122;
-	elsif R_DriveSupervision.NotMovingFail = TRUE then
+	elsif R_DriveSupervision.NotMovingFail = TRUE or StopSpinningWheel then
 		g_ErrorCode := 123;
-	elsif F_SteerSupervision.NotMovingFail = TRUE or R_SteerSupervision.NotMovingFail = TRUE or (NDC8.DCD_6.EncoderStatus = 0 or NDC8.DCD_8.EncoderStatus = 0)then
+	elsif (F_SteerSupervision.NotMovingFail = TRUE or R_SteerSupervision.NotMovingFail = TRUE) AND g_StartFindSync or (NDC8.DCD_6.EncoderStatus= 0 or NDC8.DCD_8.EncoderStatus = 0) AND g_StartFindSync then
 		g_ErrorCode := 124;
-	elsif PLC_RX_Word16_BMS_BatV < 220 or g_BattLim_NG then
+	elsif ChanceToSyncFailCount > NDC8.UserDefined.Integer32_10_ChanceToSyncFailLimit THEN
+		g_ErrorCode := 124;
+	elsif PLC_TX_Word10_STr_BatV < 190 or g_BattLim_NG then
 		g_ErrorCode := 127;
 	elsif not NDC8.DCD_5.DigitalInput2_OverRelayFS or not NDC8.DCD_5.DigitalInput3_OverRelayFD or not NDC8.DCD_7.DigitalInput2_OverRelayRS or not NDC8.DCD_7.DigitalInput3_OverRelayRD then
 		g_ErrorCode := 131;
@@ -432,10 +507,12 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 132;
 	elsif NDC8.SDIO.DigitalInput12_EMO = FALSE then
 		g_ErrorCode := 133;
-	elsif NDC8.Autoinsert.StatusID = 5 then
+	elsif NDC8.Position.Valid = FALSE and (PLC_TX01_Bit_HostMode = TRUE or PLC_TX01_Bit_LocalMode = TRUE) and CarrierControl.AutoinsertInProgress = false and g_PositionValidMonitorStart = TRUE then
 		g_ErrorCode := 136;
-	elsif NDC8.LayoutPosition.InSystem = FALSE and (PLC_TX01_Bit_HostMode = TRUE or PLC_TX01_Bit_LocalMode = TRUE) and CarrierControl.AutoinsertInProgress = false then
+		g_PositionValidMonitorStart := FALSE;
+	elsif NDC8.LayoutPosition.InSystem = FALSE and (PLC_TX01_Bit_HostMode = TRUE or PLC_TX01_Bit_LocalMode = TRUE) and CarrierControl.AutoinsertInProgress = false and g_InSystemMonitorStart = TRUE then
 		g_ErrorCode := 137;
+		g_InSystemMonitorStart := FALSE;
 	elsif NDC8.Guidance.OutsideSafetyZone = TRUE then
 		g_ErrorCode := 138;
 	elsif NDC8.LS2000.Connected = FALSE or NDC8.LS2000.Attached = FALSE or NDC8.LS2000.NavActive = FALSE then
@@ -446,18 +523,22 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 145;
 	elsif NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L or NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R or NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L or NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R then
 		g_ErrorCode := 161;
-	elsif (PLC_RX01_Bit_ChrgEmg and PLC_TX01_Bit_ManMode) or (PLC_RX01_Bit_ChrgEmg and not PLC_TX01_Bit_ManMode and NDC8.PLC_Application.TxStatusBit6_Charge) then
+	elsif PLC_RX01_Bit_ChrgEmg or g_ChargeTempErr then
 		g_ErrorCode := 174;
+	elsif SteerModeChangeErr_SD_DD = TRUE then
+		g_ErrorCode := 175;
+	elsif SteerModeChangeErr_DD_SD = TRUE then
+		g_ErrorCode := 176;
+	elsif EncOverSpeedTm.Q then
+		g_ErrorCode := 181;
 	elsif F_DriveSupervision.OverRangeFail = TRUE then
 		g_ErrorCode := 182;
 	elsif R_DriveSupervision.OverRangeFail = TRUE then
 		g_ErrorCode := 183;
 	elsif g_ChargeOverTime = TRUE then
 		g_ErrorCode := 185;
-	elsif NDC8.Automatic.ExecDriveCommand = TRUE and PLC_RX01_Bit_EnableLD_i = FALSE then
-		(*g_ErrorCode := 190;*)
-		;
-		
+	elsif NDC8.Automatic.ExecDriveCommand = TRUE and NDC8.VehicleControl.Moving = TRUE and NDC8.VehicleControl.Stop = FALSE and PLC_RX01_Bit_EnableLD_i = FALSE then
+		g_ErrorCode := 190;
 	elsif NDC8.CanOpenMaster.State = 1 and NDC8.CanOpenMaster.EMCY_BusID = 1 and NDC8.CanOpenMaster.EMCY_NodeID = 2 then
 		g_ErrorCode := 194;
 		StopByCanErr_Node2 := TRUE;
@@ -528,7 +609,7 @@ else
 	StopByErrorCode := FALSE;
 end_if;
 
-if (PLC_RX01_Bit_EnableLD_i = FALSE or Input.StartMode = FALSE) and Input.Auto then
+if (PLC_RX01_Bit_EnableLD_i = FALSE or INPUT.StartMode = FALSE) and Input.Auto then
 	StopRobotNotIdle := TRUE;
 else
 	StopRobotNotIdle := FALSE;
@@ -576,48 +657,8 @@ else
 	g_PowerOffFlag_Lost := FALSE;
 end_if;
 
-(* Error Power Off Check *)
-if g_ErrorCode <> 0 then
-	ErrorOccurFlag := TRUE;
-else
-	ErrorOccurFlag := FALSE;
-end_if;
 
-ErrorPowOffTm(IN := ErrorOccurFlag, PT := t#600s);
-if PLC_TX01_Bit_HostMode = TRUE then
-	if ErrorPowOffTm.Q = TRUE then
-		g_PowerOffFlag_Error := TRUE;
-	else
-		g_PowerOffFlag_Error := FALSE;
-	end_if;
-else
-	g_PowerOffFlag_Error := FALSE;
-end_if;
-
-(* Battery Low OT *)
-if PLC_RX04_Bit_STw_LowOT then
-	StopBatLowOT := TRUE;
-	if VehicleMovingFlag = FALSE 
-		and  NDC8.LoadDocking.OnTarget = FALSE 
-		and PLC_TX01_Bit_ManMode = FALSE 
-		and NDC8.SDIO.DigitalOutput16_Charger = FALSE then
-		
-		g_BattLim_NG := TRUE;
-		BatLowTm(IN := TRUE, PT := t#10s);
-		if BatLowTm.Q then
-			g_PowerOffFlag_PLC := TRUE;
-		end_if;
-	else 
-		BatLowTm(IN := FALSE);
-		g_PowerOffFlag_PLC := FALSE;
-	end_if;
-else
-	BatLowTm(IN := FALSE);
-	g_PowerOffFlag_PLC := FALSE;
-	StopBatLowOT := FALSE;
-end_if;
-
-g_PowerOffFlag := g_PowerOffFlag_Error or g_PowerOffFlag_Block or g_PowerOffFlag_Lost or g_PowerOffFlag_PLC or g_PowerOffFlag_OMPLC or g_PowerOffFlag_OP;
+g_PowerOffFlag := (g_BattLim_NG or g_PowerOffFlag_Block or g_PowerOffFlag_Lost or g_PowerOffFlag_PLC or g_PowerOffFlag_OP);
 
 (* Display Stop String update *)
 InStatus 			:= g_ErrorCode<>0;
@@ -754,101 +795,144 @@ OPTX2();
 DataUpdate();
 
 
+(* Steer Mode Err Detect *)
 
+if LastSteerMode = 1 and NDC8.Manual.PLCSteerMode = 2 then
+	SteerModeChange_SD_DD_Flag := TRUE;
+end_if;
 
+if LastSteerMode = 2 and NDC8.Manual.PLCSteerMode = 1 then
+	SteerModeChange_DD_SD_Flag := TRUE;
+end_if;
 
+if LastSteerMode = NDC8.Manual.PLCSteerMode then
+	SteerModeChange_SD_DD_Flag := FALSE;
+	SteerModeChange_DD_SD_Flag := FALSE;
+end_if;
 
+if SteerModeChange_SD_DD_Flag or SteerModeChange_DD_SD_Flag then
+	SteerModeChange_Flag := TRUE;
+end_if;
 
+if SteerModeChange_Flag then
+	SteerModeChangeDelay(IN := TRUE, PT := t#5s);
+end_if;
 
+Steer_F_ABS_Angle := ABS(NDC8.DCD_6.WheelAngle);
+Steer_R_ABS_Angle := ABS(NDC8.DCD_8.WheelAngle);
 
+if SteerModeChangeDelay.Q then
+	if NDC8.Manual.PLCSteerMode = 2
+		and ((Steer_F_ABS_Angle < 8500 or Steer_F_ABS_Angle > 9500)
+		or (Steer_R_ABS_Angle < 8500 or Steer_R_ABS_Angle > 9500)) then
+	 	SteerModeChangeErr_SD_DD := TRUE;
+	else
+		SteerModeChangeErr_SD_DD := FALSE;
+	end_if;
+	
+	if NDC8.Manual.PLCSteerMode = 1
+		and ((NDC8.DCD_6.WheelAngle < (NDC8.DCD_6.SetAngle - 500) or NDC8.DCD_6.WheelAngle > (NDC8.DCD_6.SetAngle + 500))
+		or (NDC8.DCD_8.WheelAngle < (NDC8.DCD_8.SetAngle - 500) or NDC8.DCD_8.WheelAngle > (NDC8.DCD_8.SetAngle + 500)))then
+	 	SteerModeChangeErr_DD_SD := TRUE;
+	else
+		SteerModeChangeErr_DD_SD := FALSE;
+	end_if;
+	SteerModeChangeDelay(IN := FALSE);
+	SteerModeChange_Flag := FALSE;
+end_if;
 
+LastSteerMode := NDC8.Manual.PLCSteerMode;
 
 
+(* Max Speed Detect*)
+EncSpeed_ABS_DCD5 := ABS(NDC8.DCD_5.DriveEncSpeed);
+EncSpeed_ABS_DCD7 := ABS(NDC8.DCD_7.DriveEncSpeed);
+EncSpeed_MAX := REAL_TO_INT(DINT_TO_REAL(NDC8.Vehicle.MaxSpeed) * 1.2);
 
 
+EncOverSpeedFlag := EncSpeed_ABS_DCD5 >= EncSpeed_MAX or EncSpeed_ABS_DCD7 >= EncSpeed_MAX;
 
+if EncOverSpeedFlag = TRUE then
+	EncOverSpeedTm(IN := TRUE, PT := t#2s);
+else
+	EncOverSpeedTm(IN := FALSE);
+end_if;
 
+(* SOC Cal *)
 
+(* AGV IDEL *)
 
+FullBattery_Cap := DINT_TO_REAL(NDC8.UserDefined.Integer32_35_Battery_Cap) * 60.0 * 60.0;
 
+Current_Idel := DINT_TO_REAL(NDC8.UserDefined.Integer32_45_Current_Idel);
+Current_Moving := DINT_TO_REAL(NDC8.UserDefined.Integer32_43_Current_Moving);
+Current_Transfer := DINT_TO_REAL(NDC8.UserDefined.Integer32_44_Current_Transfer);
 
+Current_Charge := DINT_TO_REAL(NDC8.UserDefined.Integer32_46_Current_Charge);
 
 
+FindSyncFlag_Rrig(CLK := g_FindSyncFlag);
 
+if FindSyncFlag_Rrig.Q then
+	Battery_Cap := DINT_TO_REAL(NDC8.UserDefined.Integer32_39_CurrentBatCap) / 1000.0 * FullBattery_Cap;
+end_if;
 
+if NDC8.UserDefined.Integer32_39_CurrentBatCap <= 0 and g_FindSyncFlag = TRUE then
+	NDC8.UserDefined.Integer32_39_CurrentBatCap := NDC8.UserDefined.Integer32_36_Battery_IniCap;
+	Battery_Cap := DINT_TO_REAL(NDC8.UserDefined.Integer32_39_CurrentBatCap) / 1000.0 * FullBattery_Cap;
+end_if;
 
+	
 
 
 
+(* Charge Done Check *)
+ChargeDoneR(CLK := g_ChargeDone);
 
+if ChargeDoneR.Q and g_FindSyncFlag = TRUE then
+	NDC8.UserDefined.Integer32_39_CurrentBatCap := 800;
+	Battery_Cap := FullBattery_Cap * 0.8;
+end_if;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(* Low Voltage Check *)
+LowVoltageR(CLK := INPUT.LowBattery);
+
+if LowVoltageR.Q and g_FindSyncFlag = TRUE then
+	NDC8.UserDefined.Integer32_39_CurrentBatCap := 650;
+	Battery_Cap := FullBattery_Cap * 0.65;
+end_if;
+
+CurrentUsing := 0.0;
+
+BatCheckTimer(IN := TRUE, PT := t#1s);
+
+
+if BatCheckTimer.Q and g_FindSyncFlag = TRUE then
+
+	BatCheckTimer(IN := FALSE);
+	
+
+	if NDC8.VehicleControl.Moving then
+		CurrentUsing := CurrentUsing - Current_Moving;
+	elsif AutoLoad.StartLoad or AutoLoad.StartUnload then
+		CurrentUsing := CurrentUsing - Current_Transfer;
+	else
+		CurrentUsing := CurrentUsing - Current_Idel;
+	end_if;
+
+
+	if NDC8.PLC_Application.TxStatusBit6_Charge then
+		CurrentUsing := CurrentUsing + 150.0;
+	end_if;
+	
+	Battery_Cap := Battery_Cap + CurrentUsing;
+	
+	NDC8.UserDefined.Integer32_39_CurrentBatCap := REAL_TO_DINT(Battery_Cap / FullBattery_Cap  * 1000.0);
+	
+	PLC_TX_Word12_STr_BatD := DINT_TO_WORD(NDC8.UserDefined.Integer32_39_CurrentBatCap);
+	
+end_if;
 
 
 

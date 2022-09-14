@@ -175,27 +175,27 @@ ModBus_ValueWord [66] := PLC_TX_Word16_STr_BCD1;
 ModBus_ValueWord [71] := PLC_RX_Word1;
 ModBus_ValueWord [72] := PLC_RX_Word2;
 ModBus_ValueWord [73] := PLC_RX_Word3;
-ModBus_ValueWord [74] := PLC_RX_Word4;
+ModBus_ValueWord [74] := PLC_RX_Word4_PLC_ErrD;
 ModBus_ValueWord [75] := PLC_RX_Word5;
 ModBus_ValueWord [76] := PLC_RX_Word6;
 ModBus_ValueWord [77] := PLC_RX_Word7_STw_BCD3;
 ModBus_ValueWord [78] := PLC_RX_Word8_STw_BCD2;
 ModBus_ValueWord [79] := PLC_RX_Word9_STw_BCD1;
-ModBus_ValueWord [80] := PLC_RX_Word10_STw_ILEr;
+ModBus_ValueWord [80] := PLC_RX_Word10_Round;
 ModBus_ValueWord [81] := PLC_RX_Word11_Ins_Pno;
 ModBus_ValueWord [82] := PLC_RX_Word12_STw_Pint;
 ModBus_ValueWord [83] := PLC_RX_Word13_Ins_Ano;
-ModBus_ValueWord [84] := PLC_RX_Word14_BMS_2;
-ModBus_ValueWord [85] := PLC_RX_Word15_BMS_3;
-ModBus_ValueWord [86] := PLC_RX_Word16_BMS_BatV;
-ModBus_ValueWord [87] := PLC_RX_Word17_BMS_BatT;
-ModBus_ValueWord [88] := PLC_RX_Word18_BMS_BatC;
-ModBus_ValueWord [89] := PLC_RX_Word19_BMS_BatA;
-ModBus_ValueWord [90] := PLC_RX_Word20_PLC_ErrD;
-ModBus_ValueWord [91] := PLC_RX_Word21_BMS_Main;
-ModBus_ValueWord [92] := PLC_RX_Word22_BMS_Chan;
-ModBus_ValueWord [93] := PLC_RX_Word23_BMS_ID4L;
-ModBus_ValueWord [94] := PLC_RX_Word24_BMS_ID4H;
+ModBus_ValueWord [84] := PLC_RX_Word14;
+ModBus_ValueWord [85] := PLC_RX_Word15;
+ModBus_ValueWord [86] := PLC_RX_Word16;
+ModBus_ValueWord [87] := PLC_RX_Word17;
+ModBus_ValueWord [88] := PLC_RX_Word18;
+ModBus_ValueWord [89] := PLC_RX_Word19;
+ModBus_ValueWord [90] := PLC_RX_Word20;
+ModBus_ValueWord [91] := PLC_RX_Word21;
+ModBus_ValueWord [92] := PLC_RX_Word22;
+ModBus_ValueWord [93] := PLC_RX_Word23;
+ModBus_ValueWord [94] := PLC_RX_Word24;
 ModBus_ValueWord [95] := PLC_RX_Word25;
 
 (*Vehicle info, sent to Display *)
@@ -320,9 +320,9 @@ ModBus_ValueBOOL [141] := NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L;
 ModBus_ValueBOOL [142] := NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R;
 ModBus_ValueBOOL [143] := NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L;
 ModBus_ValueBOOL [144] := NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R;
-ModBus_ValueBOOL [145] := NDC8.CAN_IO_3.DigitalInput5;
-ModBus_ValueBOOL [146] := NDC8.CAN_IO_3.DigitalInput6;
-ModBus_ValueBOOL [147] := NDC8.CAN_IO_3.DigitalInput7;
+ModBus_ValueBOOL [145] := NDC8.CAN_IO_3.DigitalInput5_BatTmp25_i;
+ModBus_ValueBOOL [146] := NDC8.CAN_IO_3.DigitalInput6_BatTmp40_i;
+ModBus_ValueBOOL [147] := NDC8.CAN_IO_3.DigitalInput7_BatTmp55_i;
 ModBus_ValueBOOL [148] := NDC8.CAN_IO_3.DigitalInput8;
 
 ModBus_ValueBOOL [151] := NDC8.CAN_IO_3.DigitalInput9_AreaF_IN1;
@@ -515,16 +515,61 @@ if ModBus_ValueBOOL [209] = TRUE then
 	ModBus_ValueWord [374]:=ConvWord2;
 	ModBus_ValueWord [373]:=ConvWord;
 	
-	
+(*-------------------------------------------------------------------------*)
+
 	(* Batt Low Voltage *)
 	ConvDINT := NDC8.UserDefined.Integer32_50_BattLowVol;
 	ModBus_ValueWord [376]:=ConvWord2;
 	ModBus_ValueWord [375]:=ConvWord;
 	
+	
+	(* Batt NG Voltage *)
+	ConvDINT := NDC8.UserDefined.Integer32_51_BattNgVol;
+	ModBus_ValueWord [378]:=ConvWord2;
+	ModBus_ValueWord [377]:=ConvWord;
+
+	
+	(* Batt Cap *)
+	ConvDINT := NDC8.UserDefined.Integer32_35_Battery_Cap;
+	ModBus_ValueWord [382]:=ConvWord2;
+	ModBus_ValueWord [381]:=ConvWord;
+	
+	(* Charge Voltage V1*)
+	ConvDINT := NDC8.UserDefined.Integer32_40_ChgComV1;
+	ModBus_ValueWord [384]:=ConvWord2;
+	ModBus_ValueWord [383]:=ConvWord;
+	
+	(* Charge Voltage V2*)
+	ConvDINT := NDC8.UserDefined.Integer32_41_ChgComV2;
+	ModBus_ValueWord [386]:=ConvWord2;
+	ModBus_ValueWord [385]:=ConvWord;
+	
+	(* Charge Voltage V3*)
+	ConvDINT := NDC8.UserDefined.Integer32_42_ChgComV3;
+	ModBus_ValueWord [388]:=ConvWord2;
+	ModBus_ValueWord [387]:=ConvWord;
+	
+	(* Charge BattChg*)
+	ConvDINT := NDC8.UserDefined.Integer32_53_BattChg;
+	ModBus_ValueWord [392]:=ConvWord2;
+	ModBus_ValueWord [391]:=ConvWord;
+	
+	(* Charge Battery_IniCap*)
+	ConvDINT := NDC8.UserDefined.Integer32_36_Battery_IniCap;
+	ModBus_ValueWord [394]:=ConvWord2;
+	ModBus_ValueWord [393]:=ConvWord;
+	
+	(* Charge Battery_AlarmCap*)
+	ConvDINT := NDC8.UserDefined.Integer32_37_Battery_AlarmCap;
+	ModBus_ValueWord [396]:=ConvWord2;
+	ModBus_ValueWord [395]:=ConvWord;
+	
 	(* Charge StopTolerance*)
 	ConvDINT := NDC8.Vehicle.StopTolerance;
 	ModBus_ValueWord [398]:=ConvWord2;
 	ModBus_ValueWord [397]:=ConvWord;
+
+(*----------------------------------------------------------------------------*)
 
 	ModBus_ValueBOOL [209] := FALSE;
 end_if;
@@ -532,7 +577,7 @@ end_if;
 if ModBus_ValueBOOL [208] = TRUE then
 
 	NDC8.UserDefined.Boolean_20_OnlineOrderMode := ModBus_ValueBOOL [210];
-	
+
 	(* Scanner_x *)
 	ConvWord2 := ModBus_ValueWord [352];
 	ConvWord := ModBus_ValueWord [351];
@@ -605,6 +650,54 @@ if ModBus_ValueBOOL [208] = TRUE then
 
 	NDC8.UserDefined.Integer32_50_BattLowVol := ConvDINT;
 	
+	(* Batt NG Voltage *)
+	ConvWord2 := ModBus_ValueWord [378];
+	ConvWord := ModBus_ValueWord [377];
+
+	NDC8.UserDefined.Integer32_51_BattNgVol := ConvDINT;
+	
+	(* Batt Cap *)
+	ConvWord2 := ModBus_ValueWord [382];
+	ConvWord := ModBus_ValueWord [381];
+
+	NDC8.UserDefined.Integer32_35_Battery_Cap := ConvDINT;
+	
+	(* Charge Voltage V1*)
+	ConvWord2 := ModBus_ValueWord [384];
+	ConvWord := ModBus_ValueWord [383];
+
+	NDC8.UserDefined.Integer32_40_ChgComV1 := ConvDINT;
+	
+	(* Charge Voltage V2*)
+	ConvWord2 := ModBus_ValueWord [386];
+	ConvWord := ModBus_ValueWord [385];
+
+	NDC8.UserDefined.Integer32_41_ChgComV2 := ConvDINT;
+	
+	(* Charge Voltage V3*)
+	ConvWord2 := ModBus_ValueWord [388];
+	ConvWord := ModBus_ValueWord [387];
+
+	NDC8.UserDefined.Integer32_42_ChgComV3 := ConvDINT;
+	
+	
+	(* Charge Voltage BattChg*)
+	ConvWord2 := ModBus_ValueWord [392];
+	ConvWord := ModBus_ValueWord [391];
+
+	NDC8.UserDefined.Integer32_53_BattChg := ConvDINT;
+	
+	(* Charge Voltage V3*)
+	ConvWord2 := ModBus_ValueWord [394];
+	ConvWord := ModBus_ValueWord [393];
+
+	NDC8.UserDefined.Integer32_36_Battery_IniCap := ConvDINT;
+	
+	(* Charge Voltage V3*)
+	ConvWord2 := ModBus_ValueWord [396];
+	ConvWord := ModBus_ValueWord [395];
+
+	NDC8.UserDefined.Integer32_37_Battery_AlarmCap := ConvDINT;
 	
 	(* Charge StopTolerance*)
 	ConvWord2 := ModBus_ValueWord [398];
@@ -713,6 +806,8 @@ INPUT.BuzzerByPass := ModBus_ValueBOOL [207];
 ModBus_ValueWord[401] := INT_TO_WORD(NDC8.DCD_5.TorqueCurrentReference);
 ModBus_ValueWord[402] := INT_TO_WORD(NDC8.DCD_7.TorqueCurrentReference);
 
+ModBus_ValueWord[403] := INT_TO_WORD(NDC8.DCD_5.DriveEncSpeed);
+ModBus_ValueWord[404] := INT_TO_WORD(NDC8.DCD_7.DriveEncSpeed);
 
 (****************************************************************************)
 (*		Required for sending data to the display							*)
@@ -721,6 +816,9 @@ OPTX2Communication();
 
 
 (****************************************************************************)
+
+
+
 
 
 

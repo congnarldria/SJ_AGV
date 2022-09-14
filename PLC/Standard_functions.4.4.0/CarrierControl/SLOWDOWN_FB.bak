@@ -23,7 +23,7 @@ END_VAR
 (*************************************************************************************
  		SLOW DOWN 
 **************************************************************************************)
-CurrentVehicleSpeed = abs(NDC8.VehicleControl.SetSpeed);
+CurrentVehicleSpeed := NDC8.Vehicle.MaxSpeed;
 
 CurrentVehicleSpeed := CurrentVehicleSpeed / 2;
 
@@ -56,6 +56,7 @@ NDC8.VehicleControl.SlowDown := SlowDownTOF.Q;
 
 
 (* Generate events here for System Statistics KPI, to find places with frequent slow downs. *)
+
 
 
 

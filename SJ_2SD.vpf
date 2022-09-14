@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vpf" FileRevision="453" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-08-01" ModificationTime="22:10:38.8883004+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
-  <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
+  <FileInfo FileType="vpf" FileRevision="513" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2021-10-19" ModificationTime="16:03:28.6432131+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <Identification ArticleNumber="P46164V1.0.5" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.5 (HW 18456-01)" />
   <ComponentList Name="P46164" TimeStamp="0">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
       <Properties>
@@ -177,14 +177,14 @@
         <Property SymbolName="Bit1" Value="" PublicName="Bit1" Remark="Segment attribute bit" />
         <Property SymbolName="Bit2" Value="" PublicName="Bit2" Remark="Segment attribute bit" />
         <Property SymbolName="Bit3" Value="" PublicName="Bit3" Remark="Segment attribute bit" />
-        <Property SymbolName="Bit4" Value="" PublicName="Bit4_Area1_Seg" Remark="Segment attribute bit" AliasName="Bit4_Area1_Seg" />
-        <Property SymbolName="Bit5" Value="" PublicName="Bit5_Area2_Seg" Remark="Segment attribute bit" AliasName="Bit5_Area2_Seg" />
-        <Property SymbolName="Bit6" Value="" PublicName="Bit6_Area4_Seg" Remark="Segment attribute bit" AliasName="Bit6_Area4_Seg" />
-        <Property SymbolName="Bit7" Value="" PublicName="Bit7_Area8_Seg" Remark="Segment attribute bit" AliasName="Bit7_Area8_Seg" />
+        <Property SymbolName="Bit4" Value="" PublicName="Bit4" Remark="Segment attribute bit" />
+        <Property SymbolName="Bit5" Value="" PublicName="Bit5" Remark="Segment attribute bit" />
+        <Property SymbolName="Bit6" Value="" PublicName="Bit6" Remark="Segment attribute bit" />
+        <Property SymbolName="Bit7" Value="" PublicName="Bit7" Remark="Segment attribute bit" />
         <Property SymbolName="Bit8" Value="" PublicName="Bit8" Remark="Segment attribute bit" />
         <Property SymbolName="Bit9" Value="" PublicName="Bit9" Remark="Segment attribute bit" />
-        <Property SymbolName="Bit10" Value="" PublicName="Bit10_DDLeft_A" Remark="Segment attribute bit" AliasName="Bit10_DDLeft_A" />
-        <Property SymbolName="Bit11" Value="" PublicName="Bit11_DDRight_A" Remark="Segment attribute bit" AliasName="Bit11_DDRight_A" />
+        <Property SymbolName="Bit10" Value="" PublicName="Bit10" Remark="Segment attribute bit" />
+        <Property SymbolName="Bit11" Value="" PublicName="Bit11" Remark="Segment attribute bit" />
         <Property SymbolName="Bit12" Value="" PublicName="Bit12_TurnLeft_A" Remark="Segment attribute bit" AliasName="Bit12_TurnLeft_A" />
         <Property SymbolName="Bit13" Value="" PublicName="Bit13_TurnRght_A" Remark="Segment attribute bit" AliasName="Bit13_TurnRght_A" />
         <Property SymbolName="Bit14" Value="" PublicName="Bit14_DisIrSlow" Remark="Segment attribute bit" AliasName="Bit14_DisIrSlow" />
@@ -196,14 +196,14 @@
         <Property SymbolName="Value" Value="" />
         <Property SymbolName="Value2" Value="" />
         <Property SymbolName="Bit0" Value="" PublicName="Bit0_DepoST_Att" Remark="Point attribute bit" AliasName="Bit0_DepoST_Att" />
-        <Property SymbolName="Bit1" Value="" PublicName="Bit1_ShutEQ_Att" Remark="Point attribute bit" AliasName="Bit1_ShutEQ_Att" />
+        <Property SymbolName="Bit1" Value="" PublicName="Bit1" Remark="Point attribute bit" />
         <Property SymbolName="Bit2" Value="" PublicName="Bit2" Remark="Point attribute bit" />
         <Property SymbolName="Bit3" Value="" PublicName="Bit3" Remark="Point attribute bit" />
-        <Property SymbolName="Bit4" Value="" PublicName="Bit4_Area1_Pnt" Remark="Point attribute bit" AliasName="Bit4_Area1_Pnt" />
-        <Property SymbolName="Bit5" Value="" PublicName="Bit5_Area2_Pnt" Remark="Point attribute bit" AliasName="Bit5_Area2_Pnt" />
-        <Property SymbolName="Bit6" Value="" PublicName="Bit6_Area4_Pnt" Remark="Point attribute bit" AliasName="Bit6_Area4_Pnt" />
-        <Property SymbolName="Bit7" Value="" PublicName="Bit7_Area8_Pnt" Remark="Point attribute bit" AliasName="Bit7_Area8_Pnt" />
-        <Property SymbolName="Bit8" Value="" PublicName="Bit8_HP_Pnt" Remark="Point attribute bit" AliasName="Bit8_HP_Pnt" />
+        <Property SymbolName="Bit4" Value="" PublicName="Bit4" Remark="Point attribute bit" />
+        <Property SymbolName="Bit5" Value="" PublicName="Bit5" Remark="Point attribute bit" />
+        <Property SymbolName="Bit6" Value="" PublicName="Bit6" Remark="Point attribute bit" />
+        <Property SymbolName="Bit7" Value="" PublicName="Bit7" Remark="Point attribute bit" />
+        <Property SymbolName="Bit8" Value="" PublicName="Bit8" Remark="Point attribute bit" />
         <Property SymbolName="Bit9" Value="" PublicName="Bit9_Chrg_Right" Remark="Point attribute bit" AliasName="Bit9_Chrg_Right" />
         <Property SymbolName="Bit10" Value="" PublicName="Bit10_Chrg_Left" Remark="Point attribute bit" AliasName="Bit10_Chrg_Left" />
         <Property SymbolName="Bit11" Value="" PublicName="Bit11" Remark="Point attribute bit" />
@@ -381,7 +381,7 @@
         <Property SymbolName="TxStatusBit12" Value="" PublicName="TxStatusBit12_LostP" Remark="Application status bit to Master" AliasName="TxStatusBit12_LostP" />
         <Property SymbolName="TxStatusBit13" Value="" PublicName="TxStatusBit13" Remark="Application status bit to Master" />
         <Property SymbolName="TxStatusBit14" Value="" PublicName="TxStatusBit14" Remark="Application status bit to Master" />
-        <Property SymbolName="TxStatusBit15" Value="" PublicName="TxStatusBit15" Remark="Application status bit to Master" />
+        <Property SymbolName="TxStatusBit15" Value="" PublicName="TxStatusBit15_ON_OFF" Remark="Application status bit to Master" AliasName="TxStatusBit15_ON_OFF" />
         <Property SymbolName="UserEventEN" Value="0" />
         <Property SymbolName="UserEventENO" Value="0" />
         <Property SymbolName="UserEventCode" Value="0" />
@@ -478,9 +478,9 @@
         <Property SymbolName="Data4" Value="" PublicName="R_BCD2" Remark="" AliasName="R_BCD2" />
         <Property SymbolName="Data5" Value="" PublicName="R_BCD3" Remark="" AliasName="R_BCD3" />
         <Property SymbolName="Data6" Value="" PublicName="Cur_Pnt" Remark="" AliasName="Cur_Pnt" />
-        <Property SymbolName="Data7" Value="" PublicName="Drv_Area" Remark="" AliasName="Drv_Area" />
+        <Property SymbolName="Data7" Value="" PublicName="Data7" Remark="" />
         <Property SymbolName="Data8" Value="" PublicName="Cur_Seg" Remark="" AliasName="Cur_Seg" />
-        <Property SymbolName="Data9" Value="" PublicName="Data9" Remark="" />
+        <Property SymbolName="Data9" Value="" PublicName="Round_om" Remark="" AliasName="Round_om" />
         <Property SymbolName="Data10" Value="" PublicName="IKEY" Remark="Data10" AliasName="IKEY" />
         <Property SymbolName="Data11" Value="" PublicName="Phase" Remark="Data11" AliasName="Phase" />
         <Property SymbolName="Data12" Value="" PublicName="Fetch" Remark="Data12" AliasName="Fetch" />
@@ -692,7 +692,7 @@
         <Property SymbolName="Boolean_17" Value="0" PublicName="Boolean_17" Remark="" />
         <Property SymbolName="Boolean_18" Value="0" PublicName="Boolean_18" Remark="" />
         <Property SymbolName="Boolean_19" Value="0" PublicName="Boolean_19" Remark="" />
-        <Property SymbolName="Boolean_20" Value="0" PublicName="Boolean_20_OnlineOrderMode" Remark="1 = Local Mode; 0 = Host Mode" AliasName="Boolean_20_OnlineOrderMode" />
+        <Property SymbolName="Boolean_20" Value="0" PublicName="Boolean_20_OnlineOrderMode" Remark="0: Host Mode 1: LocalMode" AliasName="Boolean_20_OnlineOrderMode" />
         <Property SymbolName="Boolean_21" Value="0" PublicName="Boolean_21" Remark="" />
         <Property SymbolName="Boolean_22" Value="0" PublicName="Boolean_22" Remark="" />
         <Property SymbolName="Boolean_23" Value="0" PublicName="Boolean_23" Remark="" />
@@ -712,7 +712,7 @@
         <Property SymbolName="Integer32_7" Value="0" PublicName="PPAEnable" Remark="Integer32_7" AliasName="PPAEnable" />
         <Property SymbolName="Integer32_8" Value="0" PublicName="SafetyScannerTurnAngle" Remark="Integer32_8" AliasName="SafetyScannerTurnAngle" />
         <Property SymbolName="Integer32_9" Value="200" PublicName="NormalCreepDistance" Remark="Integer32_9" AliasName="NormalCreepDistance" />
-        <Property SymbolName="Integer32_10" Value="0" PublicName="Integer32_10" Remark="Integer32_10" />
+        <Property SymbolName="Integer32_10" Value="0" PublicName="Integer32_10_ChanceToSyncFailLimit" Remark="Integer32_10_ChanceToSyncFailLimit" AliasName="Integer32_10_ChanceToSyncFailLimit" />
         <Property SymbolName="Integer32_11" Value="0" PublicName="Integer32_11" Remark="Integer32_11" />
         <Property SymbolName="Integer32_12" Value="0" PublicName="Integer32_12" Remark="Integer32_12" />
         <Property SymbolName="Integer32_13" Value="0" PublicName="Integer32_13" Remark="Integer32_13" />
@@ -737,25 +737,25 @@
         <Property SymbolName="Integer32_32" Value="0" PublicName="Integer32_32" Remark="Integer32_32" />
         <Property SymbolName="Integer32_33" Value="0" PublicName="Integer32_33" Remark="Integer32_33" />
         <Property SymbolName="Integer32_34" Value="0" PublicName="Integer32_34" Remark="Integer32_34" />
-        <Property SymbolName="Integer32_35" Value="0" PublicName="Integer32_35" Remark="Integer32_35" />
-        <Property SymbolName="Integer32_36" Value="0" PublicName="Integer32_36" Remark="Integer32_36" />
-        <Property SymbolName="Integer32_37" Value="0" PublicName="Integer32_37" Remark="Integer32_37" />
-        <Property SymbolName="Integer32_38" Value="0" PublicName="Integer32_38" Remark="Integer32_38" />
-        <Property SymbolName="Integer32_39" Value="0" PublicName="Integer32_39" Remark="Integer32_39" />
-        <Property SymbolName="Integer32_40" Value="0" PublicName="Integer32_40" Remark="Integer32_40" />
-        <Property SymbolName="Integer32_41" Value="0" PublicName="Integer32_41" Remark="Integer32_41" />
-        <Property SymbolName="Integer32_42" Value="0" PublicName="Integer32_42" Remark="Integer32_42" />
-        <Property SymbolName="Integer32_43" Value="0" PublicName="Integer32_43" Remark="Integer32_43" />
-        <Property SymbolName="Integer32_44" Value="0" PublicName="Integer32_44" Remark="Integer32_44" />
-        <Property SymbolName="Integer32_45" Value="0" PublicName="Integer32_45" Remark="Integer32_45" />
-        <Property SymbolName="Integer32_46" Value="0" PublicName="Integer32_46" Remark="Integer32_46" />
+        <Property SymbolName="Integer32_35" Value="90" PublicName="Integer32_35_Battery_Cap" Remark="Integer32_35" AliasName="Integer32_35_Battery_Cap" />
+        <Property SymbolName="Integer32_36" Value="800" PublicName="Integer32_36_Battery_IniCap" Remark="Integer32_36" AliasName="Integer32_36_Battery_IniCap" />
+        <Property SymbolName="Integer32_37" Value="650" PublicName="Integer32_37_Battery_AlarmCap" Remark="Integer32_37" AliasName="Integer32_37_Battery_AlarmCap" />
+        <Property SymbolName="Integer32_38" Value="10" PublicName="Integer32_38_Rapit_ChargeAdd" Remark="Integer32_38" AliasName="Integer32_38_Rapit_ChargeAdd" />
+        <Property SymbolName="Integer32_39" Value="0" PublicName="Integer32_39_CurrentBatCap" Remark="Integer32_39" AliasName="Integer32_39_CurrentBatCap" />
+        <Property SymbolName="Integer32_40" Value="320" PublicName="Integer32_40_ChgComV1" Remark="Integer32_40, BatTmp25 = FALSE, BatTmp40 = FALSE, BatTmp55= FALSE" AliasName="Integer32_40_ChgComV1" />
+        <Property SymbolName="Integer32_41" Value="312" PublicName="Integer32_41_ChgComV2" Remark="Integer32_41, BatTmp25 =TRUE, BatTmp40 = FALSE, BatTmp55= FALSE" AliasName="Integer32_41_ChgComV2" />
+        <Property SymbolName="Integer32_42" Value="304" PublicName="Integer32_42_ChgComV3" Remark="Integer32_42, BatTmp25 = TRUE, BatTmp40 = TRUE, BatTmp55= FALSE" AliasName="Integer32_42_ChgComV3" />
+        <Property SymbolName="Integer32_43" Value="28" PublicName="Integer32_43_Current_Moving" Remark="Integer32_43" AliasName="Integer32_43_Current_Moving" />
+        <Property SymbolName="Integer32_44" Value="16" PublicName="Integer32_44_Current_Transfer" Remark="Integer32_44" AliasName="Integer32_44_Current_Transfer" />
+        <Property SymbolName="Integer32_45" Value="14" PublicName="Integer32_45_Current_Idel" Remark="Integer32_45" AliasName="Integer32_45_Current_Idel" />
+        <Property SymbolName="Integer32_46" Value="150" PublicName="Integer32_46_Current_Charge" Remark="Integer32_46" AliasName="Integer32_46_Current_Charge" />
         <Property SymbolName="Integer32_47" Value="0" PublicName="Integer32_47" Remark="" />
-        <Property SymbolName="Integer32_48" Value="0" PublicName="Integer32_48" Remark="" />
-        <Property SymbolName="Integer32_49" Value="0" PublicName="Integer32_49" Remark="" />
+        <Property SymbolName="Integer32_48" Value="3" PublicName="Integer32_48_BatLimTm" Remark="" AliasName="Integer32_48_BatLimTm" />
+        <Property SymbolName="Integer32_49" Value="3" PublicName="Integer32_49_BatLowTm" Remark="" AliasName="Integer32_49_BatLowTm" />
         <Property SymbolName="Integer32_50" Value="245" PublicName="Integer32_50_BattLowVol" Remark="" AliasName="Integer32_50_BattLowVol" />
-        <Property SymbolName="Integer32_51" Value="1" PublicName="Integer32_51_BattLowSel" Remark="1=L or M or H, 2=M or H, 3=H" AliasName="Integer32_51_BattLowSel" />
+        <Property SymbolName="Integer32_51" Value="220" PublicName="Integer32_51_BattNgVol" Remark="Integer32_51" AliasName="Integer32_51_BattNgVol" />
         <Property SymbolName="Integer32_52" Value="600000" PublicName="Integer32_52_PowOffTm" Remark="ms" AliasName="Integer32_52_PowOffTm" />
-        <Property SymbolName="Integer32_53" Value="0" PublicName="Integer32_53" Remark="" />
+        <Property SymbolName="Integer32_53" Value="0" PublicName="Integer32_53_BattChg" Remark="" AliasName="Integer32_53_BattChg" />
         <Property SymbolName="Integer32_54" Value="0" PublicName="Integer32_54" Remark="" />
         <Property SymbolName="Integer32_55" Value="104809768" PublicName="Integer32_55_TravelDistance" Remark="" AliasName="Integer32_55_TravelDistance" />
         <Property SymbolName="Integer32_56" Value="0" PublicName="Integer32_56" Remark="" />
@@ -796,8 +796,8 @@
         <Property SymbolName="MaxAngularSpeed" Value="120" />
         <Property SymbolName="MinSteerAngle" Value="-105" />
         <Property SymbolName="MaxSteerAngle" Value="105" />
-        <Property SymbolName="X" Value="628" />
-        <Property SymbolName="Y" Value="0" />
+        <Property SymbolName="X" Value="660" />
+        <Property SymbolName="Y" Value="60" />
         <Property SymbolName="SetSpeedRef" Value="DCD_5.SetSpeed" />
         <Property SymbolName="SetAngleRef" Value="DCD_6.SetAngle" />
         <Property SymbolName="SetSpeedEnableRef" Value="DCD_5.EnablePowerStage" />
@@ -817,8 +817,8 @@
         <Property SymbolName="MaxAngularSpeed" Value="120" />
         <Property SymbolName="MinSteerAngle" Value="-105" />
         <Property SymbolName="MaxSteerAngle" Value="105" />
-        <Property SymbolName="X" Value="-628" />
-        <Property SymbolName="Y" Value="0" />
+        <Property SymbolName="X" Value="-660" />
+        <Property SymbolName="Y" Value="-60" />
         <Property SymbolName="SetSpeedRef" Value="DCD_7.SetSpeed" />
         <Property SymbolName="SetAngleRef" Value="DCD_8.SetAngle" />
         <Property SymbolName="SetSpeedEnableRef" Value="DCD_7.EnablePowerStage" />
@@ -846,21 +846,21 @@
         <Property SymbolName="DetectDistance" Value="25" />
         <Property SymbolName="Sensitivity" Value="40" />
         <Property SymbolName="ReflectorShadow" Value="1000" />
-        <Property SymbolName="X" Value="-770" />
+        <Property SymbolName="X" Value="-725" />
         <Property SymbolName="Y" Value="0" />
         <Property SymbolName="Angle" Value="0" />
         <Property SymbolName="UpsideDown" Value="0" />
         <Property SymbolName="IP" Value="192.168.100.9" />
-        <Property SymbolName="Field1_X1" Value="-865" />
-        <Property SymbolName="Field1_X2" Value="-665" />
-        <Property SymbolName="Field1_Y1" Value="-100" />
-        <Property SymbolName="Field1_Y2" Value="100" />
+        <Property SymbolName="Field1_X1" Value="-732" />
+        <Property SymbolName="Field1_X2" Value="-732" />
+        <Property SymbolName="Field1_Y1" Value="0" />
+        <Property SymbolName="Field1_Y2" Value="0" />
         <Property SymbolName="Field1_Triggered" Value="0" />
         <Property SymbolName="Field1_Dist" Value="0" />
-        <Property SymbolName="Field2_X1" Value="-865" />
-        <Property SymbolName="Field2_X2" Value="-665" />
-        <Property SymbolName="Field2_Y1" Value="-100" />
-        <Property SymbolName="Field2_Y2" Value="100" />
+        <Property SymbolName="Field2_X1" Value="-732" />
+        <Property SymbolName="Field2_X2" Value="-732" />
+        <Property SymbolName="Field2_Y1" Value="0" />
+        <Property SymbolName="Field2_Y2" Value="0" />
         <Property SymbolName="Field2_Triggered" Value="0" />
         <Property SymbolName="Field2_Dist" Value="0" />
         <Property SymbolName="Sector1_Ignore" Value="0" />
@@ -887,6 +887,14 @@
         <Property SymbolName="VarBearing" Value="0.000001" />
         <Property SymbolName="VarDistance" Value="0.001" />
         <Property SymbolName="Temperature" Value="0" />
+      </Properties>
+    </Component>
+    <Component SymbolName="COM6" DataType="LanSerialPort" Index="0x2007" FixedIndex="0">
+      <Properties>
+        <Property SymbolName="Protocol" Value="1" />
+        <Property SymbolName="IP" Value="ANY" />
+        <Property SymbolName="Port" Value="503" />
+        <Property SymbolName="SendBuffer" Value="1" />
       </Properties>
     </Component>
     <Component SymbolName="Vehicle" DataType="Vehicle" Index="0x2000" FixedIndex="0">
@@ -975,21 +983,13 @@
       <Properties>
         <Property SymbolName="RefStatValid" Value="" />
         <Property SymbolName="NumberOfAssociatedReflectors" Value="0" />
-        <Property SymbolName="SelectReflectorType" Value="0" />
+        <Property SymbolName="SelectReflectorType" Value="2" />
       </Properties>
       <References>
         <Reference SymbolName="Scanner">
           <ReferenceItem Value="LS2000" />
         </Reference>
       </References>
-    </Component>
-    <Component SymbolName="COM6" DataType="LanSerialPort" Index="0x2007" FixedIndex="0">
-      <Properties>
-        <Property SymbolName="Protocol" Value="1" />
-        <Property SymbolName="IP" Value="ANY" />
-        <Property SymbolName="Port" Value="503" />
-        <Property SymbolName="SendBuffer" Value="1" />
-      </Properties>
     </Component>
     <Component SymbolName="DCD_5" DataType="DCD_5" Index="0x2002" FixedIndex="0">
       <Properties>
@@ -999,8 +999,8 @@
         <Property SymbolName="ActiveInSafeState" Value="0" />
         <Property SymbolName="NMTState" Value="" />
         <Property SymbolName="SdoBufferSize" Value="" />
-        <Property SymbolName="MotorCurrentRegP" Value="800" />
-        <Property SymbolName="MotorCurrentRegI" Value="300" />
+        <Property SymbolName="MotorCurrentRegP" Value="160" />
+        <Property SymbolName="MotorCurrentRegI" Value="60" />
         <Property SymbolName="MaxCommandSpeed" Value="2000" />
         <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
         <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
@@ -1114,8 +1114,8 @@
         <Property SymbolName="ActiveInSafeState" Value="0" />
         <Property SymbolName="NMTState" Value="" />
         <Property SymbolName="SdoBufferSize" Value="" />
-        <Property SymbolName="MotorCurrentRegP" Value="800" />
-        <Property SymbolName="MotorCurrentRegI" Value="300" />
+        <Property SymbolName="MotorCurrentRegP" Value="160" />
+        <Property SymbolName="MotorCurrentRegI" Value="60" />
         <Property SymbolName="MaxCommandSpeed" Value="2000" />
         <Property SymbolName="ForwardMaxAccTorqueCurrent" Value="450" />
         <Property SymbolName="ReverseMaxAccTorqueCurrent" Value="450" />
@@ -1223,7 +1223,7 @@
     </Component>
     <Component SymbolName="SDIO" DataType="SDIO" Index="0x2006" FixedIndex="0">
       <Properties>
-        <Property SymbolName="IMUAxis" Value="IMUGyroY" />
+        <Property SymbolName="IMUAxis" Value="IMUGyroX" />
         <Property SymbolName="IMUNavActive" Value="0" />
         <Property SymbolName="BusID" Value="1" />
         <Property SymbolName="NodeID" Value="2" />
@@ -1358,9 +1358,9 @@
         <Property SymbolName="DigitalInput2" Value="" PublicName="DigitalInput2_SteerLimitF_R" Remark="Digital Input 2 value" AliasName="DigitalInput2_SteerLimitF_R" />
         <Property SymbolName="DigitalInput3" Value="" PublicName="DigitalInput3_SteerLimitR_L" Remark="Digital Input 3 value" AliasName="DigitalInput3_SteerLimitR_L" />
         <Property SymbolName="DigitalInput4" Value="" PublicName="DigitalInput4_SteerLimitR_R" Remark="Digital Input 4 value" AliasName="DigitalInput4_SteerLimitR_R" />
-        <Property SymbolName="DigitalInput5" Value="" PublicName="DigitalInput5" Remark="Digital Input 5 value" />
-        <Property SymbolName="DigitalInput6" Value="" PublicName="DigitalInput6" Remark="Digital Input 6 value" />
-        <Property SymbolName="DigitalInput7" Value="" PublicName="DigitalInput7" Remark="Digital Input 7 value" />
+        <Property SymbolName="DigitalInput5" Value="" PublicName="DigitalInput5_BatTmp25_i" Remark="Digital Input 5 value" AliasName="DigitalInput5_BatTmp25_i" />
+        <Property SymbolName="DigitalInput6" Value="" PublicName="DigitalInput6_BatTmp40_i" Remark="Digital Input 6 value" AliasName="DigitalInput6_BatTmp40_i" />
+        <Property SymbolName="DigitalInput7" Value="" PublicName="DigitalInput7_BatTmp55_i" Remark="Digital Input 7 value" AliasName="DigitalInput7_BatTmp55_i" />
         <Property SymbolName="DigitalInput8" Value="" PublicName="DigitalInput8" Remark="Digital Input 8 value" />
         <Property SymbolName="DigitalInput9" Value="" PublicName="DigitalInput9_AreaF_IN1" Remark="Digital Input 9 value" AliasName="DigitalInput9_AreaF_IN1" />
         <Property SymbolName="DigitalInput10" Value="" PublicName="DigitalInput10_AreaF_IN2" Remark="Digital Input 10 value" AliasName="DigitalInput10_AreaF_IN2" />

@@ -154,6 +154,9 @@ case ProcStep of
 			
 			ProcStep:=3;
 
+			if start_adress < 1 then 
+				ProcStep:=999;
+			end_if;
 (****************************************************************************)			
 3:
 			
@@ -434,6 +437,7 @@ case ProcStep of
 			End_IF;
 
 end_case;
+
 
 
 

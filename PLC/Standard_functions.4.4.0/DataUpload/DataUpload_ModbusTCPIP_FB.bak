@@ -2,6 +2,9 @@ FUNCTION_BLOCK DataUpload_ModbusTCPIP_FB
 VAR_EXTERNAL
 ndc8 : NDC8_T;
 
+UploadData_ModBus_ValueWord:ARRAY[1..500] OF Word;
+UploadData_ModBus_ValueBOOL:ARRAY[1..400] OF BOOL;
+
 ConvWord:WORD;			(*Sum of the two first bytes*)
 
 ConvByteL:Byte;			(*Low byte*)
@@ -77,8 +80,7 @@ msg_index: INT;
 ix : INT;
 UploadData_message : ARRAY[1..300] of BYTE;
 
-UploadData_ModBus_ValueWord:ARRAY[1..500] OF Word;
-UploadData_ModBus_ValueBOOL:ARRAY[1..400] OF BOOL;
+
 
 END_VAR
 (****************************************************************************)

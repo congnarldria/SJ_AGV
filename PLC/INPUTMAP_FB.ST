@@ -121,18 +121,23 @@ else
 	INPUT.SteerEncSyncValid := FALSE;
 end_if;
 
-if NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L = TRUE or NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R = TRUE then
+
+if NDC8.DCD_6.SetAngle > 0 and NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L then 
+	NDC8.DCD_6.EndLimitSwitchPolarity := 1;
+elsif NDC8.DCD_6.SetAngle < 0 and NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R then
+	NDC8.DCD_6.EndLimitSwitchPolarity := 1;
+else
+	NDC8.DCD_6.EndLimitSwitchPolarity := 0;
+end_if;
+
+if NDC8.DCD_8.SetAngle > 0 and NDC8.CAN_IO_3.DigitalInput3_SteerLimitR_L then 
+	NDC8.DCD_8.EndLimitSwitchPolarity := 1;
+elsif NDC8.DCD_8.SetAngle < 0 and NDC8.CAN_IO_3.DigitalInput4_SteerLimitR_R then
 	NDC8.DCD_8.EndLimitSwitchPolarity := 1;
 else
 	NDC8.DCD_8.EndLimitSwitchPolarity := 0;
 end_if;
 
-if NDC8.CAN_IO_3.DigitalInput1_SteerLimitF_L = TRUE or NDC8.CAN_IO_3.DigitalInput2_SteerLimitF_R = TRUE then
-	NDC8.DCD_6.EndLimitSwitchPolarity := 1;
-else
-	NDC8.DCD_6.EndLimitSwitchPolarity := 0;
-end_if;
-	
 
 Input.CreepOn := abs(NDC8.VehicleControl.SetSpeed) = NDC8.Vehicle.CreepSpeed;
 
@@ -181,6 +186,14 @@ INPUT.LoadOnBoard := PLC_RX01_Bit_Load_i;
 
 
 StopEstopButton := NDC8.SDIO.DigitalInput12_EMO;
+
+
+
+
+
+
+
+
 
 
 

@@ -4,7 +4,7 @@ VAR_EXTERNAL
 END_VAR
 
 VAR_INPUT
-	ComStart : bool := TRUE; 
+
 END_VAR
 
 VAR_OUTPUT
@@ -12,8 +12,11 @@ VAR_OUTPUT
 END_VAR
 
 VAR
-	BMS_BatLowSel : INT;
-	BMS_BatLow : BOOL;
+	ComStart : bool := FALSE; 
+	
+	ComStartDelay : TON;
+	
+	MessageDelay : TON;
 	
 	TP_PB_NoSelTimer : TON;
 	
@@ -28,8 +31,13 @@ VAR
 	RST_Keep : BOOL;
 	RST_Keep_Timer : TON;
 	
-	BatLow : BOOL;
+	BatLowPreFlag : BOOL;
+	BatLowDelay : TON;
+	BatLowDelayTime : TIME;
 	
+	BatNgPreFlag : BOOL;
+	BatNgDelay : TON;
+	BatNgDelayTime : TIME;
 	
 	TempInt : int;
 	TempWord : word;
@@ -134,6 +142,14 @@ VAR
 	
 	(*---------------------------------------*)
 	
+	TempDINT : DINT;
+	TempIndexString_1 : STRING;
+	TempIndexString_2 : STRING;
+	
+	
+	FIND_XRS_INDEX : INT;
+	FIND_XWS_INDEX : INT;
+	
 END_VAR
 if init = false then
 	serial_read.port := 'COM1';
@@ -165,28 +181,118 @@ SwitchHostFlag := INPUT.Auto = TRUE and INPUT.StartMode = TRUE and NDC8.LayoutPo
 
 Host_R(CLK:= SwitchHostFlag);
 
-if SwitchHostFlag then
+if Host_R.Q then
+		Host_R_Flag := TRUE;
+		PLC_TX04_Bit_ChrgCmdL_A := FALSE;
+		PLC_TX04_Bit_ChrgCmdR_A := FALSE;
+end_if;
+	
+(*Set Local order mode not set TM and Non-TM*)
+if PLC_RX03_Bit_STw_Mod_LT then
+
+	Host_R_Flag := FALSE;
+	
+	NDC8.Automatic.SetOrderMode := 3;
+	OrderMode();
+	
+	if NDC8.Automatic.CurrentOrderMode = 3 then
+		PLC_TX01_Bit_STr_Mod_NT := FALSE;
+		PLC_TX01_Bit_STr_Mod_UT := TRUE;
+	end_if;
+	
+(*Set Local order mode set TM*)
+elsif NDC8.Automatic.CurrentOrderMode = 2 and PLC_RX03_Bit_STw_Mod_UT then
+
+	Host_R_Flag := FALSE;
+	
+	NDC8.Automatic.SetOrderMode := 3;
+	OrderMode();
+	
+	if OrderMode.Finished then
+		PLC_TX01_Bit_STr_Mod_NT := FALSE;
+		PLC_TX01_Bit_STr_Mod_UT := TRUE;
+	end_if;
+	
+(*Set Local order mode set Non-TM*)
+elsif NDC8.Automatic.CurrentOrderMode = 3 and PLC_RX03_Bit_STw_Mod_NT then
+
+	Host_R_Flag := FALSE;
+	
+	NDC8.Automatic.SetOrderMode := 2;
+	OrderMode();
+	
+	if NDC8.Automatic.CurrentOrderMode = 2 then
+		PLC_TX01_Bit_STr_Mod_NT := TRUE;
+		PLC_TX01_Bit_STr_Mod_UT := FALSE;
+	end_if;
+
+(*Set Host order mode*)	
+elsif PLC_RX03_Bit_STw_Mod_HT then
+
+	Host_R_Flag := FALSE;
+	
+	NDC8.Automatic.SetOrderMode := 1;
+	OrderMode();
+	
+	if NDC8.Automatic.CurrentOrderMode = 1 then
+		PLC_TX01_Bit_STr_Mod_NT := FALSE;
+		PLC_TX01_Bit_STr_Mod_UT := TRUE;
+	end_if;
+	
+elsif Host_R_Flag then
 
 	Host_R_Delay(IN:= PLC_RX01_Bit_EnableLD_i, PT:=t#1s);
 	
 	
-	if Host_R.Q then
-		Host_R_Flag := TRUE;
-	end_if;
+	if NDC8.UserDefined.Boolean_20_OnlineOrderMode = FALSE  then
+
+		if NDC8.Automatic.CurrentOrderMode = 1 then
+			Host_R_Flag := FALSE;
+		end_if;
 	
-	if NDC8.Automatic.CurrentOrderMode = 1 then
-		Host_R_Flag := FALSE;
+		if NDC8.Automatic.CurrentOrderMode <> 1 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q and PLC_RX03_Bit_CP_HP = TRUE then
+			NDC8.Automatic.SetOrderMode := 1;
+			OrderMode();
+		elsif NDC8.Automatic.CurrentOrderMode <> 1 and Host_R_Flag = FALSE then
+			;
+		end_if;
+		
+	else
+
+		if NDC8.Automatic.CurrentOrderMode = 3 then
+			Host_R_Flag := FALSE;
+		end_if;
+
+		if NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q and PLC_RX03_Bit_CP_HP = TRUE then
+			NDC8.Automatic.SetOrderMode := 3;
+			OrderMode();
+		elsif NDC8.Automatic.CurrentOrderMode <> 3 and Host_R_Flag = FALSE then
+			;
+		end_if;
+		
 	end_if;
-	
-	if NDC8.Automatic.CurrentOrderMode <> 1 and Host_R_Flag = TRUE and PLC_RX01_Bit_EnableLD_i = TRUE and Host_R_Delay.Q then
-		NDC8.Automatic.SetOrderMode := 1;
-		OrderMode();
-	elsif NDC8.Automatic.CurrentOrderMode <> 1 and Host_R_Flag = FALSE then
-		;
-	end_if;
-	
+(*Set Manual and Local mode*)	
 else
-	PLC_TX01_Bit_HostMode := false;
+
+	LocalManual := NDC8.Mcd.Button3;
+
+	LocalManual_R(CLK:= LocalManual);
+
+	if LocalManual_R.Q then
+		SetToLocal := TRUE;
+	end_if;
+
+	if SetToLocal then
+		NDC8.Automatic.SetOrderMode := 3;
+		OrderMode();
+	
+		if NDC8.Automatic.CurrentOrderMode = 3 then
+			SetToLocal := false;
+			PLC_TX01_Bit_STr_Mod_NT := FALSE;
+			PLC_TX01_Bit_STr_Mod_UT := TRUE;
+		end_if;
+	end_if;
+
 end_if;
 
 (*I00801*)
@@ -239,97 +345,10 @@ if g_PlcComLinkUp = TRUE then
 end_if;
 	
 (* I00809 *)
-	PLC_TX01_Bit_STr_Home := NDC8.PointTrigger.Bit8_HP_Pnt;
 
 (* I00810 *)
 
-STr_AckT(IN := STr_AckR, PT:= t#10s);
 
-if PLC_TX01_Bit_OnLn_ModeP = TRUE then
-
-
-	if 	PLC_RX04_Bit_STw_Cont = TRUE
-		or PLC_RX04_Bit_STw_Finish = TRUE
-		or PLC_RX04_Bit_STw_Cancel = TRUE
-		or PLC_RX04_Bit_STw_Change = TRUE then
-		
-		TP_PB_NoSelTimer(IN:= FALSE);
-		
-		OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
-		
-		OM_PLC_W1_Bit_OM_Cont			:= PLC_RX04_Bit_STw_Cont;
-		OM_PLC_W1_Bit_OM_Finish			:= PLC_RX04_Bit_STw_Finish;
-		OM_PLC_W1_Bit_OM_Cancel			:= PLC_RX04_Bit_STw_Cancel;
-		OM_PLC_W1_Bit_OM_Change			:= PLC_RX04_Bit_STw_Change;
-	
-		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);
-		
-		STr_AckR := TRUE;
-			
-		if STr_AckT.Q then
-			PLC_TX01_Bit_STr_Ack := TRUE;
-		else
-			PLC_TX01_Bit_STr_Ack := FALSE;
-		end_if;
-		
-	elsif PLC_RX04_Bit_STw_Cont = FALSE
-		or PLC_RX04_Bit_STw_Finish = FALSE
-		or PLC_RX04_Bit_STw_Cancel = FALSE
-		or PLC_RX04_Bit_STw_Change = FALSE then
-		
-		OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
-		
-		TP_PB_NoSelTimer(IN:=TRUE, PT:= t#10s);
-		
-		OM_PLC_W1_Bit_OM_Cont			:= FALSE;
-		OM_PLC_W1_Bit_OM_Finish			:= FALSE;
-		OM_PLC_W1_Bit_OM_Cancel			:= FALSE;
-		OM_PLC_W1_Bit_OM_Change			:= FALSE;
-		
-		
-		if TP_PB_NoSelTimer.Q then
-			OM_PLC_W1_Bit_OM_Cont := TRUE;
-		end_if;
-		
-		
-		if Debug_PB_Cont = TRUE then
-			OM_PLC_W1_Bit_OM_Cont := TRUE;
-		end_if;
-		
-		if Debug_PB_Finish = TRUE then
-			OM_PLC_W1_Bit_OM_Finish := TRUE;
-		end_if;
-		
-		if Debug_PB_Cancel = TRUE then
-			OM_PLC_W1_Bit_OM_Cancel := TRUE;
-		end_if;
-		
-		if Debug_PB_Change = TRUE then
-			OM_PLC_W1_Bit_OM_Change := TRUE;
-		end_if;
-		
-		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);
-		
-		PLC_TX01_Bit_STr_Ack := FALSE;
-	
-	end_if;
-	
-	
-	
-else
-
-	TP_PB_NoSelTimer(IN:= FALSE);
-	
-	OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
-	
-	OM_PLC_W1_Bit_OM_Cont			:= FALSE;
-	OM_PLC_W1_Bit_OM_Finish			:= FALSE;
-	OM_PLC_W1_Bit_OM_Cancel			:= FALSE;
-	OM_PLC_W1_Bit_OM_Change			:= FALSE;
-	
-	NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);
-	
-end_if;
 
 PLC_TX_Word3 := 0;
 
@@ -346,10 +365,10 @@ PLC_TX03_Bit_STr_Rot_L := Input.SD_Left;
 PLC_TX03_Bit_STr_Rot_R := Input.SD_Right;
 
 (* I00821 *)
-PLC_TX03_Bit_STr_DD_R := Input.SD_Right;
+PLC_TX03_Bit_STr_DD_R := Input.DD_Right;
 
 (* I00822 *)
-PLC_TX03_Bit_STr_DD_L := Input.SD_Left;
+PLC_TX03_Bit_STr_DD_L := Input.DD_Left;
 
 
 (* I00823 *)
@@ -431,7 +450,7 @@ if RST_Keep_Timer.Q then
 	RST_Keep_Timer(IN:= FALSE);
 end_if;
 
-if PLC_RX_Word20_PLC_ErrD <> 0 then
+if PLC_RX_Word4_PLC_ErrD <> 0 then
 	PLC_TX04_Bit_Reset_o := RST_Keep;
 else
 	PLC_TX04_Bit_Reset_o := FALSE;
@@ -492,10 +511,12 @@ end_if;
 PLC_TX_Word9_STr_Pnt := DINT_TO_WORD(FinalPnt);
 
 (* D510 *)
-PLC_TX_Word10_STr_BatV := PLC_RX_Word16_BMS_BatV;
+g_BatteryVoltage := NDC8.SDIO.B_Plus / 10;
+
+
+PLC_TX_Word10_STr_BatV := DINT_TO_WORD(g_BatteryVoltage);
 
 (* D511 *)
-PLC_TX_Word11_STr_Temp := PLC_RX_Word17_BMS_BatT;
 
 (* D514 *)
 ConvWord := INT_TO_WORD(NDC8.OMPLC.R_BCD3);
@@ -529,56 +550,10 @@ PLC_TX_Word16_STr_BCD1 := TempWord;
 			
 			
 (*RX Data Proc*)
-(*Set Local order mode*)
-if PLC_RX03_Bit_STw_Mod_LT and not PLC_RX03_Bit_STw_Mod_NT and not PLC_RX03_Bit_STw_Mod_UT then
-	NDC8.Automatic.SetOrderMode := 3;
-	OrderMode();
-end_if;
-
-LocalManual := NDC8.Mcd.Button3;
-
-LocalManual_R(CLK:= LocalManual);
-
-if LocalManual_R.Q then
-	SetToLocal := TRUE;
-end_if;
-
-if SetToLocal then
-	NDC8.Automatic.SetOrderMode := 3;
-	OrderMode();
-	
-	if NDC8.Automatic.CurrentOrderMode = 3 then
-		SetToLocal := false;
-	end_if;
-end_if;
-
-
-if (PLC_RX03_Bit_STw_Mod_LT and PLC_RX03_Bit_STw_Mod_NT) then
-	NDC8.Automatic.SetOrderMode := 2;
-	OrderMode();
-end_if;
-
-
-
-
-if PLC_RX03_Bit_STw_Mod_LT and PLC_RX03_Bit_STw_Mod_UT then
-	NDC8.Automatic.SetOrderMode := 3;
-	OrderMode();
-	
-	if OrderMode.Finished then
-		PLC_TX01_Bit_STr_Mod_NT := FALSE;
-		PLC_TX01_Bit_STr_Mod_UT := TRUE;
-	end_if;
-end_if;
-
-(*Set Host order mode*)
-if PLC_RX03_Bit_STw_Mod_HT then
-	NDC8.Automatic.SetOrderMode := 1;
-	OrderMode();
-end_if;
 
 
 (* Set Insert Point *)
+(* 
 if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then
 	
 	NDC8.NavInit.Target := Word_To_DINT(PLC_RX_Word11_Ins_Pno);
@@ -591,7 +566,8 @@ if NDC8.LayoutPosition.InSystem = FALSE and PLC_RX_Word11_Ins_Pno <> 0 then
 		PLC_TX04_Bit_STr_Ins_er := TRUE;
 	end_if;
 end_if;
-
+ *)
+ 
 (* Set Local Order Data*)
 STw_NewcmdR(CLK:= PLC_RX03_Bit_STw_Newcmd);
 
@@ -622,135 +598,183 @@ end_if;
 
 (* Battery Voltage*)
 if g_PlcComLinkUp = TRUE then
-	Input.Display_BatteryLevel := PLC_RX_Word16_BMS_BatV;
+	Input.Display_BatteryLevel := PLC_TX_Word10_STr_BatV;
 else
 	Input.Display_BatteryLevel := 0;
 end_if;
  
  
-BMS_BatLowSel := DINT_TO_INT(NDC8.UserDefined.Integer32_51_BattLowSel);
- 
-case BMS_BatLowSel of
+ if NDC8.UserDefined.Integer32_48_BatLimTm = 0 or NDC8.UserDefined.Integer32_48_BatLimTm < 0 then
+	NDC8.UserDefined.Integer32_48_BatLimTm := 3;
+end_if;
 
-3: 
-	BMS_BatLow := PLC_RX15_Bit_BMS_ChgRqH;
-2:
-	BMS_BatLow := PLC_RX15_Bit_BMS_ChgRqM or PLC_RX15_Bit_BMS_ChgRqH;
-1:
-	BMS_BatLow := PLC_RX15_Bit_BMS_ChgRqL or PLC_RX15_Bit_BMS_ChgRqM or PLC_RX15_Bit_BMS_ChgRqH;
-end_case;
+if NDC8.UserDefined.Integer32_49_BatLowTm = 0 or NDC8.UserDefined.Integer32_49_BatLowTm < 0 then
+	NDC8.UserDefined.Integer32_49_BatLowTm := 3;
+end_if;
+
 
 if NDC8.UserDefined.Integer32_50_BattLowVol = 0 or NDC8.UserDefined.Integer32_50_BattLowVol < 0 then
 	NDC8.UserDefined.Integer32_50_BattLowVol := 240;
 end_if;
 
-if PLC_RX_Word16_BMS_BatV < DINT_TO_WORD(NDC8.UserDefined.Integer32_50_BattLowVol) then
-	BatLow := TRUE;
-else
-	BatLow:= FALSE;
+if NDC8.UserDefined.Integer32_51_BattNgVol = 0 or NDC8.UserDefined.Integer32_51_BattNgVol < 0 then
+	NDC8.UserDefined.Integer32_51_BattNgVol := 220;
 end_if;
- 
-if (BMS_BatLow = TRUE or BatLow = TRUE)then
-	INPUT.LowBattery := TRUE;
+
+
+
+if ((NDC8.UserDefined.Integer32_51_BattNgVol < g_BatteryVoltage and g_BatteryVoltage < NDC8.UserDefined.Integer32_50_BattLowVol) or NDC8.UserDefined.Integer32_39_CurrentBatCap < NDC8.UserDefined.Integer32_37_Battery_AlarmCap)  and g_FindSyncFlag = TRUE then
+	BatLowPreFlag := TRUE;
 else
-	INPUT.LowBattery := FALSE;
+	BatLowPreFlag:= FALSE;
+end_if;
+
+
+if g_BatteryVoltage < NDC8.UserDefined.Integer32_51_BattNgVol  and g_FindSyncFlag = TRUE then
+	BatNgPreFlag := TRUE;
+else
+	BatNgPreFlag:= FALSE;
+end_if;
+
+
+BatNgDelayTime := DINT_TO_TIME(NDC8.UserDefined.Integer32_48_BatLimTm);
+BatLowDelayTime := DINT_TO_TIME(NDC8.UserDefined.Integer32_49_BatLowTm);
+
+
+BatLowDelay(IN := BatLowPreFlag, PT := BatLowDelayTime);
+BatNgDelay(IN := BatNgPreFlag, PT := BatNgDelayTime);
+
+
+
+if BatNgDelay.Q then
+	 g_BattLim_NG := TRUE;
+end_if;
+
+ 
+if BatLowDelay.Q then
+	INPUT.LowBattery := TRUE;
 end_if;
 
 (* Battery Temperature *)
+
+PLC_TX_Word11_STr_Temp := 0;
+
+PLC_TX11_Bit_STr_BatTmp25_o := not NDC8.CAN_IO_3.DigitalInput5_BatTmp25_i;
+PLC_TX11_Bit_STr_BatTmp40_o := not NDC8.CAN_IO_3.DigitalInput6_BatTmp40_i;
+PLC_TX11_Bit_STr_BatTmp55_o := not NDC8.CAN_IO_3.DigitalInput7_BatTmp55_i;
+
 if g_PlcComLinkUp = TRUE then
-	Input.Display_Temperature := PLC_RX_Word17_BMS_BatT;
+	Input.Display_Temperature := PLC_TX_Word11_STr_Temp;
 else
 	Input.Display_Temperature := 0;
 end_if;
 
+
+
+
 (* Battery Low OT *)
 if g_PlcComLinkUp = TRUE then
-	g_PowerOffFlag_PLC := PLC_RX04_Bit_STw_LowOT;
+	g_PowerOffFlag_PLC := PLC_RX05_Bit_STw_PowOff;
 end_if;
 
 
 (*Communication*)
 
+ComStartDelay(IN:=g_StartFindSync, PT:=t#5s);
+
+if ComStartDelay.Q then
+	ComStart := TRUE;
+end_if;
+
 if ComStart = true then
 
 	if init = true then
 
-		serial_read();
+		if ComStep = 0 then
+
+			serial_read();
 		
-		if serial_read.length > 0 then
+			if serial_read.length > 0 then
 			
-			RevDataLength := serial_read.length;
+				RevDataLength := serial_read.length;
 	
-			if StartOffset > 200 then
-				StartOffset := 1;
-				DecodeString := '';
-			else
-				for Start := 1 to serial_read.length BY 1 DO
+				if StartOffset > 1024 then
+					StartOffset := 1;
+					DecodeString := '';
+				else
+					for Start := 1 to serial_read.length BY 1 DO
 				
-					if serial_read.data[Start] = 16#02 then
-						StartOffset := 1;
-						DecodeString := '';
-					end_if;
-					
-					ReceiveData_Status[StartOffset] := serial_read.data[Start];
-				
-				
-					if ReceiveData_Status[StartOffset] <> 16#02 and 
-						ReceiveData_Status[StartOffset] <> 16#03 and
-						ReceiveData_Status[StartOffset] <> 16#0D and
-						ReceiveData_Status[StartOffset] <> 16#0A then
-				
-						TempData[1] := ReceiveData_Status[StartOffset];
-					
-						to_string(bytes := TempData, length := 1);
-					
-					
-						TempString := to_string.str;
-			
-						DecodeString := CONCAT(DecodeString, TempString);
-					end_if;
-				
-					StartOffset := StartOffset + 1;
-				end_for;
-		
-				DataIndex1 := 1;
-				DataIndex2 := StartOffset - 2;
-				DataIndex3 := StartOffset - 1;
-			
-				if DataIndex1 > 0 and DataIndex2 > 0 and DataIndex3 > 0 then
-					if ReceiveData_Status[DataIndex1] = 16#02 and ReceiveData_Status[DataIndex2] = 16#0D and ReceiveData_Status[DataIndex3] = 16#0A then
-					
-						HeaderString := left(DecodeString, 7);
-					
-						if HeaderString = '00F0XRS' then
-							DecodeString_RS := DecodeString;
-							DecodeString := '';
-							RevDataLength := 0;
+						if serial_read.data[Start] = 16#02 then
 							StartOffset := 1;
-							ComStep := 10;
-						elsif HeaderString = '00F0XWS' then
-							DecodeString_WS := DecodeString;
 							DecodeString := '';
-							RevDataLength := 0;
-							StartOffset := 1;
-							ComStep := 20;
-						else
-							DecodeString := '';
-							RevDataLength := 0;
-							StartOffset := 1;
-							ComStep := 0;
 						end_if;
 					
+						ReceiveData_Status[StartOffset] := serial_read.data[Start];
+				
+				
+						if ReceiveData_Status[StartOffset] <> 16#02 and 
+							ReceiveData_Status[StartOffset] <> 16#03 and
+							ReceiveData_Status[StartOffset] <> 16#0D and
+							ReceiveData_Status[StartOffset] <> 16#0A then
+				
+							TempData[1] := ReceiveData_Status[StartOffset];
+					
+							to_string(bytes := TempData, length := 1);
+					
+					
+							TempString := to_string.str;
+			
+							DecodeString := CONCAT(DecodeString, TempString);
+						end_if;
+				
+						StartOffset := StartOffset + 1;
+					end_for;
+		
+					DataIndex1 := 1;
+					DataIndex2 := StartOffset - 2;
+					DataIndex3 := StartOffset - 1;
+			
+					if DataIndex1 > 0 and DataIndex2 > 0 and DataIndex3 > 0 then
+						if ReceiveData_Status[DataIndex1] = 16#02 and ReceiveData_Status[DataIndex2] = 16#0D and ReceiveData_Status[DataIndex3] = 16#0A then
+					
+							HeaderString := left(DecodeString, 7);
+						
+							FIND_XRS_INDEX := FIND(HeaderString, '00F0XRS');
+							FIND_XWS_INDEX := FIND(HeaderString, '00F0XWS');
+					
+			
+							if FIND_XRS_INDEX <> 0 then
+								DecodeString_RS := DecodeString;
+								DecodeString := '';
+								RevDataLength := 0;
+								StartOffset := 1;
+								ComStep := 10;
+							elsif FIND_XWS_INDEX <> 0 then
+								DecodeString_WS := DecodeString;
+								DecodeString := '';
+								RevDataLength := 0;
+								StartOffset := 1;
+								ComStep := 20;
+							else
+								DecodeString := '';
+								RevDataLength := 0;
+								StartOffset := 1;
+								ComStep := 0;
+							end_if;
+					
+					
+						end_if;
 					
 					end_if;
-					
-				end_if;
 			
 		
-			end_if;
+				end_if;
 			
 				
-		end_if;
+			end_if;
+		
+			
+		End_if;
 		
 		
 		(*PLC Act*)
@@ -914,8 +938,9 @@ if ComStart = true then
 			serial_write(data := SendData_Status4);
 		
 			Message := '';
-			
 			ComStep := 0;
+			
+				
 		20:
 			(*Send 02 30 30 46 30 58 30 30 03 0D 0A (00F0X00) *)
 		
@@ -951,27 +976,27 @@ if ComStart = true then
 			PLC_RX_Word1 := DecodeDataArray[1];
 			PLC_RX_Word2 := DecodeDataArray[2];
 			PLC_RX_Word3 := DecodeDataArray[3];
-			PLC_RX_Word4 := DecodeDataArray[4];
+			PLC_RX_Word4_PLC_ErrD := DecodeDataArray[4];
 			PLC_RX_Word5 := DecodeDataArray[5];
 			PLC_RX_Word6 := DecodeDataArray[6];
 			PLC_RX_Word7_STw_BCD3 := DecodeDataArray[7];
 			PLC_RX_Word8_STw_BCD2 := DecodeDataArray[8];
 			PLC_RX_Word9_STw_BCD1 := DecodeDataArray[9];
-			PLC_RX_Word10_STw_ILEr := DecodeDataArray[10];
+			PLC_RX_Word10_Round := DecodeDataArray[10];
 			PLC_RX_Word11_Ins_Pno := DecodeDataArray[11];
 			PLC_RX_Word12_STw_Pint := DecodeDataArray[12];
 			PLC_RX_Word13_Ins_Ano := DecodeDataArray[13];
-			PLC_RX_Word14_BMS_2 := DecodeDataArray[14];
-			PLC_RX_Word15_BMS_3 := DecodeDataArray[15];
-			PLC_RX_Word16_BMS_BatV := DecodeDataArray[16];
-			PLC_RX_Word17_BMS_BatT := DecodeDataArray[17];
-			PLC_RX_Word18_BMS_BatC := DecodeDataArray[18];
-			PLC_RX_Word19_BMS_BatA := DecodeDataArray[19];
-			PLC_RX_Word20_PLC_ErrD := DecodeDataArray[20];
-			PLC_RX_Word21_BMS_Main := DecodeDataArray[21];
-			PLC_RX_Word22_BMS_Chan := DecodeDataArray[22];
-			PLC_RX_Word23_BMS_ID4L := DecodeDataArray[23];
-			PLC_RX_Word24_BMS_ID4H := DecodeDataArray[24];
+			PLC_RX_Word14 := DecodeDataArray[14];
+			PLC_RX_Word15 := DecodeDataArray[15];
+			PLC_RX_Word16 := DecodeDataArray[16];
+			PLC_RX_Word17 := DecodeDataArray[17];
+			PLC_RX_Word18 := DecodeDataArray[18];
+			PLC_RX_Word19 := DecodeDataArray[19];
+			PLC_RX_Word20 := DecodeDataArray[20];
+			PLC_RX_Word21 := DecodeDataArray[21];
+			PLC_RX_Word22 := DecodeDataArray[22];
+			PLC_RX_Word23 := DecodeDataArray[23];
+			PLC_RX_Word24 := DecodeDataArray[24];
 			PLC_RX_Word25 := DecodeDataArray[25];
 			
 			ComStep := 0;
@@ -982,6 +1007,24 @@ if ComStart = true then
 	
 	
 end_if;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

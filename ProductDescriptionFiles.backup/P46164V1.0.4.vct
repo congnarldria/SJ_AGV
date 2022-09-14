@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<File xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:NDC8ComponentTemplateFile">
+   <FileInfo FileType="vct" FileRevision="1" FileFormat="150" Description="Component Template File" CreationDate="2003-08-27" CreationTime="10:00:00" CreatedBy="AWe" ModificationDate="2021-10-08" ModificationTime="15:43:59" ModifiedBy="johan.martinsson" ModifiedWith="XML Notepad" ModifiedWithSerial="0"/>
+   <Identification ArticleNumber="P46164V1.0.4"
+                   ArticleNumberMatch="P46164V1\.0\..*"
+                   Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.4 (HW 18456-01)"/>
+   <ComponentList Name="P41808" TimeStamp="1633700639">
+      <Component SymbolName="NavInit" DataType="NavInit"/>
+      <Component SymbolName="Mcd" DataType="MCD7P">
+          <References>
+              <Reference SymbolName="Port">
+                  <ReferenceItem Value="COM3"/>
+              </Reference>
+     </References>
+     </Component>
+      <Component SymbolName="Position" DataType="Position"/>
+      <Component SymbolName="Guidance" DataType="Guidance"/>
+      <Component SymbolName="Autoinsert" DataType="Autoinsert"/>
+      <Component SymbolName="Opt" DataType="GenericDisplay"/>
+      <Component SymbolName="LayoutPosition" DataType="LayoutPosition"/>
+      <Component SymbolName="Automatic" DataType="Automatic"/>
+      <Component SymbolName="Manual" DataType="Manual"/>
+      <Component SymbolName="BlackBox" DataType="BlackBox"/>
+      <Component SymbolName="LocalOrder" DataType="LocalOrder"/>
+      <Component SymbolName="SSIO" DataType="SSIO"/>
+      <Component SymbolName="SegmentTrigger" DataType="SegmentTrigger"/>
+      <Component SymbolName="PointTrigger" DataType="PointTrigger"/>
+      <Component SymbolName="LoadDocking" DataType="LoadDocking"/>
+      <Component SymbolName="LoadOperation" DataType="LoadOperation"/>
+      <Component SymbolName="CANBus1" DataType="CANBus">
+          <Properties>
+              <Property SymbolName="BusID" Value="1"/>
+              <Property SymbolName="NodeID" Value="1"/>
+              <Property SymbolName="LoadBase" Value="40"/>
+          </Properties>
+      </Component>
+      <Component SymbolName="CANBus2" DataType="CANBus">
+          <Properties>
+              <Property SymbolName="BusID" Value="2"/>
+              <Property SymbolName="NodeID" Value="1"/>
+              <Property SymbolName="LoadBase" Value="40"/>
+          </Properties>
+      </Component>
+      <Component SymbolName="VehicleControl" DataType="VehicleControl"/>
+      <Component SymbolName="VehicleOptions" DataType="VehicleOptions"/>
+      <Component SymbolName="PLC_Application" DataType="PLC_Application"/>
+      <Component SymbolName="COM1" DataType="SerialPort_RS232">
+         <Properties>
+            <Property SymbolName="Baudrate" Value="19200"/>
+            <Property SymbolName="Databits" Value="8"/>
+            <Property SymbolName="Parity" Value="None"/>
+            <Property SymbolName="Stopbits" Value="1"/>
+            <Property SymbolName="Port" Value="COM1"/>
+         </Properties>
+      </Component>
+      <Component SymbolName="COM2" DataType="SerialPort_RS422">
+         <Properties>
+            <Property SymbolName="Baudrate" Value="38400"/>
+            <Property SymbolName="Databits" Value="8"/>
+            <Property SymbolName="Parity" Value="None"/>
+            <Property SymbolName="Stopbits" Value="0"/>
+            <Property SymbolName="Protocol" Value="Raw"/>
+            <Property SymbolName="Port" Value="COM2"/>
+         </Properties>
+      </Component>
+      <Component SymbolName="COM3" DataType="SerialPort_RS485">
+         <Properties>
+            <Property SymbolName="Baudrate" Value="19200"/>
+            <Property SymbolName="Databits" Value="8"/>
+            <Property SymbolName="Parity" Value="None"/>
+            <Property SymbolName="Stopbits" Value="0"/>
+            <Property SymbolName="Protocol" Value="Raw"/>
+            <Property SymbolName="Port" Value="COM3"/>
+         </Properties>
+      </Component>
+
+      <Component SymbolName="Master" DataType="Master"/>
+      <Component SymbolName="Vmc" DataType="Vmc"/>
+      <Component SymbolName="Wlan" DataType="Wlan"/>
+      <Component SymbolName="CanServer" DataType="CanServer"/>
+      <Component SymbolName="NavApp" DataType="SoftwareModule"/>
+      <Component SymbolName="SysApp" DataType="SoftwareModule"/>
+      <Component SymbolName="OMPLC" DataType="OMPLC"/>
+      <Component SymbolName="VehicleApplication" DataType="VehicleApplication"/>
+      <Component SymbolName="Layout" DataType="Layout"/>
+      <Component SymbolName="CanOpenMaster" DataType="CanOpenMaster">
+          <Properties>
+              <Property SymbolName="MasterExecutionPeriod" Value="20"/>
+              <Property SymbolName="SyncPeriod" Value="3"/>
+              <Property SymbolName="PlcExecutionPeriod" Value="1"/>
+          </Properties>
+      </Component>
+      <Component SymbolName="CanOpenEmergency" DataType="CanOpenEmergency"/>
+      <Component SymbolName="PLCEmergency" DataType="PLCEmergency"/>
+      <Component SymbolName="SlavebusControl" DataType="SlavebusControl"/>
+      <Component SymbolName="UserDefined" DataType="UserDefined"/>
+
+     <Component SymbolName="ExternalPath" DataType="ExternalPath"/>
+      <Component SymbolName="BlockedInfo" DataType="BlockedInfo"/>
+   </ComponentList>
+</File>
