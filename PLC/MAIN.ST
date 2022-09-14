@@ -137,7 +137,11 @@ VAR
 	
 (* Update Data *)
 	DataUpdate : DataUpload_FB;
-	
+(* Check Steering Sync State  *)
+	SteerEncoderNormalStatus : BOOL;
+	Z_PHASE_REALLY_NG_T : TON;
+	MovingDoneLT : F_Trig;
+	ChanceToSyncFailCount : DINT := 0;
 END_VAR
 (*
 
@@ -185,7 +189,7 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
 	INPUT.Manual := TRUE;
-	PLC_RX_Word16_BMS_BatV := 600;(*Prevent Cold Start LowBat*)
+	PLC_RX_Word16_BMS_BatV := 540;(*Prevent Cold Start LowBat*)
 	
 	FindSyncDelay(IN:=TRUE, PT:=t#5s);
 	if FindSyncDelay.Q then
@@ -210,14 +214,14 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	2:
 	(* Steer Turn to 0 *)
 	NDC8.Manual.PlcSelect := true;
-	NDC8.Manual.PLCAngle := 0;
+	NDC8.Manual.PLCAngle := 3;
 	NDC8.Manual.PlcSetOperationMode := 0;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
 	
 	FindSyncDelay(IN:=TRUE, PT:=t#5s);
 	if FindSyncDelay.Q then
-		FindSyncStep := 3;
+		FindSyncStep := 4;
 		FindSyncDelay(IN:=FALSE);
 		IF NDC8.DCD_6.EncoderStatus = 1 AND NDC8.DCD_8.EncoderStatus = 1 THEN
 			g_FindSyncFlag := TRUE;		
@@ -241,6 +245,24 @@ IF INPUT.Reset_PB THEN
 	StopStartDelay := 0;
 END_IF;
 
+(* Check Steering Sync State  *)
+
+SteerEncoderNormalStatus := NDC8.DCD_6.EncoderStatus = 1 AND NDC8.DCD_8.EncoderStatus = 1;
+
+IF NDC8.UserDefined.Integer32_10_ChanceToSyncFailLimit = 0 THEN
+	NDC8.UserDefined.Integer32_10_ChanceToSyncFailLimit := 10;
+END_IF;
+
+MovingDoneLT(CLK := NDC8.Automatic.ExecDriveCommand);
+
+IF MovingDoneLT.Q = TRUE AND SteerEncoderNormalStatus = FALSE THEN
+	ChanceToSyncFailCount := ChanceToSyncFailCount + 1;
+END_IF;
+
+IF MovingDoneLT.Q = TRUE AND SteerEncoderNormalStatus = TRUE THEN
+	ChanceToSyncFailCount := 0;
+END_IF;
+
 if NDC8.CanOpenMaster.NMTState = 5 and NDC8.CanOpenMaster.State = 0 then
 
 (* INPUTS *)
@@ -250,7 +272,7 @@ if NDC8.CanOpenMaster.NMTState = 5 and NDC8.CanOpenMaster.State = 0 then
 
 
 	Autoload();	 (* Load handling 		*)		
-	
+		
 	LS2000();
 	
 	CarrierControl(	LS2000Slowdown := LS2000.Slowdown);				
@@ -451,6 +473,8 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 	elsif R_DriveSupervision.NotMovingFail = TRUE then
 		g_ErrorCode := 123;
 	elsif (F_SteerSupervision.NotMovingFail = TRUE or R_SteerSupervision.NotMovingFail = TRUE) AND g_StartFindSync or (NDC8.DCD_6.EncoderStatus = 0 or NDC8.DCD_8.EncoderStatus = 0) AND g_StartFindSync THEN
+		g_ErrorCode := 124;
+	elsif ChanceToSyncFailCount > NDC8.UserDefined.Integer32_10_ChanceToSyncFailLimit THEN
 		g_ErrorCode := 124;
 	elsif g_BattLim_NG then
 		g_ErrorCode := 127;
@@ -780,6 +804,9 @@ Display();
 OPTX2();
 
 DataUpdate();
+
+
+
 
 
 

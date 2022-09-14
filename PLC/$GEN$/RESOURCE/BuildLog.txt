@@ -10,7 +10,7 @@ Creating dependency list(s):
 c:\users\user\Desktop\CVC700\SJ_2SD_G5_CVC700\PLC\MAIN.POE
 
 Creating include file(s): 
-C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\STANDARD_FUNCTIONS.4.4.0\COMMON\STOPWORD_FB.POE
+c:\users\user\Desktop\CVC700\SJ_2SD_G5_CVC700\PLC\MAIN.POE
 
 Creating dependency list(s): 
 c:\users\user\Desktop\CVC700\SJ_2SD_G5_CVC700\PLC\MAIN.POE
@@ -23,18 +23,13 @@ Compiling ...
 
 Creating prototype(s): 
 c:\users\user\Desktop\CVC700\SJ_2SD_G5_CVC700\PLC\MAIN.POE
-C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\STANDARD_FUNCTIONS.4.4.0\COMMON\STOPWORD_FB.POE
 
 Creating include file(s): 
 c:\users\user\Desktop\CVC700\SJ_2SD_G5_CVC700\PLC\MAIN.POE
-C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\STANDARD_FUNCTIONS.4.4.0\COMMON\STOPWORD_FB.POE
 
 Compiling file(s): 
 c:\users\user\Desktop\CVC700\SJ_2SD_G5_CVC700\PLC\MAIN.POE
 0 error(s), 0 warning(s) - c:\users\user\Desktop\CVC700\SJ_2SD_G5_CVC700\PLC\MAIN.POE.
-
-C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\STANDARD_FUNCTIONS.4.4.0\COMMON\STOPWORD_FB.POE
-0 error(s), 0 warning(s) - C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\STANDARD_FUNCTIONS.4.4.0\COMMON\STOPWORD_FB.POE.
 
 
 Linking ...
@@ -246,6 +241,8 @@ Linking: TRACE_DINT.
 Linking: NDC8_SERIAL_READ.
 Linking: NDC8_SERIAL_WRITE.
 Linking: TOF.
+Linking: TON.
+Linking: F_TRIG.
 Calling P-Code Generator.
 Native Code Compiler - ARM7 - Arm Mode V6.7.3 
 compilation of all segments finished successfully!
@@ -255,11 +252,11 @@ compilation of all segments finished successfully!
 Linking resource: RESOURCE ...
 Linking: C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\$GEN$\RESOURCE\$TASK00$.CRD.
 Linking: C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\$GEN$\RESOURCE\MAIN.CRD.
-Code size in bytes: 995902.
-Number of segments: 415.
+Code size in bytes: 934964.
+Number of segments: 416.
 0 error(s), 0 warning(s) - C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\$GEN$\RESOURCE\RESOURCE.PCD.
 
-VARTAB32: 3011 variables added in 3 segments (182057 bytes)
+VARTAB32: 3011 variables added in 3 segments (182081 bytes)
 Executing Post-Build-Steps:
 padtrtpsTS711.exe -s "C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\$GEN$\RESOURCE\RESOURCE.prs" -pcd="C:\USERS\USER\DESKTOP\CVC700\SJ_2SD_G5_CVC700\PLC\$GEN$\RESOURCE\RESOURCE.PCD"
 Total:

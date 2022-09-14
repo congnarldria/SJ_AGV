@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <File xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:NDC8ComponentTemplateFile">
-  <FileInfo FileType="vpf" FileRevision="523" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-09-13" ModificationTime="12:40:44.4369500+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
+  <FileInfo FileType="vpf" FileRevision="527" FileFormat="4" Description="NDC8 Vehicle Parameter File" CreationDate="2019-09-24" CreationTime="23:15:58.4942118+08:00" CreatedBy="haoin" ModificationDate="2020-09-14" ModificationTime="13:45:16.1765000+08:00" ModifiedBy="user" ModifiedWith="P41716V3.6.1.2183+d7eeb01ab15a537a1ef1e48de07b49843ba687dd" ModifiedWithSerial="" />
   <Identification ArticleNumber="P46164V1.0.0" ArticleNumberMatch="P46164V1\.0\..*" Description="NDC8 4.0 - Standard Vehicle, P46164V1.0.0 (HW 18456-01)" />
   <ComponentList Name="P46164" TimeStamp="0">
     <Component SymbolName="NavInit" DataType="NavInit" Index="0x200B" FixedIndex="0">
@@ -712,7 +712,7 @@
         <Property SymbolName="Integer32_7" Value="0" PublicName="PPAEnable" Remark="Integer32_7" AliasName="PPAEnable" />
         <Property SymbolName="Integer32_8" Value="0" PublicName="SafetyScannerTurnAngle" Remark="Integer32_8" AliasName="SafetyScannerTurnAngle" />
         <Property SymbolName="Integer32_9" Value="200" PublicName="NormalCreepDistance" Remark="Integer32_9" AliasName="NormalCreepDistance" />
-        <Property SymbolName="Integer32_10" Value="0" PublicName="Integer32_10_PCLMODBUS" Remark="Integer32_10" AliasName="Integer32_10_PCLMODBUS" />
+        <Property SymbolName="Integer32_10" Value="0" PublicName="Integer32_10_ChanceToSyncFailLimit" Remark="Integer32_10" AliasName="Integer32_10_ChanceToSyncFailLimit" />
         <Property SymbolName="Integer32_11" Value="0" PublicName="Integer32_11" Remark="Integer32_11" />
         <Property SymbolName="Integer32_12" Value="0" PublicName="Integer32_12" Remark="Integer32_12" />
         <Property SymbolName="Integer32_13" Value="0" PublicName="Integer32_13" Remark="Integer32_13" />
@@ -1072,7 +1072,7 @@
         <Property SymbolName="EndLimitSwitchPolarity" Value="1" />
         <Property SymbolName="SyncGate" Value="0" />
         <Property SymbolName="SyncFilter" Value="25" />
-        <Property SymbolName="SyncEmergency" Value="1" />
+        <Property SymbolName="SyncEmergency" Value="0" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" />
         <Property SymbolName="VoltageFeedback" Value="1" />
         <Property SymbolName="SpeedRegOffset" Value="0" />
@@ -1187,7 +1187,7 @@
         <Property SymbolName="EndLimitSwitchPolarity" Value="1" />
         <Property SymbolName="SyncGate" Value="0" />
         <Property SymbolName="SyncFilter" Value="25" />
-        <Property SymbolName="SyncEmergency" Value="1" />
+        <Property SymbolName="SyncEmergency" Value="0" />
         <Property SymbolName="ReverseEncoderDirection" Value="1" />
         <Property SymbolName="VoltageFeedback" Value="1" />
         <Property SymbolName="SpeedRegOffset" Value="0" />
