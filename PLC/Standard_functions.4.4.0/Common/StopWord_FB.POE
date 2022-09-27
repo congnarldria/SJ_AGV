@@ -142,12 +142,7 @@ END_VAR
 	)
 
 (**  **)
-(** StopSteerSync	:= not INPUT.SteerEncSyncValid; **)
-	(* assign - Stmt *)
-	LD Input.SteerEncSyncValid
-	NOT
-	ST StopSteerSync
-
+(** {*StopSteerSync	:= not INPUT.SteerEncSyncValid;*} **)
 (** DisplayStopString(InStatus:=StopSteerSync, StopString:=181, StopValue:=0); **)
 	(* call - Stmt *)
 	CAL DisplayStopString (
@@ -641,6 +636,7 @@ END_VAR
 (** 	EventQueue(EventCode:=101,Par1:=NDC8.Vehicle.VehicleID,Par2:=0,Par3:=0,Par4:=0); **)
 (** end_if; **)
 (** *} **)
+(**  **)
 (**  **)
 (**  **)
 (**  **)
