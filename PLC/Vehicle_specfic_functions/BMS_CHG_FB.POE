@@ -1983,46 +1983,13 @@ END_VAR
 (**  **)
 (**  **)
 (** {* Let Vehicle Stop *} **)
+(** {* **)
 (** if PLC_TX04_Bit_ChrgCmdL_A = TRUE or PLC_TX04_Bit_ChrgCmdR_A = TRUE or  **)
 (** 	PLC_RX03_Bit_CP_HP = FALSE or  **)
 (** 	AutoChargeStep = 70 or AutoChargeStep = 71 or AutoChargeStep = 72 or AutoChargeStep = 73 then **)
-	(* if - Cond *)
-	LD PLC_TX04_Bit_ChrgCmdL_A
-	EQ TRUE
-	OR ( PLC_TX04_Bit_ChrgCmdR_A
-		EQ TRUE
-	)
-	OR ( PLC_RX03_Bit_CP_HP
-		EQ FALSE
-	)
-	OR ( AutoChargeStep
-		EQ 70
-	)
-	OR ( AutoChargeStep
-		EQ 71
-	)
-	OR ( AutoChargeStep
-		EQ 72
-	)
-	OR ( AutoChargeStep
-		EQ 73
-	)
-	JMPCN ODK_SKIP_000000000000012_000000000000001
-
-		(* then - Stmts *)
-
 (** 	StopCharge := TRUE; **)
-		(* assign - Stmt *)
-		LD TRUE
-		ST StopCharge
-
-		JMP ODK_END_IF_000000000000012
-
 (** end_if; **)
-	(* if - End *) 
-	ODK_SKIP_000000000000012_000000000000001:
-	ODK_END_IF_000000000000012:
-
+(** *} **)
 (**  **)
 (**  **)
 (**  **)

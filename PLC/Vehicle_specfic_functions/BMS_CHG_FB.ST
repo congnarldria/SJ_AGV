@@ -430,11 +430,13 @@ end_if;
 
 
 (* Let Vehicle Stop *)
+(*
 if PLC_TX04_Bit_ChrgCmdL_A = TRUE or PLC_TX04_Bit_ChrgCmdR_A = TRUE or 
 	PLC_RX03_Bit_CP_HP = FALSE or 
 	AutoChargeStep = 70 or AutoChargeStep = 71 or AutoChargeStep = 72 or AutoChargeStep = 73 then
 	StopCharge := TRUE;
 end_if;
+*)
 
 
 

@@ -93,6 +93,7 @@ elsif (PLC_RX03_Bit_ChrgReqL_A = FALSE and PLC_RX03_Bit_ChrgReqR_A = FALSE) and 
 		PLC_TX01_Bit_ChrgSelR_A := FALSE;
 		StopCharge := FALSE;
 		ManualStepDelay(IN := FALSE);
+		INPUT.LowBattery := FALSE;
 	end_if;
 	
 end_if;
@@ -316,6 +317,7 @@ case AutoChargeStep of
 			PLC_TX01_Bit_ChrgSelL_A := FALSE;
 			PLC_TX01_Bit_ChrgSelR_A := FALSE;
 			AutoChargeStep := 0;
+			INPUT.LowBattery := FALSE;
 		end_if;
 		
 			
@@ -328,6 +330,7 @@ case AutoChargeStep of
 		NDC8.OMPLC.ChargeOM := WORD_TO_INT(OM_PLC_Word1);
 	
 		StopCharge := FALSE;
+		
 
 end_case;
 
@@ -432,6 +435,7 @@ if PLC_TX04_Bit_ChrgCmdL_A = TRUE or PLC_TX04_Bit_ChrgCmdR_A = TRUE or
 	AutoChargeStep = 70 or AutoChargeStep = 71 or AutoChargeStep = 72 or AutoChargeStep = 73 then
 	StopCharge := TRUE;
 end_if;
+
 
 
 
