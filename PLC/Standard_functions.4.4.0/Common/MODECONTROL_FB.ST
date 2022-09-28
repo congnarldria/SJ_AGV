@@ -72,11 +72,10 @@ if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then
 				Automatic mode
 	*****************************************************************************************)
 	0: State := 8;
-
-	8:	NDC8.Manual.PlcSetOperationMode := 0;			(* Operation mode Auto *)
-		NDC8.Manual.PlcSelectMask		:= 2#00110;	(* Override Set speed, to allow autinsert from outside safety zone 
-														 Speed is set in AutoInsert FB. *)
-	
+	8:	
+		NDC8.Manual.PlcSetOperationMode := 0;			(* Operation mode Auto *)
+		NDC8.Manual.PlcSelectMask		:= 2#00110;	(* Override Set speed, to allow autinsert from outside safety zone Speed is set in AutoInsert FB. *)
+		NDC8.Manual.PlcSpeed := 50;									 
 		(**** Exit this mode? ***)	
 		if NDC8.Mcd.Button2 and NDC8.Mcd.Valid then		(* MCD semi mode *)
 			State := 2;
@@ -91,18 +90,15 @@ if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then
 				State := 4;
 		end_if;
 
-
 	(*****************************************************************************************
 				Semi mode (MCD throttle, automatic steering)
 	*****************************************************************************************)
 	2:	NDC8.Manual.PlcSetOperationMode := 2;			(* Set semi mode *)
 		NDC8.Manual.PlcSelectMask 		:= 2#10010;	(* Override operation mode and steer mode (quad) *)
-			
 		
 		(**** Exit this mode? ***)	
 		if NDC8.Mcd.Button1 or not NDC8.Mcd.Valid then		(* If disconnect the MCD or switch modes, to auto *)
 			State := 8;
-		
 		elsif (NDC8.Mcd.Button3 and NDC8.Mcd.Valid) then	(* If disconnect the MCD or switch modes, to auto *)
 			State := 1;
 		end_if;
@@ -112,7 +108,6 @@ if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then
 	*****************************************************************************************)
 	1:	NDC8.Manual.PlcSetOperationMode := 1;				(* Set Manual mode 							*)
 		StopLoadOP := False;								(* Clear load op cancel stop bit			*)
-	
 		if SteerModeRT.q then
 			SteerMode:= SteerMode + 1;          			(* Toggle steermode *)
 	        if SteerMode > 2 then                  			(* Limit *)
@@ -171,11 +166,11 @@ if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then
 	
 		(**** Exit this mode? ***)	
 		if NDC8.Mcd.Valid then									(* If MCD is connected							*)
-			if NDC8.Mcd.Button1 then							(* Auto mode on MCD? Switch to automatic mode.	*)
+			if NDC8.Mcd.Button1 THEN							(* Auto mode on MCD? Switch to automatic mode.	*)		
 				State := 8;
-			elsif NDC8.Mcd.Button2 then							(* Semi mode on mcd? Switch to semi mode		*)
-				State := 2;
-			end_if;
+		elsif NDC8.Mcd.Button2 THEN							(* Semi mode on mcd? Switch to semi mode		*)
+			State := 2;
+		END_IF;
 		else
 			if 	not Input.TillerArmDown							(* Tiller arm up								*)
 				and not Input.GateOpen							(* and gate closed 								*)
@@ -192,7 +187,6 @@ if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then
 
 	4:	NDC8.Manual.PlcSetOperationMode  := 1;			(* Set Manual mode								*)
 		NDC8.Manual.PlcSelectMask 		 := 2#00100;	(* Override operation mode 						*)
-	
 		(**** Exit this mode? ***)	
 		if INPUT.TillerArmDown 
 			or INPUT.GateOpen
@@ -219,6 +213,7 @@ end_if;
 (* Update Display *)
 
 DisplayStopString(INStatus:=StopManual, StopString:=85, StopValue:=0);
+
 
 
 

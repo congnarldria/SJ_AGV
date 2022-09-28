@@ -1,4 +1,4 @@
-FUNCTION_BLOCK AutoInsert_FB
+FUNCTION_BLOCK AUTOINSERT_FB
 VAR_EXTERNAL
 	NDC8 : NDC8_T;
 	INPUT : INPUT_T;
@@ -31,6 +31,7 @@ END_VAR
 InProgress				:= (NDC8.Autoinsert.Target>0) and not NDC8.LayoutPosition.InSystem;
 NotInsideTargetSafety 	:= InProgress and not NDC8.Autoinsert.OnSegment;
 Failed					:= (InProgress and NDC8.Guidance.OutsideSafetyZone)
+NDC8.Manual.PlcSelectMask 		:= 2#10111;
 														   or 
 														   (
 																NDC8.Opt.VehicleStatusID = 5
@@ -56,5 +57,7 @@ else
 	;												(* Don't override MCD in semi mode. 			*)
 end_case;
 	
+
+
 
 END_FUNCTION_BLOCK

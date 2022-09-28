@@ -37,7 +37,7 @@ Failed					:= (InProgress and NDC8.Guidance.OutsideSafetyZone)
 																or NDC8.Opt.VehicleStatusID = 11
 														   );
 											   
-											   
+NDC8.Manual.PlcSelectMask 		:= 2#10111;											   
 case NDC8.VehicleControl.OperationMode of
 	0: 												(* In automatic mode 							*)
 		if INPUT.Reset_PB then		(* if reset button pressed 						*)
@@ -56,6 +56,7 @@ else
 	;												(* Don't override MCD in semi mode. 			*)
 end_case;
 	
+
 
 
 END_FUNCTION_BLOCK

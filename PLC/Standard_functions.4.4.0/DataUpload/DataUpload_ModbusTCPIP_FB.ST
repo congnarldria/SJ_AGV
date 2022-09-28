@@ -1,4 +1,4 @@
-FUNCTION_BLOCK DATAUPLOAD_MODBUSTCPIP_FB
+FUNCTION_BLOCK DataUpload_ModbusTCPIP_FB
 VAR_EXTERNAL
 ndc8 : NDC8_T;
 
@@ -296,7 +296,7 @@ case ProcStep of
 					IF STARTCOUNTER < 100 THEN
 							STARTCOUNTER := STARTCOUNTER + 1;
 						END_IF;
-						If STARTCOUNTER > 15 THEN
+						If STARTCOUNTER > 5 THEN
 							STARTENABLE := TRUE;
 						END_IF;	
 					END_IF;
@@ -533,6 +533,7 @@ case ProcStep of
 			End_IF;
 			ProcStep:=0;
 end_case;
+
 
 
 

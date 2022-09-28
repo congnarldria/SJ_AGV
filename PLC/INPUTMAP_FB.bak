@@ -82,6 +82,7 @@ INPUT.SideSensorLeftForward		:= NDC8.. ;
 (* In the vehicle documentation, and the INPUTS.TYP, more examples of InputMap_FB is found. *)
 ;
 (* Button *)
+INPUT.Reset_PB := NDC8.SDIO.DigitalInput2_BTN_RST;
 
 Input.ZeroSteerAngle_PB			:= 	NDC8.MCD.Button7;
 
@@ -181,6 +182,7 @@ INPUT.LoadOnBoard := PLC_RX01_Bit_Load_i;
 
 
 StopEstopButton := NDC8.SDIO.DigitalInput12_EMO;
+
 
 
 

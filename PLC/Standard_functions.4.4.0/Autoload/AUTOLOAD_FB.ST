@@ -66,6 +66,10 @@ VAR
 	Debug_2000_B : BOOL:= FALSE;
 	
 	LrErrCode : DINT;
+	
+	(*Wait Barcode Answer 2s*)
+	
+	WiatBardCodeAnser : TON;
 END_VAR
 
 
@@ -187,16 +191,15 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 	2: (*Set BCD Req*)
 		PLC_TX04_Bit_BCD_Clr := false;
 		PLC_TX04_Bit_BCD_Req := true;
-		iBCD3 := 5;
+		WiatBardCodeAnser(IN := PLC_TX04_Bit_BCD_Req , PT:= t#2s);
 		BCDReadTimes := BCDReadTimes + 1;
-	
+	IF WiatBardCodeAnser.Q = TRUE THEN
 		if PLC_RX06_Bit_BCD_OK 
 			and not PLC_RX06_Bit_NoRead_NG
 			and not PLC_RX06_Bit_BCRHard_NG
 			and not PLC_RX06_Bit_BCRData_NG
 			and not PLC_RX06_Bit_BCRInit_NG
 			and not PLC_RX06_Bit_BCRComm_NG then
-			iBCD1 := 1;
 			BCDReadTimes := 0;
 			
 			BCDProcState := 3;
@@ -213,15 +216,13 @@ if NDC8.Automatic.CurrentOrderMode = 1 and PLC_RX01_Bit_Load_i = TRUE then
 					OM_PLC_W2_Bit_Set_Result := TRUE;
 				NDC8.OMPLC.Stop_OM := WORD_TO_INT(OM_PLC_Word2);
 				BCDProcState := 1000;
-				iBCD2 := 2;
 			else
 				BCDProcState := 1;
 			end_if;
 		end_if;
-	
-	
-	
+	END_IF;
 	3: (*BCD Compare*)
+		WiatBardCodeAnser(IN := FALSE);
 		TempBCD1_Int := WORD_TO_INT(PLC_RX_Word9_STw_BCD1);(* - 16#D00*);
 		TempBCD1 := INT_TO_WORD(TempBCD1_Int);
 	
@@ -825,7 +826,7 @@ Case AutoloadMainState of
 	149:
 
 		Fail := TRUE;
-		
+		g_ErrorCode := 149;
 		StepDelay(IN := TRUE, PT := t#1s);
 		
 		if StepDelay.Q then
@@ -926,9 +927,10 @@ Case AutoloadMainState of
 					
 (* Operation Complete *)
 	2000:
-		AUTOLOADDONE := INPUT.AutoLoadDone;
+		(*NDC8.LoadOperation.OperationCode := 0;
+		InProc_OperationCode			:= 0;*)
 		if Debug_2000_F = FALSE then
-			if INPUT.AutoLoadDone = TRUE then
+			if INPUT.AutoLoadDone = TRUE THEN
 				StartLoad 						:= false;
 				StartUnLoad 					:= false;
 				StartCharge						:= false;
@@ -953,6 +955,7 @@ Case AutoloadMainState of
 				if Input.Manual = TRUE or g_AGV_ErrorReset = TRUE then
 					INPUT.AutoLoadDone := TRUE;
 					StopLoadOP := FALSE;
+					AutoloadMainState				:= 0;
 				end_if;
 			end_if;
 		end_if;
@@ -996,6 +999,8 @@ end_if;
 
 
 (* OUTPUT *)
+
+
 
 
 

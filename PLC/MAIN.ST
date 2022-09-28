@@ -142,6 +142,9 @@ VAR
 	Z_PHASE_REALLY_NG_T : TON;
 	MovingDoneLT : F_Trig;
 	ChanceToSyncFailCount : DINT := 0;
+(* Position Lost Delay , InSystem too slow *)
+	PosLostTimer : TON;
+	IsInSystemFlag : BOOL := FALSE;
 END_VAR
 (*
 
@@ -214,14 +217,14 @@ if AllOK_Delay.Q and g_FindSyncFlag = FALSE and NDC8.SDIO.DigitalInput2_BTN_RST 
 	2:
 	(* Steer Turn to 0 *)
 	NDC8.Manual.PlcSelect := true;
-	NDC8.Manual.PLCAngle := 3;
+	NDC8.Manual.PLCAngle := 0;
 	NDC8.Manual.PlcSetOperationMode := 0;
 	NDC8.Manual.PLCSteerMode := 0;
 	NDC8.Manual.PlcSelectMask 		:= 2#10101;
 	
-	FindSyncDelay(IN:=TRUE, PT:=t#5s);
+	FindSyncDelay(IN:=TRUE, PT:=t#7s);
 	if FindSyncDelay.Q then
-		FindSyncStep := 4;
+		FindSyncStep := 3;
 		FindSyncDelay(IN:=FALSE);
 		IF NDC8.DCD_6.EncoderStatus = 1 AND NDC8.DCD_8.EncoderStatus = 1 THEN
 			g_FindSyncFlag := TRUE;		
@@ -338,7 +341,6 @@ R_SteerSupervision(Command:= NDC8.DCD_8.SetAngle,FeedBack:= NDC8.DCD_8.WheelAngl
 F_DriveSupervision(Command:= NDC8.DCD_5.SetSpeed,FeedBack:= NDC8.DCD_5.DriveEncSpeed,Range:= 100,Timeout:= t#30s,Moving:= VehicleMovingFlag);
 R_DriveSupervision(Command:= NDC8.DCD_7.SetSpeed,FeedBack:= NDC8.DCD_7.DriveEncSpeed,Range:= 100,Timeout:= t#30s,Moving:= VehicleMovingFlag);
 
-	
 
 
 (* OM-PLC Bit*)
@@ -428,7 +430,6 @@ else
 	g_PlcComLinkUp := TRUE;
 end_if;
 
-
 if g_FindSyncFlag = TRUE then
 
 OM_PLC_Word1 := INT_TO_WORD(NDC8.OMPLC.ChargeOM);
@@ -487,8 +488,13 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 133;
 	elsif NDC8.Autoinsert.StatusID = 5 then
 		g_ErrorCode := 136;
-	elsif NDC8.LayoutPosition.InSystem = FALSE and (PLC_TX01_Bit_HostMode = TRUE or PLC_TX01_Bit_LocalMode = TRUE) and CarrierControl.AutoinsertInProgress = false then
-		g_ErrorCode := 137;
+	elsif NDC8.LayoutPosition.InSystem = FALSE AND STARTENABLE AND (PLC_TX01_Bit_HostMode = TRUE or PLC_TX01_Bit_LocalMode = TRUE) AND CarrierControl.AutoinsertInProgress = false THEN		
+		IsInSystemFlag := NOT NDC8.Mcd.Button1;
+		PosLostTimer(IN := IsInSystemFlag, PT := t#2s);
+		IF PosLostTimer.Q THEN
+			g_ErrorCode := 137;
+			PosLostTimer(IN := FALSE);
+		END_IF;
 	elsif NDC8.Guidance.OutsideSafetyZone = TRUE then
 		g_ErrorCode := 138;
 	elsif NDC8.LS2000.Connected = FALSE or NDC8.LS2000.Attached = FALSE or NDC8.LS2000.NavActive = FALSE then
@@ -804,6 +810,13 @@ Display();
 OPTX2();
 
 DataUpdate();
+
+
+
+
+
+
+
 
 
 

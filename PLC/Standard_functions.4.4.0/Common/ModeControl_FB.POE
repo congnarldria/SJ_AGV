@@ -176,8 +176,7 @@ END_VAR
 
 			JMP ODK_END_CASE_000000000000002
 
-(**  **)
-(** 	8:	NDC8.Manual.PlcSetOperationMode := 0;			{* Operation mode Auto *} **)
+(** 	8:	 **)
 		(* case - Elm *) 
 		ODK_SKIP_000000000000002_000000000000001:
 
@@ -191,17 +190,21 @@ END_VAR
 		(* case - Stmts *) 
 		ODK_CASE_000000000000002_000000000000002:
 
+(** 		NDC8.Manual.PlcSetOperationMode := 0;			{* Operation mode Auto *} **)
 			(* assign - Stmt *)
 			LD 0
 			ST NDC8.Manual.PlcSetOperationMode
 
-(** 		NDC8.Manual.PlcSelectMask		:= 2#00110;	{* Override Set speed, to allow autinsert from outside safety zone  **)
+(** 		NDC8.Manual.PlcSelectMask		:= 2#00110;	{* Override Set speed, to allow autinsert from outside safety zone Speed is set in AutoInsert FB. *} **)
 			(* assign - Stmt *)
 			LD 2#00110
 			ST NDC8.Manual.PlcSelectMask
 
-(** 														 Speed is set in AutoInsert FB. *} **)
-(** 	 **)
+(** 		NDC8.Manual.PlcSpeed := 50;									  **)
+			(* assign - Stmt *)
+			LD 50
+			ST NDC8.Manual.PlcSpeed
+
 (** 		{**** Exit this mode? ***}	 **)
 (** 		if NDC8.Mcd.Button2 and NDC8.Mcd.Valid then		{* MCD semi mode *} **)
 			(* if - Cond *)
@@ -266,7 +269,6 @@ END_VAR
 			JMP ODK_END_CASE_000000000000002
 
 (**  **)
-(**  **)
 (** 	{***************************************************************************************** **)
 (** 				Semi mode (MCD throttle, automatic steering) **)
 (** 	*****************************************************************************************} **)
@@ -293,7 +295,6 @@ END_VAR
 			LD 2#10010
 			ST NDC8.Manual.PlcSelectMask
 
-(** 			 **)
 (** 		 **)
 (** 		{**** Exit this mode? ***}	 **)
 (** 		if NDC8.Mcd.Button1 or not NDC8.Mcd.Valid then		{* If disconnect the MCD or switch modes, to auto *} **)
@@ -313,7 +314,6 @@ END_VAR
 
 				JMP ODK_END_IF_000000000000004
 
-(** 		 **)
 (** 		elsif (NDC8.Mcd.Button3 and NDC8.Mcd.Valid) then	{* If disconnect the MCD or switch modes, to auto *} **)
 			(* elseif - Cond *) 
 			ODK_SKIP_000000000000004_000000000000001:
@@ -364,7 +364,6 @@ END_VAR
 			LD FALSE
 			ST StopLoadOP
 
-(** 	 **)
 (** 		if SteerModeRT.q then **)
 			(* if - Cond *)
 			LD SteerModeRT.q
@@ -688,7 +687,7 @@ END_VAR
 
 				(* then - Stmts *)
 
-(** 			if NDC8.Mcd.Button1 then							{* Auto mode on MCD? Switch to automatic mode.	*} **)
+(** 			if NDC8.Mcd.Button1 THEN							{* Auto mode on MCD? Switch to automatic mode.	*}		 **)
 				(* if - Cond *)
 				LD NDC8.Mcd.Button1
 				JMPCN ODK_SKIP_00000000000000E_000000000000001
@@ -702,7 +701,7 @@ END_VAR
 
 					JMP ODK_END_IF_00000000000000E
 
-(** 			elsif NDC8.Mcd.Button2 then							{* Semi mode on mcd? Switch to semi mode		*} **)
+(** 		elsif NDC8.Mcd.Button2 THEN							{* Semi mode on mcd? Switch to semi mode		*} **)
 				(* elseif - Cond *) 
 				ODK_SKIP_00000000000000E_000000000000001:
 				LD NDC8.Mcd.Button2
@@ -710,14 +709,14 @@ END_VAR
 
 					(* elsif - Stmts *)
 
-(** 				State := 2; **)
+(** 			State := 2; **)
 					(* assign - Stmt *)
 					LD 2
 					ST State
 
 					JMP ODK_END_IF_00000000000000E
 
-(** 			end_if; **)
+(** 		END_IF; **)
 				(* if - End *) 
 				ODK_SKIP_00000000000000E_000000000000002:
 				ODK_END_IF_00000000000000E:
@@ -795,7 +794,6 @@ END_VAR
 			LD 2#00100
 			ST NDC8.Manual.PlcSelectMask
 
-(** 	 **)
 (** 		{**** Exit this mode? ***}	 **)
 (** 		if INPUT.TillerArmDown  **)
 (** 			or INPUT.GateOpen **)
@@ -900,6 +898,7 @@ END_VAR
 		StopValue := 0
 	)
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)
