@@ -74,8 +74,7 @@ if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then
 	0: State := 8;
 	8:	
 		NDC8.Manual.PlcSetOperationMode := 0;			(* Operation mode Auto *)
-		NDC8.Manual.PlcSelectMask		:= 2#00110;	(* Override Set speed, to allow autinsert from outside safety zone Speed is set in AutoInsert FB. *)
-		NDC8.Manual.PlcSpeed := 50;									 
+		NDC8.Manual.PlcSelectMask		:= 2#00110;	(* Override Set speed, to allow autinsert from outside safety zone Speed is set in AutoInsert FB. *)								 
 		(**** Exit this mode? ***)	
 		if NDC8.Mcd.Button2 and NDC8.Mcd.Valid then		(* MCD semi mode *)
 			State := 2;
@@ -213,6 +212,7 @@ end_if;
 (* Update Display *)
 
 DisplayStopString(INStatus:=StopManual, StopString:=85, StopValue:=0);
+
 
 
 

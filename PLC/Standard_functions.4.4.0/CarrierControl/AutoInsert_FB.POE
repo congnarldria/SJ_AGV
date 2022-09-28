@@ -1,4 +1,4 @@
-FUNCTION_BLOCK AUTOINSERT_FB
+FUNCTION_BLOCK AutoInsert_FB
 VAR_EXTERNAL
 	NDC8 : NDC8_T;
 	INPUT : INPUT_T;
@@ -66,12 +66,7 @@ END_VAR
 	ST Failed
 
 (** 														   ); **)
-(** 											    **)
-(** NDC8.Manual.PlcSelectMask 		:= 2#10111;											    **)
-	(* assign - Stmt *)
-	LD 2#10111
-	ST NDC8.Manual.PlcSelectMask
-
+(** 											   										    **)
 (** case NDC8.VehicleControl.OperationMode of **)
 (** 	0: 												{* In automatic mode 							*} **)
 	(* case - Elm *) 
@@ -94,9 +89,9 @@ END_VAR
 
 			(* then - Stmts *)
 
-(** 			NDC8.Manual.PlcSpeed := 100;			{* Set autoinsert speed to 100mm/s 				*} **)
+(** 			NDC8.Manual.PlcSpeed := 50;			{* Set autoinsert speed to 100mm/s 				*} **)
 			(* assign - Stmt *)
-			LD 100
+			LD 50
 			ST NDC8.Manual.PlcSpeed
 
 			JMP ODK_END_IF_000000000000002
@@ -177,6 +172,7 @@ END_VAR
 	ODK_END_CASE_000000000000001:
 
 (** 	 **)
+(**  **)
 (**  **)
 (**  **)
 

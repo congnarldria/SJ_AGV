@@ -195,15 +195,10 @@ END_VAR
 			LD 0
 			ST NDC8.Manual.PlcSetOperationMode
 
-(** 		NDC8.Manual.PlcSelectMask		:= 2#00110;	{* Override Set speed, to allow autinsert from outside safety zone Speed is set in AutoInsert FB. *} **)
+(** 		NDC8.Manual.PlcSelectMask		:= 2#00110;	{* Override Set speed, to allow autinsert from outside safety zone Speed is set in AutoInsert FB. *}								  **)
 			(* assign - Stmt *)
 			LD 2#00110
 			ST NDC8.Manual.PlcSelectMask
-
-(** 		NDC8.Manual.PlcSpeed := 50;									  **)
-			(* assign - Stmt *)
-			LD 50
-			ST NDC8.Manual.PlcSpeed
 
 (** 		{**** Exit this mode? ***}	 **)
 (** 		if NDC8.Mcd.Button2 and NDC8.Mcd.Valid then		{* MCD semi mode *} **)
@@ -898,6 +893,7 @@ END_VAR
 		StopValue := 0
 	)
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)

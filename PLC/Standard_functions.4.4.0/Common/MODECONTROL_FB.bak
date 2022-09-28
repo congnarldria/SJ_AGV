@@ -177,7 +177,6 @@ if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then
 				and not Input.PlatformNotUpperPos				(* and platform up 								*)
 				and Input.Reset_PB then							(* and reset push button! 						*)
 					State := 8;							(* Switch to automatic mode						*)
-					InSystemTimer(IN:= TRUE , PT := t#1s);
 			end_if;				
 		end_if;
 
@@ -188,7 +187,6 @@ if NDC8.Mcd.Valid = TRUE and g_StartFindSync = FALSE then
 
 	4:	NDC8.Manual.PlcSetOperationMode  := 1;			(* Set Manual mode								*)
 		NDC8.Manual.PlcSelectMask 		 := 2#00100;	(* Override operation mode 						*)
-		InSystemTimer(IN := FALSE);
 		(**** Exit this mode? ***)	
 		if INPUT.TillerArmDown 
 			or INPUT.GateOpen

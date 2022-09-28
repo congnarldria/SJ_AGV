@@ -1,4 +1,4 @@
-FUNCTION_BLOCK AUTOINSERT_FB
+FUNCTION_BLOCK AutoInsert_FB
 VAR_EXTERNAL
 	NDC8 : NDC8_T;
 	INPUT : INPUT_T;
@@ -36,12 +36,11 @@ Failed					:= (InProgress and NDC8.Guidance.OutsideSafetyZone)
 																NDC8.Opt.VehicleStatusID = 5
 																or NDC8.Opt.VehicleStatusID = 11
 														   );
-											   
-NDC8.Manual.PlcSelectMask 		:= 2#10111;											   
+											   										   
 case NDC8.VehicleControl.OperationMode of
 	0: 												(* In automatic mode 							*)
 		if INPUT.Reset_PB then		(* if reset button pressed 						*)
-			NDC8.Manual.PlcSpeed := 100;			(* Set autoinsert speed to 100mm/s 				*)
+			NDC8.Manual.PlcSpeed := 50;			(* Set autoinsert speed to 100mm/s 				*)
 		else
 			NDC8.Manual.PlcSpeed := 0;				
 		end_if;
@@ -56,6 +55,7 @@ else
 	;												(* Don't override MCD in semi mode. 			*)
 end_case;
 	
+
 
 
 
