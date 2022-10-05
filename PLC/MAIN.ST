@@ -136,6 +136,10 @@ VAR
 (* Update Data *)
 	DataUpdate : DataUpload_FB;
 	
+(* Position Lost Delay , InSystem too slow *)
+ 	PosLostTimer : TON;
+ 	IsInSystemFlag : BOOL := FALSE;	
+	
 END_VAR
 (*
 
@@ -449,8 +453,13 @@ OM_PLC_Word2 := INT_TO_WORD(NDC8.OMPLC.Stop_OM);
 		g_ErrorCode := 133;
 	elsif NDC8.Autoinsert.StatusID = 5 then
 		g_ErrorCode := 136;
-	elsif NDC8.LayoutPosition.InSystem = FALSE and (PLC_TX01_Bit_HostMode = TRUE or PLC_TX01_Bit_LocalMode = TRUE) and CarrierControl.AutoinsertInProgress = false then
-		g_ErrorCode := 137;
+	elsif NDC8.LayoutPosition.InSystem = FALSE AND STARTENABLE AND (PLC_TX01_Bit_HostMode = TRUE or PLC_TX01_Bit_LocalMode = TRUE) AND CarrierControl.AutoinsertInProgress = false THEN  
+  		IsInSystemFlag := NOT NDC8.Mcd.Button1;
+  		PosLostTimer(IN := IsInSystemFlag, PT := t#2s);
+  		IF PosLostTimer.Q THEN
+   		g_ErrorCode := 137;
+  		PosLostTimer(IN := FALSE);
+  		END_IF;
 	elsif NDC8.Guidance.OutsideSafetyZone = TRUE then
 		g_ErrorCode := 138;
 	elsif NDC8.LS2000.Connected = FALSE or NDC8.LS2000.Attached = FALSE or NDC8.LS2000.NavActive = FALSE then
@@ -767,6 +776,7 @@ Display();
 OPTX2();
 
 DataUpdate();
+
 
 
 

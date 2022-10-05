@@ -55,6 +55,7 @@ END_VAR
 (** 				PLC_RX14_Bit_BMS_CT or **)
 (** 				PLC_RX14_Bit_BMS_Couple or **)
 (** 				PLC_RX14_Bit_BMS_Bat or **)
+(** 				PLC_RX14_Bit_BMS_NG or **)
 	(* assign - Stmt *)
 	LD PLC_RX14_Bit_BMS_Short
 	OR PLC_RX14_Bit_BMS_Over
@@ -64,9 +65,12 @@ END_VAR
 	OR PLC_RX14_Bit_BMS_Couple
 	OR PLC_RX14_Bit_BMS_Bat
 	OR PLC_RX14_Bit_BMS_NG
+	OR ( g_ErrorCode
+(** 				g_ErrorCode <> 0; {*All Error Stop Charge*} **)
+		NE 0
+	)
 	ST g_BMS_Error
 
-(** 				PLC_RX14_Bit_BMS_NG; **)
 (**  **)
 (** {* Check Manual Charge *} **)
 (**  **)
@@ -376,7 +380,7 @@ END_VAR
 		ODK_END_IF_000000000000008:
 
 (** 		 **)
-(** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE or g_ErrorCode <> 0 then **)
+(** 		if PLC_RX01_Bit_ChrgEmg = TRUE or g_BMS_Error = TRUE or g_ChargeOverTime = TRUE then **)
 		(* if - Cond *)
 		LD PLC_RX01_Bit_ChrgEmg
 		EQ TRUE
@@ -385,9 +389,6 @@ END_VAR
 		)
 		OR ( g_ChargeOverTime
 			EQ TRUE
-		)
-		OR ( g_ErrorCode
-			NE 0
 		)
 		JMPCN ODK_SKIP_000000000000009_000000000000001
 
@@ -979,6 +980,7 @@ END_VAR
 	ODK_SKIP_00000000000000O_000000000000001:
 	ODK_END_IF_00000000000000O:
 
+(**  **)
 (**  **)
 (**  **)
 (**  **)
